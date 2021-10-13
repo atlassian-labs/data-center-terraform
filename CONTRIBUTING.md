@@ -5,7 +5,16 @@ Thank you for considering a contribution to Terraform for Bamboo DC on K8s. Pull
 * Add tests for new features and bug fixes
 * Follow the existing style
 * Separate unrelated changes into multiple pull requests
+* Set pre-commit git hook before raising a pull request
 
+### Git hooks
+
+Install pre-commit Git hook to format all terraform files before commit
+
+    (cd .git/hooks && ln -s ../../etc/git-hooks/pre-commit)
+
+
+### Note
 
 See the existing issues for things to start contributing.
 
