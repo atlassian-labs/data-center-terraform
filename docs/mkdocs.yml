@@ -1,0 +1,56 @@
+site_name: Atlassian Terraform for Bamboo DC on Kubernetes
+theme:
+  name: material
+  custom_dir: overrides
+  favicon: assets/logos/favicon.png
+  logo: assets/logos/atlassian-logo.svg
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.instant
+    - navigation.tabs
+repo_url: https://github.com/atlassian-labs/Terraform-for-Bamboo-DC-on-K8s
+repo_name: atlassian-labs/Terraform-for-Bamboo-DC-on-K8s
+edit_uri: edit/main/docs/docs/
+plugins:
+  - search
+  - awesome-pages
+  - minify:
+      minify_html: true
+      minify_js: true
+      htmlmin_opts:
+        remove_comments: true
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - meta
+  - admonition
+  - attr_list
+  - toc:
+      # insert a blank space before the character
+      permalink: " ¶"
+extra_css:
+  - assets/stylesheets/extra.css
+extra:
+  analytics:
+    provider: google
+    property: G-FZ7HCVNVPY
+  social:
+    - icon: fontawesome/brands/atlassian
+      link: https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes
+copyright: Copyright &copy; [2021] Atlassian and others.
