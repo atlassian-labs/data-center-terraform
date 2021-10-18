@@ -5,7 +5,7 @@ cwd=$(pwd)
 
 # fetch the locals.tf file from terraform project
 cp -fr locals.tf ./src/tfstate
-cd ./src/initialization
+cd ./src/tfstate
 pwd
 # extract S3 bucket name from locals.tf
 S3_BUCKET=$(grep 'bucket_name' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
@@ -15,12 +15,14 @@ aws s3api head-bucket --bucket "$S3_BUCKET"
 if [ $? -eq 0 ]
 then
   echo "S3 bucket '$S3_BUCKET' is already existed."
+  cd "$cwd"
 else
   # create s3 bucket to be used for keep state of the terraform project
   terraform init
   terraform apply -auto-approve
+  sleep 5s
 
-  cd "$pwd"
+  cd "$cwd"
   terraform init -migrate-state
 fi
 
