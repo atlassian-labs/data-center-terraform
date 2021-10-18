@@ -1,6 +1,8 @@
 locals {
   // General settings
   region           = "us-east-1"
+  cluster_name     = "dc-infrastructure"
+  vpc_name         = "dc-infrastructure-vpc"
 
   // These two values will be used in the terraform/backend block in terraform-backend.tf file.
   bucket_name           = "dc-tf-statelock"
