@@ -3,12 +3,12 @@
 
 Atlassian DC APP program provides App vendors in our ecosystem with ready-to-use environment setup tools. 
 This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
-At this stage the scope is providing the infrastructure for Bamboo.  
+At this stage the scope is providing the infrastructure for Bamboo on AWS.  
 
 
 ## Usage
 
-In order to use this project you need to have the following application installed on your local machine and an admin access to an AWS account:
+In order to use this project you need to have the following applications installed on your local machine and have admin access to an AWS account:
 
 * AWS CLI
 * Kubernetes 
