@@ -1,0 +1,13 @@
+# This file deals with how Terraform is keeping its state.
+
+terraform {
+  backend "s3" {
+    // This value has to match what's in the 'bucket_name' local variable
+    bucket =  "<BUCKET_NAME>"
+    key    = "dc-infrastructure-tf-state/terraform.tfstate"
+    // This value has to match what's in the 'region' local variable
+    region = "<REGION>"
+    // This value has to match what's in the 'dynamodb_name' local variable
+    dynamodb_table = "<DYNAMODB_TABLE>"
+  }
+}
