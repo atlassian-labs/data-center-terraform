@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "terraform_state" {
   acl = "private"
 
   tags = merge(var.required_tags, tomap({
-    "Name" : "terraform_state"
+    "Name" : var.bucket_name
   }))
 
   # Enable server-side encryption by default

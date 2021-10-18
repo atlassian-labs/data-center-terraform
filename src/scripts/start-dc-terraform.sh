@@ -4,7 +4,7 @@ set -x
 cwd=$(pwd)
 
 # fetch the locals.tf file from terraform project
-cp -fr locals.tf ./src/initialization
+cp -fr locals.tf ./src/tfstate
 cd ./src/initialization
 pwd
 # extract S3 bucket name from locals.tf

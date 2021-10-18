@@ -9,7 +9,7 @@ resource "aws_dynamodb_table" "terraform_statelock" {
   hash_key       = "LockID"
 
   tags = merge(var.required_tags, tomap({
-    "Name" : "terraform_statelock"
+    "Name" : var.dynamodb_name
   }))
 
   attribute {
