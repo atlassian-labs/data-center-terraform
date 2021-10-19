@@ -3,7 +3,7 @@ output "vpc_id" {
   description = "VPC Id"
 }
 
-output "vpc_public_subnets_cidr_blocks" {
+output "vpc_public_subnets_cidr" {
   value = module.bamboo.public_subnets_cidr_blocks
 }
 
