@@ -6,12 +6,11 @@ locals {
 
   namespace = "bamboo"
 
-  # Two subnet CIDRs are required. Each VPC has a CIDR associated, such as '10.125.96.0/20'. Use an IP subnet calculator
-  # to figure out what the subnet range is, then choose two smaller subnets that don't overlap with any other exising
-  # subnets in the VPC.
+  # At least two subnet CIDRs are required and will be calculated based on `vpc_cidr` using cidrsubnets function.
+  # 'vpc_cidr' ip block will divided into two equal blocks, the first block will be assigned to private subnet and
+  # the second half will be assigned to public subnet.
   vpc_cidr            = "10.0.0.0/16"
-  vpc_private_subnet  = ["10.0.10.0/24", "10.0.12.0/24"]
-  vpc_public_subnet   = ["10.0.110.0/24", "10.0.112.0/24"]
+
 
   # Look at https://hello.atlassian.net/wiki/spaces/RELENG/pages/677332161/HOWTO%3A+IAM+Roles+in+PBC+%28Bamboo%29+using+IRSA
   # to find out how to modify these variables.

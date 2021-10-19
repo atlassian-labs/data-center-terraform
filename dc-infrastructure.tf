@@ -3,7 +3,8 @@ provider "aws" {
 }
 
 module "bamboo" {
-  source                        = "./src/main/products/bamboo"
+  source                        = "./src/products/bamboo"
+
   region_name                   = local.region
   cluster_name                  = local.cluster_name
   required_tags                 = local.required_tags

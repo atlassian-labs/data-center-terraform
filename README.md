@@ -11,7 +11,6 @@ At this stage the scope is providing the infrastructure for Bamboo.
 In order to use this project you need to have the following application installed on your local machine and an admin access to an AWS account:
 
 * AWS CLI
-* Kubernetes 
 * helm
 * Terraform
 
@@ -22,7 +21,7 @@ In order to use this project you need to have the following application installe
 3. Open a terminal and change your current path to the root of the project
 4. Run the following script to create the infrastructure:
 ```shell
-./src/main/scripts/start-dc-terraform.sh
+./src/scripts/start-dc-terraform.sh
 ```
 
 

@@ -2,16 +2,22 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+locals {
+  azs = length(var.vpc_azs)>0 ? var.vpc_azs: [data.aws_availability_zones.available.zone_ids[0], data.aws_availability_zones.available.zone_ids[1]]
+  azs_number = max(length(var.vpc_azs), 2)
+  subnet_blocks = [for cidr_block in cidrsubnets(var.vpc_cidr, 1, 1) : cidrsubnets(cidr_block, 7, 7, 7, 7, 7, 7)]
+}
+
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "$(var.vpc_name)-vpc"
   cidr = var.vpc_cidr
-  azs  = length(var.vpc_azs)>0 ? var.vpc_azs: [data.aws_availability_zones.available.zone_ids[0], data.aws_availability_zones.available.zone_ids[1]]
+  azs  = local.azs
 
-  private_subnets = var.vpc_private_subnet
-  public_subnets  = var.vpc_public_subnet
+  private_subnets = slice(local.subnet_blocks[0], 0, local.azs_number)
+  public_subnets  = slice(local.subnet_blocks[1], 0, local.azs_number)
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
