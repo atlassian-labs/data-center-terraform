@@ -1,18 +1,29 @@
 # Terraform for Bamboo DC on Kubernetes
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 
-
-Atlassian DC APP program provide App vendors in our ecosystem with ready-to-use environment setup tools. 
-This project provides a tool to provision infrastructure for Bamboo DC helm chart. 
+Atlassian DC APP program provides App vendors in our ecosystem with ready-to-use environment setup tools. 
+This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
+At this stage the scope is providing the infrastructure for Bamboo on AWS.  
 
 
 ## Usage
 
-> Provide a simple and concise (code) example of the project. 
+In order to use this project you need to have the following applications installed on your local machine and have admin access to an AWS account:
+
+* AWS CLI
+* helm
+* Terraform
 
 ## Installation
 
-> Provide instructions on how to install and configure the project.
+1. Login with an admin access to an AWS account
+2. Checkout out the project into your local
+3. Open a terminal and change your current path to the root of the project
+4. Run the following script to create the infrastructure:
+```shell
+./src/scripts/start-dc-terraform.sh
+```
+
 
 ## Documentation
 > TODO
