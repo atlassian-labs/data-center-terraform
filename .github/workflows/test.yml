@@ -1,5 +1,6 @@
 name: Automated Testing
-on: 
+on:
+  workflow_dispatch:
   push:
     branches:
       - main
