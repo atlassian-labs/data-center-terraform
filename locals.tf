@@ -1,14 +1,8 @@
 locals {
-  // General settings
+  # General settings
   region           = "us-east-1"
   cluster_name     = "dc-infrastructure"
-  vpc_name         = "dc-infrastructure-vpc"
-
-  // These two values will be used in the terraform/backend block in terraform-backend.tf file.
-  bucket_name           = "dc-tf-statelock"
-  dynamodb_name         = "dc_tf_statelock"
-
-  // List of tags - this list will propagate among all resources
+  # List of tags - this list will propagate among all resources
   required_tags = {
     business_unit  = "Engineering-Enterprise DC"
     service_name   = "dc-infrastructure"
@@ -16,4 +10,16 @@ locals {
     git_repository = "github.com/atlassian-labs/data-center-terraform"
     Terraform      = "true"
   }
+
+  # VPC settings
+  vpc_name         = "dc-infrastructure-vpc"
+  # At least two subnet CIDRs are required and will be calculated automatically based on `vpc_cidr`.
+  vpc_cidr      = "10.0.0.0/16"
+
+
+  # Terraform state settings
+  #  will be used to generate terraform/backend block in terraform-backend.tf file.
+  bucket_name           = "dc-tf-statelock"
+  dynamodb_name         = "dc_tf_statelock"
+
 }

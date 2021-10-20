@@ -6,11 +6,6 @@ locals {
 
   namespace = "bamboo"
 
-  # At least two subnet CIDRs are required and will be calculated based on `vpc_cidr` using cidrsubnets function.
-  # 'vpc_cidr' ip block will divided into two equal blocks, the first block will be assigned to private subnet and
-  # the second half will be assigned to public subnet.
-  vpc_cidr            = "10.0.0.0/16"
-
 
   # Look at https://hello.atlassian.net/wiki/spaces/RELENG/pages/677332161/HOWTO%3A+IAM+Roles+in+PBC+%28Bamboo%29+using+IRSA
   # to find out how to modify these variables.
