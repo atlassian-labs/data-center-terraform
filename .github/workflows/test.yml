@@ -22,9 +22,9 @@ jobs:
 #          fetch-depth: 1
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
-#        with:
-#          # The Go version to download (if necessary) and use. Supports semver spec and ranges.
-#          go-version: # optional
+        with:
+          # The Go version to download (if necessary) and use. Supports semver spec and ranges.
+          go-version: 1.17
 #          # Whether to download only stable versions
 #          stable: # optional, default is true
 #          # Used to pull node distributions from go-versions.  Since there's a default, this is typically not supplied by the user.
