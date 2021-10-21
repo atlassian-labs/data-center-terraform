@@ -5,19 +5,19 @@ root="$(pwd)"
 
 echo "Checking the terraform state..."
 # fetch the locals.tf file from terraform project
-cp -fr locals.tf ./src/tfstate
+cp -fr locals.tf ./pkg/tfstate
 # extract S3 bucket, dynamodb, and region from locals.tf
 S3_BUCKET=$(grep 'bucket_name' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
 DYNAMODB_TABLE=$(grep 'dynamodb_name' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
 REGION=$(grep 'region' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
 
 # Generate the terraform backend, where terraform store the state of the infrastructure
-sed 's/<REGION>/'${REGION}'/g'  ./src/templates/terraform-backend.tmpl | \
+sed 's/<REGION>/'${REGION}'/g'  ./pkg/templates/terraform-backend.tmpl | \
   sed  's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
   sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
   > terraform-backend.tf
 
-cd "$root/src/tfstate"
+cd "$root/pkg/tfstate"
 
 # Check if the S3 bucket is existed otherwise create the bucket to keep the terraform state
 
