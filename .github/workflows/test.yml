@@ -31,7 +31,7 @@ jobs:
 #          token: # optional, default is ${{ github.token }}
       - name: Setup Dependencies
         working-directory: test/
-        run: go get -v -t -d && go mod tidy
+        run: go get -v -t -d ./... && go mod tidy
       - name: Test
         working-directory: test/
         run: go test ./... -v
