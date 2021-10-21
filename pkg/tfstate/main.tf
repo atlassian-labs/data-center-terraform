@@ -1,5 +1,5 @@
 # This file deals with where Terraform is keeping its state in AWS.
-# Please note that this file will run by `src/script/start-dc-terraform.sh' and no need to run manually.
+# Please note that this file will run by `pkg/script/start-dc-terraform.sh' and no need to run manually.
 provider "aws" {
   region = local.region
 }
