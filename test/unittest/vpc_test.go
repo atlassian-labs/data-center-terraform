@@ -28,7 +28,7 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
 		Vars: map[string]interface{}{
-			"vpc_name": "test_vpc",
+			"vpc_name": "test-vpc",
 			"required_tags": map[string]interface{}{
 				"resource_owner": TestResourceOwner,
 			},
@@ -60,7 +60,7 @@ func TestVpcCustomisedCidrBlock(t *testing.T) {
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
 		Vars: map[string]interface{}{
-			"vpc_name": "test_vpc",
+			"vpc_name": "test-vpc",
 			"required_tags": map[string]interface{}{
 				"resource_owner": TestResourceOwner,
 			},

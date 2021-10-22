@@ -1,7 +1,7 @@
 locals {
 
   required_tags = {
-    product = "Bamboo"
+    product                                     : "Bamboo"
   }
 
   namespace = "bamboo"
