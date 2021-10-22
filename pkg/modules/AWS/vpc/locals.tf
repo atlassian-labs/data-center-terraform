@@ -24,7 +24,4 @@ locals {
     "kubernetes.io/role/internal-elb"           : "1"
   }
 
-  product_tags = {
-    "Name" : "${var.vpc_name}-${var.product_name}"
-  }
 }

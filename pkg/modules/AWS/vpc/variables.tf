@@ -7,16 +7,6 @@ variable "vpc_name" {
   }
 }
 
-variable "product_name" {
-  description = "Name of the product"
-  type = string
-  default = "all"
-  validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.product_name))
-    error_message = "Invalid product name."
-  }
-}
-
 variable "required_tags" {
   description = "List of tags"
   type = map(any)
