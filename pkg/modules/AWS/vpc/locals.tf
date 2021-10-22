@@ -12,18 +12,15 @@ locals {
   # tags
   vpc_tags = {
     "Name"                                     : var.vpc_name
-    "kubernetes.io/cluster/${var.cluster_name}": "shared"
   }
 
   public_subnet_tags = {
     "Name"                                      : "${var.vpc_name}-public-subnets"
-    "kubernetes.io/cluster/${var.cluster_name}" : "shared"
     "kubernetes.io/role/elb"                    : "1"
   }
 
   private_subnet_tags = {
     "Name"                                      : "${var.vpc_name}-private-subnets"
-    "kubernetes.io/cluster/${var.cluster_name}" : "shared"
     "kubernetes.io/role/internal-elb"           : "1"
   }
 
