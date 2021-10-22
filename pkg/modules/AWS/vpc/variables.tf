@@ -3,16 +3,7 @@ variable "vpc_name" {
   type = string
   validation {
     condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.vpc_name))
-    error_message = "Invalid cluster name."
-  }
-}
-
-variable "cluster_name" {
-  description = "Name of the cluster"
-  type = string
-  validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.cluster_name))
-    error_message = "Invalid cluster name."
+    error_message = "Invalid vpc name."
   }
 }
 
@@ -21,7 +12,7 @@ variable "product_name" {
   type = string
   default = "all"
   validation {
-    condition     = can(regex("^(bamboo|jira|bitbucket|confluence|crowd)$", var.product_name))
+    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.product_name))
     error_message = "Invalid product name."
   }
 }

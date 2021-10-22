@@ -18,7 +18,7 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 
 	// Make a copy of the terraform module to a temporary directory. This allows running multiple tests in parallel
 	// against the same terraform module.
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../src", "/modules/AWS/vpc")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
 
 	// Pick a random AWS region to test in. This helps ensure your code works in all regions.
 	// Given it's unit test, no resources are actually deployed, a random region will make sense.
@@ -28,7 +28,7 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
 		Vars: map[string]interface{}{
-			"vpc_name": "test_vpc",
+			"vpc_name": "test-vpc",
 			"required_tags": map[string]interface{}{
 				"resource_owner": TestResourceOwner,
 			},
@@ -53,14 +53,14 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 func TestVpcCustomisedCidrBlock(t *testing.T) {
 	t.Parallel()
 
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../src", "/modules/AWS/vpc")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
 
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
 		Vars: map[string]interface{}{
-			"vpc_name": "test_vpc",
+			"vpc_name": "test-vpc",
 			"required_tags": map[string]interface{}{
 				"resource_owner": TestResourceOwner,
 			},
