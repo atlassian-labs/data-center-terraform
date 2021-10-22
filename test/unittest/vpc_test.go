@@ -80,34 +80,3 @@ func TestVpcCustomisedCidrBlock(t *testing.T) {
 	assert.Equal(t, "10.0.0.0/18", vpcCidr)
 
 }
-
-func TestVpcCustomisedCidrBlock2(t *testing.T) {
-	t.Parallel()
-
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
-	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
-	planFilePath := filepath.Join(exampleFolder, "plan.out")
-
-	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: exampleFolder,
-		Vars: map[string]interface{}{
-			"vpc_name": "test-vpc",
-			"required_tags": map[string]interface{}{
-				"resource_owner": TestResourceOwner,
-			},
-			"vpc_cidr": "10.0.0.0/18",
-		},
-		EnvVars: map[string]string{
-			"AWS_DEFAULT_REGION": awsRegion,
-		},
-		PlanFilePath: planFilePath,
-	})
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
-	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	vpcCidr := vpc.AttributeValues["cidr_block"]
-	assert.Equal(t, "10.0.0.0/18", vpcCidr)
-
-}
