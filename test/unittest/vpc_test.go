@@ -9,7 +9,7 @@ import (
 
 const TestResourceOwner = "terraform_unit_test"
 
-Test CIDR variable.
+//Test CIDR variable.
 func TestVpcDefaultCidrBlock(t *testing.T) {
 	t.Parallel()
 
