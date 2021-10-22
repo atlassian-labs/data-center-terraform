@@ -16,12 +16,10 @@ locals {
 
   public_subnet_tags = {
     "Name"                                      : "${var.vpc_name}-public-subnets"
-    "kubernetes.io/role/elb"                    : "1"
   }
 
   private_subnet_tags = {
     "Name"                                      : "${var.vpc_name}-private-subnets"
-    "kubernetes.io/role/internal-elb"           : "1"
   }
 
   product_tags = {

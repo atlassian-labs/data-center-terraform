@@ -2,7 +2,6 @@ locals {
 
   required_tags = {
     product                                     : "Bamboo"
-    "kubernetes.io/cluster/${var.cluster_name}" : "shared"
   }
 
   namespace = "bamboo"
