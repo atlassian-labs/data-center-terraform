@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ⚠️ Support boundaries ⚠️
+    url: https://github.com/atlassian-labs/data-center-terraform/troubleshooting/SUPPORT_BOUNDARIES/
+    about: Please read the scope of support before raising an issue
+  - name: Infrastructure installation issues
+    url: https://support.atlassian.com/contact/
+    about: Contact Atlassian Support with issues relating to the installation
