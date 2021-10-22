@@ -3,7 +3,6 @@ locals {
 
   required_tags = {
     product                                     : local.product_name
-    "kubernetes.io/cluster/${var.cluster_name}" : "shared"
   }
 
 
