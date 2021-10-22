@@ -1,10 +1,15 @@
 locals {
+  product_name = "bamboo"
 
   required_tags = {
-    product                                     : "Bamboo"
+    product                                     : local.product_name
   }
 
-  namespace = "bamboo"
+
+  product_tags = {
+    "Name " : local.product_name
+  }
+
 
 
   # Look at https://hello.atlassian.net/wiki/spaces/RELENG/pages/677332161/HOWTO%3A+IAM+Roles+in+PBC+%28Bamboo%29+using+IRSA

@@ -21,8 +21,4 @@ locals {
   private_subnet_tags = {
     "Name"                                      : "${var.vpc_name}-private-subnets"
   }
-
-  product_tags = {
-    "Name" : "${var.vpc_name}-${var.product_name}"
-  }
 }

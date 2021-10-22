@@ -1,5 +1,5 @@
 resource aws_security_group vpc {
-  name_prefix = var.vpc_name
+  name_prefix = format("%s_%s", var.vpc_name, local.product_name)
   description = "VPC security group."
   vpc_id = module.vpc.vpc_id
 
