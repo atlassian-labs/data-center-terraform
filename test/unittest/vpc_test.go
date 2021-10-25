@@ -158,7 +158,8 @@ func TestVpcCustomisedSingleNatGatewayVariable(t *testing.T) {
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
-	assert.Equal(t, false, singleNatGateway)
+	// For some reason when you pass Bool type value as variable, RawPlan return as String type
+	assert.Equal(t, "false", singleNatGateway)
 
 }
 
@@ -176,4 +177,88 @@ func TestVpcInvalidSingleNatGatewayVariable(t *testing.T) {
 	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, error)
+}
+
+func TestVpcStringInputSingleNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"single_nat_gateway": "true",
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
+	assert.Equal(t, "true", singleNatGateway)
+
+}
+
+// Test Enable Nat Gateway Variable
+func TestVpcDefaultEnableNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
+	assert.Equal(t, true, enalbeNatGateway)
+
+}
+
+func TestVpcCustomisedEnableNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"enable_nat_gateway": false,
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
+	// For some reason when you pass Bool type value as variable, RawPlan return as String type
+	assert.Equal(t, "false", enalbeNatGateway)
+
+}
+
+func TestVpcInvalidEnableNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"enable_nat_gateway": "fa1les",
+	}, t)
+
+	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, error)
+}
+
+func TestVpcStringInputEnableNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"enable_nat_gateway": "true",
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
+	assert.Equal(t, "true", enalbeNatGateway)
 }
