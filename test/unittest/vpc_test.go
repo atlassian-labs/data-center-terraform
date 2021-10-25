@@ -70,7 +70,7 @@ func TestVpcInvalidCidrBlock(t *testing.T) {
 }
 
 // Test Enable DNS Hostname variable.
-func TestVpcDefaultDnsHostnamesBlock(t *testing.T) {
+func TestVpcDefaultDnsHostnamesVariable(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -86,12 +86,12 @@ func TestVpcDefaultDnsHostnamesBlock(t *testing.T) {
 	// Get the plan struct and assert values
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
 	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	DnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
-	assert.Equal(t, true, DnsHostname)
+	dnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
+	assert.Equal(t, true, dnsHostname)
 
 }
 
-func TestVpcCustomisedDnsHostnamesBlock(t *testing.T) {
+func TestVpcCustomisedDnsHostnamesVariable(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -107,12 +107,12 @@ func TestVpcCustomisedDnsHostnamesBlock(t *testing.T) {
 
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
 	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	DnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
-	assert.Equal(t, false, DnsHostname)
+	dnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
+	assert.Equal(t, false, dnsHostname)
 
 }
 
-func TestVpcInvalidDnsHostnamesBlock(t *testing.T) {
+func TestVpcInvalidDnsHostnamesVariable(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -121,6 +121,56 @@ func TestVpcInvalidDnsHostnamesBlock(t *testing.T) {
 			"resource_owner": TestResourceOwner,
 		},
 		"enable_dns_hostnames": "yes",
+	}, t)
+
+	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, error)
+}
+
+// Test Single Nat gateway variable.
+func TestVpcDefaultSingleNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
+	assert.Equal(t, true, singleNatGateway)
+
+}
+
+func TestVpcCustomisedSingleNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"single_nat_gateway": false,
+	}, t)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
+	assert.Equal(t, false, singleNatGateway)
+
+}
+
+func TestVpcInvalidSingleNatGatewayVariable(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc",
+		"required_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"single_nat_gateway": 11330,
 	}, t)
 
 	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
