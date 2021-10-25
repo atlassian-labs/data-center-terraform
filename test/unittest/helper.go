@@ -1,8 +1,8 @@
 package unittest
 
 import (
-	"testing"
 	"path/filepath"
+	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -26,4 +26,3 @@ func GenerateTFOptions(variables map[string]interface{}, t *testing.T) *terrafor
 
 	return tfOptions
 }
-
