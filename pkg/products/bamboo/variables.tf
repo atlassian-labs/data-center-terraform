@@ -17,11 +17,6 @@ variable "vpc_name" {
   type = string
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
-  type = string
-}
-
 variable "required_tags" {
   description = "List of required tags"
   type = map(any)
