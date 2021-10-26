@@ -25,7 +25,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 
 	lock.Lock()
 	defer lock.Unlock()
-	if vpc_plan_instance == nil {
+	if vpc_instance == nil {
 		tfOptions := GenerateVpcTFOptions(map[string]interface{}{
 			"vpc_name": "test-vpc",
 			"vpc_tags": map[string]interface{}{
