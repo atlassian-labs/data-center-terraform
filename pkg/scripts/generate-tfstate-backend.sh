@@ -8,7 +8,7 @@ if [[ $1 == "-skip" ]]; then
     echo "Skipped generating tfstate variable files. The existing files will be used."
     exit 0
   fi
-    echo "Terraform state variable files does not existed."
+    echo "Terraform state variable files are missing."
     exit 1
 fi
 
