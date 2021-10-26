@@ -1,0 +1,8 @@
+region = "us-east-1"
+
+environment_name = "example environment name"
+
+custom_tags = {
+  example_tag_key  = "Example tag value"
+}
+
