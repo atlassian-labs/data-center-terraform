@@ -9,256 +9,45 @@ import (
 
 const TestResourceOwner = "terraform_unit_test"
 
-//Test CIDR variable.
-func TestVpcDefaultCidrBlock(t *testing.T) {
+//Test VPC name variable.
+func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
+	tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+		"vpc_tags": map[string]interface{}{
 			"resource_owner": TestResourceOwner,
 		},
-	}, t)
-
-	// Run `terraform init`, `terraform plan`, and `terraform show`
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	// Get the plan struct and assert values
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
-	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	vpcCidr := vpc.AttributeValues["cidr_block"]
-	assert.Equal(t, "10.0.0.0/16", vpcCidr)
-
-}
-
-func TestVpcCustomisedCidrBlock(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"vpc_cidr": "10.0.0.0/18",
-	}, t)
-
-	// Run `terraform init`, `terraform plan`, and `terraform show`
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
-	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	vpcCidr := vpc.AttributeValues["cidr_block"]
-	assert.Equal(t, "10.0.0.0/18", vpcCidr)
-
-}
-
-func TestVpcInvalidCidrBlock(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"vpc_cidr": "10.0/16",
 	}, t)
 
 	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, error)
-	assert.Contains(t, error.Error(), "Invalid CIDR.")
-}
-
-// Test Enable DNS Hostname variable.
-func TestVpcDefaultDnsHostnamesVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t)
-
-	// Run `terraform init`, `terraform plan`, and `terraform show`
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	// Get the plan struct and assert values
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
-	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	dnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
-	assert.Equal(t, true, dnsHostname)
+	assert.Contains(t, error.Error(), "No value for required variable")
 
 }
 
-func TestVpcCustomisedDnsHostnamesVariable(t *testing.T) {
+func TestVpcNameCustomised(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"enable_dns_hostnames": false,
-	}, t)
+	plan := GetVpcDefaultPlans(t)
 
-	// Run `terraform init`, `terraform plan`, and `terraform show`
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.vpc.aws_vpc.this[0]")
-	vpc := plan.ResourcePlannedValuesMap["module.vpc.aws_vpc.this[0]"]
-	dnsHostname := vpc.AttributeValues["enable_dns_hostnames"]
-	assert.Equal(t, false, dnsHostname)
+	vpcName := plan.RawPlan.Variables["vpc_name"].Value
+	assert.Equal(t, "test-vpc", vpcName)
 
 }
 
-func TestVpcInvalidDnsHostnamesVariable(t *testing.T) {
+func TestVpcNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
+	tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+		"vpc_name": "test-vpc/12",
+		"vpc_tags": map[string]interface{}{
 			"resource_owner": TestResourceOwner,
 		},
-		"enable_dns_hostnames": "yes",
 	}, t)
 
 	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, error)
-}
-
-// Test Single Nat gateway variable.
-func TestVpcDefaultSingleNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
-	assert.Equal(t, true, singleNatGateway)
-
-}
-
-func TestVpcCustomisedSingleNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"single_nat_gateway": false,
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
-	// For some reason when you pass Bool type value as variable, RawPlan return as String type
-	assert.Equal(t, "false", singleNatGateway)
-
-}
-
-func TestVpcInvalidSingleNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"single_nat_gateway": 11330,
-	}, t)
-
-	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
-
-	assert.NotNil(t, error)
-}
-
-func TestVpcStringInputSingleNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"single_nat_gateway": "true",
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	singleNatGateway := plan.RawPlan.Variables["single_nat_gateway"].Value
-	assert.Equal(t, "true", singleNatGateway)
-
-}
-
-// Test Enable Nat Gateway Variable
-func TestVpcDefaultEnableNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
-	assert.Equal(t, true, enalbeNatGateway)
-
-}
-
-func TestVpcCustomisedEnableNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"enable_nat_gateway": false,
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
-	// For some reason when you pass Bool type value as variable, RawPlan return as String type
-	assert.Equal(t, "false", enalbeNatGateway)
-
-}
-
-func TestVpcInvalidEnableNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"enable_nat_gateway": "fa1les",
-	}, t)
-
-	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
-
-	assert.NotNil(t, error)
-}
-
-func TestVpcStringInputEnableNatGatewayVariable(t *testing.T) {
-	t.Parallel()
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"required_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"enable_nat_gateway": "true",
-	}, t)
-
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-	enalbeNatGateway := plan.RawPlan.Variables["enable_nat_gateway"].Value
-	assert.Equal(t, "true", enalbeNatGateway)
+	assert.Contains(t, error.Error(), "Invalid vpc name.")
 }

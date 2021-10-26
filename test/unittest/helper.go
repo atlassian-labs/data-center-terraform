@@ -3,14 +3,45 @@ package unittest
 import (
 	"path/filepath"
 	"testing"
+	"sync"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-// Helper function
-func GenerateTFOptions(variables map[string]interface{}, t *testing.T) *terraform.Options {
+// Helper functions
+var lock = &sync.Mutex{}
+
+type PlanStruct struct {
+	plan terraform.PlanStruct
+}
+
+var instance *PlanStruct
+
+// Generates the VPC terraform plan for default values of the module
+// This is a singleton implementation for the plan
+func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
+
+	lock.Lock()
+	defer lock.Unlock()
+	if instance == nil {
+		tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+			"vpc_name": "test-vpc",
+			"vpc_tags": map[string]interface{}{
+				"resource_owner": "TestResourceOwner",
+			},
+		}, t)
+
+		// Run `terraform init`, `terraform plan`, and `terraform show`
+		plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+		instance = &PlanStruct{plan: *plan}
+	}
+
+	return &instance.plan
+}
+
+func GenerateVpcTFOptions(variables map[string]interface{}, t *testing.T) *terraform.Options {
 	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
