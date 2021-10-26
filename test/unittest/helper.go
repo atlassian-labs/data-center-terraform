@@ -17,7 +17,7 @@ type PlanStruct struct {
 	plan terraform.PlanStruct
 }
 
-var vpc_instance *PlanStruct
+var vpcPlanInstance *PlanStruct
 
 // Generates the VPC terraform plan for default values of the module
 // This is a singleton implementation for the plan
@@ -25,7 +25,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 
 	lock.Lock()
 	defer lock.Unlock()
-	if vpc_instance == nil {
+	if vpcPlanInstance == nil {
 		tfOptions := GenerateVpcTFOptions(map[string]interface{}{
 			"vpc_name": "test-vpc",
 			"vpc_tags": map[string]interface{}{
@@ -35,10 +35,10 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 
 		// Run `terraform init`, `terraform plan`, and `terraform show`
 		plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-		vpc_instance = &PlanStruct{plan: *plan}
+		vpcPlanInstance = &PlanStruct{plan: *plan}
 	}
 
-	return &vpc_instance.plan
+	return &vpcPlanInstance.plan
 }
 
 func GenerateVpcTFOptions(variables map[string]interface{}, t *testing.T) *terraform.Options {
