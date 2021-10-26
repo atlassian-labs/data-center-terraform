@@ -6,20 +6,20 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = var.vpc_name
-  cidr = var.vpc_cidr
-  azs  = local.azs
+  cidr = "10.0.0.0/20"
+  azs  = [data.aws_availability_zones.available.zone_ids[0], data.aws_availability_zones.available.zone_ids[1]]
 
-  private_subnets = local.private_subnets
-  public_subnets  = local.public_subnets
+  private_subnets = ["10.0.0.0/24", "10.0.1.0/24"]
+  public_subnets  = ["10.0.8.0/24", "10.0.9.0/24"]
 
-  enable_nat_gateway   = var.enable_nat_gateway
-  single_nat_gateway   = var.single_nat_gateway
-  enable_dns_hostnames = var.enable_dns_hostnames
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
 
-  tags = merge(var.required_tags, local.vpc_tags)
+  tags = merge(var.vpc_tags, local.vpc_tags)
 
-  public_subnet_tags  = merge(var.required_tags, local.public_subnet_tags)
-  private_subnet_tags = merge(var.required_tags, local.private_subnet_tags)
+  public_subnet_tags  = merge(var.vpc_tags, local.public_subnet_tags)
+  private_subnet_tags = merge(var.vpc_tags, local.private_subnet_tags)
 
 }
 
