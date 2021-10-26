@@ -1,12 +1,10 @@
 provider "aws" {
-  region = local.region
+  region = var.region
 }
 
 module "bamboo" {
   source        = "./pkg/products/bamboo"
 
-  region_name   = local.region
-  cluster_name  = local.cluster_name
-  required_tags = local.required_tags
-  vpc_name      = local.vpc_name
+  region_name   = var.region
+  environment_name  = var.environment_name
 }

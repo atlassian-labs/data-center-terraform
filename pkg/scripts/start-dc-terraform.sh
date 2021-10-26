@@ -4,9 +4,9 @@ set -e
 root="$(pwd)"
 
 echo "Checking the terraform state..."
-# fetch the locals.tf file from terraform project
+# fetch the config.tfvar file from terraform project
 cp -fr locals.tf ./pkg/tfstate
-# extract S3 bucket, dynamodb, and region from locals.tf
+# extract S3 bucket, dynamodb, and region from config.tfvar
 S3_BUCKET=$(grep 'bucket_name' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
 DYNAMODB_TABLE=$(grep 'dynamodb_name' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
 REGION=$(grep 'region' locals.tf | sed -nE 's/^.*"(.*)".*$/\1/p')
