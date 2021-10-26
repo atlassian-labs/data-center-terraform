@@ -15,11 +15,9 @@ crash.log
 pkg/tfstate/locals.tf
 terraform-backend.tf
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
-# version control.
+# Ignore any .tfvars files
 #
-# example.tfvars
+*.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
