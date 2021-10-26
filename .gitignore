@@ -13,6 +13,7 @@ crash.log
 
 # Generated files
 pkg/tfstate/locals.tf
+pkg/tfstate/tfstate-locals.tf
 terraform-backend.tf
 
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most

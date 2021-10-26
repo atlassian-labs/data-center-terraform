@@ -16,10 +16,5 @@ locals {
   # At least two subnet CIDRs are required and will be calculated automatically based on `vpc_cidr`.
   vpc_cidr         = "10.0.0.0/16"
 
-
-  # Terraform state settings
-  #  will be used to generate terraform/backend block in terraform-backend.tf file.
-  bucket_name      = "dc-tf-statelock"
-  dynamodb_name    = "dc_tf_statelock"
-
+  environment_name = "test"
 }
