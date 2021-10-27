@@ -7,5 +7,5 @@ module "bamboo" {
 
   region_name       = var.region
   environment_name  = var.environment_name
-  required_tags     = var.custom_tags
+  required_tags     = var.resource_tags
 }

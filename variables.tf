@@ -10,7 +10,7 @@ variable "environment_name" {
   type = string
 }
 
-variable "custom_tags" {
+variable "resource_tags" {
   description = "Additional tags for all resources to be created."
   type = map(string)
 }
