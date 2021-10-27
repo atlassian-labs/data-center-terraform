@@ -1,5 +1,4 @@
 # This script will generate and override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
-# to skip this part you can pass `-skip` as the parameter when you run this script
 
 SCRIPT_PATH=$(dirname "$0")
 if [ ! $# -eq 2 ]; then
