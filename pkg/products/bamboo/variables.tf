@@ -3,18 +3,13 @@ variable "region_name" {
   type = string
 }
 
-variable "cluster_name" {
+variable "environment_name" {
   description = "Name of the cluster"
   type = string
   validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.cluster_name))
+    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.environment_name))
     error_message = "Invalid cluster name."
   }
-}
-
-variable "vpc_name" {
-  description = "Name of the VPC"
-  type = string
 }
 
 variable "required_tags" {

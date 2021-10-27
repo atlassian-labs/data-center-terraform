@@ -3,6 +3,16 @@
 set -e
 root="$(pwd)"
 
+if [[ ! -f  "./config.auto.tfvars" ]]; then
+  echo "Configuration file 'config.auto.tfvar' is not defined yet."
+  echo "Please run the following command and then add proper value to 'config.auto.tfvar' using a text editor."
+  echo "Then re-run the script to deploy the infrastructure."
+  echo
+  echo "cp config.auto.tfvar.example config.auto.tfvar"
+  exit 0
+fi
+
+
 echo "Checking the terraform state..."
 # fetch the config.tfvar file from terraform project
 cp -fr locals.tf ./pkg/tfstate
