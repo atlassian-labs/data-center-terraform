@@ -1,15 +1,15 @@
 locals {
-  product_name = "bamboo"
+  product_name   = "bamboo"
+  cluster_name  = format("%s-%s-%s", var.environment_name, local.product_name, "cluster")
+  vpc_name      = format("%s-%s-%s", var.environment_name, local.product_name, "vpc")
 
   required_tags = {
-    product                                     : local.product_name
+    product : local.product_name
   }
-
 
   product_tags = {
-    "Name " : local.product_name
+    Name    : local.product_name
   }
-
 
 
   # Look at https://hello.atlassian.net/wiki/spaces/RELENG/pages/677332161/HOWTO%3A+IAM+Roles+in+PBC+%28Bamboo%29+using+IRSA

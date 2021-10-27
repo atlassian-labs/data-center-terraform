@@ -1,0 +1,16 @@
+# Please copy this file into 'config.auto.tfvar' and define the values to configure the infrastructure
+
+# 'environment_name' provides your environment a unique name within a single cloud provider account.
+# This value can not be altered after the configuration has been applied.
+environment_name = "<ENVIRONMENT>"
+
+# Cloud provider region that this configuration will deploy to.
+region = "<REGION>"
+
+# Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
+resource_tags = {
+  Terraform = "true"
+}
+
+
+
