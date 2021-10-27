@@ -1,7 +1,5 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# REQUIRED PARAMETERS
-# You must provide a value for each of these parameters.
-# ---------------------------------------------------------------------------------------------------------------------
+# To customise the infrastructure you must provide the value for each of these parameters in config.tfvar
+
 variable "region" {
   description = "Name of the AWS region."
   type = string
@@ -12,13 +10,7 @@ variable "environment_name" {
   type = string
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# OPTIONAL PARAMETERS
-# These parameters have reasonable defaults.
-# ---------------------------------------------------------------------------------------------------------------------
-
 variable "custom_tags" {
   description = "Additional tags for all resources to be created."
   type = map(string)
-  default = {}
 }
