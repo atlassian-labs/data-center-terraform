@@ -66,8 +66,9 @@ generate_backend_variables() {
     source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${BACKEND_TF} ${TFSTATE_LOCALS}
   fi
 
-  # fetch the locals.tf file from terraform project
-  cp -fr "${SCRIPT_PATH}/../../locals.tf" "${SCRIPT_PATH}/../tfstate"
+  # fetch the config files from root
+  cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
+  cp -fr "${SCRIPT_PATH}/../../config.auto.tfvars" "${SCRIPT_PATH}/../tfstate"
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
