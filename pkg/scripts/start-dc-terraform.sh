@@ -21,9 +21,9 @@ EOF
   fi
   echo
   echo "Usage:  ./start-dc-terraform.sh -p <product> [-h]"
-  echo "   <product>: name of the product to install - At this point we only support 'bamboo'."
+  echo "   <product>: name of the product to install. At this point we only support 'bamboo'."
   echo "   -h : provides help to how executing this script."
-
+  echo
   exit 2
 }
 
@@ -44,10 +44,17 @@ EOF
 # Validate the arguments. PRODUCT (first argument) and second argument to see if skip generating backend vars
 process_arguments() {
   if [ ! -z "${PRODUCT}" ]; then
-    if [ ${PRODUCT} != "bamboo" ]; then
-      echo "'${PRODUCT}' is not supported."
+    if [ ${PRODUCT} == "bamboo" ]; then
+      echo "Preparing the infrastructure to install '${PRODUCT}'."
+    else
+      echo "The product '${PRODUCT}' is not supported. At this point only we support the following products:"
+      echo "     1. bamboo"
+      echo
       exit 1
     fi
+  else
+    echo "Invalid arguments."
+    show_help
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -149,7 +156,3 @@ create_tfstate_resources
 # Deploy the infrastructure
 create_update_infrastructure
 
-
-
-
-}
