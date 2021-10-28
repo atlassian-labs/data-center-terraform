@@ -5,28 +5,57 @@
 # <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
 
 set -e
-PRODUCT=$1
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 
+show_help(){
+  if [ ! -z "${HELP_FLAG}" ]; then
+cat << EOF
+This script provisions the infrastructure for Atlassian Data Center products in AWS environment.
+The infrastructure will generate by terraform and state of the resources will be kept in a S3 bucket which will be provision by this script if is not existed.
+
+Before installing the infrastructure make sure you have completed the configuration process and did all perquisites.
+For more information visit https://github.com/atlassian-labs/data-center-terraform.
+EOF
+
+  fi
+  echo
+  echo "Usage:  ./start-dc-terraform.sh -p <product> [-h]"
+  echo "   <product>: name of the product to install - At this point we only support 'bamboo'."
+  echo "   -h : provides help to how executing this script."
+
+  exit 2
+}
+
+# Extract arguments
+  declare -l PRODUCT
+  HELP_FLAG=
+  while getopts h?p: name ; do
+      case $name in
+      h)    HELP_FLAG=1; show_help;;
+      p)    PRODUCT="${OPTARG}";;
+      ?)    echo "Invalid arguments."; show_help
+      esac
+  done
+
+  shift $((${OPTIND} - 1))
+  UNKNOWN_ARGS="$*"
+
 # Validate the arguments. PRODUCT (first argument) and second argument to see if skip generating backend vars
 process_arguments() {
-  if [ $# -eq 0 ]
-    then
-      PRODUCT="bamboo"
-  else
-    # for now only bamboo is supported
-    declare -l PRODUCT
+  if [ ! -z "${PRODUCT}" ]; then
     if [ ${PRODUCT} != "bamboo" ]; then
       echo "'${PRODUCT}' is not supported."
-      echo
-      echo "Usage:  ./start-dc-terraform.sh <product>"
-      echo "   <product>: - At this point we only support 'bamboo'. If the arguments are missing 'bamboo' will consider by default"
-
       exit 1
     fi
   fi
+
+  if [ ! -z "${UNKNOWN_ARGS}" ]; then
+    echo "Unknown arguments:  ${UNKNOWN_ARGS}"
+    show_help
+  fi
 }
+
 
 # Make sure the infrastructure config file is existed and contains the valid data
 verify_configuration_file() {
@@ -122,3 +151,5 @@ create_update_infrastructure
 
 
 
+
+}
