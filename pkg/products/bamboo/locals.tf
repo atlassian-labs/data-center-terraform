@@ -1,7 +1,7 @@
 locals {
   product_name   = "bamboo"
-  cluster_name  = format("%s-%s-%s", var.environment_name, local.product_name, "cluster")
-  vpc_name      = format("%s-%s-%s", var.environment_name, local.product_name, "vpc")
+  cluster_name  = format("atlassian-dc-%s-%s-cluster", var.environment_name, local.product_name)
+  vpc_name      = format("atlassian-dc-%s-%s-vpc", var.environment_name, local.product_name)
 
   required_tags = {
     product : local.product_name
