@@ -1,7 +1,6 @@
 package e2etest
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
@@ -31,10 +30,14 @@ func TestBambooModule(t *testing.T) {
 
 	// helm.Install(t, helmOptions, fmt.Sprintf("atlassian-data-center/%s", product), testConfig.releaseName)
 	vpcId := terraform.Output(t, tfOptions, "vpc_id")
+	privateSubnetsCidrBlocks := terraform.Output(t, tfOptions, "private_subnets_cidr_blocks")
+	publicSubnetsCidrBlocks := terraform.Output(t, tfOptions, "public_subnets_cidr_blocks")
 	vpc := aws.GetVpcById(t, vpcId, awsRegion)
 
-	fmt.Println(vpc, "this is vpc")
 	assert.Equal(t, vpc.Name, "atlassian-dc-e2e-test-bamboo-vpc")
 	assert.Equal(t, vpc.Tags["product"], "bamboo")
+	assert.Equal(t, privateSubnetsCidrBlocks, string("[10.0.0.0/24 10.0.1.0/24]"))
+	assert.Equal(t, publicSubnetsCidrBlocks, string("[10.0.8.0/24 10.0.9.0/24]"))
 	assert.Len(t, vpc.Subnets, 4)
+
 }
