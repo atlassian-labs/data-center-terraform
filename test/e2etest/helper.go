@@ -62,10 +62,8 @@ func GenerateConfig(product string, awsRegion string) TestConfig {
 	releaseName := fmt.Sprintf("%s-e2e-test-%s", product, strings.ToLower(random.UniqueId()))
 	terraformConfig := TerraformConfig{
 		variables: map[string]interface{}{
-			"cluster_name": fmt.Sprintf("%s-cluster", product),
-			"vpc_name":     fmt.Sprintf("%s-cluster-vpc", product),
-			"region_name":  awsRegion,
-			"vpc_cidr":     "10.0.0.0/18",
+			"environment_name": "e2e-test",
+			"region_name":      awsRegion,
 			"required_tags": map[string]interface{}{
 				"resource_owner": testResourceOwner,
 			},
