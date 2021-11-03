@@ -9,5 +9,5 @@ variable "vpc_name" {
 
 variable "vpc_tags" {
   description = "List of tags"
-  type        = map(any)
+  type        = map(string)
 }

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-staged_files="$(git diff --diff-filter=d --name-only --cached)"
-
-terraform fmt -recursive | while read -r file; do
-    if grep -Fxq "$file" <<<"$staged_files"; then
-      git add "$file"
-    fi
-  done

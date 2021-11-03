@@ -1,5 +1,5 @@
 variable "required_tags" {
-  type        = map(any)
+  type        = map(string)
   description = "List of tags"
 }
 

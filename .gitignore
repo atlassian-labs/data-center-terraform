@@ -29,6 +29,9 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
+# tflint
+.tflint.hcl
+
 # Include override files you do wish to add to version control using negated pattern
 #
 # !dc_override.tf

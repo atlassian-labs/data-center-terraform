@@ -14,5 +14,5 @@ variable "environment_name" {
 
 variable "required_tags" {
   description = "List of required tags"
-  type        = map(any)
+  type        = map(string)
 }
