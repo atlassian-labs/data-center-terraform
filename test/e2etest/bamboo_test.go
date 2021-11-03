@@ -1,11 +1,9 @@
 package e2etest
 
 import (
-	"fmt"
 	"testing"
 
 	aws_sdk "github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/eks"
@@ -26,17 +24,17 @@ func TestBambooModule(t *testing.T) {
 	// helmOptions := GenerateHelmOptions(testConfig.helmConfig)
 
 	// Clean up. NOTE: defer is LIFO stack so the order is important.
-	defer terraform.Destroy(t, tfOptions)
+	// defer terraform.Destroy(t, tfOptions)
 	// defer helm.RemoveRepo(t, helmOptions, "atlassian-data-center")
 	// defer helm.Delete(t, helmOptions, testConfig.releaseName, true)
 
-	terraform.InitAndApply(t, tfOptions)
+	// terraform.InitAndApply(t, tfOptions)
 
 	// helm.AddRepo(t, helmOptions, "atlassian-data-center", "https://atlassian.github.io/data-center-helm-charts")
 
 	// helm.Install(t, helmOptions, fmt.Sprintf("atlassian-data-center/%s", product), testConfig.releaseName)
 
-	testVPC(t, tfOptions, awsRegion)
+	// testVPC(t, tfOptions, awsRegion)
 	testEKS(t, tfOptions, awsRegion)
 
 }
@@ -59,30 +57,13 @@ func testEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string) {
 		Region: aws_sdk.String(awsRegion),
 	}))
 	svc := eks.New(sess)
+
 	input := &eks.DescribeClusterInput{
-		Name: aws_sdk.String("dc_test_eks"),
+		Name: aws_sdk.String("atlassian-dc-e2e-test-bamboo-eks"),
 	}
 	result, err := svc.DescribeCluster(input)
 	if err != nil {
-		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			case eks.ErrCodeResourceNotFoundException:
-				fmt.Println(eks.ErrCodeResourceNotFoundException, aerr.Error())
-			case eks.ErrCodeClientException:
-				fmt.Println(eks.ErrCodeClientException, aerr.Error())
-			case eks.ErrCodeServerException:
-				fmt.Println(eks.ErrCodeServerException, aerr.Error())
-			case eks.ErrCodeServiceUnavailableException:
-				fmt.Println(eks.ErrCodeServiceUnavailableException, aerr.Error())
-			default:
-				fmt.Println(aerr.Error())
-			}
-		} else {
-			fmt.Println(err.Error())
-		}
-		return
+		AwsErrorHandler(err)
 	}
-
-	fmt.Println(result)
-
+	assert.Equal(t, result.Cluster.ResourcesVpcConfig.VpcId, terraform.Output(t, tfOptions, "vpc_id"))
 }

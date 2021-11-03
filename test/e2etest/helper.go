@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -88,4 +90,29 @@ func GenerateConfig(product string, awsRegion string) TestConfig {
 		helmConfig:      helmConfig,
 		kubectlConfig:   kubectlConfig,
 	}
+}
+
+func AwsErrorHandler(err error) {
+	if aerr, ok := err.(awserr.Error); ok {
+		switch aerr.Code() {
+		case eks.ErrCodeResourceNotFoundException:
+			fmt.Println(eks.ErrCodeResourceNotFoundException, aerr.Error())
+			panic(aerr.Error())
+		case eks.ErrCodeClientException:
+			fmt.Println(eks.ErrCodeClientException, aerr.Error())
+			panic(aerr.Error())
+		case eks.ErrCodeServerException:
+			fmt.Println(eks.ErrCodeServerException, aerr.Error())
+			panic(aerr.Error())
+		case eks.ErrCodeServiceUnavailableException:
+			fmt.Println(eks.ErrCodeServiceUnavailableException, aerr.Error())
+			panic(aerr.Error())
+		default:
+			fmt.Println(aerr.Error())
+			panic(aerr.Error())
+		}
+	}
+	fmt.Println(err.Error())
+	panic(err.Error())
+
 }
