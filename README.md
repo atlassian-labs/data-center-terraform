@@ -21,7 +21,7 @@ In order to use this project you need to have the following applications install
 3. Open a terminal and change your current path to the root of the project
 4. Run the following script to create the infrastructure:
 ```shell
-./pkg/scripts/start-dc-terraform.sh -p <product>
+./pkg/scripts/install.sh -p <product>
 ```
 
 ## Uninstallation
