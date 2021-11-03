@@ -7,7 +7,6 @@ module "eks" {
   # Configure cluster
   cluster_version              = "1.21"
   cluster_name                 = var.cluster_name
-  cluster_service_ipv4_cidr    = "10.0.0.0/20"
   manage_cluster_iam_resources = true
 
   # Networking
