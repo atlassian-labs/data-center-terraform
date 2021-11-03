@@ -1,10 +1,10 @@
 variable "required_tags" {
-  type = map(any)
+  type        = map(string)
   description = "List of tags"
 }
 
 variable "bucket_name" {
-  type = string
+  type        = string
   description = "Name of the bucket to store the terraform state"
   validation {
     condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.bucket_name))

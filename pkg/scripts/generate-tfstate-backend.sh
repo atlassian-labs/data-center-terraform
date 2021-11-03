@@ -1,4 +1,4 @@
-# This script will generate and override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
+# This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
 
 SCRIPT_PATH=$(dirname "$0")
 if [ ! $# -eq 2 ]; then

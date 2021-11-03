@@ -1,11 +1,11 @@
 variable "region_name" {
   description = "Name of the AWS region"
-  type = string
+  type        = string
 }
 
 variable "environment_name" {
   description = "Name of the cluster"
-  type = string
+  type        = string
   validation {
     condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.environment_name))
     error_message = "Invalid cluster name."
@@ -14,5 +14,5 @@ variable "environment_name" {
 
 variable "required_tags" {
   description = "List of required tags"
-  type = map(any)
+  type        = map(string)
 }
