@@ -1,8 +1,14 @@
 package e2etest
 
 import (
+	"fmt"
 	"testing"
 
+	aws_sdk "github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -12,7 +18,7 @@ func TestBambooModule(t *testing.T) {
 	t.Parallel()
 
 	product := "bamboo"
-	awsRegion := "ap-northeast-2" // aws.GetRandomStableRegion(t, nil, nil)
+	awsRegion := endpoints.ApNortheast2RegionID // aws.GetRandomStableRegion(t, nil, nil)
 
 	testConfig := GenerateConfig(product, awsRegion)
 	tfOptions := GenerateTerraformOptions(testConfig.terraformConfig, t)
@@ -29,6 +35,13 @@ func TestBambooModule(t *testing.T) {
 	// helm.AddRepo(t, helmOptions, "atlassian-data-center", "https://atlassian.github.io/data-center-helm-charts")
 
 	// helm.Install(t, helmOptions, fmt.Sprintf("atlassian-data-center/%s", product), testConfig.releaseName)
+
+	testVPC(t, tfOptions, awsRegion)
+	testEKS(t, tfOptions, awsRegion)
+
+}
+
+func testVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string) {
 	vpcId := terraform.Output(t, tfOptions, "vpc_id")
 	privateSubnetsCidrBlocks := terraform.Output(t, tfOptions, "private_subnets_cidr_blocks")
 	publicSubnetsCidrBlocks := terraform.Output(t, tfOptions, "public_subnets_cidr_blocks")
@@ -39,5 +52,37 @@ func TestBambooModule(t *testing.T) {
 	assert.Equal(t, privateSubnetsCidrBlocks, string("[10.0.0.0/24 10.0.1.0/24]"))
 	assert.Equal(t, publicSubnetsCidrBlocks, string("[10.0.8.0/24 10.0.9.0/24]"))
 	assert.Len(t, vpc.Subnets, 4)
+}
+
+func testEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string) {
+	sess := session.Must(session.NewSession(&aws_sdk.Config{
+		Region: aws_sdk.String(awsRegion),
+	}))
+	svc := eks.New(sess)
+	input := &eks.DescribeClusterInput{
+		Name: aws_sdk.String("dc_test_eks"),
+	}
+	result, err := svc.DescribeCluster(input)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case eks.ErrCodeResourceNotFoundException:
+				fmt.Println(eks.ErrCodeResourceNotFoundException, aerr.Error())
+			case eks.ErrCodeClientException:
+				fmt.Println(eks.ErrCodeClientException, aerr.Error())
+			case eks.ErrCodeServerException:
+				fmt.Println(eks.ErrCodeServerException, aerr.Error())
+			case eks.ErrCodeServiceUnavailableException:
+				fmt.Println(eks.ErrCodeServiceUnavailableException, aerr.Error())
+			default:
+				fmt.Println(aerr.Error())
+			}
+		} else {
+			fmt.Println(err.Error())
+		}
+		return
+	}
+
+	fmt.Println(result)
 
 }
