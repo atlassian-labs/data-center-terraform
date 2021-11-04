@@ -2,7 +2,8 @@ locals {
 }
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "17.23.0"
 
   # Configure cluster
   cluster_version              = "1.21"
@@ -21,6 +22,7 @@ module "eks" {
 
   node_groups = {
     appNodes = {
+      name             = "appNode"
       desired_capacity = var.desired_capacity
       max_capacity     = 10
       min_capacity     = 1
