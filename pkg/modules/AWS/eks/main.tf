@@ -21,11 +21,11 @@ module "eks" {
 
   node_groups = {
     appNodes = {
-      desired_capacity = 2
+      desired_capacity = var.desired_capacity
       max_capacity     = 10
-      min_capacity     = 2
+      min_capacity     = 1
 
-      instance_types = ["m5.xlarge"]
+      instance_types = var.instance_types
       capacity_type  = "ON_DEMAND"
       k8s_labels     = {
         Environment = var.environment_name
