@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to deploy the infrastructure for the given product
 #
-# Usage:  ./start-dc-terraform.sh <product> [-skip]
+# Usage:  ./install.sh <product> [-h]
 # <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
 
 set -e
@@ -20,7 +20,7 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./start-dc-terraform.sh -p <product> [-h]"
+  echo "Usage:  ./install.sh -p <product> [-h]"
   echo "   <product>: name of the product to install. At this point we only support 'bamboo'."
   echo "   -h : provides help to how executing this script."
   echo
@@ -32,8 +32,8 @@ EOF
   HELP_FLAG=
   while getopts h?p: name ; do
       case $name in
-      h)    HELP_FLAG=1; show_help;;
-      p)    PRODUCT="${OPTARG}";;
+      h)    HELP_FLAG=1; show_help;;  # Help
+      p)    PRODUCT="${OPTARG}";;     # Product name to install
       ?)    echo "Invalid arguments."; show_help
       esac
   done
