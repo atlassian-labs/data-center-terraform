@@ -145,6 +145,23 @@ create_update_infrastructure() {
   terraform apply -auto-approve
 }
 
+set_current_context_k8s() {
+  EKS_CLUSTER="atlassian-dc-${ENVIRONMENT_NAME}-cluster"
+  CONTEXT_FILE="${CURRENT_PATH}/kubeconfig_${EKS_CLUSTER}"
+
+  echo
+  if [[ -f  "${CONTEXT_FILE}" ]]; then
+    echo "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
+    echo
+    echo "If you like to use kubectl to access to the cluster directly you can run either of the following commands:"
+    echo
+    echo "   export KUBECONFIG=${CONTEXT_FILE}"
+    echo "   aws --region ${REGION} eks update-kubeconfig --name ${EKS_CLUSTER}"
+  else
+    echo "${CONTEXT_FILE} could not be found."
+  fi
+  echo
+}
 
 # Process the arguments
 process_arguments
@@ -164,3 +181,5 @@ create_tfstate_resources
 # Deploy the infrastructure
 create_update_infrastructure
 
+# set_current_context_k8s
+set_current_context_k8s
