@@ -21,3 +21,8 @@ variable "vpc" {
   description = "vpc module that hosts the product"
   type        = any
 }
+
+variable "eks" {
+  description = "EKS module that hosts the product"
+  type        = any
+}
