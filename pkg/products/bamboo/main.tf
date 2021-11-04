@@ -1,8 +1,10 @@
 # Create the infrastructure for Bamboo Data Center.
 
-module "vpc" {
-  source = "../../modules/AWS/vpc"
-
-  vpc_name = local.vpc_name
-  vpc_tags = merge(var.required_tags, local.required_tags)
-}
+# a test instance - should be removed later
+//resource "aws_instance" "test-vpc" {
+//  ami                    = "ami-221ea342" #id of desired AMI
+//  instance_type          = "m3.medium"
+//  subnet_id              = var.vpc.subnet_id
+//  vpc_security_group_ids = var.vpc.vpc_security_group_ids # list
+//  Env = "test"
+//}
