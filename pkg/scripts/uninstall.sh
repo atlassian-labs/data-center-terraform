@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to destroy the infrastructure for the given product
 #
-# Usage:  ./uninstall <product> [-s] [-h]
+# Syntax:  uninstall <product> [-s] [-h]
 # <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
 
 set -e
@@ -103,9 +103,9 @@ destroy_tfstate() {
       terraform destroy -target 'module.tfstate-table'
       if [ $? -eq 0 ]; then
         set -e
-        aws "s3" "rm" "s3://${S3_BUCKET}/${BUCKET_KEY}" "--recursive"
+        aws "s3" "rm" "s3://${S3_BUCKET}/${BUCKET_KEY%%/*}" "--recursive"
       else
-        echo "tfstate table could not be removed."
+        echo "Couldn't destroy dynamodb table. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
         cd "${CURRENT_PATH}"
         exit 1
       fi
