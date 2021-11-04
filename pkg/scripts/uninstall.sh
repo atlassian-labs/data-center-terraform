@@ -32,10 +32,10 @@ EOF
   SKIP_TFSTATE=
   while getopts sh?p: name ; do
       case $name in
-      s)    SKIP_TFSTATE=1;;            # Skip cleaning terraform state
-      h|*)  HELP_FLAG=1; show_help;;    # Help
-      p)    PRODUCT="${OPTARG}";;       # Product name for uninstall
-      ?)    echo "Invalid arguments."; show_help
+      s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
+      h)  HELP_FLAG=1; show_help;;    # Help
+      p)  PRODUCT="${OPTARG}";;       # Product name for uninstall
+      ?)  echo "Invalid arguments."; show_help
       esac
   done
 
@@ -65,8 +65,6 @@ process_arguments() {
 }
 
 destroy_infrastructure() {
-
-  return
   cd "${SCRIPT_PATH}/../../"
   set +e
   terraform destroy
@@ -83,18 +81,18 @@ destroy_infrastructure() {
 
 destroy_tfstate() {
   echo $SKIP_TFSTATE
-  # Check if the user passed '-s' parameter to skipp removing tfstate
+  # Check if the user passed '-s' parameter to skip removing tfstate
   if [ ! -z "${SKIP_TFSTATE}" ]; then
     echo "Skipped terraform state cleanup."
     return
   fi
-  TF_STATE_FILE="{SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+  TF_STATE_FILE="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
-    cd "${SCRIPT_PATH}/../tfstate"
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
 
+    cd "${SCRIPT_PATH}/../tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}"
     S3_BUCKET_EXISTS=$?
