@@ -27,11 +27,6 @@ module "eks" {
 
       instance_types = var.instance_types
       capacity_type  = "ON_DEMAND"
-      k8s_labels     = {
-        Environment = var.environment_name
-        GithubRepo  = "data-center-terraform"
-        GithubOrg   = "atlassian-labs"
-      }
     }
   }
 
