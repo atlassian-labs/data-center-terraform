@@ -14,3 +14,14 @@ variable "resource_tags" {
   description = "Additional tags for all resources to be created."
   type        = map(string)
 }
+
+variable "instance_types" {
+  description = "Instance types that is preferred for node group."
+  type        = list(string)
+}
+
+variable "desired_capacity" {
+  description = "Desired number of nodes that the node group should launch with initially."
+  type        = number
+}
+

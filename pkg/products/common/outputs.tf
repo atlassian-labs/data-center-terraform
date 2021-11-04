@@ -12,3 +12,8 @@ output "cluster_name" {
   description = "Name of the cluster for the given environment"
   value       = local.cluster_name
 }
+
+output "eks" {
+  value       = module.eks
+  description = "EKS Module"
+}
