@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestEKSVariablesNotProvided(t *testing.T) {
+func TestEksVariablesNotProvided(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(nil, t, "eks")
@@ -24,7 +24,7 @@ func TestEKSVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"desired_capacity\" is not set")
 }
 
-func TestVariablesPopulatedWithValidValues(t *testing.T) {
+func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -57,7 +57,7 @@ func TestVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "1", desiredCapacity)
 }
 
-func TestClusterNameInvalid(t *testing.T) {
+func TestEksClusterNameInvalid(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -77,7 +77,7 @@ func TestClusterNameInvalid(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid EKS cluster name.")
 }
 
-func TestDesiredCapacityInvalid(t *testing.T) {
+func TestEksDesiredCapacityInvalid(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
