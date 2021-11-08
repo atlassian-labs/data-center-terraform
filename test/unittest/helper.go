@@ -7,7 +7,7 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
 const TestResourceOwner = "terraform_unit_test"
@@ -44,7 +44,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 }
 
 func GenerateTFOptions(variables map[string]interface{}, t *testing.T, module string) *terraform.Options {
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/"+module)
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/"+module)
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
 
