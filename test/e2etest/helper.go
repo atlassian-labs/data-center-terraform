@@ -5,7 +5,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
@@ -19,6 +21,7 @@ type TestConfig struct {
 	helmConfig      HelmConfig
 	kubectlConfig   KubectlConfig
 	releaseName     string
+	environmentName string
 }
 
 type TerraformConfig struct {
@@ -28,17 +31,18 @@ type TerraformConfig struct {
 }
 
 type HelmConfig struct {
-	setValues map[string]string
+	setValues      map[string]string
+	KubectlOptions *k8s.KubectlOptions
+	ExtraArgs      map[string][]string
 }
 
 type KubectlConfig struct {
 	contextName string
-	configPath  string
 	namespace   string
 }
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", config.targetModuleDir)
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../..", config.targetModuleDir)
 
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
@@ -49,38 +53,45 @@ func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.O
 	return tfOptions
 }
 
-func GenerateHelmOptions(config HelmConfig) *helm.Options {
+func GenerateHelmOptions(config HelmConfig, kubectlOptions *k8s.KubectlOptions) *helm.Options {
 	return &helm.Options{
-		SetValues: config.setValues,
+		SetValues:      config.setValues,
+		KubectlOptions: kubectlOptions,
+		ExtraArgs:      config.ExtraArgs,
 	}
 }
 
-func GenerateKubectlOptions(config KubectlConfig) *k8s.KubectlOptions {
-	return k8s.NewKubectlOptions(config.contextName, config.configPath, config.namespace)
+func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
+	return k8s.NewKubectlOptions(config.contextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.namespace)
 }
 
 func GenerateConfig(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
+	environmentName := "e2e-test"
 	releaseName := fmt.Sprintf("%s-e2e-test-%s", product, strings.ToLower(random.UniqueId()))
 	terraformConfig := TerraformConfig{
 		variables: map[string]interface{}{
-			"environment_name": "e2e-test",
-			"region_name":      awsRegion,
-			"required_tags": map[string]interface{}{
+			"environment_name": environmentName,
+			"region":           awsRegion,
+			"resource_tags": map[string]interface{}{
 				"resource_owner": testResourceOwner,
+				"Terraform":      "true",
+				"business_unit":  "Engineering-Enterprise DC",
+				"service_name":   "dc-infrastructure",
+				"git_repository": "github.com/atlassian-labs/data-center-terraform",
 			},
 		},
 		envVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
 		},
-		targetModuleDir: fmt.Sprintf("/products/%s", product),
+		targetModuleDir: ".",
 	}
 	helmConfig := HelmConfig{
-		setValues: map[string]string{"namespace": product},
+		setValues: map[string]string{},
+		ExtraArgs: map[string][]string{"install": {"--wait"}},
 	}
 	kubectlConfig := KubectlConfig{
-		contextName: "",
-		configPath:  "",
+		contextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
 		namespace:   product,
 	}
 
@@ -89,6 +100,7 @@ func GenerateConfig(product string, awsRegion string) TestConfig {
 		terraformConfig: terraformConfig,
 		helmConfig:      helmConfig,
 		kubectlConfig:   kubectlConfig,
+		environmentName: environmentName,
 	}
 }
 
@@ -115,4 +127,10 @@ func AwsErrorHandler(err error) {
 	fmt.Println(err.Error())
 	panic(err.Error())
 
+}
+
+func GenerateAwsSession(awsRegion string) *session.Session {
+	return session.Must(session.NewSession(&aws.Config{
+		Region: aws.String(awsRegion),
+	}))
 }
