@@ -35,3 +35,37 @@ sudo installer -pkg AWSCLIV2.pkg -target /
     ```shell
     tflint --init
     ```
+
+## Tests
+
+### Prerequisities
+
+The tests are writen in [Go](https://golang.org/) using [terratest](https://terratest.gruntwork.io/).
+
+1. [Install Go language](https://golang.org/doc/install)
+2. Authenticate to an AWS account (this is required even for unit tests)
+3. Install the required packages
+    ```shell
+    cd test && go get -v -t -d ./... && go mod tidy
+    ```
+
+### Unit testing
+
+To run the unit tests (in the `test` folder):
+
+```shell
+go test ./unittest/... -v
+```
+
+Successful run should show end with a similar line:
+```
+ok  	github.com/atlassian-labs/data-center-terraform/unittest    X.Ys`
+```
+
+## End to end testing
+
+[] TODO
+
+## Continuous integration
+
+Tests are running in CI via Github Actions. That means that every commit in every branch is tested. The results are available [in the repository](https://github.com/atlassian-labs/data-center-terraform/actions) and the definition for the build is in `.github/workflows/test.yaml`.
