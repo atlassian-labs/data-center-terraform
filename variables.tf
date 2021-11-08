@@ -9,7 +9,7 @@ variable "environment_name" {
   description = "Name for this environment that is going to be deployed. The value will be used to form the name of some resources."
   type        = string
   validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.environment_name))
+    condition     = can(regex("^[a-zA-Z]([a-zA-Z0-9]-?){1,63}$", var.environment_name))
     error_message = "Invalid environment name."
   }
 }
