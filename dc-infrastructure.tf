@@ -11,6 +11,7 @@ module "base-infrastructure" {
 
   instance_types   = var.instance_types
   desired_capacity = var.desired_capacity
+  ingress_dns_name = "${var.environment_name}.${var.ingress_dns_name}"
 }
 
 module "bamboo" {
@@ -22,4 +23,6 @@ module "bamboo" {
   required_tags    = var.resource_tags
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+
+  ingress_dns_name = "${var.environment_name}.${var.ingress_dns_name}"
 }

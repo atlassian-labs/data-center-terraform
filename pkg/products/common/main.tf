@@ -17,4 +17,6 @@ module "eks" {
   desired_capacity = var.desired_capacity
 
   eks_tags = merge(var.resource_tags, local.required_tags)
+
+  ingress_dns_name = var.ingress_dns_name
 }

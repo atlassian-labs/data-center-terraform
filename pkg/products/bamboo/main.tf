@@ -8,3 +8,15 @@
 //  vpc_security_group_ids = var.vpc.vpc_security_group_ids # list
 //  Env = "test"
 //}
+
+resource "aws_route53_record" "bamboo" {
+  zone_id = local.hosted_zone_id
+  name    = local.product_domain_name
+  type    = "A"
+
+  alias {
+    evaluate_target_health = false
+    name                   = local.ingress_load_balancer_hostname
+    zone_id                = local.ingress_load_balancer_zone_id
+  }
+}
