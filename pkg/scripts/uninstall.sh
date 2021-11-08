@@ -18,8 +18,8 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh -p <product> [-h] [-s]"
-  echo "   <product>: name of the product to uninstall. At this point we only support 'bamboo'."
+  echo "Usage:  ./uninstall.sh [-p <product> [-h] [-s]"
+  echo "   <product>: name of the product to uninstall.  The default value is 'bamboo' if the argument is not provided."
   echo "   -s : Skip cleaning up the terraform state"
   echo "   -h : provides help to how executing this script."
   echo
@@ -28,6 +28,7 @@ EOF
 
 # Extract arguments
   declare -l PRODUCT
+  PRODUCT="bamboo"
   HELP_FLAG=
   SKIP_TFSTATE=
   while getopts sh?p: name ; do
