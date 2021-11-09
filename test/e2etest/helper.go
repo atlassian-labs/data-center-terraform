@@ -78,6 +78,8 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 				"service_name":   "dc-infrastructure",
 				"git_repository": "github.com/atlassian-labs/data-center-terraform",
 			},
+			"instance_types":   []string{"m5.xlarge"},
+			"desired_capacity": 1,
 		},
 		envVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
