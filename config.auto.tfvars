@@ -1,5 +1,5 @@
 # This file configure the Terraform for Atlassian DC on Kubernetes.
-# Please carefully setup the content of this files before install the framework
+# Please configure this file carefully before installing the infrastructure.
 # See https://github.com/atlassian-labs/data-center-terraform/blob/main/README.md for more information. 
 
 # 'environment_name' provides your environment a unique name within a single cloud provider account.
