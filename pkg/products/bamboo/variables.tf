@@ -26,8 +26,3 @@ variable "eks" {
   description = "EKS module that hosts the product"
   type        = any
 }
-
-variable "ingress_dns_name" {
-  description = "Domain name for the ingres controller. The products are running on a subdomain of this domain."
-  type        = string
-}

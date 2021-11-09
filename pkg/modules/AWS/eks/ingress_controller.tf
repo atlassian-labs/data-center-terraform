@@ -10,9 +10,9 @@ provider "helm" {
 locals {
   ingress_name             = "ingress-nginx"
   ingress_namespace        = "ingress-nginx"
-  ingress_dns_is_subdomain = length(regexall("[\\w-]+\\.", var.ingress_dns_name)) == 2
+  ingress_dns_is_subdomain = length(regexall("[\\w-]+\\.", var.ingress_domain)) == 2
   # This is only used if the DNS is a subdomain
-  ingress_dns_domain       = replace(var.ingress_dns_name, "/^[\\w-]+\\./", "")
+  ingress_dns_domain       = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
   ingress_version          = "4.0.6"
 }
 
@@ -27,7 +27,7 @@ resource "kubernetes_namespace" "ingress" {
 }
 
 resource "aws_route53_zone" "ingress" {
-  name = var.ingress_dns_name
+  name = var.ingress_domain
 
   tags = var.eks_tags
 }
@@ -38,12 +38,13 @@ data "aws_route53_zone" "parent" {
   count = local.ingress_dns_is_subdomain ? 1 : 0
   name  = local.ingress_dns_domain
 }
+
 resource "aws_route53_record" "parent_ns_records" {
   # Only create parent NS records if the DNS name is a subdomain
   count = local.ingress_dns_is_subdomain ? 1 : 0
 
   allow_overwrite = true
-  name            = var.ingress_dns_name
+  name            = var.ingress_domain
   records         = aws_route53_zone.ingress.name_servers
   ttl             = 60
   type            = "NS"
@@ -85,6 +86,7 @@ resource "helm_release" "ingress" {
   ]
 }
 
+# To create product specific r53 records we need to expose ingress controller information
 data "kubernetes_service" "ingress_nginx" {
   metadata {
     name      = "ingress-nginx-controller"
@@ -94,12 +96,4 @@ data "kubernetes_service" "ingress_nginx" {
 
 data "aws_elb" "ingress_elb" {
   name = regex("(^[^-]+)", data.kubernetes_service.ingress_nginx.status[0].load_balancer[0].ingress[0].hostname)[0]
-}
-
-output "ingress_load_balancer_hostname" {
-  value = data.kubernetes_service.ingress_nginx.status[0].load_balancer[0].ingress[0].hostname
-}
-
-output "ingress_load_balancer_zone_id" {
-  value = data.aws_elb.ingress_elb.zone_id
 }

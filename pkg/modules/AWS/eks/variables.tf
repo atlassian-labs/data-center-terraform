@@ -37,7 +37,7 @@ variable "desired_capacity" {
   }
 }
 
-variable "ingress_dns_name" {
+variable "ingress_domain" {
   description = "Domain name for the ingress controller"
   type = string
 }

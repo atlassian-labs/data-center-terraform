@@ -20,9 +20,12 @@ output "vpc_private_subnets" {
 }
 
 output "ingress_load_balancer_hostname" {
-  value = module.base-infrastructure.eks.ingress_load_balancer_hostname
+  value = module.base-infrastructure.eks.ingress.lb_hostname
 }
 
-output "bamboo_domain_name" {
-  value = module.bamboo.product_domain_name
+output "product_urls" {
+  value = {
+    "bamboo": module.bamboo.product_domain_name
+  }
+  description = "Product URLs"
 }
