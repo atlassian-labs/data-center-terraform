@@ -11,7 +11,7 @@ module "base-infrastructure" {
 
   instance_types   = var.instance_types
   desired_capacity = var.desired_capacity
-  ingress_domain = "${var.environment_name}.${var.domain}"
+  ingress_domain   = "${var.environment_name}.${var.domain}"
 }
 
 module "bamboo" {

@@ -25,7 +25,7 @@ output "ingress_load_balancer_hostname" {
 
 output "product_urls" {
   value = {
-    "bamboo": module.bamboo.product_domain_name
+    bamboo = module.bamboo.product_domain_name
   }
   description = "Product URLs"
 }
