@@ -43,6 +43,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 	return &vpcPlanInstance.plan
 }
 
+
 func GenerateTFOptions(variables map[string]interface{}, t *testing.T, module string) *terraform.Options {
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/"+module)
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)

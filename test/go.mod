@@ -3,6 +3,7 @@ module github.com/atlassian-labs/data-center-terraform
 go 1.17
 
 require (
+	github.com/aws/aws-sdk-go v1.41.16
 	github.com/gruntwork-io/terratest v0.38.2
 	github.com/stretchr/testify v1.7.0
 )
@@ -11,11 +12,11 @@ require (
 	cloud.google.com/go v0.83.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.40.56 // indirect
 	github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/spdystream v0.0.0-20181023171402-6480d4af844c // indirect
+	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-errors/errors v1.0.2-0.20180813162953-d98b870cc4e0 // indirect
 	github.com/go-logr/logr v0.2.0 // indirect
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
