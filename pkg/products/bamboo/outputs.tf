@@ -22,3 +22,7 @@ output "public_subnets_cidr_blocks" {
   value       = var.vpc.public_subnets_cidr_blocks
   description = "VPC public subnet CIDR blocks"
 }
+
+output "product_domain_name" {
+  value = local.product_domain_name
+}
