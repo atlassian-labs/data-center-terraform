@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # This script manages to deploy the infrastructure for the given product
 #
-# Syntax:  install.sh <product> [-h]
-# <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
+# Syntax:  install.sh [-p <product>] [-h]
+# -p <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided.
+# -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
@@ -21,7 +22,7 @@ EOF
   fi
   echo
   echo "Usage:  ./install.sh [-p <product>] [-h]"
-  echo "   <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided."
+  echo "   -p <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -156,7 +157,7 @@ set_current_context_k8s() {
     echo
     echo "If you like to use kubectl to access to the cluster directly you can run either of the following commands:"
     echo
-    echo "   export KUBECONFIG=${CONTEXT_FILE}"
+    echo "   export KUBECONFIG=${KUBECONFIG}:${CONTEXT_FILE}"
     echo "   aws --region ${REGION} eks update-kubeconfig --name ${EKS_CLUSTER}"
   else
     echo "${CONTEXT_FILE} could not be found."
@@ -182,5 +183,5 @@ create_tfstate_resources
 # Deploy the infrastructure
 create_update_infrastructure
 
-# set_current_context_k8s
+# Print information about manually adding the new k8s context
 set_current_context_k8s

@@ -2,7 +2,9 @@
 # This script manages to destroy the infrastructure for the given product
 #
 # Syntax:  uninstall <product> [-s] [-h]
-# <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
+# -p <product>: name of the product to uninstall. The default value is 'bamboo' if the argument is not provided.
+# -s : Skip cleaning up the terraform state
+# -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
@@ -18,9 +20,9 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh [-p <product> [-h] [-s]"
-  echo "   <product>: name of the product to uninstall.  The default value is 'bamboo' if the argument is not provided."
-  echo "   -s : Skip cleaning up the terraform state"
+  echo "Usage:  ./uninstall.sh [-p <product>] [-h] [-s]"
+  echo "   -p <product>: name of the product to uninstall. The default value is 'bamboo' if the argument is not provided."
+  echo "   -s : Skip cleaning up the terraform state."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -92,6 +94,7 @@ destroy_tfstate() {
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
     cd "${SCRIPT_PATH}/../tfstate"
     set +e
@@ -104,9 +107,10 @@ destroy_tfstate() {
       terraform destroy -target 'module.tfstate-table'
       if [ $? -eq 0 ]; then
         set -e
+        # remove the the environment terraform state folder from S3 bucket
         aws "s3" "rm" "s3://${S3_BUCKET}/${BUCKET_KEY%%/*}" "--recursive"
       else
-        echo "Couldn't destroy dynamodb table. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
+        echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
         cd "${CURRENT_PATH}"
         exit 1
       fi
