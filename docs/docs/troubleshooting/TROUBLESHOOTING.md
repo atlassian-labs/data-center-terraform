@@ -14,7 +14,7 @@ To cleanup the local terraform files, run the following command:
 ```
 
 ## How to unlock terraform
-If user interrupt execution og install or uninstall actions, the terraform lock the resources but never get a chance to
+If user interrupts the execution of install or uninstall actions, Terraform locked the resources but never get a chance to
  unlock them. In this case in next attempt you may see the following error:
  
 
