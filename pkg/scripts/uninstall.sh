@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to destroy the infrastructure for the given product
 #
-# Syntax:  uninstall [-p <product>] [-s] [-h]
+# Usage:  uninstall [-p <product>] [-s] [-h]
 # -p <product>: name of the product to uninstall. The default value is 'bamboo' if the argument is not provided.
 # -s : Skip cleaning up the terraform state
 # -h : provides help to how executing this script.

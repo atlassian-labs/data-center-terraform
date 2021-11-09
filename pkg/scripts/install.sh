@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to deploy the infrastructure for the given product
 #
-# Syntax:  install.sh [-p <product>] [-h]
+# Usage:  install.sh [-p <product>] [-h]
 # -p <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided.
 # -h : provides help to how executing this script.
 
