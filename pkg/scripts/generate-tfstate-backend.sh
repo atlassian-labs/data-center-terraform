@@ -1,17 +1,16 @@
 # This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
 
 SCRIPT_PATH=$(dirname "$0")
-if [ ! $# -eq 2 ]; then
+if [ ! $# -eq 3 ]; then
       echo "The filename for terraform backend and tfstate local variable are missing."
       echo
-      echo "Syntax: generate-tfstate-backend.sh <path_to_root/backend-terraform.tf> <path_to_tfstate/tfstate-local.tf>"
+      echo "Syntax: generate-tfstate-backend.sh <config_file> <path_to_root/backend-terraform.tf> <path_to_tfstate/tfstate-local.tf>"
       exit 1
 fi
 
-BACKEND_TF="${1}"
-TFSTATE_LOCALS="${2}"
-
-CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
+CONFIG_FILE="${1}"
+BACKEND_TF="${2}"
+TFSTATE_LOCALS="${3}"
 
 
 # extract S3 bucket, dynamodb, tags, and region from locals.tf
@@ -35,7 +34,7 @@ DYNAMODB_TABLE="tf_lock_${ENVIRONMENT_NAME//-/_}_${AWS_ACCOUNT_ID}"
 # Generate the terraform backend, where terraform store the state of the infrastructure
 echo "Generating the terraform backend definition file 'terraform.backend.tf'."
 sed 's/<REGION>/'${REGION}'/g'  "${SCRIPT_PATH}/../templates/terraform-backend.tf.tmpl" | \
-sed  's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
+sed 's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
 sed 's/<BUCKET_KEY>/'${BUCKET_KEY}'/g'  | \
 sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
   > ${BACKEND_TF}
@@ -43,7 +42,7 @@ sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
 # Generate the locals for terraform state
 echo "Generating the terraform state local file 'pkg/tfstate/tfstate-locals.tf'."
 sed 's/<REGION>/'${REGION}'/g'  ./pkg/templates/tfstate-locals.tf.tmpl | \
-sed  's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
+sed 's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
 sed 's/<BUCKET_KEY>/'${BUCKET_KEY}'/g'  | \
 sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
   > ${TFSTATE_LOCALS}

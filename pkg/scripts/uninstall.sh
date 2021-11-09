@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# This script manages to destroy the infrastructure for the given product
+# This script manages to destroy the infrastructure of the Atlassian Data Center products
 #
-# Usage:  uninstall [-p <product>] [-s] [-h]
-# -p <product>: name of the product to uninstall. The default value is 'bamboo' if the argument is not provided.
+# Usage:  uninstall [-c <config_file>] [-s] [-h]
+# -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
 # -s : Skip cleaning up the terraform state
 # -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+ENVIRONMENT_NAME=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -20,8 +21,8 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh [-p <product>] [-h] [-s]"
-  echo "   -p <product>: name of the product to uninstall. The default value is 'bamboo' if the argument is not provided."
+  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
+  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
   echo "   -s : Skip cleaning up the terraform state."
   echo "   -h : provides help to how executing this script."
   echo
@@ -29,15 +30,14 @@ EOF
 }
 
 # Extract arguments
-  declare -l PRODUCT
-  PRODUCT="bamboo"
+  CONFIG_FILE=
   HELP_FLAG=
   SKIP_TFSTATE=
   while getopts sh?p: name ; do
       case $name in
       s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
-      p)  PRODUCT="${OPTARG}";;       # Product name for uninstall
+      c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.auto.tfvars'
       ?)  echo "Invalid arguments."; show_help
       esac
   done
@@ -45,26 +45,24 @@ EOF
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
 
- # Validate the arguments. PRODUCT (first argument) and second argument to see if skip generating backend vars
+ # Validate the arguments.
 process_arguments() {
-  if [ ! -z "${PRODUCT}" ]; then
-    if [ ${PRODUCT} == "bamboo" ]; then
-      echo "Preparing to uninstall the infrastructure of '${PRODUCT}'."./
-    else
-      echo "The product '${PRODUCT}' is not supported. At this point only we support the following products:"
-      echo "     1. bamboo"
-      echo
-      exit 1
-    fi
+  # set the default value for config file if is not provided
+  if [ -z "${CONFIG_FILE}" ]; then
+    CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
   else
-    echo "Invalid arguments."
-    show_help
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+      echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
+      show_help
+    fi
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
     show_help
   fi
+
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 destroy_infrastructure() {
@@ -78,7 +76,7 @@ destroy_infrastructure() {
     exit 1
   fi
   cd "${CURRENT_PATH}"
-  echo ${PRODUCT} infrastructure is removed successfully.
+  echo "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
 }
 
 

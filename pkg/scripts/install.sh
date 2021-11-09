@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# This script manages to deploy the infrastructure for the given product
+# This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
-# Usage:  install.sh [-p <product>] [-h]
-# -p <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided.
+# Usage:  install.sh [-c <config_file>] [-h]
+# -p <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
 # -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+ENVIRONMENT_NAME=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -21,21 +22,20 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./install.sh [-p <product>] [-h]"
-  echo "   -p <product>: name of the product to install. The default value is 'bamboo' if the argument is not provided."
+  echo "Usage:  ./install.sh [-c <config_file>] [-h]"
+  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
 }
 
 # Extract arguments
-  declare -l PRODUCT
-  PRODUCT="bamboo"
+  CONFIG_FILE=
   HELP_FLAG=
-  while getopts h?p: name ; do
+  while getopts h?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
-      p)    PRODUCT="${OPTARG}";;     # Product name to install
+      c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.auto.tfvars'
       ?)    echo "Invalid arguments."; show_help
       esac
   done
@@ -43,20 +43,16 @@ EOF
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
 
-# Validate the arguments. PRODUCT (first argument) and second argument to see if skip generating backend vars
+# Validate the arguments.
 process_arguments() {
-  if [ ! -z "${PRODUCT}" ]; then
-    if [ ${PRODUCT} == "bamboo" ]; then
-      echo "Preparing the infrastructure to install '${PRODUCT}'."
-    else
-      echo "The product '${PRODUCT}' is not supported. At this point only we support the following products:"
-      echo "     1. bamboo"
-      echo
-      exit 1
-    fi
+  # set the default value for config file if is not provided
+  if [ -z "${CONFIG_FILE}" ]; then
+    CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
   else
-    echo "Invalid arguments."
-    show_help
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+      echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
+      show_help
+    fi
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -74,24 +70,18 @@ cleanup_backen_variables() {
 # Make sure the infrastructure config file is existed and contains the valid data
 verify_configuration_file() {
   echo "Verifying the config file."
-  CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
-  CONFIG_TEMP="${SCRIPT_PATH}/../../config.auto.tfvars.example"
-
-  # clone config.auto.tfvars.backup from config.auto.tfvars.backup.example if is not existed
-  if [[ ! -f  "./config.auto.tfvars" ]]; then
-    cp "${CONFIG_TEMP}" "${CONFIG_FILE}"
-  fi
 
   # Make sure the config values are defined
   set +e
   INVALID_CONTENT=$(grep '<' $CONFIG_FILE & grep '>' $CONFIG_FILE)
   set -e
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   if [ ! -z "${INVALID_CONTENT}" ]; then
-    echo "Configuration file 'config.auto.tfvars' is not defined yet."
-    echo "Terraform uses this file to generate customised infrastructure for '${PRODUCT}' on your account."
-    echo "Please modify 'config.auto.tfvars' using a text editor and add proper values in config variables. "
-    echo "Then re-run the script to deploy the infrastructure."
+    echo "Configuration file '${CONFIG_FILE}' is not valid."
+    echo "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
+    echo "Please modify '${CONFIG_FILE}' using a text editor and complete the configuration. "
+    echo "Then re-run the install.sh to deploy the infrastructure."
     echo
     exit 0
   fi
@@ -102,11 +92,13 @@ generate_backend_variables() {
   BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
   TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
 
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started."
+
   if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
     echo "Terraform state backend/variable files are already existed. "
   else
     echo "Terraform state backend/variable files are missing."
-    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${BACKEND_TF} ${TFSTATE_LOCALS}
+    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${CONFIG_FILE} ${BACKEND_TF} ${TFSTATE_LOCALS}
   fi
 
   # fetch the config files from root
