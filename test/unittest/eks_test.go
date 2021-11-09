@@ -36,7 +36,7 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 		},
 		"instance_types":   []string{"instance_type1", "instance_type2"},
 		"desired_capacity": 1,
-		"ingress_domain": "ingress.domain.com",
+		"ingress_domain":   "test.deplops.com", // needs to be a real domain otherwise this test will fail
 	}, t, "eks")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
@@ -70,7 +70,7 @@ func TestEksClusterNameInvalid(t *testing.T) {
 		},
 		"instance_types":   []string{"instance_type1", "instance_type2"},
 		"desired_capacity": 1,
-		"ingress_domain": "ingress.domain.com",
+		"ingress_domain":   "ingress.domain.com",
 	}, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
@@ -91,7 +91,7 @@ func TestEksDesiredCapacityOverLimit(t *testing.T) {
 		},
 		"instance_types":   []string{"instance_type1", "instance_type2"},
 		"desired_capacity": 11,
-		"ingress_domain": "ingress.domain.com",
+		"ingress_domain":   "ingress.domain.com",
 	}, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
@@ -112,7 +112,7 @@ func TestEksDesiredCapacityUnderLimit(t *testing.T) {
 		},
 		"instance_types":   []string{"instance_type1", "instance_type2"},
 		"desired_capacity": 0,
-		"ingress_domain": "ingress.domain.com",
+		"ingress_domain":   "ingress.domain.com",
 	}, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
