@@ -1,27 +1,27 @@
-# How to test
+# Testing
 
-## Test
+## Structure
 You can find tests in `/test`.
-* `unittest` includes module level `terraform plan`validation test. It is required to have unit test for each module. Make sure each test case cover default, customised and invalid condition.
-* `e2etest` is infrastructure and product test. It will follow entire deployment process including provisioning resources to a cloud provider. Each product will have one test function that covers all the states. The test function starts with generating configuration for the `terratest`, `helm`, `kubectl`. You can change config variables as you like in `GenerateConfig()`. The provisioning process will be as follows:
-    1. create AWS resources using terraform
-    2. create EKS namespace (product name by default)
-    3. helm add and install product
+* `unittest` includes module level `terraform plan`validation test. It is required to implement the unit tests for each module. Make sure each test case covers default, customised and invalid conditions.
+* `e2etest` contains the end-to-end tests for infrastructure and products. It will follow the entire deployment process including provisioning resources into a cloud provider. Each product will have one test function that covers all the states. The test function starts with generating configuration for the `terratest`, `helm`, `kubectl` commands. You can change config variables as you like in the `GenerateConfigForProductE2eTest()` function. The provisioning process will be as follows:
+    1. Create AWS resources using Terraform
+    2. Create EKS namespace (product name by default)
+    3. Helm adds Atlassian helm chart repository and install specified product
 
-    Once cluster and product is ready, the test will start testing the output.
+    Once the cluster and product are initialised, assert functions will validate the terraform outputs.
 
 
 ## Requirements:
-The repo uses [terratest])(https://github.com/gruntwork-io/terratest) for testing. Followings are requried to run the test:
-1. install [terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli). E.g. `brew install hashicorp/tap/terraform`
-2. install [go](https://golang.org/doc/install). E.g. `brew install go`
-3. Set credentials to connect cloud provider. The project looks for `~/.aws`
+The repo uses [Terratest](https://github.com/gruntwork-io/terratest) for testing. The following are required to run the test:
+1. install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli). E.g. `brew install hashicorp/tap/terraform`
+2. install [Go](https://golang.org/doc/install). E.g. `brew install go`
+3. Set credentials to connect to cloud provider. The project looks for `~/.aws`. For more details refer to [AWS cli-configure-quickstart](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html).
     
 ## How to run unit test
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./unittest/... -v`
 
-## How to run ene-to-end test(Approx. 30-45 mins)
+## How to run end-to-end test(Approx. 30-45 mins)
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./e2etest/... -v -timeout 60m > e2e-test.log`
 
