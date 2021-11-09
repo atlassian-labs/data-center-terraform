@@ -5,7 +5,9 @@
     ```
     `git clone https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform`
     ```
-3. Run the following script to create the infrastructure (at this point only 'Bamboo' is supported):
+3. Open `./config.auto.tfvars` file using a text editor and configure the environment as required.   
+4. Run the following script to create the infrastructure and install the products 
+(at this point only 'Bamboo' is supported):
     ```shell
     ./pkg/scripts/install.sh
     ```
