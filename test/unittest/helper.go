@@ -2,13 +2,15 @@ package unittest
 
 import (
 	"path/filepath"
-	"testing"
 	"sync"
+	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
+
+const TestResourceOwner = "terraform_unit_test"
 
 // Helper functions
 var lock = &sync.Mutex{}
@@ -26,12 +28,12 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 	lock.Lock()
 	defer lock.Unlock()
 	if vpcPlanInstance == nil {
-		tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+		tfOptions := GenerateTFOptions(map[string]interface{}{
 			"vpc_name": "test-vpc",
 			"vpc_tags": map[string]interface{}{
 				"resource_owner": "TestResourceOwner",
 			},
-		}, t)
+		}, t, "vpc")
 
 		// Run `terraform init`, `terraform plan`, and `terraform show`
 		plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
@@ -41,8 +43,9 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 	return &vpcPlanInstance.plan
 }
 
-func GenerateVpcTFOptions(variables map[string]interface{}, t *testing.T) *terraform.Options {
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
+
+func GenerateTFOptions(variables map[string]interface{}, t *testing.T, module string) *terraform.Options {
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/"+module)
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
 
