@@ -2,7 +2,7 @@ variable "cluster_name" {
   description = "Name of the EKS cluster."
   type        = string
   validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.cluster_name))
+    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]+$", var.cluster_name))
     error_message = "Invalid EKS cluster name."
   }
 }
@@ -19,20 +19,20 @@ variable "subnets" {
 
 variable "eks_tags" {
   description = "List of additional tags that will be attached to EKS cluster."
-  type = map(string)
+  type        = map(string)
 }
 
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
-  type = list(string)
+  type        = list(string)
 }
 
 variable "desired_capacity" {
   description = "Desired number of nodes that the node group should launch with initially."
-  type = number
+  type        = number
 
   validation {
-    condition = (var.desired_capacity >= 1 && var.desired_capacity <= 10)
+    condition     = (var.desired_capacity >= 1 && var.desired_capacity <= 10)
     error_message = "Desired capacity must be between 1 and 10, inclusive."
   }
 }

@@ -10,8 +10,8 @@ git clone git@github.com:atlassian-labs/data-center-terraform.git
 
 ## Requirements:
 Make sure you have installed the following tools, if not install them:
-1. install [terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli). E.g. `brew install hashicorp/tap/terraform`
-2. install [helm](https://helm.sh/docs/intro/install/). E.g. `brew install helm`
+1. install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli). E.g. `brew install hashicorp/tap/terraform`
+2. install [Helm](https://helm.sh/docs/intro/install/). E.g. `brew install helm`
 3. install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) E.g:
     
 ```shell

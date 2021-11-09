@@ -7,22 +7,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const TestResourceOwner = "terraform_unit_test"
-
-//Test VPC name variable.
 func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"vpc_tags": map[string]interface{}{
 			"resource_owner": TestResourceOwner,
 		},
-	}, t)
+	}, t, "vpc")
 
-	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
-	assert.NotNil(t, error)
-	assert.Contains(t, error.Error(), "No value for required variable")
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "No value for required variable")
 
 }
 
@@ -39,15 +36,15 @@ func TestVpcNameCustomised(t *testing.T) {
 func TestVpcNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateVpcTFOptions(map[string]interface{}{
+	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"vpc_name": "test-vpc/12",
 		"vpc_tags": map[string]interface{}{
 			"resource_owner": TestResourceOwner,
 		},
-	}, t)
+	}, t, "vpc")
 
-	_, error := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
-	assert.NotNil(t, error)
-	assert.Contains(t, error.Error(), "Invalid vpc name.")
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid vpc name.")
 }
