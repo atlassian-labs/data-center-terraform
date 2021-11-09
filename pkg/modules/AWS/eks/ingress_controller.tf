@@ -1,21 +1,6 @@
 # Nginx ingress using the defined DNS name. Creates AWS hosted zone and certificates automatically.
 # Does NOT register a domain or create a hosted zone if the DNS name is a subdomain.
 
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
-
-locals {
-  ingress_name             = "ingress-nginx"
-  ingress_namespace        = "ingress-nginx"
-  ingress_dns_is_subdomain = length(regexall("[\\w-]+\\.", var.ingress_domain)) == 2
-  # This is only used if the DNS is a subdomain
-  ingress_dns_domain = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
-  ingress_version    = "4.0.6"
-}
-
 resource "kubernetes_namespace" "ingress" {
   depends_on = [
     module.eks
@@ -52,9 +37,7 @@ resource "aws_route53_record" "parent_ns_records" {
 }
 
 resource "helm_release" "ingress" {
-  depends_on = [
-    module.eks
-  ]
+  depends_on = [module.eks]
 
   name       = local.ingress_name
   namespace  = kubernetes_namespace.ingress.metadata[0].name

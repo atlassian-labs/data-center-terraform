@@ -19,5 +19,5 @@ instance_types = ["m5.large"]
 desired_capacity = 1
 
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
-domain = "subdomain.example.com"
+domain = "<subdomain.example.com>"
 
