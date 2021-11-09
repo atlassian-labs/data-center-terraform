@@ -10,7 +10,7 @@ variable "environment_name" {
   type        = string
   validation {
     condition     = can(regex("^[a-zA-Z][a-zA-Z0-9\\-]{1,63}$", var.environment_name))
-    error_message = "Invalid environment name."
+    error_message = "Invalid environment name. Valid name is up to 64 characters starting with alphabet and followed by alphanumerics. '-' is allowed as well."
   }
 }
 
