@@ -23,7 +23,7 @@ Before installing the infrastructure for Atlassian products please make sure you
 After you have done the above steps you can [install](userguide/INSTALLATION.md) the Atlassian Data Center infrastructure 
 and selected products. 
 
-## Uninstall the products and cleanup infrastructure
+## Uninstall the products and infrastructure cleanup
 
 To uninstall the product and clean up the infrastructure run the following command:
 ```shell 
