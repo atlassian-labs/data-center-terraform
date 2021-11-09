@@ -2,9 +2,7 @@
 # Does NOT register a domain or create a hosted zone if the DNS name is a subdomain.
 
 resource "kubernetes_namespace" "ingress" {
-  depends_on = [
-    module.eks
-  ]
+  depends_on = [module.eks]
 
   metadata {
     name = local.ingress_namespace
