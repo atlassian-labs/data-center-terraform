@@ -34,6 +34,7 @@ jobs:
         run: go test ./e2etest/... -v -timeout 50m > e2e-test.log
 
       - name: Upload test log files
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: e2e-test-log-file
