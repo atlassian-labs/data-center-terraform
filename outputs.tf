@@ -18,3 +18,14 @@ output "vpc_private_subnets_cidr" {
 output "vpc_private_subnets" {
   value = module.bamboo.private_subnets
 }
+
+output "ingress_load_balancer_hostname" {
+  value = module.base-infrastructure.eks.ingress.lb_hostname
+}
+
+output "product_urls" {
+  value = {
+    bamboo = module.bamboo.product_domain_name
+  }
+  description = "Product URLs"
+}
