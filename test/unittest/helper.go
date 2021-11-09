@@ -2,12 +2,12 @@ package unittest
 
 import (
 	"path/filepath"
-	"testing"
 	"sync"
+	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
 // Helper functions
@@ -42,7 +42,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 }
 
 func GenerateVpcTFOptions(variables map[string]interface{}, t *testing.T) *terraform.Options {
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../../pkg", "/modules/AWS/vpc")
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
 
