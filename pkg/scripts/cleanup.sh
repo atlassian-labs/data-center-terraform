@@ -13,10 +13,10 @@ REPO_PATH="${SCRIPT_PATH}/../.."
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
 cat << EOF
-First time running the install.sh results generating two set of files, variable definition and config files, and terraform files.
-This script can cleanup the both type of generated files.
+First time running the install.sh results in generating two sets of files, variable/config definition, and terraform files.
+This script can cleanup the both type of generated file sets.
 
-Usually you don't need to cleanup unless you face some problem in terraform locking process caused by interrupting during the install or uninstall.
+Usually you don't need to cleanup unless you face some problem in terraform locking process caused by an interruption during the install or uninstall.
 EOF
 
   fi
