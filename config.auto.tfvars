@@ -1,4 +1,4 @@
-# This file configure the Atlassian Data Center Framework.
+# This file configure the Terraform for Atlassian DC on Kubernetes.
 # Please carefully setup the content of this files before install the framework
 # See https://github.com/atlassian-labs/data-center-terraform/blob/main/README.md for more information. 
 
