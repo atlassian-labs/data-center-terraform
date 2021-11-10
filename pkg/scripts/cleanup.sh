@@ -55,6 +55,8 @@ cleanup_terraform() {
     rm -rf "${REPO_PATH}/pkg/tfstate/.terraform"
     rm -rf "${REPO_PATH}/pkg/tfstate/.terraform.lock.hcl"
     rm -rf "${REPO_PATH}/.terraform.lock.hcl"
+    rm -rf "${REPO_PATH}/terraform.tfstate"
+    rm -rf "${REPO_PATH}/pkg/tfstate/terraform.tfstate"
   fi
 }
 

@@ -6,33 +6,12 @@ This project provides a tool to provision infrastructure for Atlassian DC helm c
 At this stage the scope is providing the infrastructure for Bamboo on AWS.  
 
 
-## Usage
+## Get started
 
-In order to use this project you need to have the following applications installed on your local machine and have admin access to an AWS account:
+**Get started right now using our [documentation](docs/docs/README.md)**.
 
-* AWS CLI
-* helm
-* Terraform
-
-## Installation
-
-1. Login with an admin access to an AWS account
-2. Checkout out the project into your local
-3. Open a terminal and change your current path to the root of the project
-4. Run the following script to create the infrastructure:
-```shell
-./pkg/scripts/install.sh -p <product>
-```
-
-## Uninstallation
-
-To uninstall the product and clean up the infrastructure run the following command:
-```shell script
-./pkg/scripts/uninstall -p <product>
-```
-
-## Documentation
-> TODO
+We provide extensive documentation to support Infrastructure for Atlassian Data Center products. 
+This includes prerequisites, set up, configuration, installation, uninstallation, and more.
 
 
 ## Feedback
