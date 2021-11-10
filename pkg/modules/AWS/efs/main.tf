@@ -155,22 +155,3 @@ resource "aws_efs_mount_target" "efs_csi" {
   subnet_id       = each.value
   security_groups = [aws_security_group.efs_csi.id]
 }
-
-
-# This goes to the product level
-//resource "kubernetes_persistent_volume_claim" "atlassian-dc-shared-home-pvc" {
-//  metadata {
-//    # This name is defined in `pom.xml` in the data-center-helm-charts
-//    name      = "atlassian-dc-shared-home-pvc"
-//    namespace = kubernetes_namespace.ci.metadata[0].name  # TODO - replace with product namespace
-//  }
-//  spec {
-//    access_modes = ["ReadWriteMany"]
-//    resources {
-//      requests = {
-//        storage = "5Gi"
-//      }
-//    }
-//    storage_class_name = "efs-sc"
-//  }
-//}

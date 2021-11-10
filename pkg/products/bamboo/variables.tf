@@ -26,3 +26,8 @@ variable "eks" {
   description = "EKS module that hosts the product"
   type        = any
 }
+
+variable "efs" {
+  description = "EFS module to provide shared-hole to the product"
+  type        = any
+}

@@ -20,3 +20,21 @@ resource "aws_route53_record" "bamboo" {
     zone_id                = var.eks.ingress.lb_zone_id
   }
 }
+
+# Create pvc
+resource "kubernetes_persistent_volume_claim" "atlassian-dc-shared-home-pvc" {
+  metadata {
+    # This name is defined in `pom.xml` in the data-center-helm-charts
+    name      = "atlassian-dc-shared-home-pvc"
+    namespace = local.product_name # TODO - replace with product namespace
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "5Gi"
+      }
+    }
+    storage_class_name = "efs-sc"
+  }
+}
