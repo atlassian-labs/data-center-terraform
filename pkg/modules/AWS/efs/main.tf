@@ -150,6 +150,9 @@ resource "aws_efs_file_system" "efs_csi" {
 }
 
 resource "aws_efs_mount_target" "efs_csi" {
+  depends_on = [
+    var.vpc
+  ]
   file_system_id  = aws_efs_file_system.efs_csi.id
   for_each        = toset(var.vpc.private_subnets)
   subnet_id       = each.value
