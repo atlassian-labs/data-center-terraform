@@ -80,6 +80,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 			},
 			"instance_types":   []string{"m5.xlarge"},
 			"desired_capacity": 1,
+			"domain":           "deplops.com",
 		},
 		envVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
