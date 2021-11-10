@@ -24,4 +24,5 @@ module "bamboo" {
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
   efs              = module.base-infrastructure.efs
+  share_home_size  = "5Gi"
 }

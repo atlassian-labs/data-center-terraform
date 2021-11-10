@@ -31,3 +31,8 @@ variable "efs" {
   description = "EFS module to provide shared-hole to the product"
   type        = any
 }
+
+variable "share_home_size" {
+  description = "Size for pvc clame - shared home"
+  type        = string
+}

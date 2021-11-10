@@ -32,7 +32,7 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-shared-home-pvc" {
     access_modes = ["ReadWriteMany"]
     resources {
       requests = {
-        storage = "5Gi"
+        storage = var.share_home_size
       }
     }
     storage_class_name = "efs-sc"
