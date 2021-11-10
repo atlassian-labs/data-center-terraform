@@ -23,7 +23,6 @@ jobs:
         uses: prepor/action-aws-iam-authenticator@1
         with:
           version: 0.4.0
-      - run: aws-iam-authenticator version
           
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
