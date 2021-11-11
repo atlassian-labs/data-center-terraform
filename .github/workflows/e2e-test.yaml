@@ -39,9 +39,9 @@ jobs:
       - name: E2E tests
         working-directory: test/
         run: |
+          # this is required to use aws-iam-authenticator.
           export PATH=$PATH:$HOME/bin
-          aws-iam-authenticator version
-#         run: go test ./e2etest/... -v -timeout 50m > e2e-test.log
+          go test ./e2etest/... -v -timeout 50m > e2e-test.log
 
       - name: Upload test log files
         if: always()
