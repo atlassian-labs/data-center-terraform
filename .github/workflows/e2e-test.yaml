@@ -38,7 +38,8 @@ jobs:
 
       - name: E2E tests
         working-directory: test/
-        run: go test ./e2etest/... -v -timeout 50m > e2e-test.log
+        run: aws-iam-authenticator version
+#         run: go test ./e2etest/... -v -timeout 50m > e2e-test.log
 
       - name: Upload test log files
         if: always()
