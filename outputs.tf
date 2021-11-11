@@ -23,6 +23,10 @@ output "ingress_load_balancer_hostname" {
   value = module.base-infrastructure.eks.ingress.lb_hostname
 }
 
+output "ingress_certificate_arn" {
+  value = module.base-infrastructure.eks.ingress.certificate_arn
+}
+
 output "product_urls" {
   value = {
     bamboo = module.bamboo.product_domain_name
