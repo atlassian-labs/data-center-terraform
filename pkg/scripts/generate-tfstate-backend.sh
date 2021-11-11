@@ -4,7 +4,7 @@ SCRIPT_PATH=$(dirname "$0")
 if [ ! $# -eq 3 ]; then
       echo "The filename for terraform backend and tfstate local variable are missing."
       echo
-      echo "Syntax: generate-tfstate-backend.sh <config_file> <path_to_root/backend-terraform.tf> <path_to_tfstate/tfstate-local.tf>"
+      echo "Usage: generate-tfstate-backend.sh <config_file> <path_to_root/backend-terraform.tf> <path_to_tfstate/tfstate-local.tf>"
       exit 1
 fi
 

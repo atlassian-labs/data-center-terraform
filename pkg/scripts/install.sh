@@ -92,7 +92,7 @@ generate_backend_variables() {
   BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
   TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
 
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started."
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
   if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
     echo "Terraform state backend/variable files are already existed. "

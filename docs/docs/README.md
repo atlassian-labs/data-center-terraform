@@ -7,38 +7,39 @@ This project provides a tool to provision infrastructure for Atlassian DC helm c
 At this stage the scope is providing the infrastructure for Bamboo.  
 
 
-## Usage
+## Prerequisites
 
-In order to use this project you need to have the following application installed on your local machine and an admin 
-access to an AWS account:
+In order to deploy the infrastructure for Atlassian Data Center products on Kubernetes you need to have the 
+following applications installed on your local machine:
 
 * AWS CLI
 * helm
 * Terraform
 
+See [prerequisites](userguide/PREREQUISITES.md) for details. 
+
 ## Installation
 Before installing the infrastructure for Atlassian products please make sure you read the 
-[prerequisites](userguide/PREREQUISITES.md) section and completed the [configuration](userguide/CONFIGURATION.md) step. 
+[prerequisites](userguide/PREREQUISITES.md) section and completed the [configuration](userguide/CONFIGURATION.md). 
 
 After you have done the above steps you can [install](userguide/INSTALLATION.md) the Atlassian Data Center infrastructure 
-and selected products. 
+for selected products. 
 
 ## Uninstall the products and infrastructure cleanup
 
-To uninstall the product and clean up the infrastructure run the following command:
+To uninstall the products and clean up the infrastructure run the following command:
 ```shell 
-./pkg/scripts/uninstall -p <product>
+./pkg/scripts/uninstall
 ```
 
-This will remove the products and all Atlassian data center infrastructure. The Terraform state in S3 bucket and 
-dynamodb table created by the install process also will be removed. 
-If you want to keep the terraform state then use the switch `-s`:
-```shell 
-./pkg/scripts/uninstall -p <product> -s
-```
+This will remove the products and all Atlassian Data Center infrastructure including Terraform state in S3 bucket and 
+dynamodb lock table created by install process. 
 
-## Documentation
-> TODO
+!!! tip "Do you want to keep the terraform state?"
+    If you want to keep the terraform state files and dynamodb lock table then use the switch `-s`:
+    ```shell 
+    ./pkg/scripts/uninstall -s
+    ```
 
 
 ## Feedback

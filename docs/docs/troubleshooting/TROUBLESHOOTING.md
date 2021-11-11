@@ -52,3 +52,35 @@ terraform force-unlock <ID>
     There are two terraform locks, one for infrastructure and another for terraform state. If running the following 
     command from repo folder does not unlock the resources, then change the current path to `./pkg/tfstate` and retry
      the same command.  
+
+
+
+```
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+Migrating the terraform state to S3 bucket...
+Initializing modules...
+
+Initializing the backend...
+Backend configuration changed!
+
+Terraform has detected that the configuration specified for the backend
+has changed. Terraform will now check for existing state in the backends.
+
+
+╷
+│ Error: Error inspecting states in the "s3" backend:
+│     S3 bucket does not exist.
+│
+│ The referenced S3 bucket must have been previously created. If the S3 bucket
+│ was created within the last minute, please wait for a minute or two and try
+│ again.
+│
+│ Error: NoSuchBucket: The specified bucket does not exist
+│ 	status code: 404, request id: 3F7S3ANP7A55ZCEK, host id: AmaDrq2Z7nh4CmUkohphCfpCallxVCUxfz2ovAZNPmzoQCdo7k2LrPC7Wya4X21/wxb7msqWiKw=
+│
+│
+│ Prior to changing backends, Terraform inspects the source and destination
+│ states to determine what kind of migration steps need to be taken, if any.
+│ Terraform failed to load the states. The data in both the source and the
+│ destination remain unmodified. Please resolve the above error and try again.
+```
