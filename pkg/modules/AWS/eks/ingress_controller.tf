@@ -34,6 +34,22 @@ resource "aws_route53_record" "parent_ns_records" {
   zone_id         = data.aws_route53_zone.parent[0].zone_id
 }
 
+module "ingress_certificate" {
+  source  = "terraform-aws-modules/acm/aws"
+  version = "~> v2.0"
+
+  domain_name = var.ingress_domain
+  zone_id     = aws_route53_zone.ingress.id
+
+  subject_alternative_names = [
+    "*.${var.ingress_domain}",
+  ]
+
+  wait_for_validation = true
+
+  tags = var.eks_tags
+}
+
 resource "helm_release" "ingress" {
   depends_on = [module.eks]
 
@@ -55,6 +71,7 @@ resource "helm_release" "ingress" {
             https = "http"
           }
           annotations = {
+            "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : module.ingress_certificate.this_acm_certificate_arn
             "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
             "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" : "443"
