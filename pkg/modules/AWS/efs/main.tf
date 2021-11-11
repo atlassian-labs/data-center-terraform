@@ -3,16 +3,16 @@
 
 
 
-resource "aws_iam_policy" "efs_csi" {
+resource "aws_iam_policy" "this" {
   name        = "${var.eks.cluster_name}_EFS_CSI"
   description = "EFS CSI policy for cluster ${var.eks.cluster_id}"
-  policy      = data.aws_iam_policy_document.efs_csi.json
+  policy      = data.aws_iam_policy_document.this.json
 
   tags = var.required_tags
 }
 
 # This policy document is modeled after https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/v1.3.0/docs/iam-policy-example.json
-data "aws_iam_policy_document" "efs_csi" {
+data "aws_iam_policy_document" "this" {
   statement {
     effect = "Allow"
 
@@ -53,14 +53,14 @@ data "aws_iam_policy_document" "efs_csi" {
   }
 }
 
-module "efs_csi_iam_role" {
+module "efs_iam_role" {
   source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version      = "3.6.0"
   create_role  = true
   role_name    = "${var.eks.cluster_name}-${local.efs_csi_name}"
   provider_url = replace(var.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns = [
-    aws_iam_policy.efs_csi.arn
+    aws_iam_policy.this.arn
   ]
   oidc_fully_qualified_subjects = [
     "system:serviceaccount:${local.efs_csi_namespace}:${local.efs_csi_serviceAccount_name}"
@@ -82,6 +82,7 @@ resource "helm_release" "efs_csi" {
   version = local.efs_csi_version
 
   values = [yamlencode({
+    replicaCount = 1
     image = {
       repository = local.efs_csi_image_repository
     }
@@ -90,7 +91,7 @@ resource "helm_release" "efs_csi" {
       serviceAccount = {
         name = local.efs_csi_serviceAccount_name
         annotations = {
-          "eks.amazonaws.com/role-arn" : module.efs_csi_iam_role.this_iam_role_arn
+          "eks.amazonaws.com/role-arn" : module.efs_iam_role.this_iam_role_arn
         }
       }
     }
@@ -108,7 +109,7 @@ resource "helm_release" "efs_csi" {
         mountOptions = ["tls"]
         parameters = {
           provisioningMode = "efs-ap"
-          fileSystemId     = aws_efs_file_system.efs_csi.id
+          fileSystemId     = aws_efs_file_system.this.id
           directoryPerms   = "700"
           gidRangeStart    = "1000"
           gidRangeEnd      = "2000"
@@ -121,7 +122,7 @@ resource "helm_release" "efs_csi" {
 }
 
 # This is to allow access to the EFS filesystem from worker nodes
-resource "aws_security_group" "efs_csi" {
+resource "aws_security_group" "this" {
   name_prefix = "${var.eks.cluster_name}-efs-csi"
   vpc_id      = var.vpc.vpc_id
   ingress {
@@ -143,18 +144,15 @@ resource "aws_security_group" "efs_csi" {
 }
 
 
-resource "aws_efs_file_system" "efs_csi" {
+resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name
 
-  tags = var.required_tags
+  tags = merge(var.required_tags, { Name : "${var.eks.cluster_name}-efs" })
 }
 
-resource "aws_efs_mount_target" "efs_csi" {
-  depends_on = [
-    var.vpc
-  ]
-  file_system_id  = aws_efs_file_system.efs_csi.id
-  for_each        = toset(var.vpc.private_subnets)
-  subnet_id       = each.value
-  security_groups = [aws_security_group.efs_csi.id]
+resource "aws_efs_mount_target" "this" {
+  count           = length(var.vpc.private_subnets)
+  file_system_id  = aws_efs_file_system.this.id
+  subnet_id       = var.vpc.private_subnets[count.index]
+  security_groups = [aws_security_group.this.id]
 }
