@@ -2,13 +2,17 @@
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
 # Usage:  install.sh [-c <config_file>] [-h]
-# -p <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
+# -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
+# -u <db_user_name> Set db username name - override the default, 'dbadmin'
+# -p <db_password> Set db password - If is not provided will be auto generated later
 # -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ENVIRONMENT_NAME=
+DB_USERNAME='dbadmin'
+DB_PASSWORD=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -24,6 +28,8 @@ EOF
   echo
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
+  echo "   -u <db_user_name> Set db username name - override the default, 'dbadmin'"
+  echo "   -p <db_password> Set db password - If is not provided will be auto generated later"
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -32,10 +38,12 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  while getopts h?c: name ; do
+  while getopts uph?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.auto.tfvars'
+      u)    DB_USERNAME="${OPTARG}";; # Set db username name - override the default, 'dbadmin'
+      p)    DB_PASSWORD="${OPTARG}";; # Set db password - If is not provided will be auto generated later
       ?)    echo "Invalid arguments."; show_help
       esac
   done
@@ -135,7 +143,20 @@ create_tfstate_resources() {
 # Deploy the infrastructure if is not created yet otherwise apply the changes to existing infrastructure
 create_update_infrastructure() {
   Echo "Starting to analyze the infrastructure..."
+  export TF_VAR_DB_USER=${DB_USERNAME}
   terraform init
+  terraform apply -target local_file.sops_yaml -auto-approve
+
+  if [ -f "secrets.yaml" ]; then
+    SECRETS=$(sops -d "secrets.yaml")
+    rm secrets.yaml
+  else
+    if [ -z "${DB_PASSWORD}" ]; then
+      DB_PASSWORD=$(openssl rand -base64 15)
+    fi
+    SECRETS="db_username: ${DB_USERNAME}\ndb_password: ${DB_PASSWORD}"
+  fi
+  EDITOR=tee sops secrets.yaml <<<"$SECRETS"
   terraform apply -auto-approve
 }
 

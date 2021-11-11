@@ -45,3 +45,7 @@ kubeconfig_atlassian-dc-*
 # IDEs
 **/.idea/*
 .DS_Store
+
+# Sops
+.soaps.*
+secrets.yaml
