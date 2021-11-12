@@ -1,5 +1,7 @@
 provider "helm" {
   kubernetes {
-    config_path = var.eks.kubeconfig_filename
+    host                   = var.eks.kubernetes_provider_config.host
+    token                  = var.eks.kubernetes_provider_config.token
+    cluster_ca_certificate = var.eks.kubernetes_provider_config.cluster_ca_certificate
   }
 }
