@@ -24,8 +24,9 @@ module "eks" {
 module "efs" {
   source = "../../modules/AWS/efs"
 
-  region_name   = var.region_name
-  vpc           = module.vpc
-  eks           = module.eks
-  required_tags = merge(var.resource_tags, local.required_tags)
+  region_name                  = var.region_name
+  vpc                          = module.vpc
+  eks                          = module.eks
+  csi_controller_replica_count = var.desired_capacity
+  efs_tags                     = merge(var.resource_tags, local.required_tags)
 }

@@ -8,7 +8,7 @@ resource "aws_iam_policy" "this" {
   description = "EFS CSI policy for cluster ${var.eks.cluster_id}"
   policy      = data.aws_iam_policy_document.this.json
 
-  tags = var.required_tags
+  tags = var.efs_tags
 }
 
 # This policy document is modeled after https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/v1.3.0/docs/iam-policy-example.json
@@ -65,7 +65,7 @@ module "efs_iam_role" {
   oidc_fully_qualified_subjects = [
     "system:serviceaccount:${local.efs_csi_namespace}:${local.efs_csi_serviceAccount_name}"
   ]
-  tags = var.required_tags
+  tags = var.efs_tags
 }
 
 resource "helm_release" "efs_csi" {
@@ -82,12 +82,12 @@ resource "helm_release" "efs_csi" {
   version = local.efs_csi_version
 
   values = [yamlencode({
-    replicaCount = 1
+    replicaCount = var.csi_controller_replica_count
     image = {
       repository = local.efs_csi_image_repository
     }
     controller = {
-      tags = var.required_tags
+      tags = var.efs_tags
       serviceAccount = {
         name = local.efs_csi_serviceAccount_name
         annotations = {
@@ -140,14 +140,14 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.required_tags, { Name : "${var.eks.cluster_name} Allow EFS CSI" })
+  tags = merge(var.efs_tags, { Name : "${var.eks.cluster_name} Allow EFS CSI" })
 }
 
 
 resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name
 
-  tags = merge(var.required_tags, { Name : "${var.eks.cluster_name}-efs" })
+  tags = merge(var.efs_tags, { Name : "${var.eks.cluster_name}-efs" })
 }
 
 resource "aws_efs_mount_target" "this" {
