@@ -15,7 +15,7 @@ resource "aws_route53_record" "bamboo" {
 resource "kubernetes_namespace" "bamboo" {
 
   metadata {
-    name = local.kubernetes_namespace
+    name = local.product_name
   }
 }
 
@@ -43,7 +43,7 @@ resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
 resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
   metadata {
     name      = "atlassian-dc-bamboo-share-home-pvc"
-    namespace = local.kubernetes_namespace
+    namespace = local.product_name
   }
   spec {
     access_modes = ["ReadWriteMany"]

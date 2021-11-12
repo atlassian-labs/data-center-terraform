@@ -9,7 +9,5 @@ locals {
     Name : local.product_name
   }
 
-  kubernetes_namespace = "bamboo"
-
   product_domain_name = "${local.product_name}.${var.eks.ingress.domain}"
 }
