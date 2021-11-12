@@ -9,6 +9,8 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled = true
   }
 
+  force_destroy = true
+
   acl = "private"
 
   tags = merge(var.required_tags, tomap({
@@ -22,9 +24,6 @@ resource "aws_s3_bucket" "terraform_state" {
         sse_algorithm = "AES256"
       }
     }
-  }
-  lifecycle {
-    prevent_destroy = false
   }
 
   # Atlassian required rules and logging
