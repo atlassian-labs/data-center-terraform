@@ -17,7 +17,6 @@ module "security_group" {
       protocol                 = "tcp"
       description              = "PostgreSQL access from within EKS cluster"
       source_security_group_id = var.source_sg
-      #      source_security_group_id = data.aws_security_group.default.id
     },
   ]
 
@@ -64,18 +63,10 @@ module "db" {
 ################################################################################
 # Kubernetes secret to store db credential
 ################################################################################
-data "aws_eks_cluster" "cluster" {
-  name = var.eks_cluster_name
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = var.eks_cluster_name
-}
-
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  host                   = var.eks.kubernetes_provider_config.host
+  token                  = var.eks.kubernetes_provider_config.token
+  cluster_ca_certificate = var.eks.kubernetes_provider_config.cluster_ca_certificate
 }
 
 resource "kubernetes_secret" "rds_secret" {

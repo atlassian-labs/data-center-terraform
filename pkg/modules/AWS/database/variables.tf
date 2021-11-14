@@ -8,10 +8,6 @@ variable "subnets" {
   type        = list(string)
 }
 
-variable "eks_cluster_name" {
-  description = "Name of the EKS cluster that database master username and password will be stored in as a secret."
-}
-
 variable "source_sg" {
   description = "Source security group id that database security group will allow traffic from."
 }
@@ -32,4 +28,9 @@ variable "rds_instance_id" {
 variable "db_tags" {
   description = "List of additional tags that will be attached to database related resources."
   type        = map(string)
+}
+
+variable "eks" {
+  description = "EKS module that hosts the product."
+  type        = any
 }
