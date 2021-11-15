@@ -12,6 +12,6 @@ output "rds_master_password" {
   sensitive = true
 }
 
-#output "rds_db_name" {
-#  value = aws_db_instance.postgres.name
-#}
+output "rds_db_name" {
+  value = module.db.db_instance_name
+}
