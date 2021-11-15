@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
 module "base-infrastructure" {
   source = "./pkg/products/common"
 
@@ -20,7 +16,9 @@ module "bamboo" {
 
   region_name      = var.region
   environment_name = var.environment_name
-  required_tags    = var.resource_tags
+  resource_tags    = var.resource_tags
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+  efs              = module.base-infrastructure.efs
+  share_home_size  = "5Gi"
 }
