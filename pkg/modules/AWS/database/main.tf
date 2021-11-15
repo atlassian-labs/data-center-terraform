@@ -16,7 +16,7 @@ module "security_group" {
       to_port                  = 5432
       protocol                 = "tcp"
       description              = "PostgreSQL access from within EKS cluster"
-      source_security_group_id = var.source_sg
+      source_security_group_id = var.eks.cluster_security_group
     },
   ]
 

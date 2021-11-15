@@ -8,10 +8,6 @@ variable "subnets" {
   type        = list(string)
 }
 
-variable "source_sg" {
-  description = "Source security group id that database security group will allow traffic from."
-}
-
 variable "product" {
   description = "Name of the product that this database will be created for."
 }
