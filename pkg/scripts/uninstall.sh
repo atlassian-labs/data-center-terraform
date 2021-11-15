@@ -102,11 +102,9 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy -target 'module.tfstate-table'
+      terraform destroy
       if [ $? -eq 0 ]; then
         set -e
-        # remove the the environment terraform state folder from S3 bucket
-        aws "s3" "rm" "s3://${S3_BUCKET}/${BUCKET_KEY%%/*}/" "--recursive"
       else
         echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
         cd "${CURRENT_PATH}"
