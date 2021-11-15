@@ -21,7 +21,7 @@ REGION=$(grep 'region' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
 # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
-S3_BUCKET="atlassian-dc-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
+S3_BUCKET="atlas-${ENVIRONMENT_NAME}-${REGION}-${AWS_ACCOUNT_ID}-tfstate"
 BUCKET_KEY="${ENVIRONMENT_NAME}-${AWS_ACCOUNT_ID}"
 
 # length of the bucket name should be less than 64 characters

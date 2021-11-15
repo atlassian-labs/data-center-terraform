@@ -13,7 +13,7 @@ variable "environment_name" {
 }
 
 variable "resource_tags" {
-  description = "List of required tags"
+  description = "List of resource tags"
   type        = map(string)
 }
 
