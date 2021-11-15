@@ -1,6 +1,5 @@
 locals {
-  cidr    = "10.0.0.0/18"
-  subnets = [for cidr_block in cidrsubnets(local.cidr, 2, 2) : cidrsubnets(cidr_block, 2, 2)]
+  subnets = [for cidr_block in cidrsubnets(var.vpc_cidr, 2, 2) : cidrsubnets(cidr_block, 2, 2)]
 
   # tags
   vpc_tags = {
