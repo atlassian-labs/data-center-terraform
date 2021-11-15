@@ -68,7 +68,15 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.module.db_instance.aws_db_instance.this[0]")
 	planDbIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["identifier"]
+	planInstanceClass := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["instance_class"]
+	planUserName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["username"]
+	planEngine := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine"]
+	planDbName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["name"]
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
+	assert.Equal(t, "db.t3.micro", planInstanceClass)
+	assert.Equal(t, inputProduct+"user", planUserName)
+	assert.Equal(t, "postgres", planEngine)
+	assert.Equal(t, inputProduct, planDbName)
 
 }
 

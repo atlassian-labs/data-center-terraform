@@ -42,7 +42,7 @@ module "db" {
   allocated_storage = 1000
   iops              = 1000
 
-  #  name                   = var.product
+  name                   = var.product
   username               = local.db_master_usr
   create_random_password = true
   random_password_length = 12
