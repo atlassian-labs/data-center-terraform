@@ -37,10 +37,10 @@ module "db" {
   engine_version       = "13.3"
   family               = "postgres13" # DB parameter group
   major_engine_version = "13"         # DB option group
-  instance_class       = "db.t3.micro"
+  instance_class       = var.instance_class
 
-  allocated_storage = 1000
-  iops              = 1000
+  allocated_storage = var.allocated_storage
+  iops              = var.iops
 
   name                   = var.product
   username               = local.db_master_usr

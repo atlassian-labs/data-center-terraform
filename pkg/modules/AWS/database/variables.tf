@@ -11,6 +11,30 @@ variable "rds_instance_id" {
   }
 }
 
+variable "instance_class" {
+  description = "Instance class of the RDS instance."
+  type        = string
+}
+
+variable "allocated_storage" {
+  description = "Allocated storage in GiB."
+  type        = number
+
+  validation {
+    condition     = (var.allocated_storage >= 100 && var.allocated_storage <= 16384)
+    error_message = "Invalid allocated storage. Must be between 100 and 16384, inclusive."
+  }
+}
+
+variable "iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  type        = number
+
+  validation {
+    condition     = (var.iops >= 1000 && var.iops <= 256000)
+    error_message = "Invalid iops. Must be between 1000 and 256000, inclusive."
+  }
+}
 variable "db_tags" {
   description = "List of additional tags that will be attached to database related resources."
   type        = map(string)
