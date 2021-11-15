@@ -15,6 +15,7 @@ import (
 )
 
 type TestConfig struct {
+	Product         string
 	TerraformConfig TerraformConfig
 	HelmConfig      HelmConfig
 	KubectlConfig   KubectlConfig
@@ -96,6 +97,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 	}
 
 	return TestConfig{
+		Product:         product,
 		ReleaseName:     releaseName,
 		TerraformConfig: terraformConfig,
 		HelmConfig:      helmConfig,

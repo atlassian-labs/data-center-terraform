@@ -2,6 +2,8 @@ package e2etest
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"testing"
 	"time"
 
@@ -37,6 +39,7 @@ func TestBambooModule(t *testing.T) {
 	assertVPC(t, tfOptions, awsRegion)
 	assertEKS(t, tfOptions, awsRegion)
 	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName)
+	assertIngressAccess(t, testConfig)
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string) {
@@ -66,4 +69,23 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseNa
 	pod := k8s.GetPod(t, kubectlOptions, podName)
 	k8s.WaitUntilPodAvailable(t, kubectlOptions, podName, 5, 30*time.Second)
 	assert.Equal(t, pod.Status.ContainerStatuses[0].Ready, true)
+}
+
+func assertIngressAccess(t *testing.T, config TestConfig) {
+	path := "/setup/setupLicense.action"
+	expectedContent := "Welcome to Bamboo Data Center"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", config.Product, config.EnvironmentName, config.TerraformConfig.Variables["domain"], path)
+
+	get, err := http.Get(url)
+	if err != nil {
+		t.Errorf("Error accessing %s: %s", url, err)
+	}
+	defer get.Body.Close()
+
+	assert.Equal(t, 200, get.StatusCode)
+	content, err := io.ReadAll(get.Body)
+	if err != nil {
+		t.Errorf("Error reading response body: %s", err)
+	}
+	assert.Contains(t, expectedContent, string(content))
 }
