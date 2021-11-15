@@ -9,6 +9,7 @@ set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ENVIRONMENT_NAME=
+OVERRIDE_CONFIG_FILE=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -53,6 +54,8 @@ process_arguments() {
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
+    OVERRIDE_CONFIG_FILE=" -var-file=${CONFIG_FILE}"
+    echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -136,7 +139,7 @@ create_tfstate_resources() {
 create_update_infrastructure() {
   Echo "Starting to analyze the infrastructure..."
   terraform init
-  terraform apply -auto-approve
+  terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}"
 }
 
 set_current_context_k8s() {
