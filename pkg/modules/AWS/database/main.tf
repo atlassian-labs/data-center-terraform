@@ -63,12 +63,6 @@ module "db" {
 ################################################################################
 # Kubernetes secret to store db credential
 ################################################################################
-provider "kubernetes" {
-  host                   = var.eks.kubernetes_provider_config.host
-  token                  = var.eks.kubernetes_provider_config.token
-  cluster_ca_certificate = var.eks.kubernetes_provider_config.cluster_ca_certificate
-}
-
 resource "kubernetes_secret" "rds_secret" {
   metadata {
     name = "${module.db.db_instance_id}-db-cred"
