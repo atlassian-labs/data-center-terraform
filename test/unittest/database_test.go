@@ -17,11 +17,11 @@ func TestDbVariablesNotProvided(t *testing.T) {
 
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "No value for required variable")
-	assert.Contains(t, err.Error(), "\"vpc_id\" is not set")
-	assert.Contains(t, err.Error(), "\"subnets\" is not set")
 	assert.Contains(t, err.Error(), "\"product\" is not set")
 	assert.Contains(t, err.Error(), "\"rds_instance_id\" is not set")
 	assert.Contains(t, err.Error(), "\"db_tags\" is not set")
+	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 }
 
 func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
@@ -34,8 +34,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	inputRdsInstanceId := "dummy-rds-instance-id"
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_id":          inputVpcId,
-		"subnets":         inputSubnets,
 		"product":         inputProduct,
 		"rds_instance_id": inputRdsInstanceId,
 		"db_tags": map[string]interface{}{
@@ -48,6 +46,10 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 				"cluster_ca_certificate": "dummy-certificate",
 			},
 			"cluster_security_group": inputSourceSgId,
+		},
+		"vpc": map[string]interface{}{
+			"vpc_id":          inputVpcId,
+			"private_subnets": inputSubnets,
 		},
 	}, t, databaseModule)
 
@@ -88,8 +90,6 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 	InvalidInputRdsInstanceId := "1-"
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_id":          inputVpcId,
-		"subnets":         inputSubnets,
 		"product":         inputProduct,
 		"rds_instance_id": InvalidInputRdsInstanceId,
 		"db_tags": map[string]interface{}{
@@ -101,6 +101,10 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
+		},
+		"vpc": map[string]interface{}{
+			"vpc_id":          inputVpcId,
+			"private_subnets": inputSubnets,
 		},
 	}, t, databaseModule)
 

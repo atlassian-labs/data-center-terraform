@@ -7,7 +7,7 @@ module "security_group" {
 
   name        = "${var.product}_rds_sg"
   description = "Postgres security group"
-  vpc_id      = var.vpc_id
+  vpc_id      = var.vpc.vpc_id
 
   # ingress
   ingress_with_source_security_group_id = [
@@ -48,7 +48,7 @@ module "db" {
   random_password_length = 12
   port                   = 5432
 
-  subnet_ids             = var.subnets
+  subnet_ids             = var.vpc.private_subnets
   vpc_security_group_ids = [module.security_group.security_group_id]
 
   maintenance_window = "Mon:00:00-Mon:03:00"

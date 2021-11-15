@@ -1,13 +1,3 @@
-variable "vpc_id" {
-  description = "VPC where the RDS instance will be deployed."
-  type        = string
-}
-
-variable "subnets" {
-  description = "A list of subnets to place the database within."
-  type        = list(string)
-}
-
 variable "product" {
   description = "Name of the product that this database will be created for."
 }
@@ -28,5 +18,10 @@ variable "db_tags" {
 
 variable "eks" {
   description = "EKS module that hosts the product."
+  type        = any
+}
+
+variable "vpc" {
+  description = "VPC module that hosts the product."
   type        = any
 }
