@@ -23,25 +23,20 @@ func TestBambooModule(t *testing.T) {
 	awsRegion := endpoints.ApNortheast2RegionID
 
 	testConfig := GenerateConfigForProductE2eTest(product, awsRegion)
-	tfOptions := GenerateTerraformOptions(testConfig.terraformConfig, t)
-	kubectlOptions := GenerateKubectlOptions(testConfig.kubectlConfig, tfOptions, testConfig.environmentName)
-	helmOptions := GenerateHelmOptions(testConfig.helmConfig, kubectlOptions)
+	tfOptions := GenerateTerraformOptions(testConfig.TerraformConfig, t)
+	kubectlOptions := GenerateKubectlOptions(testConfig.KubectlConfig, tfOptions, testConfig.EnvironmentName)
+	helmOptions := GenerateHelmOptions(testConfig.HelmConfig, kubectlOptions)
 
 	defer terraform.Destroy(t, tfOptions)
 
 	terraform.InitAndApply(t, tfOptions)
 
 	defer helm.RemoveRepo(t, helmOptions, "atlassian-data-center")
-	defer helm.Delete(t, helmOptions, testConfig.releaseName, true)
-
-	k8s.CreateNamespace(t, kubectlOptions, product)
-	helm.AddRepo(t, helmOptions, "atlassian-data-center", "https://atlassian.github.io/data-center-helm-charts")
-	helm.Install(t, helmOptions, fmt.Sprintf("atlassian-data-center/%s", product), testConfig.releaseName)
+	defer helm.Delete(t, helmOptions, testConfig.ReleaseName, true)
 
 	assertVPC(t, tfOptions, awsRegion)
 	assertEKS(t, tfOptions, awsRegion)
-	assertBambooPod(t, kubectlOptions, testConfig.releaseName)
-
+	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName)
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string) {
