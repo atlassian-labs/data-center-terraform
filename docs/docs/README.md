@@ -1,4 +1,4 @@
-# Infrastructure for Atlassoan Data Center products on Kubernetes
+# Infrastructure for Atlassian Data Center products on Kubernetes
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 
 
@@ -7,39 +7,45 @@ This project provides a tool to provision infrastructure for Atlassian DC helm c
 At this stage the scope is providing the infrastructure for Bamboo.  
 
 
-## Usage
+## Prerequisites
 
-In order to use this project you need to have the following application installed on your local machine and an admin access to an AWS account:
+In order to deploy the infrastructure for Atlassian Data Center products on Kubernetes you need to have the 
+following applications installed on your local machine:
 
 * AWS CLI
-* Kubernetes 
 * helm
 * Terraform
 
+See [prerequisites](userguide/PREREQUISITES.md) for details. 
+
 ## Installation
+Before installing the infrastructure for Atlassian products please make sure you read the 
+[prerequisites](userguide/PREREQUISITES.md) section and completed the [configuration](userguide/CONFIGURATION.md). 
 
-1. Login with an admin access to an AWS account
-2. Checkout out the project into your local
-3. Open a terminal and change your current path to the root of the project
-4. Run the following script to create the infrastructure:
-```shell
-./pkg/scripts/install.sh -p <product>
+After you have done the above steps you can [install](userguide/INSTALLATION.md) the Atlassian Data Center infrastructure 
+for selected products. 
+
+## Uninstall the products and infrastructure cleanup
+
+To uninstall the products and clean up the infrastructure run the following command:
+```shell 
+./pkg/scripts/uninstall
 ```
 
-## Uninstallation
+This will remove the products and all Atlassian Data Center infrastructure including Terraform state in S3 bucket and 
+dynamodb lock table created by install process. 
 
-To uninstall the product and clean up the infrastructure run the following command:
-```shell script
-./pkg/scripts/uninstall -p <product>
-```
-
-## Documentation
-> TODO
+!!! tip "Do you want to keep the terraform state?"
+    If you want to keep the terraform state files and dynamodb lock table then use the switch `-s`:
+    ```shell 
+    ./pkg/scripts/uninstall -s
+    ```
 
 
 ## Feedback
 
-If you find any issue, [raise a ticket](https://support.atlassian.com/contact/). If you have general feedback or question regarding the charts, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes).
+If you find any issue, [raise a ticket](https://support.atlassian.com/contact/). If you have general feedback or question 
+regarding the charts, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes).
   
 
 ## Contributions

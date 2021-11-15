@@ -17,3 +17,9 @@ output "eks" {
   value       = module.eks
   description = "EKS Module"
 }
+
+
+output "efs" {
+  value       = module.efs
+  description = "EFS Module"
+}

@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# This script manages to destroy the infrastructure for the given product
+# This script manages to destroy the infrastructure of the Atlassian Data Center products
 #
-# Usage:  ./uninstall <product> [-s] [-h]
-# <product>: - At this the script supports only 'bamboo'. If the arguments are missing 'bamboo' will consider by default
+# Usage:  uninstall [-c <config_file>] [-s] [-h]
+# -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
+# -s : Skip cleaning up the terraform state
+# -h : provides help to how executing this script.
 
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+ENVIRONMENT_NAME=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -18,23 +21,23 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh -p <product> [-h] [-s]"
-  echo "   <product>: name of the product to uninstall. At this point we only support 'bamboo'."
-  echo "   -s : Skip cleaning up the terraform state"
+  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
+  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
+  echo "   -s : Skip cleaning up the terraform state."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
 }
 
 # Extract arguments
-  declare -l PRODUCT
+  CONFIG_FILE=
   HELP_FLAG=
   SKIP_TFSTATE=
   while getopts sh?p: name ; do
       case $name in
       s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
-      p)  PRODUCT="${OPTARG}";;       # Product name for uninstall
+      c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.auto.tfvars'
       ?)  echo "Invalid arguments."; show_help
       esac
   done
@@ -42,26 +45,24 @@ EOF
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
 
- # Validate the arguments. PRODUCT (first argument) and second argument to see if skip generating backend vars
+ # Validate the arguments.
 process_arguments() {
-  if [ ! -z "${PRODUCT}" ]; then
-    if [ ${PRODUCT} == "bamboo" ]; then
-      echo "Preparing to uninstall the infrastructure of '${PRODUCT}'."./
-    else
-      echo "The product '${PRODUCT}' is not supported. At this point only we support the following products:"
-      echo "     1. bamboo"
-      echo
-      exit 1
-    fi
+  # set the default value for config file if is not provided
+  if [ -z "${CONFIG_FILE}" ]; then
+    CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
   else
-    echo "Invalid arguments."
-    show_help
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+      echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
+      show_help
+    fi
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
     show_help
   fi
+
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 destroy_infrastructure() {
@@ -75,7 +76,7 @@ destroy_infrastructure() {
     exit 1
   fi
   cd "${CURRENT_PATH}"
-  echo ${PRODUCT} infrastructure is removed successfully.
+  echo "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
 }
 
 
@@ -91,6 +92,7 @@ destroy_tfstate() {
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
     cd "${SCRIPT_PATH}/../tfstate"
     set +e
@@ -100,12 +102,11 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy -target 'module.tfstate-table'
+      terraform destroy
       if [ $? -eq 0 ]; then
         set -e
-        aws "s3" "rm" "s3://${S3_BUCKET}/${BUCKET_KEY}" "--recursive"
       else
-        echo "tfstate table could not be removed."
+        echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
         cd "${CURRENT_PATH}"
         exit 1
       fi

@@ -7,11 +7,11 @@ module "vpc" {
   version = "3.10.0"
 
   name = var.vpc_name
-  cidr = "10.0.0.0/20"
+  cidr = local.cidr
   azs  = [data.aws_availability_zones.available.zone_ids[0], data.aws_availability_zones.available.zone_ids[1]]
 
-  private_subnets = ["10.0.0.0/24", "10.0.1.0/24"]
-  public_subnets  = ["10.0.8.0/24", "10.0.9.0/24"]
+  private_subnets = local.subnets[0]
+  public_subnets  = local.subnets[1]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true

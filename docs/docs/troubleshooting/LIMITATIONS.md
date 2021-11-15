@@ -1,3 +1,3 @@
 # Limitations 
 
-## Product limitations
+## Infrastructure limitations

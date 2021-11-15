@@ -1,4 +1,4 @@
-name: Automated Testing
+name: Unit Testing
 on:
   workflow_dispatch:
   push:
