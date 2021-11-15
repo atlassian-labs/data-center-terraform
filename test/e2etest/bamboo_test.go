@@ -3,7 +3,6 @@ package e2etest
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 	"time"
 
@@ -94,8 +93,7 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseNa
 	pod := k8s.GetPod(t, kubectlOptions, podName)
 	k8s.WaitUntilPodAvailable(t, kubectlOptions, podName, 5, 30*time.Second)
 	shareHomeVolume := SafeExtractShareHomeVolume(pod.Spec.Volumes)
-	log.Println(shareHomeVolume.PersistentVolumeClaim.ClaimName)
 
-	assert.Equal(t, pod.Status.ContainerStatuses[0].Ready, true)
-	assert.Equal(t, shareHomeVolume.PersistentVolumeClaim.ClaimName, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product))
+	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
+	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
 }
