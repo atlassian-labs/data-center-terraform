@@ -19,10 +19,10 @@ variable "product" {
 variable "rds_instance_id" {
   description = "Name of the DB instance."
   type        = string
-  #  validation {
-  #    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]+$", var.rds_instance_id))
-  #    error_message = "Invalid RDS instance name."
-  #  }
+  validation {
+    condition     = can(regex("^[a-z][a-z0-9\\-]+[a-z0-9]$", var.rds_instance_id))
+    error_message = "Invalid RDS instance name."
+  }
 }
 
 variable "db_tags" {

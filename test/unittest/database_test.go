@@ -71,3 +71,36 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
 
 }
+
+func TestDbRdsInstanceIdInvalid(t *testing.T) {
+	t.Parallel()
+
+	inputVpcId := "dummy_vpc_id"
+	inputSubnets := []interface{}{"subnet1", "subnet2"}
+	inputSourceSgId := "dummy-source-sg"
+	inputProduct := "bamboo"
+	InvalidInputRdsInstanceId := "1-"
+
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc_id":          inputVpcId,
+		"subnets":         inputSubnets,
+		"source_sg":       inputSourceSgId,
+		"product":         inputProduct,
+		"rds_instance_id": InvalidInputRdsInstanceId,
+		"db_tags": map[string]interface{}{
+			"resource_owner": TestResourceOwner,
+		},
+		"eks": map[string]interface{}{
+			"kubernetes_provider_config": map[string]interface{}{
+				"host":                   "dummy-token",
+				"token":                  "dummy-token",
+				"cluster_ca_certificate": "dummy-certificate",
+			},
+		},
+	}, t, databaseModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid RDS instance name.")
+}
