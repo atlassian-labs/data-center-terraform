@@ -37,7 +37,7 @@ func TestBambooModule(t *testing.T) {
 	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
 	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
 	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName, product)
-	assertIngressAccess(t, testConfig)
+	assertIngressAccess(t, testConfig.Product, testConfig.EnvironmentName, fmt.Sprintf("%v", testConfig.TerraformConfig.Variables["domain"]))
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
@@ -92,21 +92,19 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseNa
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
 }
 
-func assertIngressAccess(t *testing.T, config TestConfig) {
-	path := "/setup/setupLicense.action"
+func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
+	path := "setup/setupLicense.action"
 	expectedContent := "Welcome to Bamboo Data Center"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", config.Product, config.EnvironmentName, config.TerraformConfig.Variables["domain"], path)
-
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
+	fmt.Printf("testing url: %s", url)
 	get, err := http.Get(url)
-	if err != nil {
-		t.Errorf("Error accessing %s: %s", url, err)
-	}
 	defer get.Body.Close()
 
+	assert.NoError(t, err, "Error accessing url: %s", url)
 	assert.Equal(t, 200, get.StatusCode)
+
 	content, err := io.ReadAll(get.Body)
-	if err != nil {
-		t.Errorf("Error reading response body: %s", err)
-	}
-	assert.Contains(t, expectedContent, string(content))
+
+	assert.NoError(t, err, "Error reading response body")
+	assert.Contains(t, string(content), expectedContent)
 }

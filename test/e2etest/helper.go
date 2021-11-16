@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -59,22 +58,15 @@ func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.O
 	return tfOptions
 }
 
-func GenerateHelmOptions(config HelmConfig, kubectlOptions *k8s.KubectlOptions) *helm.Options {
-	return &helm.Options{
-		SetValues:      config.SetValues,
-		KubectlOptions: kubectlOptions,
-		ExtraArgs:      config.ExtraArgs,
-	}
-}
-
 func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
 func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
-	environmentName := "e2eTest" + random.UniqueId()
-	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, strings.ToLower(random.UniqueId()))
+	testId := strings.ToLower(random.UniqueId())
+	environmentName := "e2eTest" + testId
+	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, testId)
 	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
 		Variables: map[string]interface{}{
