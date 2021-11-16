@@ -31,3 +31,7 @@ output "kubernetes_provider_config" {
   }
   sensitive = true
 }
+
+output "cluster_security_group" {
+  value = module.eks.cluster_security_group_id
+}
