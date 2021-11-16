@@ -10,6 +10,7 @@ set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ENVIRONMENT_NAME=
+OVERRIDE_CONFIG_FILE=
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -55,6 +56,8 @@ process_arguments() {
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
+    OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
+    echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
   fi
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -68,11 +71,12 @@ process_arguments() {
 destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
   set +e
-  terraform destroy
+  terraform destroy "${OVERRIDE_CONFIG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
     cd "${CURRENT_PATH}"
+    echo "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully."
     exit 1
   fi
   cd "${CURRENT_PATH}"
@@ -102,7 +106,7 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy
+      terraform destroy "${OVERRIDE_CONFIG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
       else
