@@ -30,13 +30,16 @@ Open configuration file using a text editor and configure the infrastructure as 
     If you have more than one environment, make sure to manage the config file of each environment separately. 
     When you need to clean up the environment use the same config file that is being used to create the environment.   
 
-## 4. Install the product        
-When the config file is configured based on your environment then you are ready to start installation process. 
-Installing process provision the required infrastructure for the configured environment and install the selected products. 
+## 4. Install the infrastructure and product        
+When based on your environment the config file is configured then you are ready to start installation process. 
+Installing process will provision the required infrastructure for the configured environment and will install the selected products. 
 
 Terraform handles creating and managing the infrastructure. 
-Terraform creates a S3 bucket to store the current state of the environment and a dynamodb table to handle the lock environment and prevent it to be modified by more than one person at the time.
-This process is automated and what you need to do is only run installation script which is located in `pkg/scripts` folder.
+To keep track of the current state of the resources and manage any further change, terraform creates a S3 bucket to store the current state of the environment.
+Also, it creates a dynamodb table to handle to manage lock the environment during installation, cleanup, and upgrade to prevent modifying by more than one process at the time.
+This process is part of installation and no extra step is needed to take. 
+ 
+The installation script is located in `pkg/scripts` folder of the project.
 
 Usage:  `./pkg/scripts/install.sh [-c <config-file] [-h]`
 
@@ -48,13 +51,18 @@ You may use a different file with the same format to handle more than one enviro
 !!! info "Supported Atlassian Data Center products."
     At this time only **Bamboo** is the only supported product.
 
-To provision the infrastructure using default config file run:
-    ```shell
-    ./pkg/scripts/install.sh
-    ```
+
+=== "Using the default config file"
+
+    To provision the infrastructure using default config file run:
+        ```shell
+        ./pkg/scripts/install.sh
+        ```
    
-If you need to use a different config file other than the defualt one then first create and configure your config file and then run: 
-        
-``` shell
-./pkg/scripts/install.sh -c <your-config_file>
-```   
+=== "Using other config file"
+   
+    If you need to use a different config file other than the defualt one then first create and configure your config file and then run: 
+            
+    ``` shell
+    ./pkg/scripts/install.sh -c <your-config_file>
+    ```   
