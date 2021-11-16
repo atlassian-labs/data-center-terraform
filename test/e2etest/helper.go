@@ -2,16 +2,23 @@ package e2etest
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"testing"
 
-	"github.com/aws/aws-sdk-go/aws"
+	awsSdk "github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
+	"github.com/stretchr/testify/require"
+	v1 "k8s.io/api/core/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 type TestConfig struct {
@@ -66,7 +73,7 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
 	environmentName := "e2e-test"
-	releaseName := fmt.Sprintf("%s-e2e-test-%s", product, strings.ToLower(random.UniqueId()))
+	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, strings.ToLower(random.UniqueId()))
 	terraformConfig := TerraformConfig{
 		variables: map[string]interface{}{
 			"environment_name": environmentName,
@@ -88,7 +95,9 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 		targetModuleDir: ".",
 	}
 	helmConfig := HelmConfig{
-		setValues: map[string]string{},
+		setValues: map[string]string{
+			"volumes.sharedHome.customVolume.persistentVolumeClaim.claimName": fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product),
+		},
 		ExtraArgs: map[string][]string{"install": {"--wait"}},
 	}
 	kubectlConfig := KubectlConfig{
@@ -106,7 +115,49 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 }
 
 func GenerateAwsSession(awsRegion string) *session.Session {
-	return session.Must(session.NewSession(&aws.Config{
-		Region: aws.String(awsRegion),
+	return session.Must(session.NewSession(&awsSdk.Config{
+		Region: awsSdk.String(awsRegion),
 	}))
+}
+
+func K8sDriver(t *testing.T, tfOptions *terraform.Options, environmentName string) *kubernetes.Clientset {
+	config, err := clientcmd.BuildConfigFromFlags("", fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName))
+	if err != nil {
+		require.NoError(t, err)
+	}
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		require.NoError(t, err)
+	}
+	return clientset
+}
+
+func SafeExtractShareHomeVolume(volumes []v1.Volume) v1.Volume {
+	if volumes[1].Name == "shared-home" {
+		return volumes[1]
+	}
+	return volumes[0]
+}
+
+func GetAvailableRegion(t *testing.T) string {
+	for {
+		awsRegion := aws.GetRandomRegion(t, nil, []string{
+			endpoints.UsEast1RegionID,
+			endpoints.UsEast2RegionID,
+			endpoints.UsWest1RegionID,
+			endpoints.UsWest2RegionID,
+			endpoints.AfSouth1RegionID,
+			endpoints.ApEast1RegionID,
+			endpoints.ApNortheast2RegionID,
+			endpoints.ApSoutheast2RegionID,
+		}) // Avoid busy/unavailable regions
+		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
+		if err != nil {
+			require.NoError(t, err)
+		}
+		if len(vpcs) < 4 {
+			return awsRegion
+		}
+		log.Println(awsRegion, " has reached resource limit, Finding new region")
+	}
 }
