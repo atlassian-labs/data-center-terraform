@@ -51,7 +51,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
@@ -115,7 +115,7 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
@@ -148,7 +148,7 @@ func TestDbAllocatedStorageUnderLimit(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
@@ -181,7 +181,7 @@ func TestDbAllocatedStorageOverLimit(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
@@ -214,7 +214,7 @@ func TestDbIopsUnderLimit(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
@@ -246,7 +246,7 @@ func TestDbIopsOverLimit(t *testing.T) {
 		},
 		"eks": map[string]interface{}{
 			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-token",
+				"host":                   "dummy-host",
 				"token":                  "dummy-token",
 				"cluster_ca_certificate": "dummy-certificate",
 			},
