@@ -65,7 +65,7 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
-	environmentName := "e2eTest" + testId
+	environmentName := "e2etest-" + testId
 	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, testId)
 	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
