@@ -27,19 +27,8 @@ for selected products.
 
 ## Uninstall the products and infrastructure cleanup
 
-To uninstall the products and clean up the infrastructure run the following command:
-```shell 
-./pkg/scripts/uninstall
-```
-
-This will remove the products and all Atlassian Data Center infrastructure including Terraform state in S3 bucket and 
-dynamodb lock table created by install process. 
-
-!!! tip "Do you want to keep the terraform state?"
-    If you want to keep the terraform state files and dynamodb lock table then use the switch `-s`:
-    ```shell 
-    ./pkg/scripts/uninstall -s
-    ```
+In installation process, Terraform created all required resources on AWS environment in order to provide the infrastructure to handle Atlassian Data Center products. 
+If you want to uninstall all products and cleanup the infrastructure see [cleanup page](userguide/CLEANUP.md).
 
 
 ## Feedback

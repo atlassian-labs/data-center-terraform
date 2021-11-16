@@ -13,8 +13,8 @@ Before installing the Bamboo Data Center you need to make sure your environment 
 
 1. [Install Terraform](#terraform) 
 2. [Install helm v3.3 or later](#helm)
-3. [Install AWS CLI](#aws_configuration)
-4. [Kubernetes tools](#kubernetes_tools) (optional)
+3. [Install AWS CLI](#aws-cli)
+4. [Kubernetes tools](#kubernetes-tools) (optional)
 
 
 ### :material-terraform: Terraform
@@ -44,12 +44,16 @@ Before using this project make sure you have Helm v3.3 or later installed on you
 If you have not installed Helm on your local environment, or the installed version is lower than `v3.3` then you 
 need to [install Helm](https://helm.sh/docs/intro/install/){.external}.
 
-### :material-aws: AWS configuration
+### :material-aws: AWS CLI
 You need to have the AWS CLI tool installed on your local machine before installing the infrastructure. We recommend 
-having version 2 of AWS CLI. 
+having version 2 of `aws-cli`. 
+
+```
+aws --version
+```
 
 If you still have no AWS CLI installed on your local environment please
- [install it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html){.external} before 
+ [install it](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external} before 
  proceeding to the next step.  
 
 
