@@ -7,6 +7,16 @@ import (
 )
 
 const databaseModule = "database"
+const inputVpcId = "dummy_vpc_id"
+
+var inputSubnets = []interface{}{"subnet1", "subnet2"}
+
+const inputSourceSgId = "dummy-source-sg"
+const inputProduct = "bamboo"
+const inputRdsInstanceId = "dummy-rds-instance-id"
+const inputInstanceClass = "dummy.instance.class"
+const inputAllocatedStorage = 100
+const inputIops = 1000
 
 func TestDbVariablesNotProvided(t *testing.T) {
 	t.Parallel()
@@ -29,15 +39,6 @@ func TestDbVariablesNotProvided(t *testing.T) {
 
 func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
-
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputSourceSgId := "dummy-source-sg"
-	inputProduct := "bamboo"
-	inputRdsInstanceId := "dummy-rds-instance-id"
-	inputInstanceClass := "dummy.instance.class"
-	inputAllocatedStorage := 100
-	inputIops := 1000
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"product":           inputProduct,
@@ -96,12 +97,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 func TestDbRdsInstanceIdInvalid(t *testing.T) {
 	t.Parallel()
 
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputProduct := "bamboo"
-	inputInstanceClass := "dummy.instance.class"
-	inputAllocatedStorage := 100
-	inputIops := 1000
 	InvalidInputRdsInstanceId := "1-"
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -135,17 +130,11 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 func TestDbAllocatedStorageUnderLimit(t *testing.T) {
 	t.Parallel()
 
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputProduct := "bamboo"
-	InputRdsInstanceId := "dummy-rds-instance"
-	inputInstanceClass := "dummy.instance.class"
 	invalidInputAllocatedStorage := 99
-	inputIops := 1000
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"product":           inputProduct,
-		"rds_instance_id":   InputRdsInstanceId,
+		"rds_instance_id":   inputRdsInstanceId,
 		"instance_class":    inputInstanceClass,
 		"allocated_storage": invalidInputAllocatedStorage,
 		"iops":              inputIops,
@@ -174,17 +163,11 @@ func TestDbAllocatedStorageUnderLimit(t *testing.T) {
 func TestDbAllocatedStorageOverLimit(t *testing.T) {
 	t.Parallel()
 
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputProduct := "bamboo"
-	InputRdsInstanceId := "dummy-rds-instance"
-	inputInstanceClass := "dummy.instance.class"
 	invalidInputAllocatedStorage := 65537
-	inputIops := 1000
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"product":           inputProduct,
-		"rds_instance_id":   InputRdsInstanceId,
+		"rds_instance_id":   inputRdsInstanceId,
 		"instance_class":    inputInstanceClass,
 		"allocated_storage": invalidInputAllocatedStorage,
 		"iops":              inputIops,
@@ -213,17 +196,11 @@ func TestDbAllocatedStorageOverLimit(t *testing.T) {
 func TestDbIopsUnderLimit(t *testing.T) {
 	t.Parallel()
 
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputProduct := "bamboo"
-	InputRdsInstanceId := "dummy-rds-instance"
-	inputInstanceClass := "dummy.instance.class"
-	inputAllocatedStorage := 100
 	invalidInputIops := 999
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"product":           inputProduct,
-		"rds_instance_id":   InputRdsInstanceId,
+		"rds_instance_id":   inputRdsInstanceId,
 		"instance_class":    inputInstanceClass,
 		"allocated_storage": inputAllocatedStorage,
 		"iops":              invalidInputIops,
@@ -251,17 +228,11 @@ func TestDbIopsUnderLimit(t *testing.T) {
 func TestDbIopsOverLimit(t *testing.T) {
 	t.Parallel()
 
-	inputVpcId := "dummy_vpc_id"
-	inputSubnets := []interface{}{"subnet1", "subnet2"}
-	inputProduct := "bamboo"
-	InputRdsInstanceId := "dummy-rds-instance"
-	inputInstanceClass := "dummy.instance.class"
-	inputAllocatedStorage := 100
 	invalidInputIops := 256001
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"product":           inputProduct,
-		"rds_instance_id":   InputRdsInstanceId,
+		"rds_instance_id":   inputRdsInstanceId,
 		"instance_class":    inputInstanceClass,
 		"allocated_storage": inputAllocatedStorage,
 		"iops":              invalidInputIops,
