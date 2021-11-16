@@ -95,7 +95,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 		TargetModuleDir: ".",
 	}
 	helmConfig := HelmConfig{
-		setValues: map[string]string{
+		SetValues: map[string]string{
 			"ingress.create": "true", "ingress.host": "bamboo." + environmentName + "." + domain,
 			"volumes.sharedHome.customVolume.persistentVolumeClaim.claimName": fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product),
 		},

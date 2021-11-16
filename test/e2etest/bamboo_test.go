@@ -11,7 +11,6 @@ import (
 	awsSdk "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -28,7 +27,6 @@ func TestBambooModule(t *testing.T) {
 	testConfig := GenerateConfigForProductE2eTest(product, awsRegion)
 	tfOptions := GenerateTerraformOptions(testConfig.TerraformConfig, t)
 	kubectlOptions := GenerateKubectlOptions(testConfig.KubectlConfig, tfOptions, testConfig.EnvironmentName)
-	helmOptions := GenerateHelmOptions(testConfig.HelmConfig, kubectlOptions)
 
 	defer terraform.Destroy(t, tfOptions)
 
