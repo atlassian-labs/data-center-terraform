@@ -41,12 +41,12 @@ Before using this project make sure you have Helm v3.3 or later installed on you
     helm version --short
     ```
 
-If you have not the Helm installed on your local environment, or the installed version is lower than `v3.3` then you 
+If you have not installed Helm on your local environment, or the installed version is lower than `v3.3` then you 
 need to [install Helm](https://helm.sh/docs/intro/install/){.external}.
 
 ### :material-aws: AWS configuration
-You need to have AWS CLI tool installed on your local machine before installing the infrastructure. We recommend to 
-have version 2 of AWS CLI. 
+You need to have the AWS CLI tool installed on your local machine before installing the infrastructure. We recommend 
+having version 2 of AWS CLI. 
 
 If you still have no AWS CLI installed on your local environment please
  [install it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html){.external} before 
