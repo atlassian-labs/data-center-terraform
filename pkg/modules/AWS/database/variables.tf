@@ -21,8 +21,8 @@ variable "allocated_storage" {
   type        = number
 
   validation {
-    condition     = (var.allocated_storage >= 100 && var.allocated_storage <= 16384)
-    error_message = "Invalid allocated storage. Must be between 100 and 16384, inclusive."
+    condition     = (var.allocated_storage >= 100 && var.allocated_storage <= 65536)
+    error_message = "Invalid allocated storage. Must be between 100 and 65,536, inclusive."
   }
 }
 

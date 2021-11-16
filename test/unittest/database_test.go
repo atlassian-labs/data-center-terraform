@@ -168,7 +168,7 @@ func TestDbAllocatedStorageUnderLimit(t *testing.T) {
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Invalid allocated storage. Must be between 100 and 16384, inclusive.")
+	assert.Contains(t, err.Error(), "Invalid allocated storage. Must be between 100 and 65,536, inclusive.")
 }
 
 func TestDbAllocatedStorageOverLimit(t *testing.T) {
@@ -179,7 +179,7 @@ func TestDbAllocatedStorageOverLimit(t *testing.T) {
 	inputProduct := "bamboo"
 	InputRdsInstanceId := "dummy-rds-instance"
 	inputInstanceClass := "dummy.instance.class"
-	invalidInputAllocatedStorage := 16385
+	invalidInputAllocatedStorage := 65537
 	inputIops := 1000
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
@@ -207,7 +207,7 @@ func TestDbAllocatedStorageOverLimit(t *testing.T) {
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Invalid allocated storage. Must be between 100 and 16384, inclusive.")
+	assert.Contains(t, err.Error(), "Invalid allocated storage. Must be between 100 and 65,536, inclusive.")
 }
 
 func TestDbIopsUnderLimit(t *testing.T) {
