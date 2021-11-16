@@ -1,8 +1,11 @@
 package e2etest
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 	"testing"
 
@@ -20,31 +23,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
-
-type TestConfig struct {
-	terraformConfig TerraformConfig
-	helmConfig      HelmConfig
-	kubectlConfig   KubectlConfig
-	releaseName     string
-	environmentName string
-}
-
-type TerraformConfig struct {
-	variables       map[string]interface{}
-	envVariables    map[string]string
-	targetModuleDir string
-}
-
-type HelmConfig struct {
-	setValues      map[string]string
-	KubectlOptions *k8s.KubectlOptions
-	ExtraArgs      map[string][]string
-}
-
-type KubectlConfig struct {
-	contextName string
-	namespace   string
-}
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.targetModuleDir)
@@ -72,7 +50,7 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 
 func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
-	environmentName := "e2e-test"
+	environmentName := "e2etest-" + strings.ToLower(random.UniqueId())
 	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, strings.ToLower(random.UniqueId()))
 	terraformConfig := TerraformConfig{
 		variables: map[string]interface{}{
@@ -150,6 +128,7 @@ func GetAvailableRegion(t *testing.T) string {
 			endpoints.ApEast1RegionID,
 			endpoints.ApNortheast2RegionID,
 			endpoints.ApSoutheast2RegionID,
+			endpoints.ApNortheast3RegionID,
 		}) // Avoid busy/unavailable regions
 		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
 		if err != nil {
@@ -160,4 +139,32 @@ func GetAvailableRegion(t *testing.T) string {
 		}
 		log.Println(awsRegion, " has reached resource limit, Finding new region")
 	}
+}
+
+func Save(path string, object interface{}) error {
+	file, foerr := os.Create(path)
+	if foerr != nil {
+		return foerr
+	}
+	defer file.Close()
+
+	json, mrerr := json.Marshal(object)
+	if mrerr != nil {
+		return mrerr
+	}
+	_, fwerr := file.Write(json)
+	return fwerr
+}
+
+func Load(path string, object interface{}) error {
+	file, foerr := os.Open(path)
+	if foerr != nil {
+		return foerr
+	}
+	defer file.Close()
+	bytesHolder, frerr := ioutil.ReadAll(file)
+	if frerr != nil {
+		return frerr
+	}
+	return json.Unmarshal(bytesHolder, object)
 }

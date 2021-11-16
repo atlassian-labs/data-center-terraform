@@ -18,7 +18,6 @@ import (
 )
 
 func TestBambooModule(t *testing.T) {
-	t.Parallel()
 
 	product := "bamboo"
 	awsRegion := GetAvailableRegion(t)
@@ -28,7 +27,9 @@ func TestBambooModule(t *testing.T) {
 	kubectlOptions := GenerateKubectlOptions(testConfig.kubectlConfig, tfOptions, testConfig.environmentName)
 	helmOptions := GenerateHelmOptions(testConfig.helmConfig, kubectlOptions)
 
-	defer terraform.Destroy(t, tfOptions)
+	if err := Save("bamboo_tfOptions.json", *tfOptions); err != nil {
+		require.NoError(t, err)
+	}
 
 	terraform.InitAndApply(t, tfOptions)
 

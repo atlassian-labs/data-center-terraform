@@ -45,3 +45,8 @@ kubeconfig_atlassian-dc-*
 # IDEs
 **/.idea/*
 .DS_Store
+
+
+# Ignore test artifacts
+*_tfOptions.json
+*.log
