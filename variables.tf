@@ -34,3 +34,25 @@ variable "domain" {
   type        = string
 }
 
+variable "rds_configuration" {
+  type = object({
+    instance_class    = string
+    allocated_storage = number
+    iops              = string
+  })
+}
+
+#variable "allocated_storage" {
+#  description = "Allocated storage for database instance in GiB."
+#  type        = number
+#}
+#
+#variable "instance_class" {
+#  description = "Instance class of the RDS instance."
+#  type        = string
+#}
+#
+#variable "iops" {
+#  description = "The requested number of I/O operations per second that the DB instance can support."
+#  type        = number
+#}

@@ -14,11 +14,17 @@ module "bamboo" {
   source     = "./pkg/products/bamboo"
   depends_on = [module.base-infrastructure]
 
-  region_name      = var.region
-  environment_name = var.environment_name
-  resource_tags    = var.resource_tags
-  vpc              = module.base-infrastructure.vpc
-  eks              = module.base-infrastructure.eks
-  efs              = module.base-infrastructure.efs
-  share_home_size  = "5Gi"
+  region_name       = var.region
+  environment_name  = var.environment_name
+  resource_tags     = var.resource_tags
+  vpc               = module.base-infrastructure.vpc
+  eks               = module.base-infrastructure.eks
+  efs               = module.base-infrastructure.efs
+  share_home_size   = "5Gi"
+  allocated_storage = var.rds_configuration.allocated_storage
+  instance_class    = var.rds_configuration.instance_class
+  iops              = var.rds_configuration.iops
+  #  allocated_storage = var.allocated_storage
+  #  instance_class    = var.instance_class
+  #  iops              = var.iops
 }
