@@ -19,22 +19,13 @@ variable "instance_class" {
 variable "allocated_storage" {
   description = "Allocated storage in GiB."
   type        = number
-
-  validation {
-    condition     = (var.allocated_storage >= 100 && var.allocated_storage <= 65536)
-    error_message = "Invalid allocated storage. Must be between 100 and 65,536, inclusive."
-  }
 }
 
 variable "iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   type        = number
-
-  validation {
-    condition     = (var.iops >= 1000 && var.iops <= 256000)
-    error_message = "Invalid iops. Must be between 1000 and 256000, inclusive."
-  }
 }
+
 variable "db_tags" {
   description = "List of additional tags that will be attached to database related resources."
   type        = map(string)
