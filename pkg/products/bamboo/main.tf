@@ -13,10 +13,40 @@ resource "aws_route53_record" "bamboo" {
 }
 
 resource "kubernetes_namespace" "bamboo" {
-
   metadata {
     name = local.product_name
   }
+}
+
+resource "helm_release" "bamboo" {
+  name       = "bamboo"
+  namespace  = local.product_name
+  repository = "https://atlassian.github.io/data-center-helm-charts"
+  chart      = "bamboo"
+  version    = "0.0.1"
+
+  values = [
+    yamlencode({
+      bamboo = {
+        resources = {
+          jvm = {
+            maxHeap = "512m"
+            minHeap = "256m"
+          }
+          container = {
+            requests = {
+              cpu    = "1",
+              memory = "1Gi"
+            }
+          }
+        }
+      }
+      ingress = {
+        create = "true",
+        host   = local.product_domain_name,
+      },
+    })
+  ]
 }
 
 resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
