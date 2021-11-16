@@ -54,7 +54,7 @@ process_arguments() {
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
-    OVERRIDE_CONFIG_FILE=" -var-file=${CONFIG_FILE}"
+    OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
     echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
   fi
 
@@ -106,7 +106,7 @@ generate_backend_variables() {
 
   # fetch the config files from root
   cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
-  cp -fr "${SCRIPT_PATH}/../../config.auto.tfvars" "${SCRIPT_PATH}/../tfstate"
+  cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -126,7 +126,7 @@ create_tfstate_resources() {
     # create s3 bucket to be used for keep state of the terraform project
     echo "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
     terraform init
-    terraform apply -auto-approve
+    terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}"
     sleep 5s
 
     echo "Migrating the terraform state to S3 bucket..."

@@ -7,7 +7,7 @@ module "vpc" {
   version = "3.10.0"
 
   name = var.vpc_name
-  cidr = local.cidr
+  cidr = var.vpc_cidr
   azs  = [data.aws_availability_zones.available.zone_ids[0], data.aws_availability_zones.available.zone_ids[1]]
 
   private_subnets = local.subnets[0]
