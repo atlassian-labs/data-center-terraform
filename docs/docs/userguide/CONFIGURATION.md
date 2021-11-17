@@ -4,7 +4,7 @@ In order to create the infrastructure and install the product you need to config
 All configuration data should go to a terraform variable file.
 
 
-The config file contents is divided into two groups:
+The content of the config file is divided into two groups:
 
 1. [Mandatory configuration](#mandatory-configuration)
 2. [Optional configuration](#optional-configuration)
@@ -80,7 +80,7 @@ syntax:
       <tag-name-0> : "<tag-value>",
       <tag-name-1> : "<tag-value>",
       ...
-      <tag-name-n> : <tag-value>,
+      <tag-name-n> : "<tag-value>",
     }
 ```
 
@@ -92,7 +92,7 @@ Instance type should be a valid [AWS instance type](https://aws.amazon.com/ec2/i
 ```
 syntax:
 
-    instance_types = ["instance-type"]  # e.g: "m5.2xlarge"
+    instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
 ```
 
 ### Cluster Size
