@@ -34,7 +34,7 @@ EOF
   CONFIG_FILE=
   HELP_FLAG=
   SKIP_TFSTATE=
-  while getopts sh?p: name ; do
+  while getopts sh?c: name ; do
       case $name in
       s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
