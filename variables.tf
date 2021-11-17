@@ -17,11 +17,15 @@ variable "environment_name" {
 variable "resource_tags" {
   description = "Additional tags for all resources to be created."
   type        = map(string)
+  default = {
+    Terraform = "true"
+  }
 }
 
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
+  default     = ["m5.xlarge"]
 }
 
 variable "desired_capacity" {
@@ -31,6 +35,7 @@ variable "desired_capacity" {
     condition     = var.desired_capacity > 0
     error_message = "Desired number must be at least 1."
   }
+  default = 1
 }
 
 variable "domain" {

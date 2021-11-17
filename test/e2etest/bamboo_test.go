@@ -3,13 +3,14 @@ package e2etest
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/http"
 	"testing"
 	"time"
 
 	awsSdk "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -23,9 +24,8 @@ func TestBambooModule(t *testing.T) {
 	awsRegion := GetAvailableRegion(t)
 
 	testConfig := GenerateConfigForProductE2eTest(product, awsRegion)
-	tfOptions := GenerateTerraformOptions(testConfig.terraformConfig, t)
-	kubectlOptions := GenerateKubectlOptions(testConfig.kubectlConfig, tfOptions, testConfig.environmentName)
-	helmOptions := GenerateHelmOptions(testConfig.helmConfig, kubectlOptions)
+	tfOptions := GenerateTerraformOptions(testConfig.TerraformConfig, t)
+	kubectlOptions := GenerateKubectlOptions(testConfig.KubectlConfig, tfOptions, testConfig.EnvironmentName)
 
 	if err := Save("bamboo_tfOptions.json", *tfOptions); err != nil {
 		require.NoError(t, err)
@@ -33,18 +33,12 @@ func TestBambooModule(t *testing.T) {
 
 	terraform.InitAndApply(t, tfOptions)
 
-	defer helm.RemoveRepo(t, helmOptions, "atlassian-data-center")
-	defer helm.Delete(t, helmOptions, testConfig.releaseName, true)
-
-	helm.AddRepo(t, helmOptions, "atlassian-data-center", "https://atlassian.github.io/data-center-helm-charts")
-	helm.Install(t, helmOptions, fmt.Sprintf("atlassian-data-center/%s", product), testConfig.releaseName)
-
-	assertVPC(t, tfOptions, awsRegion, testConfig.environmentName)
-	assertEKS(t, tfOptions, awsRegion, testConfig.environmentName)
-	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.environmentName, product)
-	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.environmentName, product)
-	assertBambooPod(t, kubectlOptions, testConfig.releaseName, product)
-
+	assertVPC(t, tfOptions, awsRegion, testConfig.EnvironmentName)
+	assertEKS(t, tfOptions, awsRegion, testConfig.EnvironmentName)
+	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
+	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
+	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName, product)
+	assertIngressAccess(t, testConfig.Product, testConfig.EnvironmentName, fmt.Sprintf("%v", testConfig.TerraformConfig.Variables["domain"]))
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
@@ -97,4 +91,21 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseNa
 
 	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
+}
+
+func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
+	path := "setup/setupLicense.action"
+	expectedContent := "Welcome to Bamboo Data Center"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
+	fmt.Printf("testing url: %s", url)
+	get, err := http.Get(url)
+	defer get.Body.Close()
+
+	assert.NoError(t, err, "Error accessing url: %s", url)
+	assert.Equal(t, 200, get.StatusCode)
+
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	assert.Contains(t, string(content), expectedContent)
 }

@@ -13,7 +13,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -25,35 +24,29 @@ import (
 )
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
-	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.targetModuleDir)
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.TargetModuleDir)
 
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
-		Vars:         config.variables,
-		EnvVars:      config.envVariables,
+		Vars:         config.Variables,
+		EnvVars:      config.EnvVariables,
 	})
 
 	return tfOptions
 }
 
-func GenerateHelmOptions(config HelmConfig, kubectlOptions *k8s.KubectlOptions) *helm.Options {
-	return &helm.Options{
-		SetValues:      config.setValues,
-		KubectlOptions: kubectlOptions,
-		ExtraArgs:      config.ExtraArgs,
-	}
-}
-
 func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
-	return k8s.NewKubectlOptions(config.contextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.namespace)
+	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
 func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
 	testResourceOwner := "terraform_e2e_test"
-	environmentName := "e2etest-" + strings.ToLower(random.UniqueId())
-	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, strings.ToLower(random.UniqueId()))
+	testId := strings.ToLower(random.UniqueId())
+	environmentName := "e2etest-" + testId
+	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, testId)
+	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
-		variables: map[string]interface{}{
+		Variables: map[string]interface{}{
 			"environment_name": environmentName,
 			"region":           awsRegion,
 			"resource_tags": map[string]string{
@@ -63,32 +56,32 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 				"service_name":   "dc-infrastructure",
 				"git_repository": "github.com/atlassian-labs/data-center-terraform",
 			},
-			"instance_types":   []string{"m5.xlarge"},
-			"desired_capacity": 1,
-			"domain":           "deplops.com",
+			"domain": domain,
 		},
-		envVariables: map[string]string{
+		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
 		},
-		targetModuleDir: ".",
+		TargetModuleDir: ".",
 	}
 	helmConfig := HelmConfig{
-		setValues: map[string]string{
+		SetValues: map[string]string{
+			"ingress.create": "true", "ingress.host": "bamboo." + environmentName + "." + domain,
 			"volumes.sharedHome.customVolume.persistentVolumeClaim.claimName": fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product),
 		},
 		ExtraArgs: map[string][]string{"install": {"--wait"}},
 	}
 	kubectlConfig := KubectlConfig{
-		contextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
-		namespace:   product,
+		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
+		Namespace:   product,
 	}
 
 	return TestConfig{
-		releaseName:     releaseName,
-		terraformConfig: terraformConfig,
-		helmConfig:      helmConfig,
-		kubectlConfig:   kubectlConfig,
-		environmentName: environmentName,
+		Product:         product,
+		ReleaseName:     releaseName,
+		TerraformConfig: terraformConfig,
+		HelmConfig:      helmConfig,
+		KubectlConfig:   kubectlConfig,
+		EnvironmentName: environmentName,
 	}
 }
 
