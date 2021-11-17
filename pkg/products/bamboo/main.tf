@@ -13,10 +13,40 @@ resource "aws_route53_record" "bamboo" {
 }
 
 resource "kubernetes_namespace" "bamboo" {
-
   metadata {
     name = local.product_name
   }
+}
+
+resource "helm_release" "bamboo" {
+  name       = "bamboo"
+  namespace  = local.product_name
+  repository = "https://atlassian.github.io/data-center-helm-charts"
+  chart      = "bamboo"
+  version    = "0.0.1"
+
+  values = [
+    yamlencode({
+      bamboo = {
+        resources = {
+          jvm = {
+            maxHeap = "512m"
+            minHeap = "256m"
+          }
+          container = {
+            requests = {
+              cpu    = "1",
+              memory = "1Gi"
+            }
+          }
+        }
+      }
+      ingress = {
+        create = "true",
+        host   = local.product_domain_name,
+      },
+    })
+  ]
 }
 
 resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
@@ -55,4 +85,17 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pv
     volume_name        = "atlassian-dc-bamboo-share-home-pv"
     storage_class_name = "efs-cs"
   }
+}
+
+module "database" {
+  source = "../../modules/AWS/rds"
+
+  db_tags           = merge(var.resource_tags, local.required_tags)
+  product           = local.product_name
+  rds_instance_id   = local.rds_instance_name
+  allocated_storage = var.db_allocated_storage
+  eks               = var.eks
+  instance_class    = var.db_instance_class
+  iops              = var.db_iops
+  vpc               = var.vpc
 }

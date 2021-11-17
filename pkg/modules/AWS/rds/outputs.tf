@@ -15,3 +15,7 @@ output "rds_master_password" {
 output "rds_db_name" {
   value = module.db.db_instance_name
 }
+
+output "kubernetes_rds_secret_name" {
+  value = kubernetes_secret.rds_secret.metadata[0].name
+}

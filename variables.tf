@@ -17,16 +17,21 @@ variable "environment_name" {
 variable "resource_tags" {
   description = "Additional tags for all resources to be created."
   type        = map(string)
+  default = {
+    Terraform = "true"
+  }
 }
 
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
+  default     = ["m5.xlarge"]
 }
 
 variable "desired_capacity" {
   description = "Desired number of nodes that the node group should launch with initially."
   type        = number
+  default     = 1
 }
 
 variable "domain" {
@@ -34,3 +39,20 @@ variable "domain" {
   type        = string
 }
 
+variable "db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  type        = number
+  default     = 1000
+}
+
+variable "db_instance_class" {
+  description = "Instance class of the RDS instance."
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  type        = number
+  default     = 1000
+}

@@ -34,7 +34,7 @@ EOF
   CONFIG_FILE=
   HELP_FLAG=
   SKIP_TFSTATE=
-  while getopts sh?p: name ; do
+  while getopts sh?c: name ; do
       case $name in
       s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
@@ -67,6 +67,30 @@ process_arguments() {
 
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
+
+# Cleaning all the generated terraform state variable and backend file and local terraform files
+regenerate_environment_variables() {
+    echo "Cleaning all the generated terraform state variable and backend file."
+    source "${SCRIPT_PATH}/cleanup.sh"
+
+  BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
+  TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
+
+  if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
+    echo "Terraform state backend/variable files are already existed. "
+  else
+    echo "Terraform state backend/variable files are cleaned up."
+    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${CONFIG_FILE} ${BACKEND_TF} ${TFSTATE_LOCALS}
+  fi
+
+  # fetch the config files from root
+  cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
+  cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
+}
+
+
 
 destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
@@ -131,6 +155,9 @@ destroy_tfstate() {
 
 # Process the arguments
 process_arguments
+
+# cleanup environment variable and regenerate them
+regenerate_environment_variables
 
 # Destroy the infrastructure for the given product
 destroy_infrastructure
