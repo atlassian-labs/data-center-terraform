@@ -21,7 +21,7 @@ module "bamboo" {
   eks               = module.base-infrastructure.eks
   efs               = module.base-infrastructure.efs
   share_home_size   = "5Gi"
-  allocated_storage = var.allocated_storage
-  instance_class    = var.instance_class
-  iops              = var.iops
+  allocated_storage = var.db_allocated_storage
+  instance_class    = var.db_instance_class
+  iops              = var.db_iops
 }

@@ -34,19 +34,19 @@ variable "domain" {
   type        = string
 }
 
-variable "allocated_storage" {
+variable "db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
   type        = number
   default     = 1000
 }
 
-variable "instance_class" {
+variable "db_instance_class" {
   description = "Instance class of the RDS instance."
   type        = string
   default     = "db.t3.micro"
 }
 
-variable "iops" {
+variable "db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   type        = number
   default     = 1000
