@@ -9,7 +9,7 @@ variable "efs_tags" {
 }
 
 variable "vpc" {
-  description = "vpc module that hosts the product."
+  description = "VPC module that hosts the product."
   type        = any
 }
 

@@ -119,7 +119,7 @@ func SafeExtractShareHomeVolume(volumes []v1.Volume) v1.Volume {
 
 func GetAvailableRegion(t *testing.T) string {
 	for {
-		awsRegion := aws.GetRandomRegion(t, nil, []string{
+		awsRegion := aws.GetRandomStableRegion(t, nil, []string{
 			endpoints.UsEast1RegionID,
 			endpoints.UsEast2RegionID,
 			endpoints.UsWest1RegionID,

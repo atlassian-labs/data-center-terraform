@@ -27,6 +27,10 @@ variable "instance_types" {
 variable "desired_capacity" {
   description = "Desired number of nodes that the node group should launch with initially."
   type        = number
+  validation {
+    condition     = var.desired_capacity > 0
+    error_message = "Desired number must be at least 1."
+  }
 }
 
 variable "domain" {
