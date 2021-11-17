@@ -93,13 +93,11 @@ func GenerateAwsSession(awsRegion string) *session.Session {
 
 func K8sDriver(t *testing.T, tfOptions *terraform.Options, environmentName string) *kubernetes.Clientset {
 	config, err := clientcmd.BuildConfigFromFlags("", fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName))
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	return clientset
 }
 
@@ -124,9 +122,8 @@ func GetAvailableRegion(t *testing.T) string {
 			endpoints.ApNortheast3RegionID,
 		}) // Avoid busy/unavailable regions
 		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
+
 		if len(vpcs) < 4 {
 			return awsRegion
 		}

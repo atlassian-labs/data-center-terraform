@@ -9,8 +9,7 @@ import (
 
 func TestCleanup(t *testing.T) {
 	var tfOptions *terraform.Options
-	if err := Load("bamboo_tfOptions.json", &tfOptions); err != nil {
-		require.NoError(t, err)
-	}
+	err := Load("bamboo_tfOptions.json", &tfOptions)
+	require.NoError(t, err)
 	terraform.Destroy(t, tfOptions)
 }
