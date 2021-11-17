@@ -99,6 +99,9 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
 	fmt.Printf("testing url: %s", url)
 	get, err := http.Get(url)
+	if err != nil {
+		require.NoError(t, err)
+	}
 	defer get.Body.Close()
 
 	assert.NoError(t, err, "Error accessing url: %s", url)

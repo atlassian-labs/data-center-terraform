@@ -27,31 +27,14 @@ func TestEfsVariablesNotProvided(t *testing.T) {
 func TestEfsVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	eksVariable := map[string]interface{}{
-		"cluster_name":            "dummy-cluster",
-		"cluster_id":              "dummy-cluster-id",
-		"cluster_oidc_issuer_url": "http://dummy-oidc.aws.com",
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-	}
-
-	vpcVariable := map[string]interface{}{
-		"vpc_id":                      "dummy_vpc_id",
-		"private_subnets":             []interface{}{"subnet1", "subnet2"},
-		"private_subnets_cidr_blocks": []interface{}{"0.0.0.0/0", "0.0.0.0/1"},
-	}
-
 	efsTagsVariable := map[string]interface{}{
 		"resource_owner": TestResourceOwner,
 	}
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"region_name":                  "us-east-1",
-		"eks":                          eksVariable,
-		"vpc":                          vpcVariable,
+		"eks":                          EksDefaultModuleVariable,
+		"vpc":                          VpcDefaultModuleVarialbe,
 		"efs_tags":                     efsTagsVariable,
 		"csi_controller_replica_count": 1,
 	}, t, "efs")
@@ -69,35 +52,18 @@ func TestEfsVariablesPopulatedWithValidValues(t *testing.T) {
 	awsEfsFileSystem := plan.ResourcePlannedValuesMap["aws_efs_file_system.this"]
 
 	assert.Equal(t, "us-east-1", regionName)
-	assert.Equal(t, eksVariable, eks)
-	assert.Equal(t, vpcVariable, vpc)
+	assert.Equal(t, EksDefaultModuleVariable, eks)
+	assert.Equal(t, VpcDefaultModuleVarialbe, vpc)
 	assert.Equal(t, efsTagsVariable, efsTags)
 	assert.Equal(t, "1", csiReplicaCount)
-	assert.Equal(t, fmt.Sprintf("%s-efs-csi", eksVariable["cluster_name"]), awsSecurityGroup.AttributeValues["name_prefix"])
-	assert.Equal(t, vpcVariable["vpc_id"], awsSecurityGroup.AttributeValues["vpc_id"])
-	assert.Equal(t, eksVariable["cluster_name"], awsEfsFileSystem.AttributeValues["creation_token"])
+	assert.Equal(t, fmt.Sprintf("%s-efs-csi", EksDefaultModuleVariable["cluster_name"]), awsSecurityGroup.AttributeValues["name_prefix"])
+	assert.Equal(t, VpcDefaultModuleVarialbe["vpc_id"], awsSecurityGroup.AttributeValues["vpc_id"])
+	assert.Equal(t, EksDefaultModuleVariable["cluster_name"], awsEfsFileSystem.AttributeValues["creation_token"])
 
 }
 
 func TestEfsVariablesPopulatedWithInvalidRegion(t *testing.T) {
 	t.Parallel()
-
-	eksVariable := map[string]interface{}{
-		"cluster_name":            "dummy-cluster",
-		"cluster_id":              "dummy-cluster-id",
-		"cluster_oidc_issuer_url": "http://dummy-oidc.aws.com",
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-	}
-
-	vpcVariable := map[string]interface{}{
-		"vpc_id":                      "dummy_vpc_id",
-		"private_subnets":             []interface{}{"subnet1", "subnet2"},
-		"private_subnets_cidr_blocks": []interface{}{"0.0.0.0/0", "0.0.0.0/1"},
-	}
 
 	efsTagsVariable := map[string]interface{}{
 		"resource_owner": TestResourceOwner,
@@ -105,8 +71,8 @@ func TestEfsVariablesPopulatedWithInvalidRegion(t *testing.T) {
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"region_name":                  "invalid-region",
-		"eks":                          eksVariable,
-		"vpc":                          vpcVariable,
+		"eks":                          EksDefaultModuleVariable,
+		"vpc":                          VpcDefaultModuleVarialbe,
 		"efs_tags":                     efsTagsVariable,
 		"csi_controller_replica_count": 1,
 	}, t, "efs")

@@ -27,17 +27,7 @@ func TestEksVariablesNotProvided(t *testing.T) {
 func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"cluster_name": "dummy-cluster-name",
-		"vpc_id":       "dummy_vpc_id",
-		"subnets":      []string{"subnet1", "subnet2"},
-		"eks_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"instance_types":   []string{"instance_type1", "instance_type2"},
-		"desired_capacity": 1,
-		"ingress_domain":   "test.deplops.com", // needs to be a real domain otherwise this test will fail
-	}, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithValidValues, t, "eks")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -61,17 +51,7 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 func TestEksClusterNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"cluster_name": "cluster name with invalid spaces",
-		"vpc_id":       "dummy_vpc_id",
-		"subnets":      []string{"subnet1", "subnet2"},
-		"eks_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"instance_types":   []string{"instance_type1", "instance_type2"},
-		"desired_capacity": 1,
-		"ingress_domain":   "ingress.domain.com",
-	}, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithInvalidClusterName, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -82,17 +62,7 @@ func TestEksClusterNameInvalid(t *testing.T) {
 func TestEksDesiredCapacityOverLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"cluster_name": "dummy-cluster-name",
-		"vpc_id":       "dummy_vpc_id",
-		"subnets":      []string{"subnet1", "subnet2"},
-		"eks_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"instance_types":   []string{"instance_type1", "instance_type2"},
-		"desired_capacity": 11,
-		"ingress_domain":   "ingress.domain.com",
-	}, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithDesiredCapacityOverLimit, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -103,17 +73,7 @@ func TestEksDesiredCapacityOverLimit(t *testing.T) {
 func TestEksDesiredCapacityUnderLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"cluster_name": "dummy-cluster-name",
-		"vpc_id":       "dummy_vpc_id",
-		"subnets":      []string{"subnet1", "subnet2"},
-		"eks_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"instance_types":   []string{"instance_type1", "instance_type2"},
-		"desired_capacity": 0,
-		"ingress_domain":   "ingress.domain.com",
-	}, t, "eks")
+	tfOptions := GenerateTFOptions(EksDesiredCapacityUnderLimit, t, "eks")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 

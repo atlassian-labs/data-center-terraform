@@ -23,7 +23,9 @@ The repo uses [Terratest](https://github.com/gruntwork-io/terratest) for testing
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./unittest/... -v`
 
-## How to run end-to-end test(Approx. 40-45 mins)
+You can run test with regex keyword to run specific group of test cases e.g. Running only VPC module related tests `go test./unittest/... -v -run TestVpc`
+
+## How to run end-to-end test(Approx. 40-60 mins)
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo`
 3. Clean up test `go test ./e2etest -v -timeout 40m > e2e-test-cleanup.log -run Cleanup`
