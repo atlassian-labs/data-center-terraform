@@ -64,11 +64,6 @@ process_arguments() {
   fi
 }
 
-#Cleaning all the generated terraform state variable and backend file
-cleanup_backen_variables() {
-    echo "Cleaning all the generated terraform state variable and backend file."
-    source "${SCRIPT_PATH}/cleanup.sh"
-}
 
 # Make sure the infrastructure config file is existed and contains the valid data
 verify_configuration_file() {
@@ -88,6 +83,13 @@ verify_configuration_file() {
     echo
     exit 0
   fi
+}
+
+
+#Cleaning all the generated terraform state variable and backend file
+cleanup_backen_variables() {
+    echo "Cleaning all the generated terraform state variable and backend file."
+    source "${SCRIPT_PATH}/cleanup.sh" "-t"
 }
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
