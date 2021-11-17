@@ -24,3 +24,14 @@ desired_capacity = 1
 
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 domain = "<subdomain.example.com>"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 1000
+db_iops              = 1000
+
+

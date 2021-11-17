@@ -26,3 +26,15 @@ output "public_subnets_cidr_blocks" {
 output "product_domain_name" {
   value = local.product_domain_name
 }
+
+output "rds_instance_id" {
+  value = module.database.rds_instance_id
+}
+
+output "db_name" {
+  value = module.database.rds_db_name
+}
+
+output "kubernetes_db_secret_name" {
+  value = module.database.kubernetes_rds_secret_name
+}
