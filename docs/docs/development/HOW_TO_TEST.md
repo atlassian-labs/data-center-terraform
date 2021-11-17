@@ -23,12 +23,10 @@ The repo uses [Terratest](https://github.com/gruntwork-io/terratest) for testing
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./unittest/... -v`
 
-## How to run end-to-end test(Approx. 30-35 mins)
+## How to run end-to-end test(Approx. 40-45 mins)
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo`
-
-## How to run cleanup test(Approx. 30-35 mins)
-3. `go test ./e2etest -v -timeout 40m > e2e-test-cleanup.log -run Cleanup`
+3. Clean up test `go test ./e2etest -v -timeout 40m > e2e-test-cleanup.log -run Cleanup`
 
 ## Github Action
 Github action will run for unit and end-to-end tests.
