@@ -30,10 +30,8 @@ domain = "<subdomain.example.com>"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-rds_configuration = {
-  instance_class    = "db.t3.micro"
-  allocated_storage = 1000
-  iops              = 1000
-}
+instance_class    = "db.t3.micro"
+allocated_storage = 1000
+iops              = 1000
 
 
