@@ -65,7 +65,8 @@ module "db" {
 ################################################################################
 resource "kubernetes_secret" "rds_secret" {
   metadata {
-    name = "${var.product}-db-cred"
+    name      = "${var.product}-db-cred"
+    namespace = var.product
   }
 
   data = {
