@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    paths-ignore: # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-ignoring-paths
+      - 'docs/**'
+      - '.atlassian/**'
   workflow_dispatch:
 
 jobs:

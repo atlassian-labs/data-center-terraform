@@ -20,7 +20,7 @@ resource "kubernetes_namespace" "bamboo" {
 
 resource "helm_release" "bamboo" {
   name       = "bamboo"
-  namespace  = local.product_name
+  namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
   version    = "0.0.1"
@@ -73,7 +73,7 @@ resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
 resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
   metadata {
     name      = "atlassian-dc-bamboo-share-home-pvc"
-    namespace = local.product_name
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
   }
   spec {
     access_modes = ["ReadWriteMany"]

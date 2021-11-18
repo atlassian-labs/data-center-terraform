@@ -31,15 +31,24 @@ func TestBambooModule(t *testing.T) {
 
 	assertVPC(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
 	assertEKS(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
-	assertShareHomePV(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
-	assertShareHomePVC(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
 
+type VpcDetails struct {
+	id                 string
+	privateSubnets     []string
+	publicSubnets      []string
+	privateSubnetsCidr []string
+	publicSubnetsCidr  []string
+}
+
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcId := terraform.Output(t, tfOptions, "vpc_id")
-	vpc := aws.GetVpcById(t, vpcId, awsRegion)
+	vpcDetails := VpcDetails{}
+	terraform.OutputStruct(t, tfOptions, "vpc", &vpcDetails)
+	vpc := aws.GetVpcById(t, vpcDetails.id, awsRegion)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
 	assert.Len(t, vpc.Subnets, 4)
 }
@@ -59,7 +68,7 @@ func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, env
 
 }
 
-func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, environmentName string, product string) {
+func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	k8sClient := K8sDriver(t, tfOptions, environmentName)
@@ -69,7 +78,7 @@ func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, kubectlOption
 	require.NoError(t, err)
 }
 
-func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, environmentName string, product string) {
+func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	k8sClient := K8sDriver(t, tfOptions, environmentName)
