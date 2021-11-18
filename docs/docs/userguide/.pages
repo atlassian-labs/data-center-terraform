@@ -2,6 +2,6 @@ nav:
     - PREREQUISITES.md
     - INSTALLATION.md
     - CONFIGURATION.md
-    - OPERATION.md
+    - CLEANUP.md
     - UPGRADE.md
     - ...
