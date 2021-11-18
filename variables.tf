@@ -3,6 +3,10 @@
 variable "region" {
   description = "Name of the AWS region."
   type        = string
+  validation {
+    condition     = can(regex("(us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-[1-9]", var.region))
+    error_message = "Invalid region name. Must be a valid AWS region."
+  }
 }
 
 variable "environment_name" {
@@ -33,7 +37,7 @@ variable "desired_capacity" {
   type        = number
   validation {
     condition     = var.desired_capacity > 0 && var.desired_capacity <= 10
-    error_message = "Desired number must be at least 1."
+    error_message = "Desired cluster capacity must be between 1 and 10 (included)."
   }
   default = 1
 }

@@ -23,6 +23,8 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+const BambooTfOptionsFilename = "bamboo_tfOptions.json"
+
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.TargetModuleDir)
 
@@ -63,13 +65,6 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 		},
 		TargetModuleDir: ".",
 	}
-	helmConfig := HelmConfig{
-		SetValues: map[string]string{
-			"ingress.create": "true", "ingress.host": "bamboo." + environmentName + "." + domain,
-			"volumes.sharedHome.customVolume.persistentVolumeClaim.claimName": fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product),
-		},
-		ExtraArgs: map[string][]string{"install": {"--wait"}},
-	}
 	kubectlConfig := KubectlConfig{
 		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
 		Namespace:   product,
@@ -77,9 +72,9 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 
 	return TestConfig{
 		Product:         product,
+		AwsRegion:       awsRegion,
 		ReleaseName:     releaseName,
 		TerraformConfig: terraformConfig,
-		HelmConfig:      helmConfig,
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}

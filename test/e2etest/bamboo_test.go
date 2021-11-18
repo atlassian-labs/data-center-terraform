@@ -20,23 +20,20 @@ import (
 
 func TestBambooModule(t *testing.T) {
 
-	product := "bamboo"
-	awsRegion := GetAvailableRegion(t)
-
-	testConfig := GenerateConfigForProductE2eTest(product, awsRegion)
+	testConfig := GenerateConfigForProductE2eTest("bamboo", GetAvailableRegion(t))
 	tfOptions := GenerateTerraformOptions(testConfig.TerraformConfig, t)
 	kubectlOptions := GenerateKubectlOptions(testConfig.KubectlConfig, tfOptions, testConfig.EnvironmentName)
 
-	err := Save("bamboo_tfOptions.json", *tfOptions)
+	err := Save(BambooTfOptionsFilename, *tfOptions)
 	require.NoError(t, err)
 
 	terraform.InitAndApply(t, tfOptions)
 
-	assertVPC(t, tfOptions, awsRegion, testConfig.EnvironmentName)
-	assertEKS(t, tfOptions, awsRegion, testConfig.EnvironmentName)
-	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
-	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, product)
-	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName, product)
+	assertVPC(t, tfOptions, testConfig.AwsRegion, testConfig.EnvironmentName)
+	assertEKS(t, tfOptions, testConfig.AwsRegion, testConfig.EnvironmentName)
+	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, testConfig.Product)
+	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, testConfig.Product)
+	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName, testConfig.Product)
 	assertIngressAccess(t, testConfig.Product, testConfig.EnvironmentName, fmt.Sprintf("%v", testConfig.TerraformConfig.Variables["domain"]))
 }
 

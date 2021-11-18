@@ -40,6 +40,12 @@ var VpcWithInvalidCidr = map[string]interface{}{
 	},
 }
 
+var VpcDefaultModuleVarialbe = map[string]interface{}{
+	"vpc_id":                      "dummy_vpc_id",
+	"private_subnets":             []interface{}{"subnet1", "subnet2"},
+	"private_subnets_cidr_blocks": []interface{}{"10.0.0.0/22", "10.0.4.0/22"},
+}
+
 // EKS
 
 var EksWithValidValues = map[string]interface{}{
@@ -99,10 +105,4 @@ var EksDefaultModuleVariable = map[string]interface{}{
 		"token":                  "dummy-token",
 		"cluster_ca_certificate": "dummy-certificate",
 	},
-}
-
-var VpcDefaultModuleVarialbe = map[string]interface{}{
-	"vpc_id":                      "dummy_vpc_id",
-	"private_subnets":             []interface{}{"subnet1", "subnet2"},
-	"private_subnets_cidr_blocks": []interface{}{"10.0.0.0/22", "10.0.4.0/22"},
 }
