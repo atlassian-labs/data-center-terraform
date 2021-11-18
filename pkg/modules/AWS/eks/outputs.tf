@@ -34,5 +34,5 @@ output "kubernetes_provider_config" {
 }
 
 output "cluster_security_group" {
-  value = module.eks.cluster_security_group_id
+  value = module.eks.cluster_primary_security_group_id
 }
