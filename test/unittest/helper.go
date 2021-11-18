@@ -10,8 +10,6 @@ import (
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-const TestResourceOwner = "terraform_unit_test"
-
 // Helper functions
 var lock = &sync.Mutex{}
 
@@ -28,12 +26,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 	lock.Lock()
 	defer lock.Unlock()
 	if vpcPlanInstance == nil {
-		tfOptions := GenerateTFOptions(map[string]interface{}{
-			"vpc_name": "test-vpc",
-			"vpc_tags": map[string]interface{}{
-				"resource_owner": "TestResourceOwner",
-			},
-		}, t, "vpc")
+		tfOptions := GenerateTFOptions(DefaultVpc, t, "vpc")
 
 		// Run `terraform init`, `terraform plan`, and `terraform show`
 		plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)

@@ -1,8 +1,11 @@
 package e2etest
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 	"testing"
 
@@ -20,31 +23,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-type TestConfig struct {
-	Product         string
-	TerraformConfig TerraformConfig
-	HelmConfig      HelmConfig
-	KubectlConfig   KubectlConfig
-	ReleaseName     string
-	EnvironmentName string
-}
-
-type TerraformConfig struct {
-	Variables       map[string]interface{}
-	EnvVariables    map[string]string
-	TargetModuleDir string
-}
-
-type HelmConfig struct {
-	SetValues      map[string]string
-	KubectlOptions *k8s.KubectlOptions
-	ExtraArgs      map[string][]string
-}
-
-type KubectlConfig struct {
-	ContextName string
-	Namespace   string
-}
+const BambooTfOptionsFilename = "bamboo_tfOptions.json"
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.TargetModuleDir)
@@ -62,7 +41,7 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
-func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
+func GenerateConfigForProductE2eTest(product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
@@ -86,23 +65,16 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 		},
 		TargetModuleDir: ".",
 	}
-	helmConfig := HelmConfig{
-		SetValues: map[string]string{
-			"ingress.create": "true", "ingress.host": "bamboo." + environmentName + "." + domain,
-			"volumes.sharedHome.customVolume.persistentVolumeClaim.claimName": fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product),
-		},
-		ExtraArgs: map[string][]string{"install": {"--wait"}},
-	}
 	kubectlConfig := KubectlConfig{
 		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
 		Namespace:   product,
 	}
 
-	return TestConfig{
+	return EnvironmentConfig{
 		Product:         product,
+		AwsRegion:       awsRegion,
 		ReleaseName:     releaseName,
 		TerraformConfig: terraformConfig,
-		HelmConfig:      helmConfig,
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}
@@ -116,13 +88,11 @@ func GenerateAwsSession(awsRegion string) *session.Session {
 
 func K8sDriver(t *testing.T, tfOptions *terraform.Options, environmentName string) *kubernetes.Clientset {
 	config, err := clientcmd.BuildConfigFromFlags("", fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName))
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	return clientset
 }
 
@@ -135,7 +105,7 @@ func SafeExtractShareHomeVolume(volumes []v1.Volume) v1.Volume {
 
 func GetAvailableRegion(t *testing.T) string {
 	for {
-		awsRegion := aws.GetRandomRegion(t, nil, []string{
+		awsRegion := aws.GetRandomStableRegion(t, nil, []string{
 			endpoints.UsEast1RegionID,
 			endpoints.UsEast2RegionID,
 			endpoints.UsWest1RegionID,
@@ -144,14 +114,42 @@ func GetAvailableRegion(t *testing.T) string {
 			endpoints.ApEast1RegionID,
 			endpoints.ApNortheast2RegionID,
 			endpoints.ApSoutheast2RegionID,
+			endpoints.ApNortheast3RegionID,
 		}) // Avoid busy/unavailable regions
 		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
-		if err != nil {
-			require.NoError(t, err)
-		}
+		require.NoError(t, err)
+
 		if len(vpcs) < 4 {
 			return awsRegion
 		}
 		log.Println(awsRegion, " has reached resource limit, Finding new region")
 	}
+}
+
+func Save(path string, object interface{}) error {
+	file, foerr := os.Create(path)
+	if foerr != nil {
+		return foerr
+	}
+	defer file.Close()
+
+	json, mrerr := json.Marshal(object)
+	if mrerr != nil {
+		return mrerr
+	}
+	_, fwerr := file.Write(json)
+	return fwerr
+}
+
+func Load(path string, object interface{}) error {
+	file, foerr := os.Open(path)
+	if foerr != nil {
+		return foerr
+	}
+	defer file.Close()
+	bytesHolder, frerr := ioutil.ReadAll(file)
+	if frerr != nil {
+		return frerr
+	}
+	return json.Unmarshal(bytesHolder, object)
 }
