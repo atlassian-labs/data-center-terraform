@@ -65,4 +65,7 @@ You may use a different file with the same format to handle more than one enviro
             
     ``` shell
     ./pkg/scripts/install.sh -c <your-config_file>
-    ```   
+    ```  
+    
+!!! info "How to run the product after installation?"    
+    When the installation process finishes successfully, you can find some detailed information about the infrastructure on your console including the endpoint url (`product_urls`/`load_balancer_hostname`) to open the product on your browser and more.      
