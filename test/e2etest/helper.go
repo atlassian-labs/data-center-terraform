@@ -52,6 +52,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 			"environment_name": environmentName,
 			"region":           awsRegion,
 			"resource_tags": map[string]string{
+				"Name":           environmentName + "-stack",
 				"resource_owner": testResourceOwner,
 				"Terraform":      "true",
 				"business_unit":  "Engineering-Enterprise DC",
