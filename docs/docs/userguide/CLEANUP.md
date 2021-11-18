@@ -1,7 +1,7 @@
 # Uninstall and Cleanup 
 
-!!! warning "You may lose valuable data in cleanup process"
-    Before you start uninstall the products and infrastructure make sure you have backed up all data you may need. 
+!!! warning "You may lose valuable data in the cleanup process"
+    Before you start uninstalling the products and infrastructure make sure you have backed up all data you may need. 
     
     After uninstall you have no access to the product data including local volume, shared volume, database, and Terraform state information. 
 
@@ -9,7 +9,7 @@
 To uninstall the products and clean up the infrastructure first make sure you made a backup from all application data you may need.
 Uninstall will **permanently delete** the database, shared home, local home, and Terraform state data.
 
-If you wish to uninstall just one product please **do not** proceed with uninstall process and see [Configuration](CONFIGURATION.md) instead. 
+If you wish to uninstall just one product please **do not** proceed with the uninstall process and see [Configuration](CONFIGURATION.md) instead. 
 
 !!! warning "Make sure you have made backup of the product data."
     All product data will be **permanently deleted** after uninstall.
