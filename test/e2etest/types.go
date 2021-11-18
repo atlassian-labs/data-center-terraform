@@ -1,6 +1,6 @@
 package e2etest
 
-type TestConfig struct {
+type EnvironmentConfig struct {
 	Product         string
 	AwsRegion       string
 	TerraformConfig TerraformConfig

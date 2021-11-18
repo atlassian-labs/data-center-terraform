@@ -20,21 +20,21 @@ import (
 
 func TestBambooModule(t *testing.T) {
 
-	testConfig := GenerateConfigForProductE2eTest("bamboo", GetAvailableRegion(t))
-	tfOptions := GenerateTerraformOptions(testConfig.TerraformConfig, t)
-	kubectlOptions := GenerateKubectlOptions(testConfig.KubectlConfig, tfOptions, testConfig.EnvironmentName)
+	environmentConfig := GenerateConfigForProductE2eTest("bamboo", GetAvailableRegion(t))
+	tfOptions := GenerateTerraformOptions(environmentConfig.TerraformConfig, t)
+	kubectlOptions := GenerateKubectlOptions(environmentConfig.KubectlConfig, tfOptions, environmentConfig.EnvironmentName)
 
 	err := Save(BambooTfOptionsFilename, *tfOptions)
 	require.NoError(t, err)
 
 	terraform.InitAndApply(t, tfOptions)
 
-	assertVPC(t, tfOptions, testConfig.AwsRegion, testConfig.EnvironmentName)
-	assertEKS(t, tfOptions, testConfig.AwsRegion, testConfig.EnvironmentName)
-	assertShareHomePV(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, testConfig.Product)
-	assertShareHomePVC(t, tfOptions, kubectlOptions, testConfig.EnvironmentName, testConfig.Product)
-	assertBambooPod(t, kubectlOptions, testConfig.ReleaseName, testConfig.Product)
-	assertIngressAccess(t, testConfig.Product, testConfig.EnvironmentName, fmt.Sprintf("%v", testConfig.TerraformConfig.Variables["domain"]))
+	assertVPC(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
+	assertEKS(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
+	assertShareHomePV(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertShareHomePVC(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
+	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {

@@ -41,7 +41,7 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
-func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfig {
+func GenerateConfigForProductE2eTest(product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
@@ -70,7 +70,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) TestConfi
 		Namespace:   product,
 	}
 
-	return TestConfig{
+	return EnvironmentConfig{
 		Product:         product,
 		AwsRegion:       awsRegion,
 		ReleaseName:     releaseName,
