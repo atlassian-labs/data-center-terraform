@@ -46,9 +46,9 @@ jobs:
         #   export PATH=$PATH:$HOME/bin
         #   go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo
       - name: Clean up test
-        # if: steps.setup-dependencies.conclusion == success()
+        if: steps.setup-dependencies.conclusion
         working-directory: test/
-        run: echo "$steps.setup-dependencies.conclusion"
+        run: echo Hello
         # run: |
         #   # this is required to use aws-iam-authenticator.
         #   export PATH=$PATH:$HOME/bin
