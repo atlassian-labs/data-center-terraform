@@ -49,7 +49,7 @@ Running install script with no parameter will use the default config file to pro
 You may use a different file with the same format to handle more than one environment but remember when you want to uninstall and cleanup the environment you need use the same config file. 
 
 !!! info "Supported Atlassian Data Center products."
-    At this time only **Bamboo** is the only supported product.
+    At this time **Bamboo** is the only supported product.
 
 
 === "Using the default config file"
