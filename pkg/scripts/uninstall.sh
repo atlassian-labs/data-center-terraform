@@ -130,7 +130,7 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy "${OVERRIDE_CONFIG_FILE}"
+      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
       else
