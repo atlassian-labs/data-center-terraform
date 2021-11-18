@@ -37,14 +37,6 @@ func TestBambooModule(t *testing.T) {
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
 
-type VpcDetails struct {
-	id                 string
-	privateSubnets     []string
-	publicSubnets      []string
-	privateSubnetsCidr []string
-	publicSubnetsCidr  []string
-}
-
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
 	vpcDetails := VpcDetails{}
 	terraform.OutputStruct(t, tfOptions, "vpc", &vpcDetails)
@@ -65,7 +57,6 @@ func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, env
 	require.NoError(t, err)
 
 	assert.Equal(t, vpcId, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
-
 }
 
 func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {

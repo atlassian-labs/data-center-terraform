@@ -19,3 +19,12 @@ type KubectlConfig struct {
 	ContextName string
 	Namespace   string
 }
+
+// VpcDetails encapsulate terraform VPC output value
+type VpcDetails struct {
+	id                 string
+	privateSubnets     []string
+	publicSubnets      []string
+	privateSubnetsCidr []string
+	publicSubnetsCidr  []string
+}
