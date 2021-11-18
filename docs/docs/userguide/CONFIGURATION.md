@@ -107,3 +107,40 @@ syntax:
 ```
 
 ### Domain Name
+
+
+### Database Instance Class
+`db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by
+planned workload of the DB instance. Detailed available instance classes can be found via 
+[AWS RDS documentation on DB Instance Class](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
+```
+syntax:
+
+    db_instance_class = "<instance.class>"  # e.g. "db.t3.micro"
+```
+
+### Database Allocated Storage
+`db_allocated_storage` sets the allocated storage for database instance in GiB.
+
+* Note: the allowed value range of allocated storage may vary based on instance class. 
+  You may want to adjust these values according to your needs. Documentation can be found via:
+  [AWS RDS documentation on Storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+  
+```
+syntax:
+
+    db_allocated_storage = 100 
+```
+
+### Database IOPS
+`db_iops` sets the requested number of I/O operations per second that the DB instance can support.
+
+* Note: the allowed value range of IOPS may vary based on instance class.
+  You may want to adjust these values according to your needs. Documentation can be found via:
+  [AWS RDS documentation on Storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+
+```
+syntax:
+
+    db_iops = 1000
+```
