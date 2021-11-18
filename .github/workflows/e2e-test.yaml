@@ -38,16 +38,17 @@ jobs:
           echo $?
           echo ::set-output name=exit_code::$?
 
-      # - name: E2E test
-      #   working-directory: test/
-      #   run: |
-      #     # this is required to use aws-iam-authenticator.
-      #     export PATH=$PATH:$HOME/bin
-      #     go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo
-      - name: Clean up test
-        if: steps.setup-dependencies.outputs.exit_code == 0
+      - name: E2E test
         working-directory: test/
-        run: echo steps.setup-dependencies.outputs.exit_code
+        run: echo hello
+        # run: |
+        #   # this is required to use aws-iam-authenticator.
+        #   export PATH=$PATH:$HOME/bin
+        #   go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo
+      - name: Clean up test
+        # if: steps.setup-dependencies.outputs.exit_code == 0
+        working-directory: test/
+        run: echo $steps.setup-dependencies.outputs.exit_code
         # run: |
         #   # this is required to use aws-iam-authenticator.
         #   export PATH=$PATH:$HOME/bin
