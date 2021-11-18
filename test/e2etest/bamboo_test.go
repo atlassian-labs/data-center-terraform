@@ -38,8 +38,11 @@ func TestBambooModule(t *testing.T) {
 }
 
 func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcDetails := VpcDetails{}
+	vpcDetails := VpcOutput{}
 	terraform.OutputStruct(t, tfOptions, "vpc", &vpcDetails)
+	fmt.Printf("%+v\n", vpcDetails)
+	objects := terraform.OutputMapOfObjects(t, tfOptions, "vpc")
+	fmt.Printf("%+v\n", objects)
 	vpc := aws.GetVpcById(t, vpcDetails.id, awsRegion)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
 	assert.Len(t, vpc.Subnets, 4)
