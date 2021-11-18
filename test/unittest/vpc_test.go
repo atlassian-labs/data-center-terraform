@@ -10,11 +10,7 @@ import (
 func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithoutName, t, "vpc")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -36,12 +32,7 @@ func TestVpcNameCustomised(t *testing.T) {
 func TestVpcNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc/12",
-		"vpc_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithInvalidName, t, "vpc")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -50,7 +41,7 @@ func TestVpcNameInvalid(t *testing.T) {
 }
 
 // Test VPC CIDR and Subnets
-func TestDefaultVpcCidrBlock(t *testing.T) {
+func TestVpcDefaultCidrBlock(t *testing.T) {
 	t.Parallel()
 
 	plan := GetVpcDefaultPlans(t)
@@ -62,13 +53,7 @@ func TestDefaultVpcCidrBlock(t *testing.T) {
 func TestVpcCidrBlockInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"vpc_cidr": "10.0.0.0/0",
-		"vpc_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithInvalidCidr, t, "vpc")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -76,7 +61,7 @@ func TestVpcCidrBlockInvalid(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid CIDR.")
 }
 
-func TestDefaultPublicSubnets(t *testing.T) {
+func TestVpcDefaultPublicSubnets(t *testing.T) {
 	t.Parallel()
 
 	plan := GetVpcDefaultPlans(t)
@@ -87,8 +72,7 @@ func TestDefaultPublicSubnets(t *testing.T) {
 	assert.Equal(t, "10.0.20.0/22", publicSubnet1["cidr_block"])
 }
 
-
-func TestDefaultPrivateSubnets(t *testing.T) {
+func TestVpcDefaultPrivateSubnets(t *testing.T) {
 	t.Parallel()
 
 	plan := GetVpcDefaultPlans(t)
@@ -102,13 +86,7 @@ func TestDefaultPrivateSubnets(t *testing.T) {
 func TestVpcCidrAndSubnetsCustomised(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"vpc_name": "test-vpc",
-		"vpc_cidr": "10.0.0.0/20",
-		"vpc_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-	}, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithCustomisedCidr, t, "vpc")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -131,6 +109,6 @@ func TestVpcTagsCustomised(t *testing.T) {
 	plan := GetVpcDefaultPlans(t)
 
 	tags := plan.RawPlan.Variables["vpc_tags"].Value.(map[string]interface{})
-	assert.Equal(t, "TestResourceOwner", tags["resource_owner"])
+	assert.Equal(t, "terraform_unit_test", tags["resource_owner"])
 	assert.Equal(t, 1, len(tags))
 }

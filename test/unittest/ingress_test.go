@@ -10,17 +10,7 @@ import (
 func TestIngressIsCreated(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"cluster_name": "dummy-cluster-name",
-		"vpc_id":       "dummy_vpc_id",
-		"subnets":      []string{"subnet1", "subnet2"},
-		"eks_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"instance_types":   []string{"instance_type1", "instance_type2"},
-		"desired_capacity": 1,
-		"ingress_domain":   "test.deplops.com", // needs to be a real domain otherwise this test will fail
-	}, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithValidValues, t, "eks")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 	ingressKey := "helm_release.ingress"

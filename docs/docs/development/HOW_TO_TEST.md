@@ -10,6 +10,8 @@ You can find tests in `/test`.
 
     Once the cluster and product are initialised, assert functions will validate the terraform outputs.
 
+> :warning: **bamboo_test.go file will only test the resource creation and validation**: You must run cleanup_test.go to test the destruction! 
+
 
 ## Requirements:
 The repo uses [Terratest](https://github.com/gruntwork-io/terratest) for testing. The following are required to run the test:
@@ -21,9 +23,12 @@ The repo uses [Terratest](https://github.com/gruntwork-io/terratest) for testing
 1. `cd test && go get -v -t -d ./... && go mod tidy`
 2. `go test ./unittest/... -v`
 
-## How to run end-to-end test(Approx. 30-45 mins)
+You can run test with regex keyword to run specific group of test cases e.g. Running only VPC module related tests `go test./unittest/... -v -run TestVpc`
+
+## How to run end-to-end test(Approx. 40-60 mins)
 1. `cd test && go get -v -t -d ./... && go mod tidy`
-2. `go test ./e2etest/... -v -timeout 60m > e2e-test.log`
+2. `go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo`
+3. Clean up test `go test ./e2etest -v -timeout 40m > e2e-test-cleanup.log -run Cleanup`
 
 ## Github Action
 Github action will run for unit and end-to-end tests.
