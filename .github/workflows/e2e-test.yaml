@@ -66,7 +66,3 @@ jobs:
           path: |
             test/e2e-test.log
             test/e2e-test-cleanup.log
-
-      - name: Was the end to end test successful?
-        if: steps.e2e-test.outcome != 'success'
-        run: exit 1
