@@ -31,6 +31,10 @@ output "rds_instance_id" {
   value = module.database.rds_instance_id
 }
 
+output "rds_jdbc_connection" {
+  value = module.database.rds_jdbc_connection
+}
+
 output "db_name" {
   value = module.database.rds_db_name
 }

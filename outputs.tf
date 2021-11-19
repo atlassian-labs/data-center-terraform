@@ -42,5 +42,6 @@ output "database" {
     rds_instance_id        = module.bamboo.rds_instance_id
     db_name                = module.bamboo.db_name
     kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
+    jdbc_connection        = module.bamboo.rds_jdbc_connection
   }
 }
