@@ -45,7 +45,7 @@ jobs:
         #   export PATH=$PATH:$HOME/bin
         #   go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo
       - name: Clean up test
-        if: always() && steps.setup-dependencies.conclusion
+        if: always() && steps.setup-dependencies.outcome
         working-directory: test/
         run: echo Hello
         # run: |
