@@ -6,10 +6,7 @@ resource "helm_release" "bamboo" {
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
   version    = "0.0.1"
-  depends_on = [
-    module.database,
-    kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc,
-  kubernetes_namespace.bamboo]
+  depends_on = [kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc, kubernetes_namespace.bamboo]
 
   values = [
     yamlencode({
@@ -29,9 +26,9 @@ resource "helm_release" "bamboo" {
       }
       database = {
         type = "postgresql"
-        url  = "jdbc:postgresql://${module.database.rds_endpoint}/${module.database.rds_db_name}"
+        url  = module.database.rds_jdbc_connection
         credentials = {
-          secretName = module.database.kubernetes_rds_secret_name
+          secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
       ingress = {
