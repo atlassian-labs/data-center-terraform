@@ -93,8 +93,8 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_secret.rds_secret")
-	metaData := plan.ResourcePlannedValuesMap["kubernetes_secret.rds_secret"].AttributeValues["metadata"].([]interface{})
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.db_instance_endpoint")
+	metaData := plan.ResourcePlannedValuesMap["module.db.db_instance_endpoint"].AttributeValues["metadata"].([]interface{})
 	planSecretName := metaData[0].(map[string]interface{})["name"]
 	assert.Equal(t, inputProduct+"-db-cred", planSecretName)
 }
