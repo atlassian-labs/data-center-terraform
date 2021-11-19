@@ -45,7 +45,6 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
-	releaseName := fmt.Sprintf("%s-%s-%s", product, environmentName, testId)
 	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
 		Variables: map[string]interface{}{
@@ -74,7 +73,6 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 	return EnvironmentConfig{
 		Product:         product,
 		AwsRegion:       awsRegion,
-		ReleaseName:     releaseName,
 		TerraformConfig: terraformConfig,
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,

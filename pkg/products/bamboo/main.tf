@@ -44,7 +44,16 @@ resource "helm_release" "bamboo" {
       ingress = {
         create = "true",
         host   = local.product_domain_name,
-      },
+      }
+      volumes = {
+        sharedHome = {
+          customVolume = {
+            persistentVolumeClaim = {
+              claimName = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
+            }
+          }
+        }
+      }
     })
   ]
 }

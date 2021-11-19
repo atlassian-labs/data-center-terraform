@@ -35,7 +35,7 @@ func TestBambooModule(t *testing.T) {
 	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
 	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
-	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
+	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
 
@@ -78,8 +78,8 @@ func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, environmentN
 	require.NoError(t, err)
 }
 
-func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseName string, product string) {
-	podName := fmt.Sprintf("%s-0", releaseName)
+func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product string) {
+	podName := fmt.Sprintf("%s-0", product)
 	pod := k8s.GetPod(t, kubectlOptions, podName)
 	k8s.WaitUntilPodAvailable(t, kubectlOptions, podName, 5, 30*time.Second)
 	shareHomeVolume := SafeExtractShareHomeVolume(pod.Spec.Volumes)
