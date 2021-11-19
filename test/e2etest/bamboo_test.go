@@ -29,25 +29,23 @@ func TestBambooModule(t *testing.T) {
 
 	terraform.InitAndApply(t, tfOptions)
 
-	assertVPC(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
-	assertEKS(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
+	vpcOutput := getVpcOutput(t, tfOptions)
+
+	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
+	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
 	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
 
-func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcDetails := VpcOutput{}
-	terraform.OutputStruct(t, tfOptions, "vpc", &vpcDetails)
-	fmt.Printf("%+v\n", vpcDetails)
-	vpc := aws.GetVpcById(t, vpcDetails.Id, awsRegion)
+func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
 	assert.Len(t, vpc.Subnets, 4)
 }
 
-func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcId := terraform.Output(t, tfOptions, "vpc_id")
+func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
@@ -57,7 +55,7 @@ func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, env
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
 	require.NoError(t, err)
 
-	assert.Equal(t, vpcId, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
+	assert.Equal(t, vpcOutput.Id, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
 }
 
 func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {
@@ -107,4 +105,11 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 
 	assert.NoError(t, err, "Error reading response body")
 	assert.Contains(t, string(content), expectedContent)
+}
+
+func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
+	vpcOutput := VpcOutput{}
+	terraform.OutputStruct(t, tfOptions, "vpc", &vpcOutput)
+	fmt.Printf("VpcOutput struct: %+v\n", vpcOutput)
+	return vpcOutput
 }
