@@ -92,11 +92,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, inputInstanceClass, planInstanceClass)
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
-
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.db_instance_endpoint")
-	metaData := plan.ResourcePlannedValuesMap["module.db.db_instance_endpoint"].AttributeValues["metadata"].([]interface{})
-	planSecretName := metaData[0].(map[string]interface{})["name"]
-	assert.Equal(t, inputProduct+"-db-cred", planSecretName)
 }
 
 func TestDbRdsInstanceIdInvalid(t *testing.T) {
