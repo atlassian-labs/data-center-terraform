@@ -11,6 +11,9 @@ SCRIPT_PATH="$(dirname "$0")"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
+EKS_PREFIX="atlassian-dc-"
+EKS_SUFFIX="-cluster"
+
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
 cat << EOF
@@ -74,6 +77,12 @@ verify_configuration_file() {
   INVALID_CONTENT=$(grep '<' $CONFIG_FILE & grep '>' $CONFIG_FILE)
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
+
+  if [ "${#EKS_CLUSTER_NAME}" -gt 38 ]; then
+    echo "The environment name is too long. The final EKS cluster name is ${EKS_CLUSTER_NAME} and it needs to be less than 38 characters."
+    exit 1
+  fi
 
   if [ ! -z "${INVALID_CONTENT}" ]; then
     echo "Configuration file '${CONFIG_FILE}' is not valid."
@@ -122,7 +131,7 @@ create_tfstate_resources() {
   set -e
   if [ ${S3_BUCKET_EXISTS} -eq 0 ]
   then
-    echo "S3 bucket '${S3_BUCKET}' is already existed."
+    echo "S3 bucket '${S3_BUCKET}' already exists."
     cd "${CURRENT_PATH}"
   else
     # create s3 bucket to be used for keep state of the terraform project
@@ -145,7 +154,7 @@ create_update_infrastructure() {
 }
 
 set_current_context_k8s() {
-  EKS_CLUSTER="atlassian-dc-${ENVIRONMENT_NAME}-cluster"
+  EKS_CLUSTER="${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}"
   CONTEXT_FILE="${CURRENT_PATH}/kubeconfig_${EKS_CLUSTER}"
 
   echo
@@ -154,7 +163,7 @@ set_current_context_k8s() {
     echo
     echo "If you like to use kubectl to access to the cluster directly you can run either of the following commands:"
     echo
-    echo "   export KUBECONFIG=${KUBECONFIG}:${CONTEXT_FILE}"
+    echo "   export KUBECONFIG=~/.kube/config:${KUBECONFIG}:${CONTEXT_FILE}"
     echo "   aws --region ${REGION} eks update-kubeconfig --name ${EKS_CLUSTER}"
   else
     echo "${CONTEXT_FILE} could not be found."

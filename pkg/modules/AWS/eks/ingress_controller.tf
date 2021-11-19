@@ -30,11 +30,11 @@ module "ingress_certificate" {
   source  = "terraform-aws-modules/acm/aws"
   version = "~> v2.0"
 
-  domain_name = var.ingress_domain
+  domain_name = "*.${var.ingress_domain}"
   zone_id     = aws_route53_zone.ingress.id
 
   subject_alternative_names = [
-    "*.${var.ingress_domain}",
+    var.ingress_domain,
   ]
 
   wait_for_validation = true

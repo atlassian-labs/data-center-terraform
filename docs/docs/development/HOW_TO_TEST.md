@@ -27,8 +27,8 @@ You can run test with regex keyword to run specific group of test cases e.g. Run
 
 ## How to run end-to-end test(Approx. 40-60 mins)
 1. `cd test && go get -v -t -d ./... && go mod tidy`
-2. `go test ./e2etest -v -timeout 40m > e2e-test.log -run Bamboo`
-3. Clean up test `go test ./e2etest -v -timeout 40m > e2e-test-cleanup.log -run Cleanup`
+2. `go test ./e2etest -v -timeout 40m -run Bamboo | tee e2e-test.log`
+3. Clean up test `go test ./e2etest -v -timeout 40m -run Cleanup | tee e2e-test-cleanup.log`
 
 ## Github Action
 Github action will run for unit and end-to-end tests.
