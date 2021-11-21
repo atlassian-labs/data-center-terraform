@@ -31,24 +31,24 @@ func TestBambooModule(t *testing.T) {
 
 	terraform.InitAndApply(t, tfOptions)
 
-	assertVPC(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
-	assertEKS(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
-	assertShareHomePV(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
-	assertShareHomePVC(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
-	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
-	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
+	vpcOutput := getVpcOutput(t, tfOptions)
+
+	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
+	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
+	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
+	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 }
 
-func assertVPC(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcId := terraform.Output(t, tfOptions, "vpc_id")
-	vpc := aws.GetVpcById(t, vpcId, awsRegion)
+func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
 	assert.Len(t, vpc.Subnets, 4)
 }
 
-func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, environmentName string) {
-	vpcId := terraform.Output(t, tfOptions, "vpc_id")
+func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
@@ -58,11 +58,10 @@ func assertEKS(t *testing.T, tfOptions *terraform.Options, awsRegion string, env
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
 	require.NoError(t, err)
 
-	assert.Equal(t, vpcId, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
-
+	assert.Equal(t, vpcOutput.Id, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
 }
 
-func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, environmentName string, product string) {
+func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	k8sClient := K8sDriver(t, tfOptions, environmentName)
@@ -72,7 +71,7 @@ func assertShareHomePV(t *testing.T, tfOptions *terraform.Options, kubectlOption
 	require.NoError(t, err)
 }
 
-func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, environmentName string, product string) {
+func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, environmentName string, product string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	k8sClient := K8sDriver(t, tfOptions, environmentName)
@@ -80,6 +79,35 @@ func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, kubectlOptio
 
 	_, err := pvcClient.Get(ctx, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), v1.GetOptions{})
 	require.NoError(t, err)
+}
+
+func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product string) {
+	podName := fmt.Sprintf("%s-0", product)
+	pod := k8s.GetPod(t, kubectlOptions, podName)
+	k8s.WaitUntilPodAvailable(t, kubectlOptions, podName, 5, 30*time.Second)
+	shareHomeVolume := SafeExtractShareHomeVolume(pod.Spec.Volumes)
+
+	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
+	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
+}
+
+func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
+	path := "setup/setupLicense.action"
+	expectedContent := "Welcome to Bamboo Data Center"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
+	fmt.Printf("testing url: %s", url)
+	get, err := http.Get(url)
+	require.NoError(t, err)
+
+	defer get.Body.Close()
+
+	assert.NoError(t, err, "Error accessing url: %s", url)
+	assert.Equal(t, 200, get.StatusCode)
+
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	assert.Contains(t, string(content), expectedContent)
 }
 
 func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, awsRegion string, product string) {
@@ -128,31 +156,9 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 
 }
 
-func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseName string, product string) {
-	podName := fmt.Sprintf("%s-0", releaseName)
-	pod := k8s.GetPod(t, kubectlOptions, podName)
-	k8s.WaitUntilPodAvailable(t, kubectlOptions, podName, 5, 30*time.Second)
-	shareHomeVolume := SafeExtractShareHomeVolume(pod.Spec.Volumes)
-
-	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
-	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
-}
-
-func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
-	path := "setup/setupLicense.action"
-	expectedContent := "Welcome to Bamboo Data Center"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
-	fmt.Printf("testing url: %s", url)
-	get, err := http.Get(url)
-	require.NoError(t, err)
-
-	defer get.Body.Close()
-
-	assert.NoError(t, err, "Error accessing url: %s", url)
-	assert.Equal(t, 200, get.StatusCode)
-
-	content, err := io.ReadAll(get.Body)
-
-	assert.NoError(t, err, "Error reading response body")
-	assert.Contains(t, string(content), expectedContent)
+func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
+	vpcOutput := VpcOutput{}
+	terraform.OutputStruct(t, tfOptions, "vpc", &vpcOutput)
+	fmt.Printf("VpcOutput struct: %+v\n", vpcOutput)
+	return vpcOutput
 }
