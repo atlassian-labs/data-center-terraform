@@ -19,3 +19,9 @@ type KubectlConfig struct {
 	ContextName string
 	Namespace   string
 }
+
+type databaseOutput struct {
+	RdsInstanceId        string `json:"rds_instance_id"`
+	DbName               string `json:"db_name"`
+	KubernetesSecretName string `json:"kubernetes_secret_name"`
+}

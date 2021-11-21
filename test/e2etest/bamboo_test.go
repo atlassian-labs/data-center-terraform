@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -33,6 +35,7 @@ func TestBambooModule(t *testing.T) {
 	assertEKS(t, tfOptions, environmentConfig.AwsRegion, environmentConfig.EnvironmentName)
 	assertShareHomePV(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertShareHomePVC(t, tfOptions, kubectlOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
+	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.ReleaseName, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 }
@@ -77,6 +80,52 @@ func assertShareHomePVC(t *testing.T, tfOptions *terraform.Options, kubectlOptio
 
 	_, err := pvcClient.Get(ctx, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), v1.GetOptions{})
 	require.NoError(t, err)
+}
+
+func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, awsRegion string, product string) {
+	dbOutput := databaseOutput{}
+	terraform.OutputStruct(t, tfOptions, "database", &dbOutput)
+	dbInstanceID := dbOutput.RdsInstanceId
+	dbName := dbOutput.DbName
+
+	endpoint := aws.GetAddressOfRdsInstance(t, dbInstanceID, awsRegion)
+	port := aws.GetPortOfRdsInstance(t, dbInstanceID, awsRegion)
+
+	assert.NotNil(t, endpoint)
+	assert.Equal(t, int64(5432), port)
+
+	// Get password
+	secretName := product + "-db-cred"
+	secret, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data.password}'")
+	assert.Nil(t, err)
+	assert.NotNil(t, secret)
+	decSecret, err := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
+	assert.Nil(t, err)
+	password := string(decSecret)
+
+	// Assert DB connection
+	psqlClientPodName := "e2e-test-psqlclient"
+	username := product + "user"
+	_, err = k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName, "--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
+	assert.Nil(t, err)
+
+	ExpectedStatus := "success"
+	status := retry.DoWithRetry(t, "Waiting for DB connection validation...", 5, time.Duration(time.Second*5),
+		func() (string, error) {
+			output, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName, "--", "/bin/sh", "-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;", password, endpoint, dbName, username))
+			if err != nil {
+				return "", err
+			}
+
+			t.Log("PostgresClient:", output)
+			if output == "0" {
+				return ExpectedStatus, nil
+			} else {
+				return "", fmt.Errorf("fail")
+			}
+		})
+	assert.Equal(t, ExpectedStatus, status)
+
 }
 
 func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, releaseName string, product string) {
