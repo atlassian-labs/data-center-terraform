@@ -135,7 +135,9 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 	// Assert DB connection
 	psqlClientPodName := "e2e-test-psqlclient"
 	username := product + "user"
-	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName, "--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
+
+	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName,
+		"--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
 	if psqlClientErr != nil && strings.Contains(psqlClientErr.Error(), "AlreadyExists") {
 		psqlClientErr = nil
 	}
@@ -144,7 +146,11 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 	ExpectedStatus := "success"
 	status := retry.DoWithRetry(t, "Waiting for DB connection validation...", 5, time.Duration(time.Second*5),
 		func() (string, error) {
-			output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName, "--", "/bin/sh", "-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;", password, endpoint, dbName, username))
+			output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName,
+				"--", "/bin/sh",
+				"-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;",
+					password, endpoint, dbName, username),
+			)
 			if execErr != nil {
 				return "", execErr
 			}
