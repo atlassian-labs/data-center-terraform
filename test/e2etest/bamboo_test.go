@@ -124,25 +124,25 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 
 	// Get password
 	secretName := product + "-db-cred"
-	secret, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data.password}'")
-	assert.Nil(t, err)
+	secret, secretErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data.password}'")
+	assert.Nil(t, secretErr)
 	assert.NotNil(t, secret)
-	decSecret, err := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
-	assert.Nil(t, err)
+	decSecret, decodeErr := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
+	assert.Nil(t, decodeErr)
 	password := string(decSecret)
 
 	// Assert DB connection
 	psqlClientPodName := "e2e-test-psqlclient"
 	username := product + "user"
-	_, err = k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName, "--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
-	assert.Nil(t, err)
+	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName, "--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
+	assert.Nil(t, psqlClientErr)
 
 	ExpectedStatus := "success"
 	status := retry.DoWithRetry(t, "Waiting for DB connection validation...", 5, time.Duration(time.Second*5),
 		func() (string, error) {
-			output, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName, "--", "/bin/sh", "-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;", password, endpoint, dbName, username))
-			if err != nil {
-				return "", err
+			output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName, "--", "/bin/sh", "-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;", password, endpoint, dbName, username))
+			if execErr != nil {
+				return "", execErr
 			}
 
 			t.Log("PostgresClient:", output)
