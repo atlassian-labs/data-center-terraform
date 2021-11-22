@@ -33,7 +33,7 @@ You can run test with regex keyword to run specific group of test cases e.g. Run
 
 
 ## How to reuse end-to-end test environment
-When you run end-to-end test for the first time, the test function will create an environment config file under `/test/e2etest/artifacts` folder(the default file name is `e2e_test_env_config.json`). This config file allows you to reuse the existing terraform environment directory created by terratest.
+When you run end-to-end test for the first time, the test function will create an environment config file under `/test/e2etest/artifacts` folder (the default file name is `e2e_test_env_config.json`). This config file allows you to reuse the existing terraform environment directory created by terratest.
 
 You can specify the config file name on the second run and the function will load the config data and reuse the existing environment.
 e.g. `go test ./e2etest -v -timeout 40m -run Bamboo -config=e2e_test_env_config.json | tee ./e2etest/artifacts/e2e-test.log`
