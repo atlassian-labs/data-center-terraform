@@ -8,8 +8,16 @@ import (
 )
 
 func TestCleanup(t *testing.T) {
-	var tfOptions *terraform.Options
-	err := Load(BambooTfOptionsFilename, &tfOptions)
-	require.NoError(t, err)
+	var environmentConfig EnvironmentConfig
+
+	if *reuseFileName == "" {
+		err := Load(e2eTestEnvConfigFileName, &environmentConfig)
+		require.NoError(t, err)
+	} else {
+		err := Load(*reuseFileName, &environmentConfig)
+		require.NoError(t, err)
+	}
+
+	tfOptions := GenerateTerraformOptions(environmentConfig.TerraformConfig, t)
 	terraform.Destroy(t, tfOptions)
 }

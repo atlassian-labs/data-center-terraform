@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -18,14 +19,18 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var reuseFileName = flag.String("use", "", "set the flag to true if you want to use existing terratest enviroment")
+
 func TestBambooModule(t *testing.T) {
 
-	environmentConfig := GenerateConfigForProductE2eTest("bamboo", GetAvailableRegion(t))
+	environmentConfig := GenerateConfigForProductE2eTest(t, "bamboo", *reuseFileName)
 	tfOptions := GenerateTerraformOptions(environmentConfig.TerraformConfig, t)
 	kubectlOptions := GenerateKubectlOptions(environmentConfig.KubectlConfig, tfOptions, environmentConfig.EnvironmentName)
 
-	err := Save(BambooTfOptionsFilename, *tfOptions)
-	require.NoError(t, err)
+	if *reuseFileName == "" {
+		err := Save(e2eTestEnvConfigFileName, environmentConfig)
+		require.NoError(t, err)
+	}
 
 	terraform.InitAndApply(t, tfOptions)
 

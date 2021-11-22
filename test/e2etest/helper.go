@@ -23,25 +23,29 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const BambooTfOptionsFilename = "bamboo_tfOptions.json"
+const e2eTestEnvConfigFileName = "e2e_test_env_config.json"
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
-	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.TargetModuleDir)
-
-	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: exampleFolder,
+	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: config.TestFolder,
 		Vars:         config.Variables,
 		EnvVars:      config.EnvVariables,
 	})
-
-	return tfOptions
 }
 
 func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
-func GenerateConfigForProductE2eTest(product string, awsRegion string) EnvironmentConfig {
+func GenerateConfigForProductE2eTest(t *testing.T, product string, reuseFileName string) EnvironmentConfig {
+	if reuseFileName == "" {
+		return GenerateNewConfigForProductE2eTest(t, product, GetAvailableRegion(t))
+	}
+
+	return RegenerateConfigForProductE2eTest(t, reuseFileName)
+}
+
+func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
@@ -63,7 +67,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
 		},
-		TargetModuleDir: ".",
+		TestFolder: testStructure.CopyTerraformFolderToTemp(t, "../..", "."),
 	}
 	kubectlConfig := KubectlConfig{
 		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
@@ -77,6 +81,13 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}
+}
+
+func RegenerateConfigForProductE2eTest(t *testing.T, reuseFileName string) EnvironmentConfig {
+	var config EnvironmentConfig
+	err := Load(reuseFileName, &config)
+	require.NoError(t, err)
+	return config
 }
 
 func GenerateAwsSession(awsRegion string) *session.Session {

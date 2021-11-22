@@ -30,6 +30,19 @@ You can run test with regex keyword to run specific group of test cases e.g. Run
 2. `go test ./e2etest -v -timeout 40m -run Bamboo | tee e2e-test.log`
 3. Clean up test `go test ./e2etest -v -timeout 40m -run Cleanup | tee e2e-test-cleanup.log`
 
+
+## How to reuse end-to-end test environment
+When you run end-to-end test for the first time, the test function will create environment config file under /test/e2etest(Dafault file name is `e2e_test_env_config.json`). This config file allows you to reuse existing terraform environment directory created by terratest.
+
+You can specify the config file name on second run and the function will load the config data and run the previous test again.
+e.g. `go test ./e2etest -v -timeout 40m -run Bamboo -use=e2e_test_env_config.json | tee e2e-test.log`
+
+You can do the same for the clean up test.
+e.g. `go test ./e2etest -v -timeout 40m -run Cleanup -use=e2e_test_env_config.json | tee e2e-test-cleanup.log`
+
+!!! Warning "If `-use` flag is not specified, the second test will create new test environment and overwrite, if existed,`e2e_test_env_config.json` file"
+    So make sure you rename `e2e_test_env_config.json` file to avoid accidental overwrites.
+
 ## Github Action
 Github action will run for unit and end-to-end tests.
 Config file is in `.github/workflows`

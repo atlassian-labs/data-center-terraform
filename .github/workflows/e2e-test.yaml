@@ -66,3 +66,5 @@ jobs:
           path: |
             test/e2e-test.log
             test/e2e-test-cleanup.log
+            test/e2etest/e2e_test_env_config.json
+
