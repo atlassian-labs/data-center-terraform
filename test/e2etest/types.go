@@ -5,14 +5,13 @@ type EnvironmentConfig struct {
 	AwsRegion       string
 	TerraformConfig TerraformConfig
 	KubectlConfig   KubectlConfig
-	ReleaseName     string
 	EnvironmentName string
 }
 
 type TerraformConfig struct {
-	Variables       map[string]interface{}
-	EnvVariables    map[string]string
-	TargetModuleDir string
+	Variables    map[string]interface{}
+	EnvVariables map[string]string
+	TestFolder   string
 }
 
 type KubectlConfig struct {
@@ -27,4 +26,10 @@ type VpcOutput struct {
 	PublicSubnets      []string `json:"public_subnets"`
 	PrivateSubnetsCidr []string `json:"private_subnets_cidr"`
 	PublicSubnetsCidr  []string `json:"public_subnets_cidr"`
+}
+
+type databaseOutput struct {
+	RdsInstanceId        string `json:"rds_instance_id"`
+	DbName               string `json:"db_name"`
+	KubernetesSecretName string `json:"kubernetes_secret_name"`
 }

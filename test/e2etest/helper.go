@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -23,25 +24,29 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const BambooTfOptionsFilename = "bamboo_tfOptions.json"
+const defaultConfigFilename = "e2e_test_env_config.json"
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
-	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", config.TargetModuleDir)
-
-	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: exampleFolder,
+	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: config.TestFolder,
 		Vars:         config.Variables,
 		EnvVars:      config.EnvVariables,
 	})
-
-	return tfOptions
 }
 
 func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
-func GenerateConfigForProductE2eTest(product string, awsRegion string) EnvironmentConfig {
+func GenerateConfigForProductE2eTest(t *testing.T, product string, customConfigFilename string) EnvironmentConfig {
+	if customConfigFilename == "" {
+		return GenerateNewConfigForProductE2eTest(t, product, GetAvailableRegion(t))
+	}
+
+	return LoadConfigForProductE2eTest(t, customConfigFilename)
+}
+
+func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
 	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
@@ -63,7 +68,7 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
 		},
-		TargetModuleDir: ".",
+		TestFolder: testStructure.CopyTerraformFolderToTemp(t, "../..", "."),
 	}
 	kubectlConfig := KubectlConfig{
 		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
@@ -77,6 +82,13 @@ func GenerateConfigForProductE2eTest(product string, awsRegion string) Environme
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}
+}
+
+func LoadConfigForProductE2eTest(t *testing.T, customConfigFilename string) EnvironmentConfig {
+	var config EnvironmentConfig
+	err := Load("artifacts/"+customConfigFilename, &config)
+	require.NoError(t, err)
+	return config
 }
 
 func GenerateAwsSession(awsRegion string) *session.Session {
@@ -123,6 +135,11 @@ func GetAvailableRegion(t *testing.T) string {
 		}
 		log.Println(awsRegion, " has reached resource limit, Finding new region")
 	}
+}
+
+func CreateDirIfNotExist(dirName string) error {
+	newpath := filepath.Join(".", dirName)
+	return os.MkdirAll(newpath, os.ModePerm)
 }
 
 func Save(path string, object interface{}) error {
