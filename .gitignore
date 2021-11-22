@@ -48,5 +48,6 @@ kubeconfig_atlassian-dc-*
 
 
 # Ignore test artifacts
-*_tfOptions.json
+test/*/*.json
 *.log
+test/e2etest/artifacts

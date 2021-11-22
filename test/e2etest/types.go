@@ -5,14 +5,13 @@ type EnvironmentConfig struct {
 	AwsRegion       string
 	TerraformConfig TerraformConfig
 	KubectlConfig   KubectlConfig
-	ReleaseName     string
 	EnvironmentName string
 }
 
 type TerraformConfig struct {
-	Variables       map[string]interface{}
-	EnvVariables    map[string]string
-	TargetModuleDir string
+	Variables    map[string]interface{}
+	EnvVariables map[string]string
+	TestFolder   string
 }
 
 type KubectlConfig struct {

@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"context"
+	"flag"
 	"encoding/base64"
 	"fmt"
 	"io"
@@ -21,14 +22,20 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var customConfigFilename = flag.String("config", "", "Name of test environment config file")
+
 func TestBambooModule(t *testing.T) {
 
-	environmentConfig := GenerateConfigForProductE2eTest("bamboo", GetAvailableRegion(t))
+	environmentConfig := GenerateConfigForProductE2eTest(t, "bamboo", *customConfigFilename)
 	tfOptions := GenerateTerraformOptions(environmentConfig.TerraformConfig, t)
 	kubectlOptions := GenerateKubectlOptions(environmentConfig.KubectlConfig, tfOptions, environmentConfig.EnvironmentName)
 
-	err := Save(BambooTfOptionsFilename, *tfOptions)
-	require.NoError(t, err)
+	if *customConfigFilename == "" {
+		creationErr := CreateDirIfNotExist("artifacts")
+		require.NoError(t, creationErr)
+		saveErr := Save("artifacts/"+defaultConfigFilename, environmentConfig)
+		require.NoError(t, saveErr)
+	}
 
 	terraform.InitAndApply(t, tfOptions)
 
