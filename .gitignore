@@ -50,3 +50,4 @@ kubeconfig_atlassian-dc-*
 # Ignore test artifacts
 test/*/*.json
 *.log
+test/e2etest/artifacts

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -23,7 +24,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const e2eTestEnvConfigFileName = "e2e_test_env_config.json"
+const defaultConfigFilename = "e2e_test_env_config.json"
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
 	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
@@ -37,12 +38,12 @@ func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, 
 	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
-func GenerateConfigForProductE2eTest(t *testing.T, product string, reuseFileName string) EnvironmentConfig {
-	if reuseFileName == "" {
+func GenerateConfigForProductE2eTest(t *testing.T, product string, customConfigFilename string) EnvironmentConfig {
+	if customConfigFilename == "" {
 		return GenerateNewConfigForProductE2eTest(t, product, GetAvailableRegion(t))
 	}
 
-	return RegenerateConfigForProductE2eTest(t, reuseFileName)
+	return LoadConfigForProductE2eTest(t, customConfigFilename)
 }
 
 func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion string) EnvironmentConfig {
@@ -83,9 +84,9 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 	}
 }
 
-func RegenerateConfigForProductE2eTest(t *testing.T, reuseFileName string) EnvironmentConfig {
+func LoadConfigForProductE2eTest(t *testing.T, customConfigFilename string) EnvironmentConfig {
 	var config EnvironmentConfig
-	err := Load(reuseFileName, &config)
+	err := Load("artifacts/"+customConfigFilename, &config)
 	require.NoError(t, err)
 	return config
 }
@@ -134,6 +135,11 @@ func GetAvailableRegion(t *testing.T) string {
 		}
 		log.Println(awsRegion, " has reached resource limit, Finding new region")
 	}
+}
+
+func CreateDirIfNotExist(dirName string) error {
+	newpath := filepath.Join(".", dirName)
+	return os.MkdirAll(newpath, os.ModePerm)
 }
 
 func Save(path string, object interface{}) error {

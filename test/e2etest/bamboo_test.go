@@ -19,17 +19,19 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var reuseFileName = flag.String("use", "", "set the flag to true if you want to use existing terratest enviroment")
+var customConfigFilename = flag.String("config", "", "Name of test environment config file")
 
 func TestBambooModule(t *testing.T) {
 
-	environmentConfig := GenerateConfigForProductE2eTest(t, "bamboo", *reuseFileName)
+	environmentConfig := GenerateConfigForProductE2eTest(t, "bamboo", *customConfigFilename)
 	tfOptions := GenerateTerraformOptions(environmentConfig.TerraformConfig, t)
 	kubectlOptions := GenerateKubectlOptions(environmentConfig.KubectlConfig, tfOptions, environmentConfig.EnvironmentName)
 
-	if *reuseFileName == "" {
-		err := Save(e2eTestEnvConfigFileName, environmentConfig)
-		require.NoError(t, err)
+	if *customConfigFilename == "" {
+		creationErr := CreateDirIfNotExist("artifacts")
+		require.NoError(t, creationErr)
+		saveErr := Save("artifacts/"+defaultConfigFilename, environmentConfig)
+		require.NoError(t, saveErr)
 	}
 
 	terraform.InitAndApply(t, tfOptions)

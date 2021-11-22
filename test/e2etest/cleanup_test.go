@@ -10,11 +10,11 @@ import (
 func TestCleanup(t *testing.T) {
 	var environmentConfig EnvironmentConfig
 
-	if *reuseFileName == "" {
-		err := Load(e2eTestEnvConfigFileName, &environmentConfig)
+	if *customConfigFilename == "" {
+		err := Load("artifacts/"+defaultConfigFilename, &environmentConfig)
 		require.NoError(t, err)
 	} else {
-		err := Load(*reuseFileName, &environmentConfig)
+		err := Load("artifacts/"+(*customConfigFilename), &environmentConfig)
 		require.NoError(t, err)
 	}
 
