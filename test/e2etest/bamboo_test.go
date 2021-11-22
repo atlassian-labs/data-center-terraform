@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -135,6 +136,9 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 	psqlClientPodName := "e2e-test-psqlclient"
 	username := product + "user"
 	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName, "--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
+	if psqlClientErr != nil && strings.Contains(psqlClientErr.Error(), "AlreadyExists") {
+		psqlClientErr = nil
+	}
 	assert.Nil(t, psqlClientErr)
 
 	ExpectedStatus := "success"
