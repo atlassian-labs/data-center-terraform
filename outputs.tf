@@ -2,11 +2,11 @@ output "vpc" {
   description = "VPC network information"
 
   value = {
-    id                       = module.bamboo.vpc_id
-    public_subnet_cidr       = module.bamboo.public_subnets_cidr_blocks
-    vpc_public_subnets       = module.bamboo.public_subnets
-    vpc_private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
-    vpc_private_subnets      = module.bamboo.private_subnets
+    id                   = module.bamboo.vpc_id
+    public_subnets       = module.bamboo.public_subnets
+    public_subnets_cidr  = module.bamboo.public_subnets_cidr_blocks
+    private_subnets      = module.bamboo.private_subnets
+    private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
   }
 }
 
