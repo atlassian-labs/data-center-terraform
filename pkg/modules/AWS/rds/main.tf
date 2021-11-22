@@ -20,7 +20,7 @@ module "security_group" {
     },
   ]
 
-  tags = var.db_tags
+  tags = local.db_tags
 }
 
 module "db" {
@@ -57,5 +57,5 @@ module "db" {
   backup_retention_period = 0
 
   skip_final_snapshot = true
-  tags                = var.db_tags
+  tags                = local.db_tags
 }

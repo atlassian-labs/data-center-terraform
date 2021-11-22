@@ -4,11 +4,11 @@
 
 
 resource "aws_iam_policy" "this" {
-  name        = "${var.eks.cluster_name}_EFS_CSI"
+  name        = "${var.efs_name}-iam-policy"
   description = "EFS CSI policy for cluster ${var.eks.cluster_id}"
   policy      = data.aws_iam_policy_document.this.json
 
-  tags = var.efs_tags
+  tags = local.efs_tags
 }
 
 # This policy document is modeled after https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/v1.3.0/docs/iam-policy-example.json
@@ -65,7 +65,7 @@ module "efs_iam_role" {
   oidc_fully_qualified_subjects = [
     "system:serviceaccount:${local.efs_csi_namespace}:${local.efs_csi_serviceAccount_name}"
   ]
-  tags = var.efs_tags
+  tags = local.efs_tags
 }
 
 resource "helm_release" "efs_csi" {
@@ -87,7 +87,7 @@ resource "helm_release" "efs_csi" {
       repository = local.efs_csi_image_repository
     }
     controller = {
-      tags = var.efs_tags
+      tags = local.efs_tags
       serviceAccount = {
         name = local.efs_csi_serviceAccount_name
         annotations = {
@@ -123,8 +123,8 @@ resource "helm_release" "efs_csi" {
 
 # This is to allow access to the EFS filesystem from worker nodes
 resource "aws_security_group" "this" {
-  name_prefix = "${var.eks.cluster_name}-efs-csi"
-  vpc_id      = var.vpc.vpc_id
+  vpc_id = var.vpc.vpc_id
+  name   = "${var.efs_name}-security-group"
   ingress {
     cidr_blocks = var.vpc.private_subnets_cidr_blocks
 
@@ -140,14 +140,14 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.efs_tags, { Name : "${var.eks.cluster_name} Allow EFS CSI" })
+  tags = local.efs_tags
 }
 
 
 resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name
 
-  tags = merge(var.efs_tags, { Name : "${var.eks.cluster_name}-efs" })
+  tags = merge(local.efs_tags, { Name : var.efs_name })
 }
 
 resource "aws_efs_mount_target" "this" {

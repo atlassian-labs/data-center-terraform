@@ -27,9 +27,9 @@ module "eks" {
       instance_types = var.instance_types
       capacity_type  = "ON_DEMAND"
 
-      tags = var.eks_tags
+      tags = local.eks_tags
     }
   }
 
-  tags = var.eks_tags
+  tags = local.eks_tags
 }

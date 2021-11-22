@@ -5,4 +5,6 @@ locals {
   # This is only used if the DNS is a subdomain
   ingress_dns_domain = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
   ingress_version    = "4.0.6"
+  eks_tags = {
+  }
 }

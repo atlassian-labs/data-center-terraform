@@ -17,10 +17,9 @@ module "vpc" {
   single_nat_gateway   = true
   enable_dns_hostnames = true
 
-  tags = merge(var.vpc_tags, local.vpc_tags)
+  tags = local.vpc_tags
 
-  public_subnet_tags  = merge(var.vpc_tags, local.public_subnet_tags)
-  private_subnet_tags = merge(var.vpc_tags, local.private_subnet_tags)
-
+  public_subnet_suffix  = "public-subnet"
+  private_subnet_suffix = "private-subnet"
 }
 

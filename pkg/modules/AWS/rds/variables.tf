@@ -26,11 +26,6 @@ variable "iops" {
   type        = number
 }
 
-variable "db_tags" {
-  description = "List of additional tags that will be attached to database related resources."
-  type        = map(string)
-}
-
 variable "eks" {
   description = "EKS module that hosts the product."
   type        = any
