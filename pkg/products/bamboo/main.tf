@@ -18,46 +18,6 @@ resource "kubernetes_namespace" "bamboo" {
   }
 }
 
-resource "helm_release" "bamboo" {
-  name       = "bamboo"
-  namespace  = kubernetes_namespace.bamboo.metadata[0].name
-  repository = "https://atlassian.github.io/data-center-helm-charts"
-  chart      = "bamboo"
-  version    = "0.0.1"
-
-  values = [
-    yamlencode({
-      bamboo = {
-        resources = {
-          jvm = {
-            maxHeap = "512m"
-            minHeap = "256m"
-          }
-          container = {
-            requests = {
-              cpu    = "1",
-              memory = "1Gi"
-            }
-          }
-        }
-      }
-      ingress = {
-        create = "true",
-        host   = local.product_domain_name,
-      }
-      volumes = {
-        sharedHome = {
-          customVolume = {
-            persistentVolumeClaim = {
-              claimName = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
-            }
-          }
-        }
-      }
-    })
-  ]
-}
-
 resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
   metadata {
     name = "atlassian-dc-bamboo-share-home-pv"
@@ -82,7 +42,7 @@ resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
 resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
   metadata {
     name      = "atlassian-dc-bamboo-share-home-pvc"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = local.product_name
   }
   spec {
     access_modes = ["ReadWriteMany"]

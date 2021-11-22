@@ -16,6 +16,10 @@ output "rds_db_name" {
   value = module.db.db_instance_name
 }
 
-output "kubernetes_rds_secret_name" {
-  value = kubernetes_secret.rds_secret.metadata[0].name
+output "rds_endpoint" {
+  value = module.db.db_instance_endpoint
+}
+
+output "rds_jdbc_connection" {
+  value = local.db_jdbc_connection
 }
