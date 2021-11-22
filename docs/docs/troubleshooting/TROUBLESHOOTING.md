@@ -2,19 +2,6 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
-## AWS Access
-The Terraform cannot deploy resources into AWS Cloud if you have no access to an AWS account with admin permission. 
-If your security token is expired you will see the following message on console. Renew your token and retry. 
-
-```
-Terraform uses 'config.tfvars' to install the infrastructure.
-Verifying the config file.
-Cleaning all the generated terraform state variable and backend file.
-ngh-bamboo' infrastructure deployment is started using config.tfvars.
-Terraform state backend/variable files are missing.
-
-An error occurred (ExpiredToken) when calling the GetCallerIdentity operation: The security token included in the request is expired
-```
 
 ## Cleanup Terraform state
 Terraform stores the lock and current state in the terraform backend file in `terraform-backend.tf`. 
@@ -27,34 +14,52 @@ To cleanup the local terraform files, run the following command:
 ./pkg/scripts/cleanup.sh
 ```
 
+
+## AWS Access
+### Symptom
+
+```
+Terraform uses 'config.tfvars' to install the infrastructure.
+Verifying the config file.
+Cleaning all the generated terraform state variable and backend file.
+ngh-bamboo' infrastructure deployment is started using config.tfvars.
+Terraform state backend/variable files are missing.
+
+An error occurred (ExpiredToken) when calling the GetCallerIdentity operation: The security token included in the request is expired
+```
+
+### Solution
+Terraform cannot deploy resources into the AWS cloud if your security token has expired. You will need to renew your token and retry.
+
 ## How to unlock terraform
-If user interrupts the execution of install or uninstall actions, Terraform locked the resources but never get a chance to
- unlock them. In this case in next attempt you may see the following error:
+If user interrupts the execution of install or uninstall actions, Terraform never get a chance to unlock the locked resources. 
+In this case Terraform cannot capture the lock in next attempt.
  
+### Symptom
 
 ```
 Acquiring state lock. This may take a few moments...
-╷
-│ Error: Error acquiring the state lock
-│
-│ Error message: ConditionalCheckFailedException: The conditional request failed
-│ Lock Info:
-│   ID:        26f7b9a8-4bef-0674-669b-1d90800dea4d
-│   Path:      atlassian-data-center-terraform-state-887764444972/test-bamboo-887764444972/terraform.tfstate
-│   Operation: OperationTypeApply
-│   Who:       nghazalibeiklar@C02CK0JYMD6V
-│   Version:   1.0.9
-│   Created:   2021-11-04 00:50:34.736134 +0000 UTC
-│   Info:
-│
-│
-│ Terraform acquires a state lock to protect the state from being written
-│ by multiple users at the same time. Please resolve the issue above and try
-│ again. For most commands, you can disable locking with the "-lock=false"
-│ flag, but this is not recommended.
-╵
-```
 
+ Error: Error acquiring the state lock
+
+ Error message: ConditionalCheckFailedException: The conditional request failed
+ Lock Info:
+   ID:        26f7b9a8-4bef-0674-669b-1d90800dea4d
+   Path:      atlassian-data-center-terraform-state-xxxxxxxxxx/bamboo-xxxxxxxxxx/terraform.tfstate
+   Operation: OperationTypeApply
+   Who:       nghazalibeiklar@C02CK0JYMD6V
+   Version:   1.0.9
+   Created:   2021-11-04 00:50:34.736134 +0000 UTC
+   Info:
+
+
+ Terraform acquires a state lock to protect the state from being written
+ by multiple users at the same time. Please resolve the issue above and try
+ again. For most commands, you can disable locking with the "-lock=false"
+ flag, but this is not recommended.
+
+```
+### Solution
 To fix this you need to unlock state first by running the following command 
 (replace ID with the value from the error message):
 
@@ -62,7 +67,7 @@ To fix this you need to unlock state first by running the following command
 terraform force-unlock <ID>
 ```
 
-!!! hint "After running the unlock command still you see the error?"
+!!! hint "Are you still having the lock problem after running `terraform force-unlock`?"
     There are two terraform locks, one for infrastructure and another for terraform state. If running the following 
     command from repo folder does not unlock the resources, then change the current path to `./pkg/tfstate` and retry
      the same command.  
