@@ -104,7 +104,7 @@ create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Wel
 Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
 
 ```terraform
-domain="<domain-name>" # for exanple: "mydomain.com"
+domain="<domain-name>" # for example: "mydomain.com"
 ```
 
 ??? tip "Ingress Controller"
