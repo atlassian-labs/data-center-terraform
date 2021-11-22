@@ -3,9 +3,11 @@ package e2etest
 import (
 	"context"
 	"flag"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -13,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -44,6 +47,7 @@ func TestBambooModule(t *testing.T) {
 	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
+	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 }
 
 func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
@@ -112,6 +116,61 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 
 	assert.NoError(t, err, "Error reading response body")
 	assert.Contains(t, string(content), expectedContent)
+}
+
+func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.KubectlOptions, awsRegion string, product string) {
+	dbOutput := databaseOutput{}
+	terraform.OutputStruct(t, tfOptions, "database", &dbOutput)
+	dbInstanceID := dbOutput.RdsInstanceId
+	dbName := dbOutput.DbName
+
+	endpoint := aws.GetAddressOfRdsInstance(t, dbInstanceID, awsRegion)
+	port := aws.GetPortOfRdsInstance(t, dbInstanceID, awsRegion)
+
+	assert.NotNil(t, endpoint)
+	assert.Equal(t, int64(5432), port)
+
+	// Get password
+	secretName := product + "-db-cred"
+	secret, secretErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data.password}'")
+	assert.Nil(t, secretErr)
+	assert.NotNil(t, secret)
+	decSecret, decodeErr := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
+	assert.Nil(t, decodeErr)
+	password := string(decSecret)
+
+	// Assert DB connection
+	psqlClientPodName := "e2e-test-psqlclient"
+	username := product + "user"
+
+	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName,
+		"--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
+	if psqlClientErr != nil && strings.Contains(psqlClientErr.Error(), "AlreadyExists") {
+		psqlClientErr = nil
+	}
+	assert.Nil(t, psqlClientErr)
+
+	ExpectedStatus := "success"
+	status := retry.DoWithRetry(t, "Waiting for DB connection validation...", 5, time.Duration(time.Second*5),
+		func() (string, error) {
+			output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", psqlClientPodName,
+				"--", "/bin/sh",
+				"-c", fmt.Sprintf("PGPASSWORD=\"%s\" psql \"sslmode=require host=%s dbname=%s user=%s\" -q -c \"SELECT version()\" > test.log;echo $?;",
+					password, endpoint, dbName, username),
+			)
+			if execErr != nil {
+				return "", execErr
+			}
+
+			t.Log("PostgresClient:", output)
+			if output == "0" {
+				return ExpectedStatus, nil
+			} else {
+				return "", fmt.Errorf("fail")
+			}
+		})
+	assert.Equal(t, ExpectedStatus, status)
+
 }
 
 func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {

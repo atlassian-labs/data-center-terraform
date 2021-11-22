@@ -1,5 +1,6 @@
 nav:
     - Home: README.md
     - User guide: userguide
-    - Development: development
     - Troubleshooting: troubleshooting
+    - Development: development
+

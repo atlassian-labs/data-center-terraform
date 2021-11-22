@@ -59,17 +59,3 @@ module "db" {
   skip_final_snapshot = true
   tags                = var.db_tags
 }
-
-################################################################################
-# Kubernetes secret to store db credential
-################################################################################
-resource "kubernetes_secret" "rds_secret" {
-  metadata {
-    name = "${var.product}-db-cred"
-  }
-
-  data = {
-    username = local.db_master_usr
-    password = module.db.db_instance_password
-  }
-}
