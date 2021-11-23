@@ -36,8 +36,3 @@ variable "desired_capacity" {
     error_message = "Desired capacity must be between 1 and 10, inclusive."
   }
 }
-
-variable "ingress_domain" {
-  description = "Domain name for the ingress controller"
-  type        = string
-}

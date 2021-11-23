@@ -44,6 +44,7 @@ variable "desired_capacity" {
 
 variable "domain" {
   description = "Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)"
+  default     = null
   type        = string
 }
 

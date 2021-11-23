@@ -23,7 +23,7 @@ instance_types = ["m5.xlarge"]
 desired_capacity = 1
 
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
-domain = "<subdomain.example.com>"
+# domain = "<subdomain.example.com>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.

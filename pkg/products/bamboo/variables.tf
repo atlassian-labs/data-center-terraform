@@ -32,6 +32,11 @@ variable "efs" {
   type        = any
 }
 
+variable "ingress" {
+  default = null
+  type    = any
+}
+
 variable "share_home_size" {
   description = "Shared home persistent volume size."
   type        = string
