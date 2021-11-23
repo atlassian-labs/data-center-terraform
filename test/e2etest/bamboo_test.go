@@ -2,8 +2,8 @@ package e2etest
 
 import (
 	"context"
-	"flag"
 	"encoding/base64"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -35,6 +35,12 @@ func TestBambooModule(t *testing.T) {
 		require.NoError(t, creationErr)
 		saveErr := Save("artifacts/"+defaultConfigFilename, environmentConfig)
 		require.NoError(t, saveErr)
+	}
+
+	// copy any changes to test directory
+	if *customConfigFilename != "" {
+		copyErr := CopyDir("../../", environmentConfig.TerraformConfig.TestFolder)
+		require.NoError(t, copyErr)
 	}
 
 	terraform.InitAndApply(t, tfOptions)
