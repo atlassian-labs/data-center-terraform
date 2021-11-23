@@ -31,5 +31,11 @@ module "eks" {
     }
   }
 
+  worker_groups = [
+    {
+      tags = local.worker_groups_tags
+    }
+  ]
+
   tags = var.eks_tags
 }

@@ -44,6 +44,8 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pv
     name      = "atlassian-dc-bamboo-share-home-pvc"
     namespace = local.product_name
   }
+  depends_on = [kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv]
+
   spec {
     access_modes = ["ReadWriteMany"]
     resources {

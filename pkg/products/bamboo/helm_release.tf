@@ -6,7 +6,9 @@ resource "helm_release" "bamboo" {
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
   version    = "0.0.1"
-  depends_on = [kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc, kubernetes_namespace.bamboo]
+  depends_on = [kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc,
+    kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv,
+  kubernetes_namespace.bamboo]
 
   values = [
     yamlencode({
