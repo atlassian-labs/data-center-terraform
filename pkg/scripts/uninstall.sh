@@ -94,6 +94,8 @@ regenerate_environment_variables() {
 
 destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
+  aws --region "${REGION}" eks update-kubeconfig --name "atlassian-dc-${ENVIRONMENT_NAME}-cluster"
+  helm uninstall bamboo -n bamboo
   set +e
   terraform destroy "${OVERRIDE_CONFIG_FILE}"
   if [ $? -eq 0 ]; then
