@@ -47,8 +47,8 @@ func TestBambooModule(t *testing.T) {
 
 	vpcOutput := getVpcOutput(t, tfOptions)
 
-	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
-	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
+	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig)
+	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig)
 	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
@@ -56,22 +56,27 @@ func TestBambooModule(t *testing.T) {
 	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 }
 
-func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
 	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
-	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+
+	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
+	assert.Equal(t, resourceTags["resource_owner"], vpc.Tags["resource_owner"])
 	assert.Len(t, vpc.Subnets, 4)
 }
 
-func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
-		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentName)),
+		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentConfig.EnvironmentName)),
 	}
 
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
 	require.NoError(t, err)
 
+	assert.Equal(t, resourceTags["resource_owner"], *(eksInfo.Cluster.Tags["resource_owner"]))
 	assert.Equal(t, vpcOutput.Id, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
 }
 
