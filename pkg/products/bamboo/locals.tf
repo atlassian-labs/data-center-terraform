@@ -14,16 +14,21 @@ locals {
   # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration
   use_domain          = length(var.ingress) == 1
   product_domain_name = local.use_domain ? "${local.product_name}.${var.ingress[0].ingress.domain}" : null
-  ingress_settings = local.use_domain ? yamlencode({
+  # ingress settings for Bamboo service
+  ingress_with_domain = yamlencode({
     ingress = {
       create = "true"
       host   = local.product_domain_name
     }
-    }) : yamlencode({
+  })
+
+  service_as_loadbalancer = yamlencode({
     bamboo = {
       service = {
         type = "LoadBalancer"
       }
     }
   })
+
+  ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
 }

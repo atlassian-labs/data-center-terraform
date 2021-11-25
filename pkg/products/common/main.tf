@@ -37,5 +37,5 @@ module "ingress" {
 
   # inputs
   ingress_domain = local.ingress_domain
-  tags           = var.resource_tags
+  tags           = merge(var.resource_tags, local.required_tags)
 }
