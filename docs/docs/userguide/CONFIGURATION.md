@@ -11,7 +11,7 @@ The content of the config file is divided into two groups:
 
 
 !!! info "Configuration file format."
-    The config file is an ASCII text file with `.tfvar` extension.
+    The config file is an ASCII text file with `.tfvars` extension.
     The config file should contain all mandatory configuration items with valid values.
     Optional items can be part of the content. If any optional item is missing, the default value will be applied.
    
