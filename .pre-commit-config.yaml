@@ -5,3 +5,10 @@ repos:
       - id: terraform-fmt
       - id: terraform-validate
       - id: tflint
+#  - repo: https://github.com/accurics/terrascan
+#    rev: v1.12.0
+#    hooks:
+#      - id: terraform-pre-commit
+#        args: ['-i terraform'] # Just scan for terraform code
+
+# TODO: Uncomment the above lines after fix the vulnerabilities
