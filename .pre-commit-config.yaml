@@ -9,6 +9,6 @@ repos:
 #    rev: v1.12.0
 #    hooks:
 #      - id: terraform-pre-commit
-#        args: ['-i terraform -c config-scan.toml'] # Just scan for terraform code
+#        args: ['-i terraform -c config-scan.toml'] # Just scan for terraform code configured by config-scan.toml
 
 # TODO: Uncomment the above lines after fix the vulnerabilities
