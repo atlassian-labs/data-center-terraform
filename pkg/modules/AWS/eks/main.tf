@@ -34,14 +34,3 @@ module "eks" {
   tags = var.eks_tags
 }
 
-resource "aws_autoscaling_group_tag" "tags" {
-  for_each               = var.eks_tags
-  autoscaling_group_name = module.eks.node_groups.appNodes.resources[0].autoscaling_groups[0].name
-
-  tag {
-    key                 = each.key
-    value               = each.value
-    propagate_at_launch = true
-  }
-}
-
