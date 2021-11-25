@@ -2,7 +2,7 @@
 
 ## Release naming
 Each product version is [semantically versioned](https://semver.org/){.external}. 
-Version name will be defined by the following pattern: `tf-<product>-MAJOR.MINOR.PATCH` , e.g. `tf-bamboo-0.0.1`. 
+Version name will be defined by the following pattern: `tf-dc-MAJOR.MINOR.PATCH` , e.g. `tf-dc-0.0.1`. 
 
 ## Release versions
 The version number for first release starts from `0.0.1` and next release versions will be defined based on the nature of the delivered changes:
