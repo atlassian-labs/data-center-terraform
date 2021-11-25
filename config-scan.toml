@@ -1,0 +1,12 @@
+[severity]
+level = "high"
+[rules]
+    skip-rules = [
+    ]
+
+[k8s-admission-control]
+    denied-categories = [
+        "Network Ports Security"
+    ]
+    denied-severity = "high"
+    dashboard=true
