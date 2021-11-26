@@ -2,11 +2,10 @@
 
 resource "helm_release" "bamboo" {
   name       = "bamboo"
-  namespace  = local.product_name
+  namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
   version    = "0.0.1"
-  depends_on = [kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc, kubernetes_namespace.bamboo]
 
   values = [
     yamlencode({
@@ -31,10 +30,6 @@ resource "helm_release" "bamboo" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
-      ingress = {
-        create = "true",
-        host   = local.product_domain_name,
-      }
       volumes = {
         sharedHome = {
           customVolume = {
@@ -44,6 +39,14 @@ resource "helm_release" "bamboo" {
           }
         }
       }
-    })
+    }),
+    local.ingress_settings
   ]
+}
+
+data "kubernetes_service" "bamboo" {
+  metadata {
+    name      = "bamboo"
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
+  }
 }
