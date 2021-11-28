@@ -95,8 +95,12 @@ regenerate_environment_variables() {
 destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
   aws --region "${REGION}" eks update-kubeconfig --name "atlassian-dc-${ENVIRONMENT_NAME}-cluster"
-  helm uninstall bamboo -n bamboo
   set +e
+  # Uninstall bamboo helm chart if is already installed - When we add new products we need to refactor this approach
+  if [ ! -z "$(helm list -n bamboo | grep bamboo)" ]; then
+    helm uninstall bamboo -n bamboo
+  fi
+  # Start destroy infrastructure
   terraform destroy "${OVERRIDE_CONFIG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
