@@ -113,6 +113,17 @@ domain="<domain-name>" # for example: "mydomain.com"
     It also creates an [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) that is 
     ensuring access over secure HTTPS protocol.
 
+#### Provisioning without domain name
+
+You can provision the infrastructure without a domain name. To do that, you can comment out the `domain` variable in the `tfvars` file:
+
+```terraform
+#domain=
+```
+
+In this case the application will run unsecured on an elastic load balancer domain - `<load balancer id>.<region>.elb.amazonaws.com`.
+The final URL is printed out as part of the outputs after the infrastructure is provisioned.
+
 ### Database Instance Class
 `db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by
 planned workload of the DB instance. Detailed available instance classes can be found via 

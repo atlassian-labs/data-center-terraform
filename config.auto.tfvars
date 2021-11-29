@@ -22,8 +22,10 @@ instance_types = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
 
-# Domain name used by the ingress controller. The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
 # domain = "<example.com>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
