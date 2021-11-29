@@ -1,4 +1,4 @@
-site_name: Atlassian Terraform for Bamboo DC on Kubernetes
+site_name: Terraform for Atlassian DC on Kubernetes
 theme:
   name: material
   custom_dir: overrides
@@ -18,8 +18,8 @@ theme:
     - search.highlight
     - navigation.instant
     - navigation.tabs
-repo_url: https://github.com/atlassian-labs/Terraform-for-Bamboo-DC-on-K8s
-repo_name: atlassian-labs/Terraform-for-Bamboo-DC-on-K8s
+repo_url: https://github.com/atlassian-labs/data-center-terraform
+repo_name: atlassian-labs/data-center-terraform
 edit_uri: edit/main/docs/docs/
 plugins:
   - search
@@ -49,7 +49,7 @@ extra_css:
 extra:
   analytics:
     provider: google
-    property: G-FZ7HCVNVPY
+    property: G-9EV9WQVD44
   social:
     - icon: fontawesome/brands/atlassian
       link: https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes

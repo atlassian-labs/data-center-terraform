@@ -9,7 +9,7 @@ In order to deploy Atlassian’s Data Center infrastructure, the following are r
 
 ## Environment setup 
 
-Before installing the Bamboo Data Center you need to make sure your environment are setup:
+Before installing you need to make sure your environment has the necessary tools::
 
 1. [Install Terraform](#terraform) 
 2. [Install helm v3.3 or later](#helm)
@@ -22,7 +22,7 @@ Terraform is an open source infrastructure as code that provides a consistent CL
 infrastructures on the cloud environment. We use terraform in this project to create and manage Atlassian Data Center 
 infrastructure on AWS cloud to be used with the supported Data Center products. 
 
-!!! warning "Not all Data Center products are supported now." 
+!!! warning "Currently, not all Data Center products are supported." 
     At this stage **Bamboo** is the only supported product.  
 
 Please make sure to install the latest version of [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli){.external} 

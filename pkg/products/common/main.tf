@@ -14,7 +14,6 @@ module "eks" {
 
   instance_types   = var.instance_types
   desired_capacity = var.desired_capacity
-  ingress_domain   = var.ingress_domain
 }
 
 module "efs" {
@@ -25,4 +24,14 @@ module "efs" {
   vpc                          = module.vpc
   eks                          = module.eks
   csi_controller_replica_count = var.desired_capacity
+}
+
+module "ingress" {
+  count = local.ingress_domain != null ? 1 : 0
+
+  source     = "../../modules/AWS/ingress"
+  depends_on = [module.eks]
+
+  # inputs
+  ingress_domain = local.ingress_domain
 }

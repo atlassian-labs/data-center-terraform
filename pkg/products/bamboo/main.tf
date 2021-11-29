@@ -1,14 +1,16 @@
 # Create the infrastructure for Bamboo Data Center.
 
 resource "aws_route53_record" "bamboo" {
-  zone_id = var.eks.ingress.r53_zone
+  count = local.use_domain ? 1 : 0
+
+  zone_id = var.ingress[0].ingress.r53_zone
   name    = local.product_domain_name
   type    = "A"
 
   alias {
     evaluate_target_health = false
-    name                   = var.eks.ingress.lb_hostname
-    zone_id                = var.eks.ingress.lb_zone_id
+    name                   = var.ingress[0].ingress.lb_hostname
+    zone_id                = var.ingress[0].ingress.lb_zone_id
   }
 }
 

@@ -109,7 +109,6 @@ destroy_infrastructure() {
 
 
 destroy_tfstate() {
-  echo $SKIP_TFSTATE
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ ! -z "${SKIP_TFSTATE}" ]; then
     echo "Skipped terraform state cleanup."

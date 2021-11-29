@@ -39,8 +39,6 @@ module "ingress_certificate" {
 }
 
 resource "helm_release" "ingress" {
-  depends_on = [module.eks]
-
   name       = local.ingress_name
   namespace  = local.ingress_namespace
   repository = "https://kubernetes.github.io/ingress-nginx"
@@ -79,7 +77,6 @@ resource "helm_release" "ingress" {
 
 # To create product specific r53 records we need to expose ingress controller information
 data "kubernetes_service" "ingress_nginx" {
-  depends_on = [helm_release.ingress]
   metadata {
     name      = "ingress-nginx-controller"
     namespace = helm_release.ingress.metadata[0].namespace

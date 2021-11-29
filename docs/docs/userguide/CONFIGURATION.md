@@ -11,8 +11,8 @@ The content of the config file is divided into two groups:
 
 
 !!! info "Configuration file format."
-    The config file is an ascii text file with extension of `.tfvar`.
-    The config file should contain all mandatory configuration items with valid value.
+    The config file is an ASCII text file with `.tfvars` extension.
+    The config file should contain all mandatory configuration items with valid values.
     Optional items can be part of the content. If any optional item is missing, the default value will be applied.
    
 The mandatory configuration items are those you should define once before the first installation, and you cannot change them in the entire environment lifecycle.
@@ -37,7 +37,7 @@ Terraform will keep the latest status of the environment and use it for any furt
    
     instance_types   = ["m5.xlarge"]
     desired_capacity = 2
-    domain           = "subdomain.mydomain.com"
+    domain           = "mydomain.com"
     ```
 
 ## Mandatory configuration
@@ -46,42 +46,35 @@ Terraform will keep the latest status of the environment and use it for any furt
 `environment_name` provides your environment a unique name within a single cloud provider account.
 This value cannot be altered after the configuration has been applied.
 The value will be used to form the name of some resources including `vpc` and `Kubernetes cluster`.
-syntax:
-```
-syntax:
-
-    environment_name = "<YOUR-ENVIRONMENT-NAME>"
+```terraform
+environment_name = "<YOUR-ENVIRONMENT-NAME>"
 ```
 Environment names should start with an alphabet character and could contain alphabet, numbers and dash `-`.
-The length of the `environment_name` value cannot exceed 32 characters.
+The length of the `environment_name` value cannot exceed 17 characters.
 
 
 ### Region
 `region` defines the cloud provider region that this configuration will deploy to.
-Since we only support AWS Cloud provider then this value should a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
+This value should be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
 
-```
-syntax:
-
-    region = "<Region>"  # e.g: "ap-northeast-2"
+```terraform
+region = "<Region>"  # e.g: "ap-northeast-2"
 ```
 
 ## Optional configuration
 
 ### Resource Tags
-`resource_tags` is the custom tags for all resources to be created in the environment. Tag names should be unique.
+`resource_tags` are the custom tags for all resources to be created in the environment. Tag names should be unique.
 You can add all tags you need to propagate among the resources as a list. Resource tags are optional.
 
-```
-syntax:
-
-    resource_tags = {
-      <tag-name-0> : "<tag-value>",
-      <tag-name-1> : "<tag-value>",
-      ...
-      <tag-name-n> : "<tag-value>",
-    }
+```terraform
+resource_tags = {
+  <tag-name-0> : "<tag-value>",
+  <tag-name-1> : "<tag-value>",
+  ...
+  <tag-name-n> : "<tag-value>",
+}
 ```
 
 ### Cluster Instance Type
@@ -89,34 +82,44 @@ syntax:
 The default value for this would be `m5.xlarge` if it is not defined in the config file.
 Instance type should be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
 
-```
-syntax:
-
-    instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
+```terraform
+instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
 ```
 
 ### Cluster Size
 `desired_capacity` provides the desired number of nodes that the node group should launch with initially.
-The default value for the number of nodes in Kubernetes node groups is `1`.
-Maximum number of `desired_capacity` would be `10` and this number of the nodes cannot be set to less than `1` node.
 
-```
-syntax:
+* The default value for the number of nodes in Kubernetes node groups is `1`.
+* Minimum is `1` and maximum is `10`.
 
-    desired_capacity = <number-of-nodes>  # between 1 and 10
+```terraform
+desired_capacity = <number-of-nodes>  # between 1 and 10
 ```
 
 ### Domain Name
+It is highly recommended to use a domain name and access the application via HTTPS protocol. You will be required
+to secure a domain name and supply the configuration to the config file. When the domain is provided, Terraform will 
+create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
+Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
+
+```terraform
+domain="<domain-name>" # for example: "mydomain.com"
+```
+
+??? tip "Ingress Controller"
+    When the domain is used, Terraform will create [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) 
+    in the EKS cluster that will provide access to the application via the domain name.
+    It also creates an [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) that is 
+    ensuring access over secure HTTPS protocol.
 
 ### Database Instance Class
 `db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by
 planned workload of the DB instance. Detailed available instance classes can be found via 
 [AWS RDS documentation on DB Instance Class](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
-```
-syntax:
 
-    db_instance_class = "<instance.class>"  # e.g. "db.t3.micro"
+```terraform
+db_instance_class = "<instance.class>"  # e.g. "db.t3.micro"
 ```
 
 ### Database Allocated Storage
@@ -126,10 +129,8 @@ syntax:
   You may want to adjust these values according to your needs. Documentation can be found via:
   [AWS RDS documentation on Storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
   
-```
-syntax:
-
-    db_allocated_storage = 100 
+```terraform
+db_allocated_storage = 100 
 ```
 
 ### Database IOPS
@@ -139,8 +140,6 @@ syntax:
   You may want to adjust these values according to your needs. Documentation can be found via:
   [AWS RDS documentation on Storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
-```
-syntax:
-
-    db_iops = 1000
+```terraform
+db_iops = 1000
 ```

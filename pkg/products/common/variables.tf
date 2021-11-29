@@ -22,7 +22,7 @@ variable "desired_capacity" {
   type        = number
 }
 
-variable "ingress_domain" {
+variable "domain" {
   description = "Domain name for the ingress controller. The products are running on a subdomain of this domain."
   type        = string
 }
