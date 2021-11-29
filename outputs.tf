@@ -3,9 +3,7 @@ output "vpc" {
 
   value = {
     id                   = module.bamboo.vpc_id
-    public_subnets       = module.bamboo.public_subnets
     public_subnets_cidr  = module.bamboo.public_subnets_cidr_blocks
-    private_subnets      = module.bamboo.private_subnets
     private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
   }
 }

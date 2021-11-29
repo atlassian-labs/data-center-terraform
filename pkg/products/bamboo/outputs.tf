@@ -23,7 +23,7 @@ output "public_subnets_cidr_blocks" {
 }
 
 output "product_domain_name" {
-  value = local.product_domain_name != null ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bamboo.status[0].load_balancer[0].ingress[0].hostname}"
+  value = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bamboo.status[0].load_balancer[0].ingress[0].hostname}"
 }
 
 output "rds_instance_id" {
