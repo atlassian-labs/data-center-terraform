@@ -120,13 +120,10 @@ domain="<domain-name>" # for example: "mydomain.com"
 
 #### Provisioning without domain name
 
-You can provision the infrastructure without a domain name. To do that, you can comment out the `domain` variable in the `tfvars` file:
+You can provision the infrastructure without a domain name. To do that, you can comment out the `domain` variable in the `tfvars` file.
 
-```terraform
-#domain=
-```
-
-In this case the application will run unsecured on an elastic load balancer domain - `<load balancer id>.<region>.elb.amazonaws.com`.
+In that case the application will run unsecured on an elastic load balancer domain:
+`http://<load-balancer-id>.<region>.elb.amazonaws.com`.
 The final URL is printed out as part of the outputs after the infrastructure is provisioned.
 
 ### Database Instance Class
