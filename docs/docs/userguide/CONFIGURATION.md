@@ -107,6 +107,11 @@ Final domain will have the following format: `<product>.<environment-name>.<doma
 domain="<domain-name>" # for example: "mydomain.com"
 ```
 
+!!! warning "Removing domain from deployment"
+
+    If you have deployed with domain, you cannot remove the domain later from the deployment to revert
+    to an unsecured deployment running on HTTP (see below).
+
 ??? tip "Ingress Controller"
     When the domain is used, Terraform will create [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) 
     in the EKS cluster that will provide access to the application via the domain name.
