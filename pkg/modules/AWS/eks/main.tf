@@ -26,15 +26,20 @@ module "eks" {
 
       instance_types = var.instance_types
       capacity_type  = "ON_DEMAND"
-
-      tags = local.eks_tags
     }
   }
-
-  tags = local.eks_tags
 }
 
+
+// Manually add default tags to ASG due to the node group resource limitation(See: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1558)
 data "aws_default_tags" "current" {}
+
+# data "aws_instances" "ec2" {
+#   filter {
+#     name   = "tag:eks:cluster-name"
+#     values = [var.cluster_name]
+#   }
+# }
 
 resource "aws_autoscaling_group_tag" "tag" {
   for_each               = data.aws_default_tags.current.tags
@@ -46,3 +51,10 @@ resource "aws_autoscaling_group_tag" "tag" {
     propagate_at_launch = true
   }
 }
+
+# resource "aws_ec2_tag" "tag" {
+#   for_each               = {for tag in local.ec2_formatted_tags : tag.iteration_id => tag}
+#   resource_id = each.value.resource_id
+#     key                 = each.value.tag_key
+#     value               = each.value.tag_value
+# }

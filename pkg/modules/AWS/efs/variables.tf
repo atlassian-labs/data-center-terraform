@@ -8,7 +8,7 @@ variable "efs_name" {
 }
 
 variable "region_name" {
-  description = "AWS region."
+  description = "Name of the AWS region."
   type        = string
 }
 

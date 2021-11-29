@@ -19,8 +19,6 @@ module "security_group" {
       source_security_group_id = var.eks.cluster_security_group
     },
   ]
-
-  tags = local.db_tags
 }
 
 module "db" {
@@ -57,5 +55,4 @@ module "db" {
   backup_retention_period = 0
 
   skip_final_snapshot = true
-  tags                = local.db_tags
 }
