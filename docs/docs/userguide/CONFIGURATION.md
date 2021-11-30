@@ -30,9 +30,9 @@ Terraform will keep the latest status of the environment and use it for any furt
    
     # Optional items
     resource_tags = {
-      Terraform    : "true",
-      Organization : "atlassian",
-      product      : "bamboo" ,
+      Terraform    = "true",
+      Organization = "atlassian",
+      product      = "bamboo" ,
     }
    
     instance_types   = ["m5.xlarge"]
@@ -70,12 +70,13 @@ You can add all tags you need to propagate among the resources as a list. Resour
 
 ```terraform
 resource_tags = {
-  <tag-name-0> : "<tag-value>",
-  <tag-name-1> : "<tag-value>",
+  <tag-name-0> = "<tag-value>",
+  <tag-name-1> = "<tag-value>",
   ...
-  <tag-name-n> : "<tag-value>",
+  <tag-name-n> = "<tag-value>",
 }
 ```
+* Note: In order to apply tags to all resources, you must follow the recommended [installation guide](INSTALLATION.md). Using `terraform CLI` is not recommended and may leads to missing tags in some resources.
 
 ### Cluster Instance Type
 `instance_types` provides the instance types for the Kubernetes cluster node group.
