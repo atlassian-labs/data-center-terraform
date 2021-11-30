@@ -14,6 +14,6 @@ jobs:
       - name: Install mkdocs requirements
         run: pip install -r requirements.txt
         working-directory: docs
-      - name: Publish documentation to gp-pages branch
+      - name: Publish documentation to gh-pages branch
         run: mkdocs gh-deploy --force
         working-directory: docs
