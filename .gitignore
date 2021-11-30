@@ -51,3 +51,6 @@ kubeconfig_atlassian-dc-*
 test/*/*.json
 *.log
 test/e2etest/artifacts
+
+# built docs site
+docs/site

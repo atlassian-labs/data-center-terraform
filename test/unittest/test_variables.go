@@ -57,7 +57,6 @@ var EksWithValidValues = map[string]interface{}{
 	},
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 1,
-	"ingress_domain":   "test.deplops.com", // needs to be a real domain otherwise this test will fail
 }
 
 var EksWithInvalidClusterName = map[string]interface{}{
@@ -69,7 +68,6 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	},
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 1,
-	"ingress_domain":   "ingress.domain.com",
 }
 
 var EksWithDesiredCapacityOverLimit = map[string]interface{}{
@@ -81,7 +79,6 @@ var EksWithDesiredCapacityOverLimit = map[string]interface{}{
 	},
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 11,
-	"ingress_domain":   "ingress.domain.com",
 }
 
 var EksDesiredCapacityUnderLimit = map[string]interface{}{
@@ -93,7 +90,6 @@ var EksDesiredCapacityUnderLimit = map[string]interface{}{
 	},
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 0,
-	"ingress_domain":   "ingress.domain.com",
 }
 
 var EksDefaultModuleVariable = map[string]interface{}{
