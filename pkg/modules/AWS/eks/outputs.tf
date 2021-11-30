@@ -26,3 +26,7 @@ output "kubernetes_provider_config" {
 output "cluster_security_group" {
   value = module.eks.cluster_primary_security_group_id
 }
+
+output "cluster_asg_name" {
+  value = module.eks.node_groups.appNodes.resources[0].autoscaling_groups[0].name
+}

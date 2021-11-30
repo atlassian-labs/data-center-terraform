@@ -45,6 +45,9 @@ func TestBambooModule(t *testing.T) {
 
 	terraform.InitAndApply(t, tfOptions)
 
+	// Manually add default tags to ASG and EC2 after the initial provisioning due to the node group resource limitation(See: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1558)
+	tagAsgResources(t, environmentConfig)
+
 	vpcOutput := getVpcOutput(t, tfOptions)
 
 	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig)
@@ -191,4 +194,19 @@ func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 	terraform.OutputStruct(t, tfOptions, "vpc", &vpcOutput)
 	fmt.Printf("VpcOutput struct: %+v\n", vpcOutput)
 	return vpcOutput
+}
+
+func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
+	AsgEc2taggingModuleTfConfig := TerraformConfig{
+		Variables: map[string]interface{}{
+			"region":        environmentConfig.TerraformConfig.Variables["region"],
+			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
+			"state_type":    "local",
+		},
+		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
+		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
+	}
+
+	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)
+	terraform.InitAndApply(t, taggingModuletfOption)
 }

@@ -14,7 +14,8 @@ crash.log
 # Generated files
 pkg/tfstate/variables.tf
 pkg/tfstate/config.auto.tfvars
-pkg/tfstate/tfstate-locals.tf
+pkg/modules/AWS/asg_ec2_tagging/*.tfvars
+**/tfstate-locals.tf
 terraform-backend.tf
 
 # Ignore any .tfvars files

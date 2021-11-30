@@ -151,6 +151,14 @@ destroy_tfstate() {
   fi
 }
 
+cleanup_asg_ec2_tagging_module() {
+  echo "Cleaning up asg_ec2_tagging Module."
+  cd "${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+  rm -rf *.tfvars
+  rm -rf .terraform
+  rm -rf .terraform.lock.hcl
+  rm -rf terraform.tfstate
+}
 
 # Process the arguments
 process_arguments
@@ -164,4 +172,5 @@ destroy_infrastructure
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
 
-
+# Delete tfstate and tfvars in asg_ec2_tagging module
+cleanup_asg_ec2_tagging_module

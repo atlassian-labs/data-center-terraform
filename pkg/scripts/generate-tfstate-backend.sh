@@ -30,7 +30,6 @@ S3_BUCKET="${S3_BUCKET:0:63}"
 # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
 DYNAMODB_TABLE="tf_lock_${ENVIRONMENT_NAME//-/_}_${AWS_ACCOUNT_ID}"
 
-
 # Generate the terraform backend, where terraform store the state of the infrastructure
 echo "Generating the terraform backend definition file 'terraform.backend.tf'."
 sed 's/<REGION>/'${REGION}'/g'  "${SCRIPT_PATH}/../templates/terraform-backend.tf.tmpl" | \

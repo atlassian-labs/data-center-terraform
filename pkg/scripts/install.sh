@@ -74,7 +74,7 @@ verify_configuration_file() {
 
   # Make sure the config values are defined
   set +e
-  INVALID_CONTENT=$(grep '<' $CONFIG_FILE & grep '>' $CONFIG_FILE)
+  INVALID_CONTENT=$(grep '<ENVIRONMENT>' $CONFIG_FILE & grep '<REGION>' $CONFIG_FILE)
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
   EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
@@ -171,6 +171,15 @@ set_current_context_k8s() {
   echo
 }
 
+add_tags_to_asg_resources() {
+  echo "Tagging Auto Scailing Group and EC2 instances."
+  CHDIR="-chdir=${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+  cp "${SCRIPT_PATH}/../../${CONFIG_FILE}" "${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+
+  terraform "${CHDIR}" init
+  terraform "${CHDIR}" apply -auto-approve "-var-file=${CONFIG_FILE}" -var s3_bucket="${S3_BUCKET}" -var bucket_key="${BUCKET_KEY}/terraform.tfstate"  -compact-warnings
+}
+
 # Process the arguments
 process_arguments
 
@@ -188,6 +197,9 @@ create_tfstate_resources
 
 # Deploy the infrastructure
 create_update_infrastructure
+
+# Manually add resource tags into ASG and EC2 
+add_tags_to_asg_resources
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s

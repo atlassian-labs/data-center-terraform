@@ -29,18 +29,3 @@ module "eks" {
     }
   }
 }
-
-
-// Manually add default tags to ASG due to the node group resource limitation(See: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1558)
-data "aws_default_tags" "current" {}
-
-resource "aws_autoscaling_group_tag" "tag" {
-  for_each               = data.aws_default_tags.current.tags
-  autoscaling_group_name = module.eks.node_groups.appNodes.resources[0].autoscaling_groups[0].name
-
-  tag {
-    key                 = each.key
-    value               = each.value
-    propagate_at_launch = true
-  }
-}
