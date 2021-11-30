@@ -13,6 +13,7 @@ Install pre-commit Git hook to format all terraform files before commit
 
     (cd .git/hooks && ln -s ../../etc/git-hooks/pre-commit)
 
+See [development guide](https://atlassian-labs.github.io/data-center-terraform/development/HOW_TO_START/).
 
 ### Note
 
