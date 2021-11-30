@@ -8,7 +8,7 @@ At this stage the scope is providing the infrastructure for Bamboo on AWS.
 
 ## Get started
 
-**Get started right now using our [documentation](docs/docs/README.md)**.
+**Get started right now using our [documentation](https://atlassian-labs.github.io/data-center-terraform/)**.
 
 We provide extensive documentation to support Infrastructure for Atlassian Data Center products. 
 This includes prerequisites, set up, configuration, installation, uninstallation, and more.
