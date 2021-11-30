@@ -101,11 +101,11 @@ It is highly recommended to use a domain name and access the application via HTT
 to secure a domain name and supply the configuration to the config file. When the domain is provided, Terraform will 
 create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
-Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
-
 ```terraform
 domain="<domain-name>" # for example: "mydomain.com"
 ```
+
+Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
 
 !!! warning "Removing domain from deployment"
 
