@@ -1,8 +1,10 @@
-name: Documentation - Deploy
+name: Documentation - Deploy to gh-pages
 on:
   push:
     branches:
       - main
+    paths:
+      - 'docs/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
