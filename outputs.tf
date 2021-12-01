@@ -3,9 +3,7 @@ output "vpc" {
 
   value = {
     id                   = module.bamboo.vpc_id
-    public_subnets       = module.bamboo.public_subnets
     public_subnets_cidr  = module.bamboo.public_subnets_cidr_blocks
-    private_subnets      = module.bamboo.private_subnets
     private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
   }
 }
@@ -21,7 +19,7 @@ output "efs" {
 output "ingress" {
   description = "Ingress controller deployed to access the products from outside of the cluster (ingress is provisioned only when the domain is configured)"
 
-  value = var.domain != "" ? {
+  value = var.domain != null ? {
     load_balancer_hostname = module.base-infrastructure.ingress[0].ingress.lb_hostname
     certificate            = module.base-infrastructure.ingress[0].ingress.certificate_arn
     } : {

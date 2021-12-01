@@ -2,6 +2,7 @@
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md)
 
+!!! warning "This project is still under development and is not officially supported."
 
 [Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale)
 provides App vendors in Atlassian ecosystem with tools to setup ready-to-use environment. 

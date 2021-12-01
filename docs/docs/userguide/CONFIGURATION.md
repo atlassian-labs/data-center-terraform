@@ -102,17 +102,30 @@ It is highly recommended to use a domain name and access the application via HTT
 to secure a domain name and supply the configuration to the config file. When the domain is provided, Terraform will 
 create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
-Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
-
 ```terraform
 domain="<domain-name>" # for example: "mydomain.com"
 ```
+
+Final domain will have the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
+
+!!! warning "Removing domain from deployment"
+
+    If you have deployed with domain, you cannot remove the domain later from the deployment to revert
+    to an unsecured deployment running on HTTP (see below).
 
 ??? tip "Ingress Controller"
     When the domain is used, Terraform will create [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) 
     in the EKS cluster that will provide access to the application via the domain name.
     It also creates an [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) that is 
     ensuring access over secure HTTPS protocol.
+
+#### Provisioning without domain name
+
+You can provision the infrastructure without a domain name. To do that, you can comment out the `domain` variable in the `tfvars` file.
+
+In that case the application will run unsecured on an elastic load balancer domain:
+`http://<load-balancer-id>.<region>.elb.amazonaws.com`.
+The final URL is printed out as part of the outputs after the infrastructure is provisioned.
 
 ### Database Instance Class
 `db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by
