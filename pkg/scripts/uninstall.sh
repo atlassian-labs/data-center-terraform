@@ -151,16 +151,6 @@ destroy_tfstate() {
   fi
 }
 
-cleanup_asg_ec2_tagging_module() {
-  echo "Cleaning up asg_ec2_tagging Module."
-  cd "${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
-  rm -rf *.tfvars
-  rm -rf .terraform
-  rm -rf .terraform.lock.hcl
-  rm -rf terraform.tfstate
-  rm -rf terraform.tfstate.backkup
-}
-
 # Process the arguments
 process_arguments
 

@@ -5,8 +5,8 @@ data "terraform_remote_state" "s3" {
 
   config = {
     region = var.region
-    bucket = var.s3_bucket
-    key    = var.bucket_key
+    bucket = local.bucket_name
+    key    = local.bucket_key
   }
 }
 data "terraform_remote_state" "local" {
