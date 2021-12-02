@@ -35,13 +35,6 @@ resource "aws_ec2_tag" "default_tag" {
   value       = each.value.tag_value
 }
 
-resource "aws_ec2_tag" "name_tag" {
-  count       = length(data.aws_instances.ec2.ids)
-  resource_id = data.aws_instances.ec2.ids[count.index]
-  key         = "Name"
-  value       = "${data.aws_default_tags.current.tags["Name"]}-ec2-${count.index}"
-}
-
 resource "aws_autoscaling_group_tag" "tag" {
   for_each               = data.aws_default_tags.current.tags
   autoscaling_group_name = var.state_type == "s3" ? data.terraform_remote_state.s3[0].outputs.eks.cluster_asg_name : data.terraform_remote_state.local[0].outputs.eks.cluster_asg_name
