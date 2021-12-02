@@ -31,6 +31,11 @@ resource "helm_release" "bamboo" {
         }
       }
       volumes = {
+        localHome = {
+          persistentVolumeClaim = {
+            create = true
+          }
+        }
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
