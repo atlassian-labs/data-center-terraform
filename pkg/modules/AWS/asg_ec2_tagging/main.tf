@@ -24,17 +24,23 @@ data "aws_default_tags" "current" {}
 data "aws_instances" "ec2" {
   filter {
     name   = "tag:eks:cluster-name"
-    values = [var.state_type == "s3" ? data.terraform_remote_state.s3[0].outputs.eks.cluster_name : data.terraform_remote_state.local[0].outputs.eks.cluster_name]
+    values = [local.cluster_name]
   }
 }
 
-resource "aws_ec2_tag" "tag" {
+resource "aws_ec2_tag" "default_tag" {
   for_each    = { for tag in local.ec2_formatted_tags : tag.iteration_id => tag }
   resource_id = each.value.resource_id
   key         = each.value.tag_key
   value       = each.value.tag_value
 }
 
+resource "aws_ec2_tag" "name_tag" {
+  count       = length(data.aws_instances.ec2.ids)
+  resource_id = data.aws_instances.ec2.ids[count.index]
+  key         = "Name"
+  value       = "${data.aws_default_tags.current.tags["Name"]}-ec2-${count.index}"
+}
 
 resource "aws_autoscaling_group_tag" "tag" {
   for_each               = data.aws_default_tags.current.tags

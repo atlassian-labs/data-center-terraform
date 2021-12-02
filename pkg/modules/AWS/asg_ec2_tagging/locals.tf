@@ -6,4 +6,6 @@ locals {
     iteration_id : "${id}-${key}"
     }
   ]])
+
+  cluster_name = var.state_type == "s3" ? data.terraform_remote_state.s3[0].outputs.eks.cluster_name : data.terraform_remote_state.local[0].outputs.eks.cluster_name
 }
