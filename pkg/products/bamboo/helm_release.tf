@@ -45,6 +45,7 @@ resource "helm_release" "bamboo" {
 }
 
 data "kubernetes_service" "bamboo" {
+  depends_on = [helm_release.bamboo]
   metadata {
     name      = "bamboo"
     namespace = kubernetes_namespace.bamboo.metadata[0].name

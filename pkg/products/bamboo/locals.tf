@@ -20,6 +20,9 @@ locals {
         type = "LoadBalancer"
       }
     }
+    ingress = {
+      https = false
+    }
   })
 
   ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
