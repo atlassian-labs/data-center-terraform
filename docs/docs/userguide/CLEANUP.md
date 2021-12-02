@@ -14,15 +14,16 @@ If you wish to uninstall just one product please **do not** proceed with the uni
 !!! warning "Make sure you have made backup of the product data."
     All product data will be **permanently deleted** after uninstall.
 
+Please note the uninstall will destroy your data so make sure you have the latest backup of your data before you start cleaning the infrastructure.
 You may proceed when you are ready to uninstall. 
 
 ```shell
 ./pkg/scripts/uninstall [-t] [-c <config.tfvars>]
 ```
 Uninstall command removes the infrastructure but terraform state files will remain after the process. 
-You should use switch `-t` if you need to cleanup the terraform state as well.
+You should use switch `-t` if you need to clean-up the terraform state as well.
 
-As you can manage multiple environment, you need to define the environment to uninstall. 
+As you can manage multiple environments, you need to define the environment to uninstall. 
 This is possible by using the same config file that you used to create the environment.  
 If you have used the default configuration file (`config.auto.tfvars`) from the root folder of the project, then you may simply use the following command:
 
