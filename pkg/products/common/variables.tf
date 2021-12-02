@@ -12,11 +12,6 @@ variable "environment_name" {
   }
 }
 
-variable "resource_tags" {
-  description = "List of resource tags"
-  type        = map(string)
-}
-
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)

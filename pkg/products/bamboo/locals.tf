@@ -1,14 +1,6 @@
 locals {
   product_name = "bamboo"
 
-  required_tags = {
-    product : local.product_name
-  }
-
-  product_tags = {
-    Name : local.product_name
-  }
-
   rds_instance_name = format("atlassian-dc-%s-%s-db", var.environment_name, local.product_name)
 
   # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration

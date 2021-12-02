@@ -13,7 +13,7 @@ func TestIngressIsCreated(t *testing.T) {
 	tfOptions := GenerateTFOptions(
 		map[string]interface{}{
 			"ingress_domain": "test.deplops.com",
-			"tags":           map[string]interface{}{"Name": "foo"}},
+		},
 		t, "ingress")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)

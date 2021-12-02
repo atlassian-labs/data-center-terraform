@@ -19,7 +19,6 @@ func TestEksVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"cluster_name\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc_id\" is not set")
 	assert.Contains(t, err.Error(), "\"subnets\" is not set")
-	assert.Contains(t, err.Error(), "\"eks_tags\" is not set")
 	assert.Contains(t, err.Error(), "\"instance_types\" is not set")
 	assert.Contains(t, err.Error(), "\"desired_capacity\" is not set")
 }
@@ -34,16 +33,12 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	clusterName := plan.RawPlan.Variables["cluster_name"].Value
 	vpcId := plan.RawPlan.Variables["vpc_id"].Value
 	subnets := plan.RawPlan.Variables["subnets"].Value
-	eksTags := plan.RawPlan.Variables["eks_tags"].Value
 	instanceTypes := plan.RawPlan.Variables["instance_types"].Value
 	desiredCapacity := plan.RawPlan.Variables["desired_capacity"].Value
 
 	assert.Equal(t, "dummy-cluster-name", clusterName)
 	assert.Equal(t, "dummy_vpc_id", vpcId)
 	assert.Equal(t, []interface{}{"subnet1", "subnet2"}, subnets)
-	assert.Equal(t, map[string]interface{}{
-		"resource_owner": TestResourceOwner,
-	}, eksTags)
 	assert.Equal(t, []interface{}{"instance_type1", "instance_type2"}, instanceTypes)
 	assert.Equal(t, "1", desiredCapacity)
 }

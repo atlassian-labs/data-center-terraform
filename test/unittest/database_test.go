@@ -1,22 +1,11 @@
 package unittest
 
 import (
+	"testing"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
-
-const databaseModule = "rds"
-const inputVpcId = "dummy_vpc_id"
-
-var inputSubnets = []interface{}{"subnet1", "subnet2"}
-
-const inputSourceSgId = "dummy-source-sg"
-const inputProduct = "bamboo"
-const inputRdsInstanceId = "dummy-rds-instance-id"
-const inputInstanceClass = "dummy.instance.class"
-const inputAllocatedStorage = 100
-const inputIops = 1000
 
 func TestDbVariablesNotProvided(t *testing.T) {
 	t.Parallel()
@@ -32,7 +21,6 @@ func TestDbVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"instance_class\" is not set")
 	assert.Contains(t, err.Error(), "\"allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"iops\" is not set")
-	assert.Contains(t, err.Error(), "\"db_tags\" is not set")
 	assert.Contains(t, err.Error(), "\"eks\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 }
@@ -40,28 +28,7 @@ func TestDbVariablesNotProvided(t *testing.T) {
 func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"product":           inputProduct,
-		"rds_instance_id":   inputRdsInstanceId,
-		"instance_class":    inputInstanceClass,
-		"allocated_storage": inputAllocatedStorage,
-		"iops":              inputIops,
-		"db_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"eks": map[string]interface{}{
-			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-host",
-				"token":                  "dummy-token",
-				"cluster_ca_certificate": "dummy-certificate",
-			},
-			"cluster_security_group": inputSourceSgId,
-		},
-		"vpc": map[string]interface{}{
-			"vpc_id":          inputVpcId,
-			"private_subnets": inputSubnets,
-		},
-	}, t, databaseModule)
+	tfOptions := GenerateTFOptions(DbValidVariable, t, databaseModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -97,29 +64,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 func TestDbRdsInstanceIdInvalid(t *testing.T) {
 	t.Parallel()
 
-	InvalidInputRdsInstanceId := "1-"
-
-	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"product":           inputProduct,
-		"rds_instance_id":   InvalidInputRdsInstanceId,
-		"instance_class":    inputInstanceClass,
-		"allocated_storage": inputAllocatedStorage,
-		"iops":              inputIops,
-		"db_tags": map[string]interface{}{
-			"resource_owner": TestResourceOwner,
-		},
-		"eks": map[string]interface{}{
-			"kubernetes_provider_config": map[string]interface{}{
-				"host":                   "dummy-host",
-				"token":                  "dummy-token",
-				"cluster_ca_certificate": "dummy-certificate",
-			},
-		},
-		"vpc": map[string]interface{}{
-			"vpc_id":          inputVpcId,
-			"private_subnets": inputSubnets,
-		},
-	}, t, databaseModule)
+	tfOptions := GenerateTFOptions(DbInvalidVariable, t, databaseModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 

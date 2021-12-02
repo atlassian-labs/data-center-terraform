@@ -46,3 +46,13 @@ output "database" {
     jdbc_connection        = module.bamboo.rds_jdbc_connection
   }
 }
+
+output "eks" {
+  description = "EKS cluster information"
+
+  value = {
+    cluster_name     = module.base-infrastructure.eks.cluster_name
+    cluster_id       = module.base-infrastructure.eks.cluster_id
+    cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
+  }
+}

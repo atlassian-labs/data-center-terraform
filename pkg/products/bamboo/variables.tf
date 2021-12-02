@@ -12,11 +12,6 @@ variable "environment_name" {
   }
 }
 
-variable "resource_tags" {
-  description = "List of resource tags"
-  type        = map(string)
-}
-
 variable "vpc" {
   description = "vpc module that hosts the product."
   type        = any

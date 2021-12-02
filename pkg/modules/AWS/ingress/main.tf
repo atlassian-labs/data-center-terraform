@@ -3,8 +3,6 @@
 
 resource "aws_route53_zone" "ingress" {
   name = var.ingress_domain
-
-  tags = var.tags
 }
 
 # Create NS record for the "ingress" zone in the parent zone
@@ -38,8 +36,6 @@ module "ingress_certificate" {
   ]
 
   wait_for_validation = true
-
-  tags = var.tags
 }
 
 resource "helm_release" "ingress" {
@@ -72,7 +68,6 @@ resource "helm_release" "ingress" {
             "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" : "443"
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
-            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : join(",", [for k, v in var.tags : "${k}=${v}"])
           }
         }
       }
