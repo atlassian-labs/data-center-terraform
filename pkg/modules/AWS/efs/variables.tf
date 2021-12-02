@@ -1,11 +1,15 @@
-variable "region_name" {
-  description = "AWS region."
+variable "efs_name" {
+  description = "Name of the EFS."
   type        = string
+  validation {
+    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]+$", var.efs_name))
+    error_message = "Invalid EFS name."
+  }
 }
 
-variable "efs_tags" {
-  description = "List of additional tags that will be attached to EFS resources."
-  type        = map(string)
+variable "region_name" {
+  description = "Name of the AWS region."
+  type        = string
 }
 
 variable "vpc" {

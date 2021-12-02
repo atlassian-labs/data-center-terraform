@@ -3,9 +3,7 @@ output "vpc" {
 
   value = {
     id                   = module.bamboo.vpc_id
-    public_subnets       = module.bamboo.public_subnets
     public_subnets_cidr  = module.bamboo.public_subnets_cidr_blocks
-    private_subnets      = module.bamboo.private_subnets
     private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
   }
 }
@@ -19,11 +17,14 @@ output "efs" {
 }
 
 output "ingress" {
-  description = "Ingress controller deployed to access the products from outside of the cluster"
+  description = "Ingress controller deployed to access the products from outside of the cluster (ingress is provisioned only when the domain is configured)"
 
-  value = {
-    load_balancer_hostname = module.base-infrastructure.eks.ingress.lb_hostname
-    certificate            = module.base-infrastructure.eks.ingress.certificate_arn
+  value = var.domain != null ? {
+    load_balancer_hostname = module.base-infrastructure.ingress[0].ingress.lb_hostname
+    certificate            = module.base-infrastructure.ingress[0].ingress.certificate_arn
+    } : {
+    load_balancer_hostname = null
+    certificate            = null
   }
 }
 
@@ -43,5 +44,15 @@ output "database" {
     db_name                = module.bamboo.db_name
     kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
     jdbc_connection        = module.bamboo.rds_jdbc_connection
+  }
+}
+
+output "eks" {
+  description = "EKS cluster information"
+
+  value = {
+    cluster_name     = module.base-infrastructure.eks.cluster_name
+    cluster_id       = module.base-infrastructure.eks.cluster_id
+    cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
   }
 }

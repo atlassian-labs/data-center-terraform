@@ -3,8 +3,6 @@
 
 resource "aws_route53_zone" "ingress" {
   name = var.ingress_domain
-
-  tags = var.eks_tags
 }
 
 # Create NS record for the "ingress" zone in the parent zone
@@ -38,13 +36,9 @@ module "ingress_certificate" {
   ]
 
   wait_for_validation = true
-
-  tags = var.eks_tags
 }
 
 resource "helm_release" "ingress" {
-  depends_on = [module.eks]
-
   name       = local.ingress_name
   namespace  = local.ingress_namespace
   repository = "https://kubernetes.github.io/ingress-nginx"
@@ -74,7 +68,6 @@ resource "helm_release" "ingress" {
             "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" : "443"
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
-            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : join(",", [for k, v in var.eks_tags : "${k}=${v}"])
           }
         }
       }
@@ -84,7 +77,6 @@ resource "helm_release" "ingress" {
 
 # To create product specific r53 records we need to expose ingress controller information
 data "kubernetes_service" "ingress_nginx" {
-  depends_on = [helm_release.ingress]
   metadata {
     name      = "ingress-nginx-controller"
     namespace = helm_release.ingress.metadata[0].namespace

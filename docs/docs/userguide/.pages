@@ -3,5 +3,6 @@ nav:
     - INSTALLATION.md
     - CONFIGURATION.md
     - CLEANUP.md
+    - VERSIONING.md
     - UPGRADE.md
     - ...

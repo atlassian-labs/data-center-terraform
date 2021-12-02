@@ -12,11 +12,6 @@ variable "environment_name" {
   }
 }
 
-variable "resource_tags" {
-  description = "List of resource tags"
-  type        = map(string)
-}
-
 variable "vpc" {
   description = "vpc module that hosts the product."
   type        = any
@@ -30,6 +25,11 @@ variable "eks" {
 variable "efs" {
   description = "EFS module to provide shared-home to the product."
   type        = any
+}
+
+variable "ingress" {
+  default = null
+  type    = any
 }
 
 variable "share_home_size" {

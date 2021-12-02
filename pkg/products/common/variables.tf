@@ -12,11 +12,6 @@ variable "environment_name" {
   }
 }
 
-variable "resource_tags" {
-  description = "List of resource tags"
-  type        = map(string)
-}
-
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
@@ -27,7 +22,7 @@ variable "desired_capacity" {
   type        = number
 }
 
-variable "ingress_domain" {
+variable "domain" {
   description = "Domain name for the ingress controller. The products are running on a subdomain of this domain."
   type        = string
 }

@@ -16,8 +16,3 @@ variable "vpc_cidr" {
     error_message = "Invalid CIDR. Valid format is '<IPv4>/[1-24]' e.g: 10.0.0.0/18."
   }
 }
-
-variable "vpc_tags" {
-  description = "List of tags"
-  type        = map(string)
-}

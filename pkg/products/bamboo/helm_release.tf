@@ -30,11 +30,12 @@ resource "helm_release" "bamboo" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
-      ingress = {
-        create = "true",
-        host   = local.product_domain_name,
-      }
       volumes = {
+        localHome = {
+          persistentVolumeClaim = {
+            create = true
+          }
+        }
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
@@ -43,6 +44,15 @@ resource "helm_release" "bamboo" {
           }
         }
       }
-    })
+    }),
+    local.ingress_settings
   ]
+}
+
+data "kubernetes_service" "bamboo" {
+  depends_on = [helm_release.bamboo]
+  metadata {
+    name      = "bamboo"
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
+  }
 }

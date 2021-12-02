@@ -101,14 +101,3 @@ func TestVpcCidrAndSubnetsCustomised(t *testing.T) {
 	assert.Equal(t, "10.0.4.0/24", publicSubnet0["cidr_block"])
 	assert.Equal(t, "10.0.5.0/24", publicSubnet1["cidr_block"])
 }
-
-// Test VPC Tags
-func TestVpcTagsCustomised(t *testing.T) {
-	t.Parallel()
-
-	plan := GetVpcDefaultPlans(t)
-
-	tags := plan.RawPlan.Variables["vpc_tags"].Value.(map[string]interface{})
-	assert.Equal(t, "terraform_unit_test", tags["resource_owner"])
-	assert.Equal(t, 1, len(tags))
-}

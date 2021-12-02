@@ -12,7 +12,6 @@ output "private_subnets_cidr_blocks" {
   description = "VPC private subnet CIDR blocks"
 }
 
-
 output "public_subnets" {
   value       = var.vpc.public_subnets
   description = "VPC public subnets"
@@ -24,7 +23,7 @@ output "public_subnets_cidr_blocks" {
 }
 
 output "product_domain_name" {
-  value = local.product_domain_name
+  value = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bamboo.status[0].load_balancer[0].ingress[0].hostname}"
 }
 
 output "rds_instance_id" {

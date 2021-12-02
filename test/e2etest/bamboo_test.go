@@ -2,8 +2,8 @@ package e2etest
 
 import (
 	"context"
-	"flag"
 	"encoding/base64"
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -37,12 +37,21 @@ func TestBambooModule(t *testing.T) {
 		require.NoError(t, saveErr)
 	}
 
+	// copy any changes to test directory
+	if *customConfigFilename != "" {
+		copyErr := CopyDir("../../", environmentConfig.TerraformConfig.TestFolder)
+		require.NoError(t, copyErr)
+	}
+
 	terraform.InitAndApply(t, tfOptions)
+
+	// Manually add default tags to ASG and EC2 after the initial provisioning due to the node group resource limitation(See: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1558)
+	tagAsgResources(t, environmentConfig)
 
 	vpcOutput := getVpcOutput(t, tfOptions)
 
-	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
-	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig.EnvironmentName)
+	assertVPC(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig)
+	assertEKS(t, environmentConfig.AwsRegion, vpcOutput, environmentConfig)
 	assertShareHomePV(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertShareHomePVC(t, tfOptions, environmentConfig.EnvironmentName, environmentConfig.Product)
 	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
@@ -50,22 +59,27 @@ func TestBambooModule(t *testing.T) {
 	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 }
 
-func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
 	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
-	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentName), vpc.Name)
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+
+	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
+	assert.Equal(t, resourceTags["resource_owner"], vpc.Tags["resource_owner"])
 	assert.Len(t, vpc.Subnets, 4)
 }
 
-func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentName string) {
+func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
-		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentName)),
+		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentConfig.EnvironmentName)),
 	}
 
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
 	require.NoError(t, err)
 
+	assert.Equal(t, resourceTags["resource_owner"], *(eksInfo.Cluster.Tags["resource_owner"]))
 	assert.Equal(t, vpcOutput.Id, *((*eksInfo).Cluster.ResourcesVpcConfig.VpcId))
 }
 
@@ -143,6 +157,8 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 	psqlClientPodName := "e2e-test-psqlclient"
 	username := product + "user"
 
+	defer k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "delete", "pod", psqlClientPodName)
+
 	_, psqlClientErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "run", psqlClientPodName,
 		"--image=tmaier/postgresql-client", "--command", "--", "/bin/sh", "-c", "tail -f /dev/null")
 	if psqlClientErr != nil && strings.Contains(psqlClientErr.Error(), "AlreadyExists") {
@@ -178,4 +194,19 @@ func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 	terraform.OutputStruct(t, tfOptions, "vpc", &vpcOutput)
 	fmt.Printf("VpcOutput struct: %+v\n", vpcOutput)
 	return vpcOutput
+}
+
+func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
+	AsgEc2taggingModuleTfConfig := TerraformConfig{
+		Variables: map[string]interface{}{
+			"region":        environmentConfig.TerraformConfig.Variables["region"],
+			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
+			"state_type":    "local",
+		},
+		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
+		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
+	}
+
+	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)
+	terraform.InitAndApply(t, taggingModuletfOption)
 }

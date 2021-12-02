@@ -17,11 +17,6 @@ variable "subnets" {
   type        = list(string)
 }
 
-variable "eks_tags" {
-  description = "List of additional tags that will be attached to EKS cluster."
-  type        = map(string)
-}
-
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
@@ -35,9 +30,4 @@ variable "desired_capacity" {
     condition     = (var.desired_capacity >= 1 && var.desired_capacity <= 10)
     error_message = "Desired capacity must be between 1 and 10, inclusive."
   }
-}
-
-variable "ingress_domain" {
-  description = "Domain name for the ingress controller"
-  type        = string
 }

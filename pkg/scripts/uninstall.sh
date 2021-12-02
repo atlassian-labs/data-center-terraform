@@ -73,21 +73,12 @@ regenerate_environment_variables() {
     echo "Cleaning all the generated terraform state variable and backend file."
     source "${SCRIPT_PATH}/cleanup.sh"
 
-  BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
-  TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+  ROOT_PATH="${SCRIPT_PATH}/../.."
 
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
+  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_FILE}."
 
-  if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
-    echo "Terraform state backend/variable files are already existed. "
-  else
-    echo "Terraform state backend/variable files are cleaned up."
-    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${CONFIG_FILE} ${BACKEND_TF} ${TFSTATE_LOCALS}
-  fi
-
-  # fetch the config files from root
-  cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
-  cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
+  echo "Terraform state backend/variable files are set."
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_PATH}
 }
 
 
@@ -152,7 +143,6 @@ destroy_tfstate() {
   fi
 }
 
-
 # Process the arguments
 process_arguments
 
@@ -165,4 +155,5 @@ destroy_infrastructure
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
 
-
+# Delete tfstate and tfvars in asg_ec2_tagging module
+cleanup_asg_ec2_tagging_module

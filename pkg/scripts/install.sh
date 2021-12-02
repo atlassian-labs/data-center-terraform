@@ -4,10 +4,11 @@
 # Usage:  install.sh [-c <config_file>] [-h]
 # -p <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
 # -h : provides help to how executing this script.
-
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-install.log"
+LOG_TAGGING="${SCRIPT_PATH}/../../terraform-dc-asg-tagging.log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
@@ -58,8 +59,8 @@ process_arguments() {
       show_help
     fi
     OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
-    echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
   fi
+  echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
@@ -74,7 +75,7 @@ verify_configuration_file() {
 
   # Make sure the config values are defined
   set +e
-  INVALID_CONTENT=$(grep '<' $CONFIG_FILE & grep '>' $CONFIG_FILE)
+  INVALID_CONTENT=$(grep -o '^[^#]*' $CONFIG_FILE | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
   EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
@@ -90,6 +91,7 @@ verify_configuration_file() {
     echo "Please modify '${CONFIG_FILE}' using a text editor and complete the configuration. "
     echo "Then re-run the install.sh to deploy the infrastructure."
     echo
+    echo "${INVALID_CONTENT}"
     exit 0
   fi
 }
@@ -103,21 +105,12 @@ cleanup_terraform_backend_variables() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
-  TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+  ROOT_FOLDER="${SCRIPT_PATH}/../.."
 
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
-  if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
-    echo "Terraform state backend/variable files are already existed. "
-  else
-    echo "Terraform state backend/variable files are missing."
-    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${CONFIG_FILE} ${BACKEND_TF} ${TFSTATE_LOCALS}
-  fi
-
-  # fetch the config files from root
-  cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
-  cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
+  echo "Terraform state backend/variable files are missing."
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_FOLDER}
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -149,8 +142,17 @@ create_tfstate_resources() {
 # Deploy the infrastructure if is not created yet otherwise apply the changes to existing infrastructure
 create_update_infrastructure() {
   Echo "Starting to analyze the infrastructure..."
-  terraform init
-  terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}"
+  terraform init | tee "${LOG_FILE}"
+  terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+}
+
+# Apply the tags into ASG and EC2 instances created by ASG
+add_tags_to_asg_resources() {
+  echo "Tagging Auto Scaling Group and EC2 instances."
+
+  terraform -chdir="${ASG_EC2_TAG_DIR}" init > "${LOG_TAGGING}"
+  terraform -chdir="${ASG_EC2_TAG_DIR}" apply -auto-approve "-var-file=${CONFIG_FILE}" >> "${LOG_TAGGING}"
+  echo "Resource tags are applied to ASG and all EC2 instances."
 }
 
 set_current_context_k8s() {
@@ -170,6 +172,7 @@ set_current_context_k8s() {
 
 }
 
+
 # Process the arguments
 process_arguments
 
@@ -187,6 +190,9 @@ create_tfstate_resources
 
 # Deploy the infrastructure
 create_update_infrastructure
+
+# Manually add resource tags into ASG and EC2 
+add_tags_to_asg_resources
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s

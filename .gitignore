@@ -14,8 +14,13 @@ crash.log
 # Generated files
 pkg/tfstate/variables.tf
 pkg/tfstate/config.auto.tfvars
-pkg/tfstate/tfstate-locals.tf
+pkg/modules/AWS/asg_ec2_tagging/*.tfvars
+pkg/modules/AWS/asg_ec2_tagging/variables.tf
+**/tfstate-locals.tf
 terraform-backend.tf
+
+# Log file
+terraform-dc-install.log
 
 # Ignore any .tfvars files
 #
@@ -51,3 +56,6 @@ kubeconfig_atlassian-dc-*
 test/*/*.json
 *.log
 test/e2etest/artifacts
+
+# built docs site
+docs/site
