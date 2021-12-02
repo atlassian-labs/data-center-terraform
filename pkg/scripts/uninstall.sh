@@ -17,14 +17,14 @@ show_help(){
 cat << EOF
 ** WARNING **
 This script destroys the infrastructure for Atlassian Data Center products in AWS environment. You may lose all application data.
-The infrastructure will be removed by terraform. Also the terraform state will be removed from the S3 bucket which will be provision by this script if is not existed.
+The infrastructure will be removed by terraform. Also the terraform state could be removed if you use switch `-t` in uninstall command.
 EOF
 
   fi
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
-  echo "   -s : Skip cleaning up the terraform state."
+  echo "   -t : Cleaning up the terraform state as well."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -33,10 +33,10 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  SKIP_TFSTATE=
-  while getopts sh?c: name ; do
+  CLEAN_TFSTATE=
+  while getopts th?c: name ; do
       case $name in
-      s)  SKIP_TFSTATE=1;;            # Skip cleaning terraform state
+      t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.auto.tfvars'
       ?)  echo "Invalid arguments."; show_help
@@ -94,13 +94,8 @@ regenerate_environment_variables() {
 
 destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
-  aws --region "${REGION}" eks update-kubeconfig --name "atlassian-dc-${ENVIRONMENT_NAME}-cluster"
   set +e
-  # Uninstall bamboo helm chart if is already installed - When we add new products we need to refactor this approach
-  if [ ! -z "$(helm list -n bamboo | grep bamboo)" ]; then
-    helm uninstall bamboo -n bamboo
-  fi
-  # Start destroy infrastructure
+  # Start destroying the infrastructure
   terraform destroy "${OVERRIDE_CONFIG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
@@ -115,9 +110,8 @@ destroy_infrastructure() {
 
 
 destroy_tfstate() {
-  echo $SKIP_TFSTATE
   # Check if the user passed '-s' parameter to skip removing tfstate
-  if [ ! -z "${SKIP_TFSTATE}" ]; then
+  if [ -z "${CLEAN_TFSTATE}" ]; then
     echo "Skipped terraform state cleanup."
     return
   fi
@@ -130,7 +124,7 @@ destroy_tfstate() {
 
     cd "${SCRIPT_PATH}/../tfstate"
     set +e
-    aws s3api head-bucket --bucket "${S3_BUCKET}"
+    aws s3api head-bucket --bucket "${S3_BUCKET}" > /dev/null
     S3_BUCKET_EXISTS=$?
     set -e
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]

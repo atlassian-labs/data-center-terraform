@@ -33,4 +33,3 @@ module "eks" {
 
   tags = var.eks_tags
 }
-

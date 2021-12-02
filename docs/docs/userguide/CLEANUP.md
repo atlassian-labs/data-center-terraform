@@ -14,24 +14,32 @@ If you wish to uninstall just one product please **do not** proceed with the uni
 !!! warning "Make sure you have made backup of the product data."
     All product data will be **permanently deleted** after uninstall.
 
-You may proceed when you are ready to uninstall:
+You may proceed when you are ready to uninstall. 
 
-In order to uninstall the products and cleanup the infrastructure, you need to have the same configuration file that you used to install the infrastructure. 
+```shell
+./pkg/scripts/uninstall [-t] [-c <config.tfvars>]
+```
+Uninstall command removes the infrastructure but terraform state files will remain after the process. 
+You should use switch `-t` if you need to cleanup the terraform state as well.
+
+As you can manage multiple environment, you need to define the environment to uninstall. 
+This is possible by using the same config file that you used to create the environment.  
 If you have used the default configuration file (`config.auto.tfvars`) from the root folder of the project, then you may simply use the following command:
 
 ```shell 
 ./pkg/scripts/uninstall
 ```
 
-If you used a custom config file to install the infrastructure then you need to run the following command instead:
+If you used a custom defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in install command instead:
 ```
 ./pkg/scripts/uninstall -c <custom-config-file>
 ```
 
-This will remove the products and all Atlassian Data Center infrastructure including Terraform state which were created by the installing process. 
+Uninstall by default will remove the products and all Atlassian Data Center infrastructure. 
+Terraform state files will be remain after uninstall unless you force removing it by adding switch `-t` in uninstall command. 
 
-!!! tip "Do you want to keep the terraform state?"
-    If you want to keep the terraform state files and dynamodb lock table then use the switch `-s`:
+!!! tip "Do you want to delete the terraform state after removing environment?"
+    If you want to clean up the terraform state files and dynamodb lock table then use the switch `-t`:
     ```shell 
-    ./pkg/scripts/uninstall -s [-c <custom-config-file>]
+    ./pkg/scripts/uninstall -t [-c <custom-config-file>]
     ```
