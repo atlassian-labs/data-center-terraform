@@ -68,7 +68,7 @@ cleanup_setup_files() {
     rm -rf "${REPO_PATH}/terraform-backend.tf"
     rm -rf "${REPO_PATH}/pkg/tfstate/tfstate-locals.tf"
     rm -rf "${REPO_PATH}/pkg/tfstate/variables.tf"
-    rm -rf "${REPO_PATH}/pkg/tfstate/config.auto.tfvars"
+    rm -rf "${REPO_PATH}/pkg/tfstate/*.tfvars"
   fi
 }
 

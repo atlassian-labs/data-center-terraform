@@ -104,27 +104,12 @@ cleanup_terraform_backend_variables() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
-  TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
-  ASG_EC2_TAG_DIR="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+  ROOT_FOLDER="${SCRIPT_PATH}/../.."
 
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
-  if [[ -f ${BACKEND_TF} && -f ${TFSTATE_LOCALS} ]]; then
-    echo "Terraform state backend/variable files are already existed. "
-  else
-    echo "Terraform state backend/variable files are missing."
-    source "${SCRIPT_PATH}/generate-tfstate-backend.sh" ${CONFIG_FILE} ${BACKEND_TF} ${TFSTATE_LOCALS}
-  fi
-
-  # fetch the config files from root
-  cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
-  cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
-
-  cp "${SCRIPT_PATH}/../../${CONFIG_FILE}" "${ASG_EC2_TAG_DIR}"
-  cp "${SCRIPT_PATH}/../../variables.tf" "${ASG_EC2_TAG_DIR}"
-  cp "${SCRIPT_PATH}/../tfstate/tfstate-locals.tf" "${ASG_EC2_TAG_DIR}"
-
+  echo "Terraform state backend/variable files are missing."
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_FOLDER}
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
