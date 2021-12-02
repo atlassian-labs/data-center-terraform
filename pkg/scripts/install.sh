@@ -106,6 +106,7 @@ cleanup_terraform_backend_variables() {
 generate_terraform_backend_variables() {
   BACKEND_TF="${SCRIPT_PATH}/../../terraform-backend.tf"
   TFSTATE_LOCALS="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+  ASG_EC2_TAG_DIR="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
 
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
@@ -119,6 +120,10 @@ generate_terraform_backend_variables() {
   # fetch the config files from root
   cp -fr "${SCRIPT_PATH}/../../variables.tf" "${SCRIPT_PATH}/../tfstate"
   cp -fr "${CONFIG_FILE}" "${SCRIPT_PATH}/../tfstate"
+
+  cp "${SCRIPT_PATH}/../../${CONFIG_FILE}" "${ASG_EC2_TAG_DIR}"
+  cp "${SCRIPT_PATH}/../../variables.tf" "${ASG_EC2_TAG_DIR}"
+  cp "${SCRIPT_PATH}/../tfstate/tfstate-locals.tf" "${ASG_EC2_TAG_DIR}"
 
 }
 
@@ -158,10 +163,6 @@ create_update_infrastructure() {
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
   echo "Tagging Auto Scaling Group and EC2 instances."
-  ASG_EC2_TAG_DIR="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
-  cp "${SCRIPT_PATH}/../../${CONFIG_FILE}" "${ASG_EC2_TAG_DIR}"
-  cp "${SCRIPT_PATH}/../../variables.tf" "${ASG_EC2_TAG_DIR}"
-  cp "${SCRIPT_PATH}/../tfstate/tfstate-locals.tf" "${ASG_EC2_TAG_DIR}"
 
   terraform -chdir="${ASG_EC2_TAG_DIR}" init > "${LOG_TAGGING}"
   terraform -chdir="${ASG_EC2_TAG_DIR}" apply -auto-approve "-var-file=${CONFIG_FILE}" >> "${LOG_TAGGING}"
