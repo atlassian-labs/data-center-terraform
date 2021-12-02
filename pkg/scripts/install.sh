@@ -74,7 +74,7 @@ verify_configuration_file() {
 
   # Make sure the config values are defined
   set +e
-  INVALID_CONTENT=$(grep '<' $CONFIG_FILE & grep '>' $CONFIG_FILE)
+  INVALID_CONTENT=$(grep -o '^[^#]*' $CONFIG_FILE | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
   EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
@@ -90,6 +90,7 @@ verify_configuration_file() {
     echo "Please modify '${CONFIG_FILE}' using a text editor and complete the configuration. "
     echo "Then re-run the install.sh to deploy the infrastructure."
     echo
+    echo "${INVALID_CONTENT}"
     exit 0
   fi
 }
