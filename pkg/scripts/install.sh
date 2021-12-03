@@ -100,7 +100,7 @@ verify_configuration_file() {
 # Cleaning all the generated terraform state variable and backend file
 cleanup_terraform_backend_variables() {
     echo "Cleaning all the generated terraform state variable and backend file."
-    source "${SCRIPT_PATH}/cleanup.sh" "-t"
+    source "${SCRIPT_PATH}/cleanup.sh" "-s"
 }
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
@@ -157,20 +157,19 @@ add_tags_to_asg_resources() {
 
 set_current_context_k8s() {
   EKS_CLUSTER="${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}"
-  CONTEXT_FILE="${CURRENT_PATH}/kubeconfig_${EKS_CLUSTER}"
+  CONTEXT_FILE="kubeconfig_${EKS_CLUSTER}"
 
   echo
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     echo "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     echo
-    echo "If you like to use kubectl to access to the cluster directly you can run either of the following commands:"
-    echo
-    echo "   export KUBECONFIG=~/.kube/config:${KUBECONFIG}:${CONTEXT_FILE}"
-    echo "   aws --region ${REGION} eks update-kubeconfig --name ${EKS_CLUSTER}"
+    echo "Kubernetes config file could be found at ${CONTEXT_FILE}"
+    aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
   else
     echo "${CONTEXT_FILE} could not be found."
   fi
   echo
+
 }
 
 
