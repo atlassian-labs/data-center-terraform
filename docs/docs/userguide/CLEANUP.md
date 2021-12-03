@@ -31,7 +31,7 @@ If you have used the default configuration file (`config.auto.tfvars`) from the 
 ./pkg/scripts/uninstall
 ```
 
-If you used a custom defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in install command instead:
+If you used a custom-defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in the install command instead:
 ```
 ./pkg/scripts/uninstall -c <custom-config-file>
 ```
