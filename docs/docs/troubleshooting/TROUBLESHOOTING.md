@@ -28,7 +28,7 @@ You can combine both switches in one command to clean-up both generated terrafor
 
 ## Uninstall interruption
 ### Symptom
-If you try uninstall using a different config file than what you installed the environment or using a different version of the project for uninstall you may face some problems in uninstall.
+If you try to uninstall using a different config file than what you used to install the environment or using a different version of the code you may face some problems in uninstall.
 Mostly terraform complains the resource cannot be removed because it is used. 
 
 ### Solution
