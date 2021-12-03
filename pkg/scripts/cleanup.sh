@@ -9,7 +9,7 @@ set -e
 
 SCRIPT_PATH="$(dirname "$0")"
 REPO_PATH="${SCRIPT_PATH}/../.."
-TAGGIN_PATH="${REPO_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+TAG_MODULE_PATH="${REPO_PATH}/pkg/modules/AWS/asg_ec2_tagging"
 TFSTATE_PATH="${REPO_PATH}/pkg/tfstate"
 
 show_help(){
@@ -73,10 +73,10 @@ cleanup_terraform() {
     rm -rf "${TFSTATE_PATH}/terraform.tfstate.backkup"
 
     # Cleanup terraform state from tag module folder
-    rm -rf "${TAGGIN_PATH}/.terraform"
-    rm -rf "${TAGGIN_PATH}/.terraform.lock.hcl"
-    rm -rf "${TAGGIN_PATH}/terraform.tfstate"
-    rm -rf "${TAGGIN_PATH}/terraform.tfstate.backkup"
+    rm -rf "${TAG_MODULE_PATH}/.terraform"
+    rm -rf "${TAG_MODULE_PATH}/.terraform.lock.hcl"
+    rm -rf "${TAG_MODULE_PATH}/terraform.tfstate"
+    rm -rf "${TAG_MODULE_PATH}/terraform.tfstate.backkup"
   fi
 }
 
@@ -94,9 +94,9 @@ cleanup_setup_files() {
     rm -rf "${TFSTATE_PATH}/tfstate-locals.tf"
 
     # Tagging module
-    rm -rf "${TAGGIN_PATH}/*.tfvars"
-    rm -rf "${TAGGIN_PATH}/variables.tf"
-    rm -rf "${TAGGIN_PATH}/tfstate-locals.tf"
+    rm -rf "${TAG_MODULE_PATH}/*.tfvars"
+    rm -rf "${TAG_MODULE_PATH}/variables.tf"
+    rm -rf "${TAG_MODULE_PATH}/tfstate-locals.tf"
   fi
 }
 
