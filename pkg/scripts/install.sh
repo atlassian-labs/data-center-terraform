@@ -7,8 +7,8 @@
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
-LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-install.log"
-LOG_TAGGING="${SCRIPT_PATH}/../../terraform-dc-asg-tagging.log"
+LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
+LOG_TAGGING="${SCRIPT_PATH}/../../terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 

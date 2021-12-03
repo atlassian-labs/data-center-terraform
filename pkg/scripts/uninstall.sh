@@ -9,6 +9,7 @@
 set -e
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
@@ -87,7 +88,7 @@ destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
   set +e
   # Start destroying the infrastructure
-  terraform destroy "${OVERRIDE_CONFIG_FILE}"
+  terraform destroy "${OVERRIDE_CONFIG_FILE}" | tee "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -121,7 +122,7 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}"
+      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
       else
