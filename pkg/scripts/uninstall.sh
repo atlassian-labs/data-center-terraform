@@ -70,8 +70,8 @@ process_arguments() {
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-    echo "Cleaning all the generated terraform state variable and backend file."
-    source "${SCRIPT_PATH}/cleanup.sh"
+    echo "Cleaning all the generated variable files."
+    source "${SCRIPT_PATH}/cleanup.sh" "-s"
 
   ROOT_PATH="${SCRIPT_PATH}/../.."
 
@@ -135,6 +135,8 @@ destroy_tfstate() {
       cd "${CURRENT_PATH}"
       exit 1
     fi
+    echo "Cleaning all the terraform generated files."
+    source "${SCRIPT_PATH}/cleanup.sh" "-t"
     cd "${CURRENT_PATH}"
     echo Terraform state is removed successfully.
   else
