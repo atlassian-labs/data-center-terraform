@@ -68,7 +68,7 @@ process_arguments() {
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
-# Ask user confirmation for destroy the environment
+# Ask user confirmation for destroying the environment
 confirm_action() {
   echo
   echo "You are about to destroy the '${ENVIRONMENT_NAME}' environment. "
@@ -81,7 +81,7 @@ confirm_action() {
   case $yn in
       Yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
       No ) exit;;
-      * ) echo "Please answer 'Yes' to confirm delete the infrastructure (case sensitive)."; exit;;
+      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
   esac
 }
 
