@@ -68,6 +68,23 @@ process_arguments() {
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
+# Ask user confirmation for destroying the environment
+confirm_action() {
+  echo
+  echo "You are about to destroy the '${ENVIRONMENT_NAME}' environment. "
+  echo
+  echo "All data resources provisioned in this environment including database will be deleted permanently."
+  echo "Please make sure you have made a backup of your valuable data before proceeding."
+  echo
+
+  read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (Yes/No)? " yn
+  case $yn in
+      Yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+      No ) exit;;
+      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
+  esac
+}
+
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
     echo "Cleaning all the generated variable files."
@@ -87,7 +104,7 @@ destroy_infrastructure() {
   cd "${SCRIPT_PATH}/../../"
   set +e
   # Start destroying the infrastructure
-  terraform destroy "${OVERRIDE_CONFIG_FILE}"
+  terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -147,6 +164,9 @@ destroy_tfstate() {
 
 # Process the arguments
 process_arguments
+
+# Ask user confirmation for destroy the environment
+confirm_action
 
 # cleanup environment variable and regenerate them
 regenerate_environment_variables
