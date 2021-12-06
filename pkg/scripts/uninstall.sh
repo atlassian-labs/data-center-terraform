@@ -7,6 +7,7 @@
 # -h : provides help to how executing this script.
 
 set -e
+set -o pipefail
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
