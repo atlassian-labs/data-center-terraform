@@ -81,8 +81,9 @@ verify_configuration_file() {
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
   EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
 
-  if [ "${#EKS_CLUSTER_NAME}" -gt 38 ]; then
-    echo "The environment name is too long. The final EKS cluster name is ${EKS_CLUSTER_NAME} and it needs to be less than 38 characters."
+  if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
+    echo "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
+    echo "Please make sure your environment name is less than 25 characters"
     exit 1
   fi
 

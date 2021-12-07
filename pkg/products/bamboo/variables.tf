@@ -7,8 +7,8 @@ variable "environment_name" {
   description = "Name of the environment."
   type        = string
   validation {
-    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9\\-]{1,25}$", var.environment_name))
-    error_message = "Invalid environment name. Valid name is up to 26 characters starting with alphabet and followed by alphanumerics. '-' is allowed as well."
+    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9\\-]{1,245}$", var.environment_name))
+    error_message = "Invalid environment name. Valid name is up to 25 characters starting with alphabet and followed by alphanumerics. '-' is allowed as well."
   }
 }
 
