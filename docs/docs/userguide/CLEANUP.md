@@ -25,7 +25,7 @@ You should use switch `-t` if you need to cleanup the terraform state as well.
 
 As you can manage multiple environments, you need to define the environment to uninstall. 
 This is possible by using the same config file that you used to create the environment.  
-If you have used the default configuration file (`config.auto.tfvars`) from the root folder of the project, then you may simply use the following command:
+If you have used the default configuration file (`config.tfvars`) from the root folder of the project, then you may simply use the following command:
 
 ```shell 
 ./pkg/scripts/uninstall

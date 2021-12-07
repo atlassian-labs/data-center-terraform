@@ -13,7 +13,7 @@ crash.log
 
 # Generated files
 pkg/tfstate/variables.tf
-pkg/tfstate/config.auto.tfvars
+pkg/tfstate/config.tfvars
 pkg/modules/AWS/asg_ec2_tagging/*.tfvars
 pkg/modules/AWS/asg_ec2_tagging/variables.tf
 **/tfstate-locals.tf
@@ -25,7 +25,7 @@ terraform-dc-*.log
 # Ignore any .tfvars files
 #
 *.tfvars
-!/config.auto.tfvars
+!/config.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
