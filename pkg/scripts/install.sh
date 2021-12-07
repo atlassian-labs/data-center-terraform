@@ -148,7 +148,7 @@ create_update_infrastructure() {
 
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
-  echo "Tagging Auto Scaling Group and EC2 instances."
+  echo "Tagging Auto Scaling Group and EC2 instances. It may takes a few minutes"
   TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init > "${LOG_TAGGING}"
