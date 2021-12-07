@@ -89,8 +89,8 @@ confirm_action() {
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-    echo "Cleaning all the generated variable files."
-    sh "${SCRIPT_PATH}/cleanup.sh" -s
+  echo "Cleaning all the generated variable files."
+  sh "${SCRIPT_PATH}/cleanup.sh" -s -t
 
   ROOT_PATH="${SCRIPT_PATH}/../.."
 
