@@ -2,8 +2,8 @@ variable "cluster_name" {
   description = "Name of the EKS cluster."
   type        = string
   validation {
-    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]+$", var.cluster_name))
-    error_message = "Invalid EKS cluster name."
+    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]{1,254}$", var.cluster_name))
+    error_message = "Invalid EKS cluster name. Valid name is up to 255 characters starting with an alphabet and followed by the combination of alphanumerics and '-'."
   }
 }
 
