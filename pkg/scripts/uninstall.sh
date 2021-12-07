@@ -2,7 +2,7 @@
 # This script manages to destroy the infrastructure of the Atlassian Data Center products
 #
 # Usage:  uninstall [-c <config_file>] [-s] [-h]
-# -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
+# -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -s : Skip cleaning up the terraform state
 # -h : provides help to how executing this script.
 
@@ -25,7 +25,7 @@ EOF
   fi
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
-  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
+  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -t : Cleaning up the terraform state as well."
   echo "   -h : provides help to how executing this script."
   echo
@@ -40,7 +40,7 @@ EOF
       case $name in
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
-      c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.auto.tfvars'
+      c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
       ?)  echo "Invalid arguments."; show_help
       esac
   done
@@ -52,7 +52,7 @@ EOF
 process_arguments() {
   # set the default value for config file if is not provided
   if [ -z "${CONFIG_FILE}" ]; then
-    CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
+    CONFIG_FILE="${SCRIPT_PATH}/../../config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"

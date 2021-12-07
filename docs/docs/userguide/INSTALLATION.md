@@ -18,11 +18,11 @@ Open configuration file using a text editor and configure the infrastructure as 
 (See [configuration](CONFIGURATION.md) page).  
 
 !!! info "Where to find the configuration file?"
-    The Terraform project uses `config.auto.tfvars` from root to configure the infrastructure in install and uninstall process by default. 
+    The Terraform project uses `config.tfvars` from root to configure the infrastructure in install and uninstall process by default. 
        
 !!! tip "How to use a different configuration file?"
     You can use any other customised file with the same format as default config file to override it. 
-    This could be done by making a copy of `config.auto.tfvars` and use it as a template to define the configuration of your infrastructure. 
+    This could be done by making a copy of `config.tfvars` and use it as a template to define the configuration of your infrastructure. 
     
     Then use this file to override the default config file in install and uninstall steps. 
     
@@ -43,7 +43,7 @@ The installation script is located in `pkg/scripts` folder of the project.
 
 Usage:  `./pkg/scripts/install.sh [-c <config-file] [-h]`
 
-As mentioned before, the default config file is `config.auto.tfvars` and located in root of the project. 
+As mentioned before, the default config file is `config.tfvars` and located in root of the project. 
 Running install script with no parameter will use the default config file to provision the environment. 
 
 You may use a different file with the same format to handle more than one environment but remember when you want to uninstall and cleanup the environment you need use the same config file. 

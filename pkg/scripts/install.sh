@@ -2,7 +2,7 @@
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
 # Usage:  install.sh [-c <config_file>] [-h]
-# -p <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided.
+# -p <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
@@ -29,7 +29,7 @@ EOF
   fi
   echo
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
-  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.auto.tfvars' if the argument is not provided."
+  echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -41,7 +41,7 @@ EOF
   while getopts h?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
-      c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.auto.tfvars'
+      c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       ?)    echo "Invalid arguments."; show_help
       esac
   done
@@ -53,7 +53,7 @@ EOF
 process_arguments() {
   # set the default value for config file if is not provided
   if [ -z "${CONFIG_FILE}" ]; then
-    CONFIG_FILE="${SCRIPT_PATH}/../../config.auto.tfvars"
+    CONFIG_FILE="${SCRIPT_PATH}/../../config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
