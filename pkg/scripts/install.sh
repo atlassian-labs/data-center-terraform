@@ -10,11 +10,10 @@ CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${SCRIPT_PATH}/../../terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
+
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
-EKS_PREFIX="atlassian-dc-"
-EKS_SUFFIX="-cluster"
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -79,7 +78,6 @@ verify_configuration_file() {
   INVALID_CONTENT=$(grep -o '^[^#]*' $CONFIG_FILE | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
-  EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
 
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     echo "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
