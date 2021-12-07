@@ -30,7 +30,7 @@ resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
     }
     volume_mode        = "Filesystem"
     access_modes       = ["ReadWriteMany"]
-    storage_class_name = "efs-cs"
+    storage_class_name = local.storage_class_name
     mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev"]
     persistent_volume_source {
       csi {
@@ -53,8 +53,8 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pv
         storage = var.share_home_size
       }
     }
-    volume_name        = "atlassian-dc-bamboo-share-home-pv"
-    storage_class_name = "efs-cs"
+    volume_name        = kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv.metadata[0].name
+    storage_class_name = local.storage_class_name
   }
 }
 
