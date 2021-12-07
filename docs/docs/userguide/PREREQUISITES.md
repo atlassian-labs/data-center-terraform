@@ -1,11 +1,15 @@
-# Prerequisites 
-## Requirements 
+# Prerequisites
 
-In order to deploy Atlassian’s Data Center infrastructure, the following are required:
+## Requirements
 
-1. An understanding of [Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/){.external} and [Helm](https://helm.sh/){.external} concepts.
-2. An understanding of [Terraform](https://www.terraform.io/){.external}.
-3. An AWS account with admin access. 
+In order to deploy Atlassian’s Data Center infrastructure, the following is required:
+
+* An AWS account with administrator permissions. 
+
+!!! info "Technologies"
+
+    It is helpful to understand basic concepts of [Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/){.external}, [Helm](https://helm.sh/){.external} and [Terraform](https://www.terraform.io/intro/){.external}.
+
 
 ## Environment setup 
 

@@ -6,7 +6,7 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-CURRENT_PATH="$(pwd)"
+ROOT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${SCRIPT_PATH}/../../terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
@@ -53,14 +53,14 @@ EOF
 process_arguments() {
   # set the default value for config file if is not provided
   if [ -z "${CONFIG_FILE}" ]; then
-    CONFIG_FILE="${SCRIPT_PATH}/../../config.tfvars"
+    CONFIG_FILE="config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
-    OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
   fi
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
   echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -106,8 +106,6 @@ cleanup_terraform_backend_variables() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  ROOT_FOLDER="${SCRIPT_PATH}/../.."
-
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
   echo "Terraform state backend/variable files are missing."
@@ -120,13 +118,13 @@ create_tfstate_resources() {
   echo "Checking the terraform state."
   cd "${SCRIPT_PATH}/../tfstate"
   set +e
-  aws s3api head-bucket --bucket "${S3_BUCKET}"
+  aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
   S3_BUCKET_EXISTS=$?
   set -e
   if [ ${S3_BUCKET_EXISTS} -eq 0 ]
   then
     echo "S3 bucket '${S3_BUCKET}' already exists."
-    cd "${CURRENT_PATH}"
+    cd "${ROOT_PATH}"
   else
     # create s3 bucket to be used for keep state of the terraform project
     echo "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
@@ -135,7 +133,7 @@ create_tfstate_resources() {
     sleep 5s
 
     echo "Migrating the terraform state to S3 bucket..."
-    cd "${CURRENT_PATH}"
+    cd "${ROOT_PATH}"
     terraform init -migrate-state
   fi
 }
