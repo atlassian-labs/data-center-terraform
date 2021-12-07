@@ -157,7 +157,10 @@ add_tags_to_asg_resources() {
 }
 
 set_current_context_k8s() {
-  EKS_CLUSTER="${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}"
+  local EKS_PREFIX="atlassian-dc-"
+  local EKS_SUFFIX="-cluster"
+  local EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
+  local EKS_CLUSTER="${EKS_CLUSTER_NAME:0:38}"
   CONTEXT_FILE="kubeconfig_${EKS_CLUSTER}"
 
   echo
