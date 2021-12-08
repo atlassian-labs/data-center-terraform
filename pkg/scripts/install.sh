@@ -122,8 +122,12 @@ create_tfstate_resources() {
   else
     # create s3 bucket to be used for keep state of the terraform project
     echo "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
-    terraform init
-    terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}"
+    if ! test -d ".terraform" ; then
+      terraform init | tee "../../${LOG_FILE}"
+    else
+      touch "./../${LOG_FILE}"
+    fi
+    terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "../../${LOG_FILE}"
     sleep 5s
 
     echo "Migrating the terraform state to S3 bucket..."
@@ -135,7 +139,9 @@ create_tfstate_resources() {
 # Deploy the infrastructure if is not created yet otherwise apply the changes to existing infrastructure
 create_update_infrastructure() {
   Echo "Starting to analyze the infrastructure..."
-  terraform init | tee "${LOG_FILE}"
+  if ! test -d ".terraform" ; then
+    terraform init | tee -a "${LOG_FILE}"
+  fi
   terraform apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
 }
 

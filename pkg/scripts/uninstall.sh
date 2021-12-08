@@ -5,13 +5,12 @@
 # -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -s : Skip cleaning up the terraform state
 # -h : provides help to how executing this script.
-
 set -e
 set -o pipefail
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ROOT_PATH="${SCRIPT_PATH}/../.."
-LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
+LOG_FILE="terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
@@ -63,6 +62,7 @@ process_arguments() {
     echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
   fi
 
+
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
     show_help
@@ -86,6 +86,7 @@ confirm_action() {
       No ) exit;;
       * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
   esac
+  echo
 }
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
@@ -101,7 +102,12 @@ destroy_infrastructure() {
   cd "${ROOT_PATH}"
   set +e
   # Start destroying the infrastructure
-  terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee "${LOG_FILE}"
+  if ! test -d ".terraform" ; then
+    terraform init | tee "${LOG_FILE}"
+  else
+    touch  "${LOG_FILE}"
+  fi
+  terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -135,7 +141,10 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+      if ! test -d ".terraform" ; then
+        terraform init | tee -a "../../${LOG_FILE}"
+      fi
+      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "../../${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
       else
