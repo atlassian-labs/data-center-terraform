@@ -59,7 +59,6 @@ delete_terraform_files() {
     rm -rf "${CLEANING_PATH}/.terraform"
     rm -rf "${CLEANING_PATH}/.terraform.lock.hcl"
     rm -rf "${CLEANING_PATH}/terraform.tfstate"
-    rm -rf "${CLEANING_PATH}/terraform.tfstate.backkup"
 }
 
 cleanup_terraform() {

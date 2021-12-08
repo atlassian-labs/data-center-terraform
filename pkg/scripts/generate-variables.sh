@@ -46,6 +46,20 @@ cleanup_existing_files() {
   # remove terraform generated files if the environment name or AWS Account ID or Region has changed
   set +e
   if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
+    echo "We found you have used this instance to create a different environment previously."
+    echo "Installing or uninstalling a different environment will override the terraform state files."
+    echo "As the result, you will not able to manage the previous environment by terraform anymore."
+    echo
+    echo "We strongly suggest you to use a different instance to provision each new infrastructure or make a backup of"
+    echo "the './pkg/tfstate' folder (including hidden files) before proceeding."
+    echo
+    echo "We are about to override terraform state files and replace it by new state for environment '${ENVIRONMENT_NAME}'"
+    read -p "Are you sure(Yes/No)? " yn
+    case $yn in
+        Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+        No|no|n|N ) exit;;
+        * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+    esac
     CLEANUP_TERRAFORM_FILES='-t'
   fi
   set -e
