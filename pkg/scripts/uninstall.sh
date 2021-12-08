@@ -141,9 +141,9 @@ destroy_tfstate() {
     then
       set +e
       if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "../../${LOG_FILE}"
+        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
       fi
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "../../${LOG_FILE}"
+      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
         echo "Cleaning all the terraform generated files."
