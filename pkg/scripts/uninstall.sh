@@ -10,6 +10,7 @@ set -e
 set -o pipefail
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
+ROOT_PATH="${SCRIPT_PATH}/../.."
 LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
@@ -89,11 +90,6 @@ confirm_action() {
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-  echo "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s -t
-
-  ROOT_PATH="${SCRIPT_PATH}/../.."
-
   echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_FILE}."
 
   echo "Terraform state backend/variable files are set."
@@ -101,9 +97,8 @@ regenerate_environment_variables() {
 }
 
 
-
 destroy_infrastructure() {
-  cd "${SCRIPT_PATH}/../../"
+  cd "${ROOT_PATH}"
   set +e
   # Start destroying the infrastructure
   terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee "${LOG_FILE}"
