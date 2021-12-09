@@ -4,11 +4,11 @@ variable "region_name" {
 }
 
 variable "environment_name" {
-  description = "Name of the cluster."
+  description = "Name of the environment."
   type        = string
   validation {
-    condition     = can(regex("^([a-zA-Z])+(([a-zA-Z]|[0-9])*-?)*$", var.environment_name))
-    error_message = "Invalid cluster name."
+    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9\\-]{1,24}$", var.environment_name))
+    error_message = "Invalid environment name. Valid name is up to 25 characters starting with alphabet and followed by alphanumerics. '-' is allowed as well."
   }
 }
 

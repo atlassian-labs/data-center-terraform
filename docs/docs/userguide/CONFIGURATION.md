@@ -50,7 +50,7 @@ The value will be used to form the name of some resources including `vpc` and `K
 environment_name = "<YOUR-ENVIRONMENT-NAME>"
 ```
 Environment names should start with an alphabet character and could contain alphabet, numbers and dash `-`.
-The length of the `environment_name` value cannot exceed 17 characters.
+The length of the `environment_name` value cannot exceed 25 characters.
 
 
 ### Region

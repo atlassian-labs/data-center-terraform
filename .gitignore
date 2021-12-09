@@ -20,7 +20,7 @@ pkg/modules/AWS/asg_ec2_tagging/variables.tf
 terraform-backend.tf
 
 # Log file
-terraform-dc-install.log
+terraform-dc-*.log
 
 # Ignore any .tfvars files
 #

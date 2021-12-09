@@ -5,12 +5,12 @@
 # -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -s : Skip cleaning up the terraform state
 # -h : provides help to how executing this script.
-
 set -e
 set -o pipefail
 CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
-LOG_FILE="${SCRIPT_PATH}/../../terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
+ROOT_PATH="${SCRIPT_PATH}/../.."
+LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
 
@@ -52,7 +52,7 @@ EOF
 process_arguments() {
   # set the default value for config file if is not provided
   if [ -z "${CONFIG_FILE}" ]; then
-    CONFIG_FILE="${SCRIPT_PATH}/../../config.tfvars"
+    CONFIG_FILE="${ROOT_PATH}/config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
@@ -61,6 +61,7 @@ process_arguments() {
     OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
     echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
   fi
+
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
@@ -85,15 +86,11 @@ confirm_action() {
       No ) exit;;
       * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
   esac
+  echo
 }
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-    echo "Cleaning all the generated variable files."
-    sh "${SCRIPT_PATH}/cleanup.sh" -s
-
-  ROOT_PATH="${SCRIPT_PATH}/../.."
-
   echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_FILE}."
 
   echo "Terraform state backend/variable files are set."
@@ -101,20 +98,23 @@ regenerate_environment_variables() {
 }
 
 
-
 destroy_infrastructure() {
-  cd "${SCRIPT_PATH}/../../"
-  set +e
+  if ! test -d "${ROOT_PATH}/logs" ; then
+    mkdir "${ROOT_PATH}/logs"
+  fi
+  touch "${LOG_FILE}"
   # Start destroying the infrastructure
-  terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee "${LOG_FILE}"
+  if ! test -d ".terraform" ; then
+    terraform -chdir="${ROOT_PATH}" init | tee -a "${LOG_FILE}"
+  fi
+  set +e
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
-    cd "${CURRENT_PATH}"
     echo "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully."
     exit 1
   fi
-  cd "${CURRENT_PATH}"
   echo "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
 }
 
@@ -132,7 +132,7 @@ destroy_tfstate() {
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
-    cd "${SCRIPT_PATH}/../tfstate"
+    local TFSTATE_FOLDER="${SCRIPT_PATH}/../tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" > /dev/null
     S3_BUCKET_EXISTS=$?
@@ -140,24 +140,24 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      terraform destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+      if ! test -d ".terraform" ; then
+        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
+      fi
+      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
+        echo "Cleaning all the terraform generated files."
+        sh "${SCRIPT_PATH}/cleanup.sh" -t
+        echo Terraform state is removed successfully.
       else
         echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
-        cd "${CURRENT_PATH}"
         exit 1
       fi
     else
       # Provided s3 bucket to be used for keep state of the terraform project does not exist
       echo "S3 bucket '${S3_BUCKET}' is not existed. There is no 'tfstate' resource to destroy"
-      cd "${CURRENT_PATH}"
       exit 1
     fi
-    echo "Cleaning all the terraform generated files."
-    sh "${SCRIPT_PATH}/cleanup.sh" -t
-    cd "${CURRENT_PATH}"
-    echo Terraform state is removed successfully.
   else
       echo "Cannot cleanup the Terraform state because ${TF_STATE_FILE} does not exist."
       exit 1
