@@ -23,7 +23,7 @@ module "efs" {
   region_name                  = var.region_name
   vpc                          = module.vpc
   eks                          = module.eks
-  csi_controller_replica_count = var.desired_capacity
+  csi_controller_replica_count = 2
 }
 
 module "ingress" {
