@@ -7,8 +7,8 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-SCRIPT_PATH="$(dirname "$0")"
-ROOT_PATH="${SCRIPT_PATH}/../.."
+ROOT_PATH="$(dirname "$0")"
+SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
