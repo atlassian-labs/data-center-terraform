@@ -1,46 +1,53 @@
-# Uninstall and Cleanup 
+# Uninstallation and cleanup 
 
-!!! warning "You may lose valuable data in the cleanup process"
-    Before you start uninstalling the products and infrastructure make sure you have backed up all data you may need. 
-    
-    After uninstall you have no access to the product data including local volume, shared volume, database, and Terraform state information. 
+This guide describes how to uninstall all Atlassian Data Center products and remove cloud environments 
 
+!!! warning "The uninstallation process is destructive"
+    The uninstallation process will **permanently delete** the local volume, shared volume, database, and Terraform state information.
 
-To uninstall the products and clean up the infrastructure first make sure you made a backup from all application data you may need.
-Uninstall will **permanently delete** the database, shared home, local home, and Terraform state data.
+    Before you begin, make sure that you have an up-to-date backup available in a secure location. 
 
-If you wish to uninstall just one product please **do not** proceed with the uninstall process and see [Configuration](CONFIGURATION.md) instead. 
+If you want to uninstall just one product, don't proceed with the uninstallation process and remove it from the configuration file instead. For more information, see [Configuration](CONFIGURATION.md). 
 
-!!! warning "Make sure you have made backup of the product data."
-    All product data will be **permanently deleted** after uninstall.
+The uninstallation script is located in the `pkg/scripts` project directory.
 
-Please note the uninstall will destroy your data so make sure you have the latest backup of your data before you start cleaning the infrastructure.
-You may proceed when you are ready to uninstall. 
+Usage:
 
 ```shell
 ./pkg/scripts/uninstall [-t] [-c <config.tfvars>]
 ```
-Uninstall command removes the infrastructure but terraform state files will remain after the process. 
-You should use switch `-t` if you need to cleanup the terraform state as well.
 
-As you can manage multiple environments, you need to define the environment to uninstall. 
-This is possible by using the same config file that you used to create the environment.  
-If you have used the default configuration file (`config.tfvars`) from the root folder of the project, then you may simply use the following command:
+The following options are available:
+
+- `-t` - Delete Terraform state files
+- `-c <config_file>` - Pass a custom configuration file when uninstalling multiple environments
+
+Running the uninstallation script with no parameters will use the default configuration file. 
+
+
+
+You can remove environments provisioned with the default configuration file as well as the ones provisioned with a custom configuration file.
+
+## Removing environments provisioned with the default configuration file
+
+If you used the default configuration file (`config.tfvars`) from the root folder of the project, run the following command:
 
 ```shell 
 ./pkg/scripts/uninstall
 ```
 
-If you used a custom-defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in the install command instead:
-```
-./pkg/scripts/uninstall -c <custom-config-file>
+## Removing environments provisioned with a custom configuration file
+
+If you used a custom configuration file to provision multiple environments, run the following command using the same configuration file you used to provision the environment:
+
+```shell
+./pkg/scripts/uninstall -c <config_file>
 ```
 
-Uninstall will remove the products and all Atlassian Data Center infrastructure by default. 
-Terraform state files will be remain after uninstall unless you force removing it by adding switch `-t` in uninstall command. 
+## Removing Terraform state files
 
-!!! tip "Do you want to delete the terraform state after removing environment?"
-    If you want to clean up the terraform state files and dynamodb lock table then use the switch `-t`:
-    ```shell 
-    ./pkg/scripts/uninstall -t [-c <custom-config-file>]
-    ```
+By default, the script does not remove Terraform state files. If you want to remove Terraform state files, run the uninstallation script with the `-t` switch:
+
+```shell 
+./pkg/scripts/uninstall -t [-c <config_file>]
+``` 
