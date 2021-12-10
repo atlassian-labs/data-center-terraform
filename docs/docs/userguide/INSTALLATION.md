@@ -39,7 +39,7 @@ To keep track of the current state of the resources and manage any further chang
 Also, it creates a dynamodb table to handle to manage lock the environment during installation, cleanup, and upgrade to prevent modifying by more than one process at the time.
 This process is part of installation and no extra step is needed to take. 
  
-The installation script is located in root folder of the project.
+The installation script is located in the root folder of the project.
 
 Usage:  `./install.sh [-c <config-file] [-h]`
 
