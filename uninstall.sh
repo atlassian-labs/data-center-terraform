@@ -7,9 +7,8 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-CURRENT_PATH="$(pwd)"
-ROOT_PATH="$(dirname "$0")"
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="$(dirname "$0")"
+ROOT_PATH="${SCRIPT_PATH}/../.."
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
@@ -59,15 +58,17 @@ process_arguments() {
       show_help
     fi
   fi
-  echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
-  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
+  CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
+
+  echo "Terraform uses '${CONFIG_ABS_PATH}' to uninstall the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
     show_help
   fi
 
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 # Ask user confirmation for destroying the environment
@@ -81,19 +82,19 @@ confirm_action() {
 
   read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (Yes/No)? " yn
   case $yn in
-      Yes|yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-      No|no|n|N ) exit;;
-      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+      Yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+      No ) exit;;
+      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
   esac
   echo
 }
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_FILE}."
+  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
 
   echo "Terraform state backend/variable files are set."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
 
@@ -124,14 +125,14 @@ destroy_tfstate() {
     echo "Skipped terraform state cleanup."
     return
   fi
-  TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
+  TF_STATE_FILE="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
-    local TFSTATE_FOLDER="${ROOT_PATH}/pkg/tfstate"
+    local TFSTATE_FOLDER="${SCRIPT_PATH}/../tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?

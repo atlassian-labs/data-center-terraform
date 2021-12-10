@@ -6,9 +6,8 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-CURRENT_PATH="$(pwd)"
-ROOT_PATH="$(dirname "$0")"
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="$(dirname "$0")"
+ROOT_PATH="${SCRIPT_PATH}/../.."
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${ROOT_PATH}/logs/terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
@@ -60,8 +59,10 @@ process_arguments() {
       show_help
     fi
   fi
-  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
-  echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
+  CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
+  
+  echo "Terraform uses '${CONFIG_ABS_PATH}' to install the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
@@ -76,9 +77,9 @@ verify_configuration_file() {
 
   # Make sure the config values are defined
   set +e
-  INVALID_CONTENT=$(grep -o '^[^#]*' $CONFIG_FILE | grep '<\|>')
+  INVALID_CONTENT=$(grep -o '^[^#]*' ${CONFIG_ABS_PATH} | grep '<\|>')
   set -e
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     echo "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
@@ -87,9 +88,9 @@ verify_configuration_file() {
   fi
 
   if [ ! -z "${INVALID_CONTENT}" ]; then
-    echo "Configuration file '${CONFIG_FILE}' is not valid."
+    echo "Configuration file '${CONFIG_ABS_PATH}' is not valid."
     echo "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
-    echo "Please modify '${CONFIG_FILE}' using a text editor and complete the configuration. "
+    echo "Please modify '${CONFIG_ABS_PATH}' using a text editor and complete the configuration. "
     echo "Then re-run the install.sh to deploy the infrastructure."
     echo
     echo "${INVALID_CONTENT}"
@@ -99,10 +100,10 @@ verify_configuration_file() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
 
   echo "Terraform state backend/variable files are missing."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -113,7 +114,7 @@ create_tfstate_resources() {
     mkdir "${ROOT_PATH}/logs"
   fi
   touch "${LOG_FILE}"
-  local STATE_FOLDER="${ROOT_PATH}/pkg/tfstate"
+  local STATE_FOLDER="${SCRIPT_PATH}/../tfstate"
   set +e
   aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
   S3_BUCKET_EXISTS=$?
@@ -146,10 +147,10 @@ create_update_infrastructure() {
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
   echo "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
-  TAG_MODULE_PATH="${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+  TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init > "${LOG_TAGGING}"
-  terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve "-var-file=${CONFIG_FILE}" >> "${LOG_TAGGING}"
+  terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
   echo "Resource tags are applied to ASG and all EC2 instances."
 }
 
