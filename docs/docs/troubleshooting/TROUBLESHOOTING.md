@@ -27,6 +27,7 @@ You can combine both switches in one command to cleanup both generated terraform
 !!! info "Temporary variable files will re-generate using the config file and override in install process."
 
 ## Uninstall interruption
+      
 ### Symptom
 If you try to uninstall using a different config file than what you used to install the environment or using a different version of the code you may face some problems in uninstall.
 Mostly terraform complains the resource cannot be removed because it is used. 
@@ -34,6 +35,25 @@ Mostly terraform complains the resource cannot be removed because it is used.
 ### Solution
 In this case identify the resource and delete it manually using AWS console, then re-run uninstall. 
 
+### Symptom
+Uninstall fails following this error message:
+```
+Error: Persistent volume atlassian-dc-bamboo-share-home-pv still exists (Bound)
+
+Error: context deadline exceeded
+
+Error: Persistent volume claim atlassian-dc-bamboo-share-home-pvc still exists with 
+```
+### Solution
+If a bamboo pod termination stalls, it will block pvc and pv deletion. 
+To fix this problem we need to terminate bamboo pod first and run uninstall command again.
+```
+kubectl delete pod <bamboo-pod> -n bamboo --force
+```
+To see the stalled bamboo pod name you can run the following command:
+```
+kubectl get pods -n bamboo 
+```
 
 ## AWS Access
 ### Symptom
