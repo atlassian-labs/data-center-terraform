@@ -18,7 +18,7 @@ Please note the uninstall will destroy your data so make sure you have the lates
 You may proceed when you are ready to uninstall. 
 
 ```shell
-./uninstall [-t] [-c <config.tfvars>]
+./uninstall.sh [-t] [-c <config.tfvars>]
 ```
 Uninstall command removes the infrastructure but terraform state files will remain after the process. 
 You should use switch `-t` if you need to cleanup the terraform state as well.
