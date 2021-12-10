@@ -28,5 +28,5 @@ output "cluster_security_group" {
 }
 
 output "cluster_asg_name" {
-  value = module.eks.node_groups.appNodes.resources[0].autoscaling_groups[0].name
+  value = local.cluster_asg_name
 }
