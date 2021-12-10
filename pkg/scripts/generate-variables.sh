@@ -21,7 +21,6 @@ SCRIPT_PATH="$(dirname "$0")"
 ROOT_PATH="${SCRIPT_PATH}/../.."
 
 set_variables() {
-  echo ${CONFIG_FILE}
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
   REGION=$(grep 'region' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
