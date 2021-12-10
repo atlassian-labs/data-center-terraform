@@ -151,7 +151,7 @@ add_tags_to_asg_resources() {
   TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init > "${LOG_TAGGING}"
-  terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve "-var-file=${CONFIG_FILE}" >> "${LOG_TAGGING}"
+  terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
   echo "Resource tags are applied to ASG and all EC2 instances."
 }
 
