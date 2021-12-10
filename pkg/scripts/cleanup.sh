@@ -7,11 +7,13 @@
 # -h: help
 set -e
 CURRENT_PATH="$(pwd)"
-SCRIPT_PATH="$(dirname "$0")"
-ROOT_PATH="${SCRIPT_PATH}/../.."
-cd "${ROOT_PATH}"
-TAG_MODULE_PATH="./pkg/modules/AWS/asg_ec2_tagging"
-TFSTATE_PATH="./pkg/tfstate"
+# this script is landed in {repo_root_path}/pkg/scripts to to get root path we should back two level from script path
+cd "$(dirname "$0")/../.."
+ROOT_PATH="$(pwd)"
+cd "${CURRENT_PATH}"
+SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+TAG_MODULE_PATH="${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+TFSTATE_PATH="${ROOT_PATH}/pkg/tfstate"
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -71,18 +73,18 @@ cleanup_terraform() {
 
     # List of all folders to cleanup
     local folder_lists=(
-      "."
-      "./pkg/modules/AWS/eks"
-      "./pkg/modules/AWS/s3"
-      "./pkg/modules/AWS/efs"
-      "./pkg/modules/AWS/dynamodb"
-      "./pkg/modules/AWS/ingress"
-      "./pkg/modules/AWS/rds"
-      "./pkg/modules/AWS/vpc"
-      "./pkg/products/bamboo"
-      "./pkg/products/common"
-      "./pkg/modules/AWS/asg_ec2_tagging"
-      "./pkg/tfstate"
+      "${ROOT_PATH}"
+      "${ROOT_PATH}/pkg/modules/AWS/eks"
+      "${ROOT_PATH}/pkg/modules/AWS/s3"
+      "${ROOT_PATH}/pkg/modules/AWS/efs"
+      "${ROOT_PATH}/pkg/modules/AWS/dynamodb"
+      "${ROOT_PATH}/pkg/modules/AWS/ingress"
+      "${ROOT_PATH}/pkg/modules/AWS/rds"
+      "${ROOT_PATH}/pkg/modules/AWS/vpc"
+      "${ROOT_PATH}/pkg/products/bamboo"
+      "${ROOT_PATH}/pkg/products/common"
+      "${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+      "${ROOT_PATH}/pkg/tfstate"
     )
 
     for TARGET_FOLDER in "${folder_lists[@]}"; do
@@ -97,7 +99,7 @@ cleanup_setup_files() {
   if [ ! -z "${CLEAN_SETUP_FILES}" ]; then
     echo "Cleaning generated variable files."
     # from root
-    rm -rf "terraform-backend.tf"
+    rm -rf "${ROOT_PATH}/terraform-backend.tf"
 
     # Terraform state
     rm -rf ${TFSTATE_PATH}/*.tfvars
@@ -113,4 +115,3 @@ cleanup_setup_files() {
 
 cleanup_terraform
 cleanup_setup_files
-cd "${CURRENT_PATH}"
