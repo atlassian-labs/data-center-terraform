@@ -59,8 +59,8 @@ process_arguments() {
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
-    OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
   fi
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
   echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
@@ -115,7 +115,7 @@ create_tfstate_resources() {
   touch "${LOG_FILE}"
   local STATE_FOLDER="${SCRIPT_PATH}/../tfstate"
   set +e
-  aws s3api head-bucket --bucket "${S3_BUCKET}"
+  aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
   S3_BUCKET_EXISTS=$?
   set -e
   if [ ${S3_BUCKET_EXISTS} -eq 0 ]

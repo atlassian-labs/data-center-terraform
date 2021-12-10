@@ -58,10 +58,9 @@ process_arguments() {
       echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
-    OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
-    echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
   fi
-
+  echo "Terraform uses '${CONFIG_FILE}' to uninstall the infrastructure."
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
@@ -134,7 +133,7 @@ destroy_tfstate() {
 
     local TFSTATE_FOLDER="${SCRIPT_PATH}/../tfstate"
     set +e
-    aws s3api head-bucket --bucket "${S3_BUCKET}" > /dev/null
+    aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?
     set -e
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
