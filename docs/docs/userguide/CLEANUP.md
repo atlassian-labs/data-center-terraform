@@ -42,5 +42,5 @@ Terraform state files will be remain after uninstall unless you force removing i
 !!! tip "Do you want to delete the terraform state after removing environment?"
     If you want to clean up the terraform state files and dynamodb lock table then use the switch `-t`:
     ```shell 
-    ./uninstall -t [-c <custom-config-file>]
+    ./uninstall.sh -t [-c <custom-config-file>]
     ```
