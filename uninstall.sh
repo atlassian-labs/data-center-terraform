@@ -179,5 +179,3 @@ destroy_infrastructure
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
 
-# Delete tfstate and tfvars in asg_ec2_tagging module
-cleanup_asg_ec2_tagging_module

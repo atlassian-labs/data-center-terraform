@@ -17,8 +17,8 @@ if [ ! -f "${CONFIG_FILE}" ]; then
 fi
 
 # this script is located in {repo_root_path}/pkg/scripts
-ROOT_PATH="$(dirname "$0")"
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="$(dirname "$0")"
+ROOT_PATH="${SCRIPT_PATH}/../.."
 
 set_variables() {
   echo ${CONFIG_FILE}
