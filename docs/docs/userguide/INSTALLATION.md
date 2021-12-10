@@ -39,9 +39,9 @@ To keep track of the current state of the resources and manage any further chang
 Also, it creates a dynamodb table to handle to manage lock the environment during installation, cleanup, and upgrade to prevent modifying by more than one process at the time.
 This process is part of installation and no extra step is needed to take. 
  
-The installation script is located in `pkg/scripts` folder of the project.
+The installation script is located in root folder of the project.
 
-Usage:  `./pkg/scripts/install.sh [-c <config-file] [-h]`
+Usage:  `./install.sh [-c <config-file] [-h]`
 
 As mentioned before, the default config file is `config.tfvars` and located in root of the project. 
 Running install script with no parameter will use the default config file to provision the environment. 
@@ -56,7 +56,7 @@ You may use a different file with the same format to handle more than one enviro
 
     To provision the infrastructure using default config file run:
         ```shell
-        ./pkg/scripts/install.sh
+        ./install.sh
         ```
    
 === "Using other config file"
@@ -64,7 +64,7 @@ You may use a different file with the same format to handle more than one enviro
     If you need to use a different config file other than the defualt one then first create and configure your config file and then run: 
             
     ``` shell
-    ./pkg/scripts/install.sh -c <your-config_file>
+    ./install.sh -c <your-config_file>
     ```  
     
 !!! help "How to run the product after installation?"    
