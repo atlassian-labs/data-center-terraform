@@ -7,7 +7,6 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ROOT_PATH="${SCRIPT_PATH}/../.."
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
@@ -69,7 +68,7 @@ process_arguments() {
     show_help
   fi
 
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 # Ask user confirmation for destroying the environment
@@ -92,10 +91,10 @@ confirm_action() {
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_FILE}."
+  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
 
   echo "Terraform state backend/variable files are set."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_PATH}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
 

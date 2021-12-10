@@ -6,7 +6,6 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-CURRENT_PATH="$(pwd)"
 SCRIPT_PATH="$(dirname "$0")"
 ROOT_PATH="${SCRIPT_PATH}/../.."
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
@@ -78,9 +77,9 @@ verify_configuration_file() {
 
   # Make sure the config values are defined
   set +e
-  INVALID_CONTENT=$(grep -o '^[^#]*' $CONFIG_FILE | grep '<\|>')
+  INVALID_CONTENT=$(grep -o '^[^#]*' ${CONFIG_ABS_PATH} | grep '<\|>')
   set -e
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     echo "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
@@ -89,9 +88,9 @@ verify_configuration_file() {
   fi
 
   if [ ! -z "${INVALID_CONTENT}" ]; then
-    echo "Configuration file '${CONFIG_FILE}' is not valid."
+    echo "Configuration file '${CONFIG_ABS_PATH}' is not valid."
     echo "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
-    echo "Please modify '${CONFIG_FILE}' using a text editor and complete the configuration. "
+    echo "Please modify '${CONFIG_ABS_PATH}' using a text editor and complete the configuration. "
     echo "Then re-run the install.sh to deploy the infrastructure."
     echo
     echo "${INVALID_CONTENT}"
@@ -101,10 +100,10 @@ verify_configuration_file() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
 
   echo "Terraform state backend/variable files are missing."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_PATH}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
