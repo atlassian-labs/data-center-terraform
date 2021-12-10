@@ -46,7 +46,7 @@ set_variables() {
 
 # Cleaning all the generated terraform state variable and backend file
 cleanup_existing_files() {
-  if test -f ${BACKEND_TF} ; then
+  if [ -f ${BACKEND_TF} ]; then
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
     if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
