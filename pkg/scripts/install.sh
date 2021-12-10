@@ -60,8 +60,10 @@ process_arguments() {
       show_help
     fi
   fi
-  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_FILE}"
-  echo "Terraform uses '${CONFIG_FILE}' to install the infrastructure."
+  CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
+  OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
+  
+  echo "Terraform uses '${CONFIG_ABS_PATH}' to install the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
     echo "Unknown arguments:  ${UNKNOWN_ARGS}"
