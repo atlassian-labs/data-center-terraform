@@ -16,7 +16,7 @@ if [ ! -f "${CONFIG_FILE}" ]; then
   show_help
 fi
 
-# this script is landed in {repo_root_path}/pkg/scripts
+# this script is located in {repo_root_path}/pkg/scripts
 ROOT_PATH="$(dirname "$0")"
 SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 
