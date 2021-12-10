@@ -1,81 +1,83 @@
-# Installation 
+# Installation
 
-!!! info "List of supported Atlassian Data Center products."
-    At this time **Bamboo DC** is the only supported product by this project. We will work hard to include more Data Center products into this project.
+This guide describes how to provision the cloud environment infrastructure and install Atlassian Data Center products in a Kubernetes cluster running on AWS.
 
-## 1. AWS Configuration
-Configure your AWS credentials with admin access. [AWS Documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+!!! info "Supported Atlassian Data Center products"
+    Currently, only Bamboo Data Center is supported. We are planning to to add support for more Data Center products in the future.
 
-## 2. Clone the project
-Clone the Terraform for Atlassian DC Products into your local 
-```
+## 1. Set up AWS security credentials
+
+Set up a user with an administrator IAM role. See [Configuration basics — AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html){.external}.
+
+## 2. Clone the project repository
+
+Clone the Terraform for Atlassian DC Products project repository from GitHub:
+
+```shell
 git clone https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
 ```
 
 ## 3. Configure the infrastructure
-Configure the infrastructure for the selected products. 
-Open configuration file using a text editor and configure the infrastructure as required 
-(See [configuration](CONFIGURATION.md) page).  
 
-!!! info "Where to find the configuration file?"
-    The Terraform project uses `config.tfvars` from root to configure the infrastructure in install and uninstall process by default. 
+Configure the infrastructure for the selected product or products by opening the configuration file in a text editor and defining the required values. See [Configuration](CONFIGURATION.md).
+
+!!! info "Where is the configuration file?"
+    By default, Terraform uses the `config.tfvars` file in the project root to configure the infrastructure during the installation or uninstallation processes.
        
-!!! tip "How to use a different configuration file?"
-    You can use any other customised file with the same format as default config file to override it. 
-    This could be done by making a copy of `config.tfvars` and use it as a template to define the configuration of your infrastructure. 
+!!! tip "Can I use a custom configuration file?"
+    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, using it as a template to define your infrastructure configuration.
     
-    Then use this file to override the default config file in install and uninstall steps. 
-    
-!!! Warning "Make sure you use the same configuration file in both install and uninstall of the infrastructure."  
-    If you have more than one environment, make sure to manage the config file of each environment separately. 
-    When you need to clean up the environment use the same config file that is being used to create the environment.   
+!!! Warning "Use the same configuration file for uninstallation and cleanup"  
+    If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
 
-## 4. Install the infrastructure and product        
-When based on your environment the config file is configured then you are ready to start installation process. 
-Installing process will provision the required infrastructure for the configured environment and will install the selected products. 
+## 4. Run the installation script
 
-Terraform handles creating and managing the infrastructure. 
-To keep track of the current state of the resources and manage any further change, terraform creates a S3 bucket to store the current state of the environment.
-Also, it creates a dynamodb table to handle to manage lock the environment during installation, cleanup, and upgrade to prevent modifying by more than one process at the time.
-This process is part of installation and no extra step is needed to take. 
+The installation script provisions the environment infrastructure and installs the selected products based on the passed configuration file.
+
+The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an S3 bucket to store the current state of the environment. A DynamoDB table is created to handle the locking of remote state files during installation, upgrade, and cleanup to prevent the environment from being modified by more than one process at a time. 
  
-The installation script is located in `pkg/scripts` folder of the project.
+The installation script is located in the `pkg/scripts` project directory.
 
-Usage:  `./pkg/scripts/install.sh [-c <config-file] [-h]`
+Usage:
 
-As mentioned before, the default config file is `config.tfvars` and located in root of the project. 
-Running install script with no parameter will use the default config file to provision the environment. 
+```shell
+./pkg/scripts/install.sh [-c <config_file] [-h]
+```
 
-You may use a different file with the same format to handle more than one environment but remember when you want to uninstall and cleanup the environment you need use the same config file. 
+The following options are available:
 
-!!! info "Supported Atlassian Data Center products."
-    At this time **Bamboo** is the only supported product.
+- `-c <config_file>` - Pass a custom configuration file when provisioning multiple environments
+- `-h` - Display help information
 
+Running the installation script with no parameters will use the default configuration file to provision the environment. 
 
-=== "Using the default config file"
+### Start the installation using the default configuration file
 
-    To provision the infrastructure using default config file run:
-        ```shell
-        ./pkg/scripts/install.sh
-        ```
-   
-=== "Using other config file"
-   
-    If you need to use a different config file other than the defualt one then first create and configure your config file and then run: 
-            
-    ``` shell
-    ./pkg/scripts/install.sh -c <your-config_file>
-    ```  
-    
+To provision the infrastructure using the default `config.tfvars` file, run:
+
+```shell
+./pkg/scripts/install.sh
+```
+
+### Start the installation using a custom configuration file
+
+If you want to use a custom configuration file to handle more than one environment, run:
+
+```shell
+./pkg/scripts/install.sh -c <config_file_path>
+```
+ 
 !!! help "How to run the product after installation?"    
     When the installation process finishes successfully, you can find some detailed information about the infrastructure on your console including the endpoint url (`product_urls`/`load_balancer_hostname`) to open the product on your browser and more.      
 
-!!! help "How to find the database username and password?"
-    Database master username and password for each product are generated by Terraform and pushed in the Terraform secret in the product namespace. 
-    To access to the database username and password run the following commands:
+!!! help "Where do I find the database username and password?"
+    The database master username and password for each product are generated by Terraform and saved in a Kubernetes secret in the product namespace.
+
+    To access the database username and password, run the following commands:
     ```
     DB_SECRETS=$(kubectl get secret <product-name>-db-cred -n <product-name> -o jsonpath='{.data}')
     DB_USERNAME=$(echo $DB_SECRETS | jq -r '.username' | base64 --decode)
     DB_PASSWORD=$(echo $DB_SECRETS | jq -r '.password' | base64 --decode)
     ``` 
-    This will give you decoded `username` and `password` stored in `$DB_USERNAME` and `$DB_PASSWORD` environment variables.
+
+    This saves the decoded username and password to the `$DB_USERNAME` and `$DB_PASSWORD` environment variables respectively.
