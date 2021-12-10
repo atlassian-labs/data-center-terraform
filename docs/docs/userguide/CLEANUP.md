@@ -28,7 +28,7 @@ This is possible by using the same config file that you used to create the envir
 If you have used the default configuration file (`config.tfvars`) from the root folder of the project, then you may simply use the following command:
 
 ```shell 
-./uninstall
+./uninstall.sh
 ```
 
 If you used a custom-defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in the install command instead:
