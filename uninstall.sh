@@ -82,9 +82,9 @@ confirm_action() {
 
   read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (Yes/No)? " yn
   case $yn in
-      Yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-      No ) exit;;
-      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure (case sensitive)."; exit;;
+      Yes|yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+      No|no|n|N ) exit;;
+      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
   esac
   echo
 }
@@ -125,14 +125,14 @@ destroy_tfstate() {
     echo "Skipped terraform state cleanup."
     return
   fi
-  TF_STATE_FILE="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
+  TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
-    local TFSTATE_FOLDER="${SCRIPT_PATH}/../tfstate"
+    local TFSTATE_FOLDER="${ROOT_PATH}/pkg/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?
