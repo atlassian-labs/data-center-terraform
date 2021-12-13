@@ -27,4 +27,14 @@ locals {
 
   ingress_settings   = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
   storage_class_name = "efs-cs"
+
+  has_license = var.license != null
+  license_settings = yamlencode({
+    bamboo = {
+      license = {
+        secretName = kubernetes_secret.license_secret[0].metadata[0].name
+        secretKey  = "license"
+      }
+    }
+  })
 }

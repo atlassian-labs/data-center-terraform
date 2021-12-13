@@ -12,3 +12,18 @@ resource "kubernetes_secret" "rds_secret" {
     password = module.database.rds_master_password
   }
 }
+
+################################################################################
+# Kubernetes secret to store license
+################################################################################
+resource "kubernetes_secret" "license_secret" {
+  count = local.has_license ? 1 : 0
+
+  metadata {
+    name = "${local.product_name}-license"
+  }
+
+  data = {
+    license = var.license
+  }
+}

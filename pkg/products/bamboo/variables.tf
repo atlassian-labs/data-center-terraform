@@ -51,3 +51,10 @@ variable "db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   type        = number
 }
+
+variable "license" {
+  description = "Bamboo license."
+  type        = string
+  default     = null
+  sensitive   = true
+}
