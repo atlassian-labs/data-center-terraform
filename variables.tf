@@ -79,7 +79,6 @@ variable "bamboo_license" {
 variable "bamboo_admin_username" {
   description = "Bamboo system administrator username."
   type        = string
-  sensitive   = true
 }
 
 variable "bamboo_admin_password" {
@@ -91,11 +90,9 @@ variable "bamboo_admin_password" {
 variable "bamboo_admin_display_name" {
   description = "Bamboo system administrator display name."
   type        = string
-  sensitive   = true
 }
 
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
-  sensitive   = true
 }

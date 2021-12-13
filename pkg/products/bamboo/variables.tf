@@ -61,7 +61,6 @@ variable "license" {
 variable "admin_username" {
   description = "System administrator username."
   type        = string
-  sensitive   = true
 }
 
 variable "admin_password" {
@@ -73,11 +72,9 @@ variable "admin_password" {
 variable "admin_display_name" {
   description = "System administrator display name."
   type        = string
-  sensitive   = true
 }
 
 variable "admin_email_address" {
   description = "System administrator email address."
   type        = string
-  sensitive   = true
 }
