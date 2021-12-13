@@ -38,7 +38,7 @@ In this case identify the resource and delete it manually using AWS console, the
 
 ## Uninstall interruption - Stalled product pod
 **Symptom**
-Uninstall fails following this error message:
+Uninstall fails to remove the persistent volume.
 ```
 Error: Persistent volume atlassian-dc-bamboo-share-home-pv still exists (Bound)
 
@@ -79,7 +79,7 @@ If user interrupts the execution of install or uninstall actions, Terraform neve
 In this case Terraform cannot capture the lock in next attempt.
    
 **Symptom**
-Terraform cannot acquire the state lock snf you eill see the following error:
+Terraform cannot acquire the state lock. 
 
 ```
 Acquiring state lock. This may take a few moments...
