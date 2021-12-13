@@ -82,7 +82,6 @@ cleanup_terraform() {
       "./pkg/products/bamboo"
       "./pkg/products/common"
       "./pkg/modules/AWS/asg_ec2_tagging"
-      "./pkg/tfstate"
     )
 
     for TARGET_FOLDER in "${folder_lists[@]}"; do

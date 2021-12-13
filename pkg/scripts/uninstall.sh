@@ -118,18 +118,50 @@ destroy_infrastructure() {
 }
 
 
+confirm_to_delete_terraform_state() {
+  echo
+  echo "WARNING: We are about to delete all terraform states for AWS account '${AWS_ACCOUNT_ID}' in region '${REGION}' permanently."
+  echo "After deleting the states you cannot manage the following environment(s) using terraform:"
+  cut -d 'E' -f2 <<< "${S3_KEYS}"
+  echo
+  echo "Please make sure you have cleaned up all environment created by terraform using this account in region '${REGION}' before proceeding."
+  echo "The existing environment states in bucket '${S3_BUCKET}':"
+
+  echo
+  read -p "Do you still want to delete the terraform states for AWS account '${AWS_ACCOUNT_ID}' in region '${REGION}' (Yes/No)? " yn
+  case $yn in
+      Yes|yes ) "Thank you. We have your confirmation to proceed.";;
+      No|no|n|N ) exit;;
+      * ) echo "Please answer 'Yes' to confirm."; exit;;
+  esac
+}
+
+delete_s3_and_dynamodb() {
+  if ! test -d ".terraform" ; then
+    terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
+  fi
+  terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  if [ $? -eq 0 ]; then
+    set -e
+    echo "Cleaning all the terraform generated files."
+    sh "${SCRIPT_PATH}/cleanup.sh" -t
+    echo Terraform state is removed successfully.
+  else
+    echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
+    exit 1
+  fi
+}
+
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
-  if [ -z "${CLEAN_TFSTATE}" ]; then
-    echo "Skipped terraform state cleanup."
-    return
-  fi
   TF_STATE_FILE="${SCRIPT_PATH}/../tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+    REGION=$(grep 'region' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+    AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
     local TFSTATE_FOLDER="${SCRIPT_PATH}/../tfstate"
     set +e
@@ -139,21 +171,20 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
+      aws s3 rm s3://"${S3_BUCKET}"/"${BUCKET_KEY}" --recursive
+      if [ -z "${CLEAN_TFSTATE}" ]; then
+        echo "Skipped terraform state cleanup."
+        return
       fi
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
-      if [ $? -eq 0 ]; then
-        set -e
-        echo "Cleaning all the terraform generated files."
-        sh "${SCRIPT_PATH}/cleanup.sh" -t
-        echo Terraform state is removed successfully.
-      else
-        echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
-        exit 1
+      # Ask for confirmation if there is any other environment using the same s3 bucket
+      S3_KEYS=$(aws s3 ls s3://"${S3_BUCKET}" --human-readable --summarize | grep 'PRE' | grep -v "${ENVIRONMENT_NAME}")
+      if ! test -z "${S3_KEYS}"; then
+        confirm_to_delete_terraform_state
       fi
+      # destroy S3 bucket and dynamodb table
+      delete_s3_and_dynamodb
     else
-      # Provided s3 bucket to be used for keep state of the terraform project does not exist
+      # S3 bucket does not exist
       echo "S3 bucket '${S3_BUCKET}' is not existed. There is no 'tfstate' resource to destroy"
       exit 1
     fi

@@ -27,14 +27,14 @@ set_variables() {
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
   # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
-  S3_BUCKET="atlas-${ENVIRONMENT_NAME}-${REGION}-${AWS_ACCOUNT_ID}-tfst"
-  BUCKET_KEY="${ENVIRONMENT_NAME}-${AWS_ACCOUNT_ID}"
-
+  S3_BUCKET="atlassian-dc-${REGION}-${AWS_ACCOUNT_ID}-tfstate"
   # length of the bucket name should be less than 64 characters
   S3_BUCKET="${S3_BUCKET:0:63}"
 
+  BUCKET_KEY="${ENVIRONMENT_NAME}-${AWS_ACCOUNT_ID}"
+
   # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
-  DYNAMODB_TABLE="tf_lock_${ENVIRONMENT_NAME//-/_}_${AWS_ACCOUNT_ID}"
+  DYNAMODB_TABLE="tf_lock_${REGION//-/_}_${AWS_ACCOUNT_ID}"
 
   BACKEND_TF="${ROOT_FOLDER}/terraform-backend.tf"
   TFSTATE_LOCALS="${ROOT_FOLDER}/pkg/tfstate/tfstate-locals.tf"
@@ -46,19 +46,28 @@ cleanup_existing_files() {
   # remove terraform generated files if the environment name or AWS Account ID or Region has changed
   set +e
   if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
-    echo "We found you have used this instance to create a different environment previously."
-    echo "Installing or uninstalling a different environment will override the terraform state files."
+    if ! grep -q \""${AWS_ACCOUNT_ID}"\" "${BACKEND_TF}"  ; then
+      echo "We found you have used this instance to create different environment(s) using different account previously."
+    else
+      echo "We found you have used this instance to create different environment(s) in different region previously."
+    fi
+    echo "Installing or uninstalling an environment in different region or with different AWS account is not supported."
     echo "As the result, you will not able to manage the previous environment by terraform anymore."
     echo
-    echo "We strongly suggest you to use a different instance to provision each new infrastructure or make a backup of"
-    echo "the './pkg/tfstate' folder (including hidden files) before proceeding."
+    echo "We suggest you to use a different instance to provision the new infrastructure or use the same"
+    echo "AWS account (${}) in the same region (${})."
     echo
-    echo "We are about to override terraform state files and replace it by new state for environment '${ENVIRONMENT_NAME}'"
-    read -p "Are you sure(Yes/No)? " yn
+    exit 0
+  fi
+  if ! grep -q \""${BUCKET_KEY}"\" "${BACKEND_TF}"  ; then
+    echo
+    echo "We found you have used this instance previously to create different environments."
+    echo "Environment '${ENVIRONMENT_NAME}' is about to be changed."
+    read -p "Are you sure (Yes/No)? " yn
     case $yn in
-        Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+        Yes|yes ) terraform -chdir="${ROOT_FOLDER}" init -reconfigure; echo "Thank you. We have your confirmation to proceed.";;
         No|no|n|N ) exit;;
-        * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+        * ) echo "Please answer 'Yes' to confirm."; exit;;
     esac
     CLEANUP_TERRAFORM_FILES='-t'
   fi
