@@ -7,7 +7,7 @@
 # -h: help
 set -e
 CURRENT_PATH="$(pwd)"
-# this script is landed in {repo_root_path}/pkg/scripts to to get root path we should back two level from script path
+# this script is located in {repo_root_path}/pkg/scripts to get root path we should back two levels from script path
 cd "$(dirname "$0")/../.."
 ROOT_PATH="$(pwd)"
 cd "${CURRENT_PATH}"
