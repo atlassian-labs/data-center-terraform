@@ -101,7 +101,7 @@ verify_configuration_file() {
 generate_terraform_backend_variables() {
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_FILE}."
 
-  echo "Terraform state backend/variable files are missing."
+  echo "Terraform state backend/variable files are not created yet."
   source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_FILE} ${ROOT_PATH}
 }
 
