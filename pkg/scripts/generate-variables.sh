@@ -3,7 +3,7 @@
 show_help() {
     echo "The terraform config filename for infrastructure is missing."
     echo
-    echo "Usage: generate-variables.sh <config_file>"
+    echo "Usage: generate-variables.sh <config_file> [<root_repo>]"
     exit 1
 }
 
@@ -15,10 +15,14 @@ if [ ! -f "${CONFIG_FILE}" ]; then
   echo "Could not find config file ${CONFIG_FILE}."
   show_help
 fi
-
-# this script is located in {repo_root_path}/pkg/scripts
-SCRIPT_PATH="$(dirname "$0")"
-ROOT_PATH="${SCRIPT_PATH}/../.."
+# Find the absolute path of root and scripts folders. `scripts` are located in {repo_root_path}/pkg/scripts
+if [ ! -z "${2}" ]; then
+  ROOT_PATH="$(cd "$(dirname "${2}")"; pwd)/$(basename "${2}")"
+  SCRIPT_PATH="$(cd "$(dirname "${2}/pkg/scripts")"; pwd)/$(basename "${2}/pkg/scripts")"
+else
+  SCRIPT_PATH="$(cd "$(dirname "${0}")"; pwd)/$(basename "${0}")"
+  ROOT_PATH="$(cd "$(dirname "${0}/../..")"; pwd)/$(basename "${0}/../..")"
+fi
 
 set_variables() {
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
@@ -68,7 +72,7 @@ cleanup_existing_files() {
     set -e
   fi
   echo "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s "${CLEANUP_TERRAFORM_FILES}"
+  sh "${SCRIPT_PATH}/cleanup.sh" -s  -r "${ROOT_PATH}" "${CLEANUP_TERRAFORM_FILES}"
 }
 
 

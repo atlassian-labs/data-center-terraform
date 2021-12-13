@@ -103,7 +103,7 @@ generate_terraform_backend_variables() {
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
 
   echo "Terraform state backend/variable files are not created yet."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH}  ${ROOT_PATH}
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
