@@ -37,4 +37,15 @@ db_instance_class    = "db.t3.micro"
 db_allocated_storage = 1000
 db_iops              = 1000
 
+# Bamboo license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` and keep the below line commented out
+# If deploy in a non-prod environment and plain-text value does not expose a security risk, feel free to uncomment the following line and supply the license here
+#bamboo_license = "<license key>"
 
+# Bamboo system admin credentials
+# To avoid storing system admin credentials in a plain text file, we recommend storing them in environment variables prefixed with `TF_VAR_` and keep the below 4 lines commented out
+# If deploy in a non-prod environment and plain-text value does not expose a security risk, feel free to uncomment the following lines and supply system admin credentials here
+#bamboo_admin_username      = "<username>"
+#bamboo_admin_password      = "<password>"
+#bamboo_admin_display_name  = "<display name>"
+#bamboo_admin_email_address = "<email address>"

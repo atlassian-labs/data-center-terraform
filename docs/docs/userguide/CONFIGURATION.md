@@ -157,3 +157,43 @@ db_allocated_storage = 100
 ```terraform
 db_iops = 1000
 ```
+
+### Bamboo License
+`bamboo_license` takes the license key of Bamboo product.
+
+To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`.
+For Linux-like systems, run the following command and make sure that no new lines or spaces in license key.
+```bash
+export TF_VAR_bamboo_license=<license key>
+```
+
+If the stack is to be deployed as a non-prod environment and plain-text value does not expose a security risk, 
+you can also choose to supply the license in config.tfvars file. 
+Uncomment the `bamboo_license` section and configure the license there.
+
+```terraform
+bamboo_license = "<license key>"
+```
+
+### Bamboo System Admin Credentials
+Four values are required to configure Bamboo system admin credentials.
+
+To avoid storing credentials in a plain text file, we recommend storing it in environment variables prefixed with `TF_VAR_`.
+For Linux-like systems, run the following command:
+```bash
+export TF_VAR_bamboo_admin_username=<username>
+export TF_VAR_bamboo_admin_password=<password>
+export TF_VAR_bamboo_admin_display_name=<display name>
+export TF_VAR_bamboo_admin_email_address=<email address>
+```
+
+If the stack is to be deployed as a non-prod environment and plain-text values do not expose a security risk,
+you can also choose to supply system admin credentials in config.tfvars file.
+Uncomment the `bamboo_admin_` section and configure the values there.
+
+```terraform
+bamboo_admin_username = "<username>"
+bamboo_admin_password = "<password>"
+bamboo_admin_display_name = "<display name>"
+bamboo_admin_email_address = "<email address>"
+```
