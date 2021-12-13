@@ -36,4 +36,16 @@ locals {
       }
     }
   })
+
+  admin_settings = yamlencode({
+    bamboo = {
+      sysadminCredentials = {
+        secretName            = kubernetes_secret.admin_secret.metadata[0].name
+        usernameSecretKey     = kubernetes_secret.admin_secret.data.username
+        passwordSecretKey     = kubernetes_secret.admin_secret.data.password
+        displayNameSecretKey  = kubernetes_secret.admin_secret.data.displayName
+        emailAddressSecretKey = kubernetes_secret.admin_secret.data.emailAddress
+      }
+    }
+  })
 }

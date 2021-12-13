@@ -25,3 +25,19 @@ resource "kubernetes_secret" "license_secret" {
     license = var.license
   }
 }
+
+################################################################################
+# Kubernetes secret to store system admin credentials
+################################################################################
+resource "kubernetes_secret" "admin_secret" {
+  metadata {
+    name = "${local.product_name}-admin"
+  }
+
+  data = {
+    username     = var.admin_username
+    password     = var.admin_password
+    displayName  = var.admin_display_name
+    emailAddress = var.admin_email_address
+  }
+}
