@@ -6,8 +6,8 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-SCRIPT_PATH="$(dirname "$0")"
-ROOT_PATH="${SCRIPT_PATH}/../.."
+ROOT_PATH="$(dirname "$0")"
+SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${ROOT_PATH}/logs/terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
