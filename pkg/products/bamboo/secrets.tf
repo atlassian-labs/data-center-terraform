@@ -18,7 +18,8 @@ resource "kubernetes_secret" "rds_secret" {
 ################################################################################
 resource "kubernetes_secret" "license_secret" {
   metadata {
-    name = "${local.product_name}-license"
+    name      = "${local.product_name}-license"
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
   }
 
   data = {
@@ -31,7 +32,8 @@ resource "kubernetes_secret" "license_secret" {
 ################################################################################
 resource "kubernetes_secret" "admin_secret" {
   metadata {
-    name = "${local.product_name}-admin"
+    name      = "${local.product_name}-admin"
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
   }
 
   data = {
