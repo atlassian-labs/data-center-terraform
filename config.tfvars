@@ -39,13 +39,13 @@ db_iops              = 1000
 
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
-# If deploy in a non-prod environment and plain-text value does not expose a security risk, feel free to uncomment the following line and supply the license here
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #bamboo_license = "<license key>"
 
 # Bamboo system admin credentials
-# To avoid storing system admin credentials in a plain text file, we recommend storing them in environment variables prefixed with `TF_VAR_` and keep the below 4 lines commented out
-# If deploy in a non-prod environment and plain-text value does not expose a security risk, feel free to uncomment the following lines and supply system admin credentials here
-#bamboo_admin_username      = "<username>"
+bamboo_admin_username      = "<USERNAME>"
+# To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
 #bamboo_admin_password      = "<password>"
-#bamboo_admin_display_name  = "<display name>"
-#bamboo_admin_email_address = "<email address>"
+bamboo_admin_display_name  = "<DISPLAY NAME>"
+bamboo_admin_email_address = "<EMAIL ADDRESS>"
