@@ -55,6 +55,5 @@ variable "db_iops" {
 variable "license" {
   description = "Bamboo license."
   type        = string
-  default     = null
   sensitive   = true
 }

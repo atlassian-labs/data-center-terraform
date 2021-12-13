@@ -46,7 +46,7 @@ resource "helm_release" "bamboo" {
       }
     }),
     local.ingress_settings,
-    local.has_license ? local.license_settings : null,
+    local.license_settings,
   ]
 }
 
