@@ -93,7 +93,7 @@ confirm_action() {
 regenerate_environment_variables() {
   echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
 
-  echo "Terraform state backend/variable files are set."
+  echo "Setting the Terraform state backend/variable files."
   source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
