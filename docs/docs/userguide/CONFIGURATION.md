@@ -161,7 +161,7 @@ db_iops = 1000
 ### Bamboo License
 `bamboo_license` takes the license key of Bamboo product.
 
-To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`.
+To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with [`TF_VAR_`](https://www.terraform.io/docs/cli/config/environment-variables.html#tf_var_name).
 For Linux-like systems, run the following command and make sure that no new lines or spaces in license key.
 ```bash
 export TF_VAR_bamboo_license=<license key>
