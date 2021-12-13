@@ -26,16 +26,17 @@ You can combine both switches in one command to cleanup both generated terraform
 ```
 !!! info "Temporary variable files will re-generate using the config file and override in install process."
 
-## Uninstall interruption
+## Uninstall interruption - Uninstall with no valid terraform state
       
-### Symptom
+**Symptom**
 If you try to uninstall using a different config file than what you used to install the environment or using a different version of the code you may face some problems in uninstall.
 Mostly terraform complains the resource cannot be removed because it is used. 
 
-### Solution
+**Solution**
 In this case identify the resource and delete it manually using AWS console, then re-run uninstall. 
 
-### Symptom
+## Uninstall interruption - Stalled product pod
+**Symptom**
 Uninstall fails following this error message:
 ```
 Error: Persistent volume atlassian-dc-bamboo-share-home-pv still exists (Bound)
@@ -44,9 +45,9 @@ Error: context deadline exceeded
 
 Error: Persistent volume claim atlassian-dc-bamboo-share-home-pvc still exists with 
 ```
-### Solution
+**Solution**
 If a bamboo pod termination stalls, it will block pvc and pv deletion. 
-To fix this problem we need to terminate bamboo pod first and run uninstall command again.
+To fix this problem we need to terminate product pod first and run uninstall command again.
 ```
 kubectl delete pod <bamboo-pod> -n bamboo --force
 ```
@@ -56,8 +57,9 @@ kubectl get pods -n bamboo
 ```
 
 ## AWS Access
-### Symptom
-
+**Symptom**
+In order to use terraform solution to provision the Atlassian Data Center products you need to have an AWS account with admin privilege. 
+If you have not logged in as an admin or your AWS token is expired you may receive some permission error such as the following: 
 ```
 Terraform uses 'config.tfvars' to install the infrastructure.
 Verifying the config file.
@@ -68,14 +70,15 @@ Terraform state backend/variable files are missing.
 An error occurred (ExpiredToken) when calling the GetCallerIdentity operation: The security token included in the request is expired
 ```
 
-### Solution
-Terraform cannot deploy resources into the AWS cloud if your security token has expired. You will need to renew your token and retry.
+**Solution**
+Terraform cannot deploy resources into the AWS cloud if you are have no access to AWS account or the security token has expired. You need to login to your AWS account or renew your token and retry.
 
-## How to unlock terraform
+## Unlock the Terraform state
 If user interrupts the execution of install or uninstall actions, Terraform never get a chance to unlock the locked resources. 
 In this case Terraform cannot capture the lock in next attempt.
- 
-### Symptom
+   
+**Symptom**
+Terraform cannot acquire the state lock snf you eill see the following error:
 
 ```
 Acquiring state lock. This may take a few moments...
@@ -99,7 +102,7 @@ Acquiring state lock. This may take a few moments...
  flag, but this is not recommended.
 
 ```
-### Solution
+**Solution**
 To fix this you need to unlock state first by running the following command 
 (replace ID with the value from the error message):
 
