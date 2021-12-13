@@ -59,7 +59,7 @@ process_arguments() {
       show_help
     fi
   fi
-  CONFIG_ABS_PATH="$(dirname "${CONFIG_FILE}"; pwd)/$(basename "${CONFIG_FILE}")"
+  CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
   OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
   
   echo "Terraform uses '${CONFIG_ABS_PATH}' to install the infrastructure."
