@@ -17,10 +17,10 @@ resource_tags = {
 }
 
 # Instance types that is preferred for node group.
-instance_types = ["m5.4xlarge"]
+instance_types = ["m5.xlarge"]
 
 # Desired number of nodes that the node group should launch with initially.
-desired_capacity = 2
+desired_capacity = 1
 
 # (Optional) Domain name used by the ingress controller.
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
