@@ -28,7 +28,7 @@ if [ ! -z "${2}" ]; then
 else
   # use the current script path - this is useful when script directly get called from terminal
   SCRIPT_PATH="$(cd "$(dirname "${0}")"; pwd)/$(basename "${0}")"
-  ROOT_PATH="$(cd "$(dirname "${0}/../..")"; pwd)/$(basename "${0}/../..")"
+  ROOT_PATH=$(cd "$(dirname "${0}")/../.."; pwd)
 fi
 
 set_variables() {
