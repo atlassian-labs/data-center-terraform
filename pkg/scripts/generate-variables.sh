@@ -1,5 +1,7 @@
 # This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
 
+source './pkg/scripts/common.sh'
+
 show_help() {
     echo "The terraform config filename for infrastructure is missing."
     echo
@@ -12,15 +14,15 @@ if [ $# -lt 1 ]; then
 fi
 CONFIG_FILE="${1}"
 if [ ! -f "${CONFIG_FILE}" ]; then
-  echo "Could not find config file '${CONFIG_FILE}'."
+  log "Could not find config file '${CONFIG_FILE}'."
   show_help
 fi
 
 # Find the absolute path of root and scripts folders. `scripts` are located in {repo_root_path}/pkg/scripts
-if [ ! -z "${2}" ]; then
+if [ -n "${2}" ]; then
   # the root folder of the repo is provided as the second parameter
   if [ ! -d "${2}" ]; then
-    echo "'${2}' is not a valid path. Please provide a valid path to root of the project. "
+    log "'${2}' is not a valid path. Please provide a valid path to root of the project. "
     show_help
   fi
   ROOT_PATH="$(cd "$(dirname "${2}")"; pwd)/$(basename "${2}")"
@@ -33,8 +35,8 @@ fi
 
 set_variables() {
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
-  REGION=$(grep 'region' ${CONFIG_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  REGION=$(grep 'region' "${CONFIG_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   # Get the AWS account ID
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -56,7 +58,7 @@ set_variables() {
 
 # Cleaning all the generated terraform state variable and backend file
 cleanup_existing_files() {
-  if [ -f ${BACKEND_TF} ]; then
+  if [ -f "${BACKEND_TF}" ]; then
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
     if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
@@ -78,29 +80,27 @@ cleanup_existing_files() {
     fi
     set -e
   fi
-  echo "Cleaning all the generated variable files."
+  log "Cleaning all the generated variable files."
   sh "${SCRIPT_PATH}/cleanup.sh" -s  -r "${ROOT_PATH}" "${CLEANUP_TERRAFORM_FILES}"
 }
 
 
-
-
 inject_variables_to_templates() {
   # Generate the terraform backend, where terraform store the state of the infrastructure
-  echo "Generating the terraform backend definition file 'terraform.backend.tf'."
-  sed 's/<REGION>/'${REGION}'/g'  "${ROOT_PATH}/pkg/templates/terraform-backend.tf.tmpl" | \
-  sed 's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
-  sed 's/<BUCKET_KEY>/'${BUCKET_KEY}'/g'  | \
-  sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
-    > ${BACKEND_TF}
+  log "Generating the terraform backend definition file 'terraform.backend.tf'."
+  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/pkg/templates/terraform-backend.tf.tmpl" | \
+  sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
+  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
+  sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
+    > "${BACKEND_TF}"
 
   # Generate the locals for terraform state
-  echo "Generating the terraform state local file 'pkg/tfstate/tfstate-locals.tf'."
-  sed 's/<REGION>/'${REGION}'/g'  "${ROOT_PATH}/pkg/templates/tfstate-locals.tf.tmpl" | \
-  sed 's/<BUCKET_NAME>/'${S3_BUCKET}'/g' | \
-  sed 's/<BUCKET_KEY>/'${BUCKET_KEY}'/g'  | \
-  sed 's/<DYNAMODB_TABLE>/'${DYNAMODB_TABLE}'/g' \
-    > ${TFSTATE_LOCALS}
+  log "Generating the terraform state local file 'pkg/tfstate/tfstate-locals.tf'."
+  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/pkg/templates/tfstate-locals.tf.tmpl" | \
+  sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
+  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
+  sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
+    > "${TFSTATE_LOCALS}"
 }
 
 
