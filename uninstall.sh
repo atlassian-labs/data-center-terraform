@@ -165,7 +165,7 @@ destroy_tfstate() {
             No|no|n|N ) \
               echo "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
               echo "As your request, the terraform state is not removed."; exit;;
-            * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+            * ) echo "Please answer 'Yes' to confirm deleting the terraform state."; exit;;
         esac
       fi
       if ! test -d ".terraform" ; then
