@@ -138,18 +138,24 @@ destroy_tfstate() {
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?
     set -e
-    if [ ${S3_BUCKET_EXISTS} -eq 0 ]
-    then
+    if [ ${S3_BUCKET_EXISTS} -eq 0 ]; then
       set +e
-      sleep 2s
-      S3_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
-      if [ ! -z "${S3_KEYS}" ]; then
-        echo "We cannot remove terraform state S3 bucket because there are other environments provisioned using this instance."
-        echo "You need to cleanup all environments before removing the terraform state bucket."
+      # Get the bucket key list of all installed environments in this region
+      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
+      if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
+        echo "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
+        echo "We detected there are other environments provisioned using this instance."
+        echo "By deleting the S3 bucket, terraform cannot manage the following environments anymore:"
+        echo "${ALL_BUCKET_KEYS%/*}"
         echo
-        echo "List of existing terraform state key(s) provisioned by this instance:"
-        echo "${S3_KEY%/*}"
-        exit 0
+        read -p "Are you sure that you want to proceed(Yes/No)? " yn
+        case $yn in
+            Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+            No|no|n|N ) \
+              echo "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
+              echo "As your request, the terraform state is not removed."; exit;;
+            * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+        esac
       fi
       if ! test -d ".terraform" ; then
         terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
@@ -158,7 +164,7 @@ destroy_tfstate() {
       if [ $? -eq 0 ]; then
         set -e
         echo "Cleaning all the terraform generated files."
-        sh "${SCRIPT_PATH}/cleanup.sh" -t -x -p ${ROOT_PATH}
+        sh "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
         echo Terraform state is removed successfully.
       else
         echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."

@@ -39,14 +39,14 @@ set_variables() {
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
   # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
-  S3_BUCKET="atlas-${ENVIRONMENT_NAME}-${REGION}-${AWS_ACCOUNT_ID}-tfst"
-  BUCKET_KEY="${ENVIRONMENT_NAME}-${AWS_ACCOUNT_ID}"
+  S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
+  BUCKET_KEY="${ENVIRONMENT_NAME}"
 
   # length of the bucket name should be less than 64 characters
   S3_BUCKET="${S3_BUCKET:0:63}"
 
   # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
-  DYNAMODB_TABLE="tf_lock_${ENVIRONMENT_NAME//-/_}_${AWS_ACCOUNT_ID}"
+  DYNAMODB_TABLE="atlassian_data_center_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
 
   BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
   TFSTATE_LOCALS="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
@@ -78,20 +78,18 @@ cleanup_existing_files() {
         echo "However, we are not able to  locate S3 bucket '"${EXISTING_S3_BUCKET}"' in your account."
         echo "Before proceeding make sure you have cleaned up all environments that provisioned with this instance."
         echo
-        echo "After this point terraform will not be able to manage the terraform states from S3 bucket '"${EXISTING_S3_BUCKET}"'."
-        read -p "Are you sure(Yes/No)? " yn
+        read -p "Are you sure that you want to proceed(Yes/No)? " yn
         case $yn in
             Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) exit;;
             * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
-      esac
+        esac
       fi
     fi
     set -e
-    CLEANUP_TERRAFORM_FILES="-t"
   fi
   echo "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}" "${CLEANUP_TERRAFORM_FILES}"
+  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
 }
 
 inject_variables_to_templates() {
