@@ -1,5 +1,4 @@
 # This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
-
 show_help() {
     echo "The terraform config filename for infrastructure is missing."
     echo
@@ -23,7 +22,7 @@ if [ ! -z "${2}" ]; then
     echo "'${2}' is not a valid path. Please provide a valid path to root of the project. "
     show_help
   fi
-  ROOT_PATH=$(cd "$(dirname "${2}")"; pwd)
+  ROOT_PATH=$(cd "${2}"; pwd)
 else
   # use the current script path - this is useful when script directly get called from terminal
   ROOT_PATH=$(cd "$(dirname "${0}")/../.."; pwd)
