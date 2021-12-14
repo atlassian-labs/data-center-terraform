@@ -105,10 +105,10 @@ destroy_infrastructure() {
   touch "${LOG_FILE}"
   # Start destroying the infrastructure
   if ! test -d ".terraform" ; then
-    terraform -chdir="${ROOT_PATH}" init | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve  -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -122,9 +122,10 @@ destroy_infrastructure() {
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ -z "${CLEAN_TFSTATE}" ]; then
-    echo "Skipped terraform state cleanup."
+    echo "Skipped the terraform state cleanup."
     return
   fi
+  echo "Attempting the terraform state cleanup."
   TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
@@ -140,14 +141,24 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]
     then
       set +e
-      if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
+      sleep 2s
+      S3_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
+      if [ ! -z "${S3_KEYS}" ]; then
+        echo "We cannot remove terraform state S3 bucket because there are other environments provisioned using this instance."
+        echo "You need to cleanup all environments before removing the terraform state bucket."
+        echo
+        echo "List of existing terraform state key(s) provisioned by this instance:"
+        echo "${S3_KEY%/*}"
+        exit 0
       fi
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+      if ! test -d ".terraform" ; then
+        terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
+      fi
+      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
         echo "Cleaning all the terraform generated files."
-        sh "${SCRIPT_PATH}/cleanup.sh" -t
+        sh "${SCRIPT_PATH}/cleanup.sh" -t -x -p ${ROOT_PATH}
         echo Terraform state is removed successfully.
       else
         echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
