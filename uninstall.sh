@@ -12,6 +12,7 @@ SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
+DIFFERENT_ENVIRONMENT=1
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -92,6 +93,14 @@ confirm_action() {
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
   echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
+  BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
+  if [ -f ${BACKEND_TF} ]; then
+    set +e
+    if grep -q \""${ENVIRONMENT_NAME}"\" "${BACKEND_TF}"  ; then
+      DIFFERENT_ENVIRONMENT=
+    fi
+    set -e
+  fi
 
   echo "Setting the Terraform state backend/variable files."
   source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
@@ -104,7 +113,8 @@ destroy_infrastructure() {
   fi
   touch "${LOG_FILE}"
   # Start destroying the infrastructure
-  if ! test -d ".terraform" ; then
+  if [ -n "${DIFFERENT_ENVIRONMENT}" ] ; then
+    terraform -chdir="${ROOT_PATH}" init -no-color -migrate-state | tee -a "${LOG_FILE}"
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
@@ -122,7 +132,6 @@ destroy_infrastructure() {
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ -z "${CLEAN_TFSTATE}" ]; then
-    echo "Skipped the terraform state cleanup."
     return
   fi
   echo "Attempting the terraform state cleanup."

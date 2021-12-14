@@ -42,9 +42,6 @@ set_variables() {
   S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
   BUCKET_KEY="${ENVIRONMENT_NAME}"
 
-  # length of the bucket name should be less than 64 characters
-  S3_BUCKET="${S3_BUCKET:0:63}"
-
   # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
   DYNAMODB_TABLE="atlassian_data_center_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
 
@@ -86,10 +83,14 @@ cleanup_existing_files() {
         esac
       fi
     fi
+    # If the environment is different from last run then we need to cleanup the terraform generated files
+    if ! grep -q \""${BUCKET_KEY}"\" "${BACKEND_TF}"  ; then
+      CLEANUP_TERRAFORM_FILES="-t"
+    fi
     set -e
   fi
   echo "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
+  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}" "${CLEANUP_TERRAFORM_FILES}"
 }
 
 inject_variables_to_templates() {
