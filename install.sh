@@ -101,7 +101,7 @@ verify_configuration_file() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
   source ${SCRIPT_PATH}/generate-variables.sh ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
