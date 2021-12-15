@@ -44,14 +44,9 @@ locals {
     }
   })
 
-  additional_env_var_settings = yamlencode({
+  unattended_setup_setting = yamlencode({
     bamboo = {
-      additionalEnvironmentVariables = [
-        {
-          name  = "ATL_BAMBOO_ENABLE_UNATTENDED_SETUP"
-          value = "true"
-        }
-      ]
+      unattendedSetup = true
     }
   })
 }

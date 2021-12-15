@@ -113,6 +113,16 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
+
+	// Make sure Bamboo is fully pre-seeded with setup wizard skipped. (<setupStep> will have 'complete' value)
+	output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", podName,
+		"--", "cat", "/var/atlassian/application-data/bamboo/bamboo.cfg.xml")
+	assert.Nil(t, execErr)
+
+	startIndex := strings.Index(output, "<setupStep>")
+	endIndex := strings.Index(output, "</setupStep>")
+	setupStep := output[startIndex+11 : endIndex]
+	assert.Equal(t, "complete", setupStep)
 }
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
