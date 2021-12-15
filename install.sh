@@ -127,7 +127,7 @@ create_tfstate_resources() {
     # create s3 bucket to be used for keep state of the terraform project
     log "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
     if ! test -d "${STATE_FOLDER}/.terraform" ; then
-      terraform -chdir="${STATE_FOLDER}" init | tee -a "${LOG_FILE}"
+      terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
     fi
     terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
     sleep 5s
@@ -139,8 +139,8 @@ create_update_infrastructure() {
   log "Starting to analyze the infrastructure..."
   if [ ! -d "${ROOT_PATH}/.terraform" ]; then
     log "Running Migrating the terraform state to S3 bucket..."
-    terraform -chdir="${ROOT_PATH}" init -migrate-state | tee -a "${LOG_FILE}"
-    terraform -chdir="${ROOT_PATH}" init | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -migrate-state -no-color | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   terraform -chdir="${ROOT_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
 }
@@ -150,7 +150,7 @@ add_tags_to_asg_resources() {
   log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
   TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
 
-  terraform -chdir="${TAG_MODULE_PATH}" init > "${LOG_TAGGING}"
+  terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
   terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
   log "Resource tags are applied to ASG and all EC2 instances."
 }
