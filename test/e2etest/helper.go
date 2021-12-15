@@ -64,7 +64,11 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 				"service_name":   "dc-infrastructure",
 				"git_repository": "github.com/atlassian-labs/data-center-terraform",
 			},
-			"domain": domain,
+			"domain":                     domain,
+			"bamboo_admin_username":      "admin",
+			"bamboo_admin_password":      "admin",
+			"bamboo_admin_display_name":  "Admin",
+			"bamboo_admin_email_address": "admin@foo.com",
 		},
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,

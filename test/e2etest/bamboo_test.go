@@ -14,6 +14,7 @@ import (
 	awsSdk "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/environment"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -57,6 +58,7 @@ func TestBambooModule(t *testing.T) {
 	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
+	assertBambooSecrets(t, kubectlOptions, environmentConfig.Product)
 }
 
 func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
@@ -187,6 +189,39 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 		})
 	assert.Equal(t, ExpectedStatus, status)
 
+}
+
+func assertBambooSecrets(t *testing.T, kubectlOptions *k8s.KubectlOptions, product string) {
+	// License
+	licenseSecretName := product + "-license"
+	licenseSecretValue := getSecretValue(t, kubectlOptions, licenseSecretName, "license")
+
+	license := environment.GetFirstNonEmptyEnvVarOrFatal(t, []string{"TF_VAR_license"})
+	assert.Equal(t, license, licenseSecretValue)
+
+	// SysAdminCredentials
+	adminSecretName := product + "-admin"
+	usernameSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "username")
+	passwordSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "password")
+	displayNameSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "displayName")
+	emailSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "emailAddress")
+
+	assert.Equal(t, "admin", usernameSecretValue)
+	assert.Equal(t, "admin", passwordSecretValue)
+	assert.Equal(t, "Admin", displayNameSecretValue)
+	assert.Equal(t, "admin@foo.com", emailSecretValue)
+}
+
+func getSecretValue(t *testing.T, kubectlOptions *k8s.KubectlOptions, secretName string, secretKey string) (secretValue string) {
+	secret, secretErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data."+secretKey+"}'")
+	assert.Nil(t, secretErr)
+	assert.NotNil(t, secret)
+
+	decSecret, decodeErr := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
+	assert.Nil(t, decodeErr)
+	secretValue = string(decSecret)
+
+	return secretValue
 }
 
 func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
