@@ -18,7 +18,7 @@ Please note the uninstall will destroy your data so make sure you have the lates
 You may proceed when you are ready to uninstall. 
 
 ```shell
-./pkg/scripts/uninstall [-t] [-c <config.tfvars>]
+./uninstall.sh [-t] [-c <config.tfvars>]
 ```
 Uninstall command removes the infrastructure but terraform state files will remain after the process. 
 You should use switch `-t` if you need to cleanup the terraform state as well.
@@ -28,12 +28,12 @@ This is possible by using the same config file that you used to create the envir
 If you have used the default configuration file (`config.tfvars`) from the root folder of the project, then you may simply use the following command:
 
 ```shell 
-./pkg/scripts/uninstall
+./uninstall.sh
 ```
 
 If you used a custom-defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in the install command instead:
 ```
-./pkg/scripts/uninstall -c <custom-config-file>
+./uninstall.sh -c <custom-config-file>
 ```
 
 Uninstall will remove the products and all Atlassian Data Center infrastructure by default. 
@@ -42,5 +42,5 @@ Terraform state files will be remain after uninstall unless you force removing i
 !!! tip "Do you want to delete the terraform state after removing environment?"
     If you want to clean up the terraform state files and dynamodb lock table then use the switch `-t`:
     ```shell 
-    ./pkg/scripts/uninstall -t [-c <custom-config-file>]
+    ./uninstall.sh -t [-c <custom-config-file>]
     ```
