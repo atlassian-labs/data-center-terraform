@@ -48,6 +48,7 @@ resource "helm_release" "bamboo" {
     local.ingress_settings,
     local.license_settings,
     local.admin_settings,
+    local.additional_env_var_settings,
   ]
 }
 

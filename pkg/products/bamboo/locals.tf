@@ -32,7 +32,6 @@ locals {
     bamboo = {
       license = {
         secretName = kubernetes_secret.license_secret.metadata[0].name
-        secretKey  = "license"
       }
     }
   })
@@ -40,12 +39,19 @@ locals {
   admin_settings = yamlencode({
     bamboo = {
       sysadminCredentials = {
-        secretName            = kubernetes_secret.admin_secret.metadata[0].name
-        usernameSecretKey     = kubernetes_secret.admin_secret.data.username
-        passwordSecretKey     = kubernetes_secret.admin_secret.data.password
-        displayNameSecretKey  = kubernetes_secret.admin_secret.data.displayName
-        emailAddressSecretKey = kubernetes_secret.admin_secret.data.emailAddress
+        secretName = kubernetes_secret.admin_secret.metadata[0].name
       }
+    }
+  })
+
+  additional_env_var_settings = yamlencode({
+    bamboo = {
+      additionalEnvironmentVariables = [
+        {
+          name  = "ATL_BAMBOO_ENABLE_UNATTENDED_SETUP"
+          value = "true"
+        }
+      ]
     }
   })
 }
