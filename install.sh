@@ -102,14 +102,6 @@ verify_configuration_file() {
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
   echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
-  BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
-  if [ -f ${BACKEND_TF} ]; then
-    set +e
-    if grep -q \""${ENVIRONMENT_NAME}"\" "${BACKEND_TF}"  ; then
-      DIFFERENT_ENVIRONMENT=
-    fi
-    set -e
-  fi
   source ${SCRIPT_PATH}/generate-variables.sh ${CONFIG_ABS_PATH} ${ROOT_PATH}
 }
 
