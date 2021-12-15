@@ -153,13 +153,13 @@ destroy_tfstate() {
       ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
       if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
         echo "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
-        echo "Other were environments provisioned using this instance:"
+        echo "Here is the list of environments provisioned using this instance:"
         echo "${ALL_BUCKET_KEYS}"
         echo
-        echo "Delete the S3 bucket contains terraform states only when you uninstalled all above environments."
-        echo "otherwise terraform cannot manage those environments anymore."
+        echo "Without valid states terraform cannot manage those environments anymore."
+        echo "Make sure you have already uninstalled all above environments before proceeding."
         echo
-        read -p "Are you sure that you want to proceed(Yes/No)? " yn
+        read -p "Are you sure that you want to delete terraform states for the reported environments (Yes/No)? " yn
         case $yn in
             Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \
