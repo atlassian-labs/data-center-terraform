@@ -104,14 +104,14 @@ verify_configuration_file() {
 
   if [ -z "${POPULATED_LICENSE}" ];  then
     if [ -z "${TF_VAR_bamboo_license}" ]; then
-      echo "Please provide license in config file, or export it to the environment variable TF_VAR_bamboo_license."
+      echo "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
       HAS_VALIDATION_ERR=1
     fi
   fi
 
   if [ -z "${POPULATED_ADMIN_PWD}" ];  then
     if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
-      echo "Please provide admin password in config file, or export it to the environment variable TF_VAR_bamboo_admin_password."
+      echo "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
       HAS_VALIDATION_ERR=1
     fi
   fi
