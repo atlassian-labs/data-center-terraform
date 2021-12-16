@@ -5,8 +5,8 @@ log(){
     echo "Usage: log <message>"
     return 1
   elif [ "$#" -eq 2 ]; then
-    echo "$(date +"%Y-%m-%d %H:%M:%S") - [$2] - $1"
+    echo "$(date +"%Y-%m-%d %H:%M:%S") [$2] $1"
   else
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] - $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] $1"
   fi
 }
