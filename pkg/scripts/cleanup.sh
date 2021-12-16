@@ -9,7 +9,7 @@
 # -h: help
 set -e
 
-if [ "${0##*/}" == "generate-variables.sh" ]; then
+if [ "${0##*/}" == "cleanup.sh" ]; then
   # the script ran directly from terminal
   ROOT_PATH=$(cd $(dirname "${0}")/../..; pwd)
 else
