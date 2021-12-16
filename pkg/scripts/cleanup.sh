@@ -69,7 +69,7 @@ EOF
 
   # calculate the path to root folder of repo based on script path if the path to root folder of repo is not provided
   if [ -z "${ROOT_PATH}" ]; then
-    ROOT_PATH="$(cd "$(dirname "${0}/../..")"; pwd)/$(basename "${0}/../..")"
+    ROOT_PATH=$(cd $(dirname "${0}")/../..; pwd)
   fi
 
   TAG_MODULE_PATH="${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
