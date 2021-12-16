@@ -55,7 +55,7 @@ jobs:
           echo " locals {" > ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
           echo "     dynamodb_name = \"dummy\"" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
           echo "     bucket_name   = \"dummy\"" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          echo "     bucket_key    = \"dummy\"" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local
+          echo "     bucket_key    = \"dummy\"" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
           echo " }" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
           go test ./e2etest -v -timeout 40m -run Bamboo | tee ./e2etest/artifacts/e2etest.log
 
