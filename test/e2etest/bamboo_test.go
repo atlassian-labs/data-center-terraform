@@ -220,6 +220,11 @@ func assertBambooSecrets(t *testing.T, kubectlOptions *k8s.KubectlOptions, produ
 	assert.Equal(t, "admin", passwordSecretValue)
 	assert.Equal(t, "Admin", displayNameSecretValue)
 	assert.Equal(t, "admin@foo.com", emailSecretValue)
+
+	// Security Token
+	tokenSecretName := product + "-security-token"
+	tokenSecretValue := getSecretValue(t, kubectlOptions, tokenSecretName, "security-token")
+	assert.Equal(t, 40, len(tokenSecretValue))
 }
 
 func getSecretValue(t *testing.T, kubectlOptions *k8s.KubectlOptions, secretName string, secretKey string) (secretValue string) {
