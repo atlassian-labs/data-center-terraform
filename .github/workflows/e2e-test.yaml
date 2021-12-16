@@ -51,7 +51,12 @@ jobs:
           # this is required to use aws-iam-authenticator.
           export PATH=$PATH:$HOME/bin
           cp ../variables.tf ../pkg/modules/AWS/asg_ec2_tagging/
-          echo "environment_name = \"tst\"" >> ../pkg/modules/AWS/asg_ec2_tagging/test-config.auto.tfvars
+          echo "environment_name = \"dummy-environment\"" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-config.auto.tfvars
+          echo " locals {" > ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
+          echo "     dynamodb_name = \"dummy\" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
+          echo "     bucket_name   = \"dummy\" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
+          echo "     bucket_key    = \"dummy\" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local
+          echo " }" >> ../pkg/modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
           go test ./e2etest -v -timeout 40m -run Bamboo | tee ./e2etest/artifacts/e2etest.log
 
       - name: Clean up test
