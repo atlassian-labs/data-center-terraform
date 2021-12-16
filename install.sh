@@ -75,32 +75,55 @@ process_arguments() {
 verify_configuration_file() {
   echo "Verifying the config file."
 
+  HAS_VALIDATION_ERR=
   # Make sure the config values are defined
   set +e
   INVALID_CONTENT=$(grep -o '^[^#]*' ${CONFIG_ABS_PATH} | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
+  # check license and admin password
+  export POPULATED_LICENSE=$(grep -o '^[^#]*' ${CONFIG_ABS_PATH} | grep 'bamboo_license')
+  export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' ${CONFIG_ABS_PATH} | grep 'bamboo_admin_password')
+
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     echo "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
     echo "Please make sure your environment name is less than 25 characters"
-    exit 1
+    HAS_VALIDATION_ERR=1
   fi
 
   if [ ! -z "${INVALID_CONTENT}" ]; then
-    echo "Configuration file '${CONFIG_ABS_PATH}' is not valid."
+    echo "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid."
     echo "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
-    echo "Please modify '${CONFIG_ABS_PATH}' using a text editor and complete the configuration. "
+    echo "Please modify '${CONFIG_ABS_PATH##*/}' using a text editor and complete the configuration. "
     echo "Then re-run the install.sh to deploy the infrastructure."
     echo
     echo "${INVALID_CONTENT}"
-    exit 0
+    HAS_VALIDATION_ERR=1
+  fi
+
+  if [ -z "${POPULATED_LICENSE}" ];  then
+    if [ -z "${TF_VAR_bamboo_license}" ]; then
+      echo "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
+
+  if [ -z "${POPULATED_ADMIN_PWD}" ];  then
+    if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
+      echo "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
+
+  if [ ! -z "${HAS_VALIDATION_ERR}" ]; then
+    exit 1
   fi
 }
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
+  echo "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH##*/}."
 
   echo "Terraform state backend/variable files are not created yet."
   source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
