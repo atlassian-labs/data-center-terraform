@@ -27,7 +27,7 @@ You can combine both switches in one command to cleanup both generated terraform
 ```
 !!! info "Temporary variable files will re-generate using the config file and override in install process."
 
-## Uninstall interruption - Uninstall with no valid terraform state
+## Uninstall - Uninstall with no valid terraform state
       
 **Symptom**
 If you try to uninstall using a different config file than what you used to install the environment or using a different version of the code you may face some problems in uninstall.
@@ -36,7 +36,7 @@ Mostly terraform complains the resource cannot be removed because it is used.
 **Solution**
 In this case identify the resource and delete it manually using AWS console, then re-run uninstall. 
 
-## Uninstall interruption - Stalled product pod
+## Uninstall - Stalled product pod
 **Symptom**
 Uninstall fails to remove the persistent volume.
 ```
@@ -56,6 +56,20 @@ To see the stalled bamboo pod name you can run the following command:
 ```
 kubectl get pods -n bamboo 
 ```
+
+## Uninstall: suspended ASG
+If for any reason Auto Scaling Group gets suspended, AWS does not allow terraform to delete the node group. 
+
+**Symptom**
+Uninstall process get interrupted with the following error:
+```
+Error: error waiting for EKS Node Group (atlas-ng-second-test-cluster:appNode) to delete: unexpected state 'DELETE_FAILED', wanted target ''. last error: 2 errors occurred:
+	* i-06a4b4afc9e7a76b0: NodeCreationFailure: Instances failed to join the kubernetes cluster
+	* eks-appNode-3ebedddc-2d97-ff10-6c23-4900d1d79599: AutoScalingGroupInvalidConfiguration: Couldn't terminate instances in ASG as Terminate process is suspended
+```
+
+**Solution**
+Delete the reported Auto Scaling Group in AWS console and run uninstall command again. 
 
 ## AWS Access
 **Symptom**
