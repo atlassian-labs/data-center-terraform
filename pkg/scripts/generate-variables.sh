@@ -1,6 +1,15 @@
 # This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
 
-source './pkg/scripts/common.sh'
+if [ "${0##*/}" == "cleanup.sh" ]; then
+  # the script ran directly from terminal
+  ROOT_PATH=$(cd $(dirname "${0}")/../..; pwd)
+else
+  # the script called by install.sh or uninstall.sh
+  ROOT_PATH=$(cd $(dirname "${0}"); pwd)
+fi
+SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+
+source "${SCRIPT_PATH}/common.sh"
 
 show_help() {
     echo "The terraform config filename for infrastructure is missing."
