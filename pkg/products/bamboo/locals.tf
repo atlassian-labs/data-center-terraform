@@ -49,4 +49,13 @@ locals {
       unattendedSetup = true
     }
   })
+
+  security_token_setting = yamlencode({
+    bamboo = {
+      securityToken = {
+        secretName = kubernetes_secret.security_token_secret.metadata[0].name
+      }
+      disableAgentAuth = "true"
+    }
+  })
 }

@@ -43,3 +43,21 @@ resource "kubernetes_secret" "admin_secret" {
     emailAddress = var.admin_email_address
   }
 }
+
+################################################################################
+# Kubernetes secret to store bamboo security token
+################################################################################
+resource "random_id" "security_token" {
+  byte_length = 20
+}
+
+resource "kubernetes_secret" "security_token_secret" {
+  metadata {
+    name      = "${local.product_name}-security-token"
+    namespace = kubernetes_namespace.bamboo.metadata[0].name
+  }
+
+  data = {
+    security-token = random_id.security_token.hex
+  }
+}

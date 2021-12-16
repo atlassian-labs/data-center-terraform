@@ -49,6 +49,7 @@ resource "helm_release" "bamboo" {
     local.license_settings,
     local.admin_settings,
     local.unattended_setup_setting,
+    local.security_token_setting,
   ]
 }
 
