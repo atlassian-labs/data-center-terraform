@@ -6,13 +6,14 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-ROOT_PATH="$(dirname "$0")"
+ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${ROOT_PATH}/logs/terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
+DIFFERENT_ENVIRONMENT=1
 
 source "${SCRIPT_PATH}/common.sh"
 
@@ -101,7 +102,7 @@ verify_configuration_file() {
 
 # Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  log "${ENVIRONMENT_NAME}' infrastructure deployment is started using ${CONFIG_ABS_PATH}."
+  log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
   log "Terraform state backend/variable files are not created yet."
   source "${SCRIPT_PATH}/generate-variables.sh" "${CONFIG_ABS_PATH}"
@@ -137,8 +138,8 @@ create_tfstate_resources() {
 # Deploy the infrastructure if is not created yet otherwise apply the changes to existing infrastructure
 create_update_infrastructure() {
   log "Starting to analyze the infrastructure..."
-  if [ ! -d "${ROOT_PATH}/.terraform" ]; then
-    log "Running Migrating the terraform state to S3 bucket..."
+  if [ -n "${DIFFERENT_ENVIRONMENT}" ]; then
+    log "Migrating the terraform state to S3 bucket..."
     terraform -chdir="${ROOT_PATH}" init -migrate-state -no-color | tee -a "${LOG_FILE}"
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
@@ -170,7 +171,6 @@ set_current_context_k8s() {
     log "Kubernetes context file '${CONTEXT_FILE}' could not be found."
   fi
 }
-
 
 # Process the arguments
 process_arguments
