@@ -80,8 +80,10 @@ resource_tags = {
 
 ### Cluster Instance Type
 `instance_types` provides the instance types for the Kubernetes cluster node group.
-The default value for this would be `m5.xlarge` if it is not defined in the config file.
-Instance type should be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
+
+* The default value for this will be `m5.4xlarge` if it is not defined in the config file.
+* Instance type should be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
+* This value cannot be changed after the infrastructure is provisioned. 
 
 ```terraform
 instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
@@ -90,8 +92,9 @@ instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
 ### Cluster Size
 `desired_capacity` provides the desired number of nodes that the node group should launch with initially.
 
-* The default value for the number of nodes in Kubernetes node groups is `1`.
+* The default value for the number of nodes in Kubernetes node groups is `2`.
 * Minimum is `1` and maximum is `10`.
+* This value cannot be changed after the infrastructure is provisioned. 
 
 ```terraform
 desired_capacity = <number-of-nodes>  # between 1 and 10
