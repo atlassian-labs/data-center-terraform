@@ -57,31 +57,19 @@ cleanup_existing_files() {
     set +e
     if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
       EXISTING_S3_BUCKET=$(grep 'bucket' ${BACKEND_TF} | sed -nE 's/^.*"(.*)".*$/\1/p')
-      echo "We found this instance is used to create different environments before using S3 bucket '"${EXISTING_S3_BUCKET}"'."
-      echo "Installing or uninstalling a different environment will destroy the terraform state files."
-      echo "As the result, terraform will not able to manage the previous environments anymore."
-      aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
-      BUCKET_EXISTS=$?
-      if [ "${BUCKET_EXISTS}" -eq 0 ]
-      then
-        echo
-        echo "Please use a right instance to update the environment '${ENVIRONMENT_NAME}'."
-        echo "List of terraform state key(s) provisioned by this instance:"
-        cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${EXISTING_S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}")
-        echo
-        exit 1
-      else
-        echo
-        echo "However, we are not able to  locate S3 bucket '"${EXISTING_S3_BUCKET}"' in your account."
-        echo "Before proceeding make sure you have cleaned up all environments that provisioned with this instance."
-        echo
-        read -p "Are you sure that you want to proceed(Yes/No)? " yn
-        case $yn in
-            Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
-            No|no|n|N ) exit;;
-            * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
-        esac
-      fi
+      echo "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
+      echo "It means the repo was used to provision environments in different account or region."
+      echo "Terraform loses the existing S3 backend if you proceed with this configuration."
+      echo "As the result, you are not able to manage the previous environments anymore."
+      echo
+      echo "Before proceeding make sure you have cleaned up all environments that provisioned with this repo previously."
+      echo
+      read -p "Are you sure that you want to proceed(Yes/No)? " yn
+      case $yn in
+          Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+          No|no|n|N ) exit;;
+          * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+      esac
     fi
     # If the environment is different from last run then we need to cleanup the terraform generated files
     if ! grep -q \""${BUCKET_KEY}"\" "${BACKEND_TF}"  ; then
