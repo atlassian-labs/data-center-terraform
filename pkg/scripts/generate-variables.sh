@@ -55,7 +55,7 @@ cleanup_existing_files() {
   if [ -f ${BACKEND_TF} ]; then
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
-    if ! grep -q \""${S3_BUCKET}"\" "${BACKEND_TF}"  ; then
+    if ! grep -q "${S3_BUCKET}" "${BACKEND_TF}"  ; then
       EXISTING_S3_BUCKET=$(grep 'bucket' ${BACKEND_TF} | sed -nE 's/^.*"(.*)".*$/\1/p')
       echo "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
       echo "It means the repo was used to provision environments in different account or region."
@@ -72,7 +72,7 @@ cleanup_existing_files() {
       esac
     fi
     # If the environment is different from last run then we need to cleanup the terraform generated files
-    if ! grep -q \""${BUCKET_KEY}"\" "${BACKEND_TF}"  ; then
+    if ! grep -q "${BUCKET_KEY}" "${BACKEND_TF}"  ; then
       CLEANUP_TERRAFORM_FILES="-t"
     fi
     set -e
