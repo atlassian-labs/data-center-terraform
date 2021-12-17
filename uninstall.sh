@@ -108,7 +108,7 @@ destroy_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve  "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -161,7 +161,7 @@ destroy_tfstate() {
         esac
       fi
       if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
+        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
       fi
       terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
