@@ -26,7 +26,7 @@ EOF
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
-  echo "   -t : Cleaning up the terraform state as well."
+  echo "   -t : Cleaning up the terraform state S3 bucket."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -104,11 +104,11 @@ destroy_infrastructure() {
   touch "${LOG_FILE}"
   # Start destroying the infrastructure
   if [ -n "${DIFFERENT_ENVIRONMENT}" ] ; then
-    terraform -chdir="${ROOT_PATH}" init -no-color -migrate-state | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -migrate-state | tee -a "${LOG_FILE}"
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve  -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve  "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -124,7 +124,9 @@ destroy_tfstate() {
   if [ -z "${CLEAN_TFSTATE}" ]; then
     return
   fi
-  echo "Attempting the terraform state cleanup."
+  echo
+  echo "Attempting to remove terraform backend."
+  echo
   TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
@@ -146,10 +148,10 @@ destroy_tfstate() {
         echo "Here is the list of environments provisioned using this instance:"
         echo "${ALL_BUCKET_KEYS}"
         echo
-        echo "Without valid states terraform cannot manage those environments anymore."
-        echo "Make sure you have already uninstalled all above environments before proceeding."
+        echo "Without valid states, terraform cannot manage the environments anymore."
+        echo "Make sure you have already uninstalled all the environments before proceeding."
         echo
-        read -p "Are you sure that you want to delete terraform states for the reported environments (Yes/No)? " yn
+        read -p "Are you sure that you want to delete terraform states for the environments (Yes/No)? " yn
         case $yn in
             Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \
@@ -161,7 +163,7 @@ destroy_tfstate() {
       if ! test -d ".terraform" ; then
         terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
       fi
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
         echo "Cleaning all the terraform generated files."
