@@ -27,21 +27,6 @@ if [ ! -f "${CONFIG_FILE}" ]; then
   show_help
 fi
 
-# Find the absolute path of root and scripts folders. `scripts` are located in {repo_root_path}/pkg/scripts
-if [ -n "${2}" ]; then
-  # the root folder of the repo is provided as the second parameter
-  if [ ! -d "${2}" ]; then
-    log "'${2}' is not a valid path. Please provide a valid path to root of the project. "
-    show_help
-  fi
-  ROOT_PATH="$(cd "$(dirname "${2}")"; pwd)/$(basename "${2}")"
-  SCRIPT_PATH="$(cd "$(dirname "${2}/pkg/scripts")"; pwd)/$(basename "${2}/pkg/scripts")"
-else
-  # use the current script path - this is useful when script directly get called from terminal
-  SCRIPT_PATH="$(cd "$(dirname "${0}")"; pwd)/$(basename "${0}")"
-  ROOT_PATH=$(cd "$(dirname "${0}")/../.."; pwd)
-fi
-
 set_variables() {
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
   ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
@@ -90,7 +75,7 @@ cleanup_existing_files() {
     set -e
   fi
   log "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s  -r "${ROOT_PATH}" "${CLEANUP_TERRAFORM_FILES}"
+  sh "${SCRIPT_PATH}/cleanup.sh" -s  -r "${ROOT_PATH}"
 }
 
 

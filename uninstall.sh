@@ -96,7 +96,7 @@ regenerate_environment_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
 
   log "Setting the Terraform state backend/variable files."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH}
 }
 
 
