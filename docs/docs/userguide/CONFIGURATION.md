@@ -81,7 +81,7 @@ resource_tags = {
 ### Cluster Instance Type
 `instance_types` provides the instance types for the Kubernetes cluster node group.
 
-* The default value for this would be `m5.4xlarge` if it is not defined in the config file.
+* The default value for this will be `m5.4xlarge` if it is not defined in the config file.
 * Instance type should be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
 * This value cannot be changed after the infrastructure is provisioned. 
 
