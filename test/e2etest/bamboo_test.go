@@ -61,19 +61,19 @@ func TestBambooModule(t *testing.T) {
 
 func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
 	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
-	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]string)
 
-	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
+	assert.Equal(t, fmt.Sprintf("atlas-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
 	assert.Equal(t, resourceTags["resource_owner"], vpc.Tags["resource_owner"])
 	assert.Len(t, vpc.Subnets, 4)
 }
 
 func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
-	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]string)
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
-		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentConfig.EnvironmentName)),
+		Name: awsSdk.String(fmt.Sprintf("atlas-%s-cluster", environmentConfig.EnvironmentName)),
 	}
 
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
