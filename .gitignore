@@ -37,8 +37,8 @@ override.tf.json
 # tflint
 .tflint.hcl
 
-#EKS context file
-kubeconfig_atlassian-dc-*
+# EKS context file
+kubeconfig_atlas*
 
 # Include override files you do wish to add to version control using negated pattern
 #
