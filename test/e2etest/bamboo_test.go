@@ -129,7 +129,7 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 	//path := "setup/setupLicense.action"
 	//expectedContent := "Welcome to Bamboo Data Center"
 	//url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
-	expectedContent := "Let's get building!"
+	expectedContent := "Time for an agent!"
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
 	fmt.Printf("testing url: %s", url)
 	get, err := http.Get(url)
