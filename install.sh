@@ -77,7 +77,7 @@ process_arguments() {
 verify_configuration_file() {
   log "Verifying the config file."
 
-  HAS_VALIDATION_ERR=
+  HAS_VALIDATION_ERR=false
   # Make sure the config values are defined
   set +e
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
@@ -91,7 +91,7 @@ verify_configuration_file() {
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
     log "Please make sure your environment name is less than 25 characters"
-    HAS_VALIDATION_ERR=1
+    HAS_VALIDATION_ERR=true
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then
@@ -101,24 +101,25 @@ verify_configuration_file() {
     log "Then re-run the install.sh to deploy the infrastructure."
     echo
     log "${INVALID_CONTENT}"
-    HAS_VALIDATION_ERR=1
+    HAS_VALIDATION_ERR=true
   fi
 
   if [ -n "${POPULATED_LICENSE}" ];  then
     if [ -n "${TF_VAR_bamboo_license}" ]; then
-      echo "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
-      HAS_VALIDATION_ERR=1
+      log "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
+      HAS_VALIDATION_ERR=true
     fi
   fi
 
   if [ -n "${POPULATED_ADMIN_PWD}" ];  then
     if [ -n "${TF_VAR_bamboo_admin_password}" ]; then
-      echo "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
-      HAS_VALIDATION_ERR=1
+      log "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
+      HAS_VALIDATION_ERR=true
     fi
   fi
 
-  if [ ! -n "${HAS_VALIDATION_ERR}" ]; then
+  if [ "${HAS_VALIDATION_ERR}" == true ]; then
+    log "There was a problem with the configuration file. Aborting execution" "ERROR"
     exit 1
   fi
 }
