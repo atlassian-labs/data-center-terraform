@@ -101,24 +101,25 @@ verify_configuration_file() {
     log "Then re-run the install.sh to deploy the infrastructure."
     echo
     log "${INVALID_CONTENT}"
-    HAS_VALIDATION_ERR=1
+    HAS_VALIDATION_ERR=true
   fi
 
   if [ -n "${POPULATED_LICENSE}" ];  then
     if [ -n "${TF_VAR_bamboo_license}" ]; then
       log "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
-      HAS_VALIDATION_ERR=1
+      HAS_VALIDATION_ERR=true
     fi
   fi
 
   if [ -n "${POPULATED_ADMIN_PWD}" ];  then
     if [ -n "${TF_VAR_bamboo_admin_password}" ]; then
       log "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
-      HAS_VALIDATION_ERR=1
+      HAS_VALIDATION_ERR=true
     fi
   fi
 
-  if [ ! -n "${HAS_VALIDATION_ERR}" ]; then
+  if [ "${HAS_VALIDATION_ERR}" == true ]; then
+    log "There was a problem with the configuration file. Aborting execution" "ERROR"
     exit 1
   fi
 }
