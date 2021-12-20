@@ -22,4 +22,5 @@ module "bamboo" {
   db_allocated_storage = var.db_allocated_storage
   db_instance_class    = var.db_instance_class
   db_iops              = var.db_iops
+  dataset_url          = var.dataset_url
 }

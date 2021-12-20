@@ -51,3 +51,8 @@ variable "db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   type        = number
 }
+
+variable "dataset_url" {
+  description = "URL of the dataset to restore in the Bamboo instance"
+  type        = string
+}

@@ -1,6 +1,9 @@
 # Install helm chart for Bamboo Data Center.
 
 resource "helm_release" "bamboo" {
+  depends_on = [
+    kubernetes_job.import_dataset
+  ]
   name       = "bamboo"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = "https://atlassian.github.io/data-center-helm-charts"
@@ -21,6 +24,10 @@ resource "helm_release" "bamboo" {
               memory = "1Gi"
             }
           }
+        }
+        import = {
+          type = "import"
+          path = "/var/atlassian/application-data/shared-home/${local.dataset_filename}"
         }
       }
       database = {
