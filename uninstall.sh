@@ -7,11 +7,14 @@
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
-ROOT_PATH="$(dirname "$0")"
+ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
+DIFFERENT_ENVIRONMENT=1
+
+source "${SCRIPT_PATH}/common.sh"
 
 show_help(){
   if [ ! -z "${HELP_FLAG}" ]; then
@@ -25,7 +28,7 @@ EOF
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
-  echo "   -t : Cleaning up the terraform state as well."
+  echo "   -t : Cleaning up the terraform state S3 bucket."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -40,7 +43,7 @@ EOF
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
-      ?)  echo "Invalid arguments."; show_help
+      ?)  log "Invalid arguments."; show_help
       esac
   done
 
@@ -54,17 +57,17 @@ process_arguments() {
     CONFIG_FILE="${ROOT_PATH}/config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
-      echo "Terraform configuration file '${CONFIG_FILE}' is not found!"
+      log "Terraform configuration file '${CONFIG_FILE}' is not found!"
       show_help
     fi
   fi
   CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
   OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
 
-  echo "Terraform uses '${CONFIG_ABS_PATH}' to uninstall the infrastructure."
+  log "Terraform uses '${CONFIG_ABS_PATH}' to uninstall the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
-    echo "Unknown arguments:  ${UNKNOWN_ARGS}"
+    log "Unknown arguments:  ${UNKNOWN_ARGS}"
     show_help
   fi
 
@@ -82,7 +85,7 @@ confirm_action() {
 
   read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (Yes/No)? " yn
   case $yn in
-      Yes|yes ) echo "Thank you. We have your confirmation now. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+      Yes|yes ) echo "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
       No|no|n|N ) exit;;
       * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
   esac
@@ -91,40 +94,41 @@ confirm_action() {
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
-  echo "${ENVIRONMENT_NAME}' infrastructure uninstall is started using ${CONFIG_ABS_PATH}."
-
-  echo "Setting the Terraform state backend/variable files."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH} ${ROOT_PATH}
+  log "${ENVIRONMENT_NAME}' infrastructure uninstall is started using '${CONFIG_ABS_PATH##*/}'."
+  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH}
 }
 
 
 destroy_infrastructure() {
-  if ! test -d "${ROOT_PATH}/logs" ; then
+  if [ ! -d "${ROOT_PATH}/logs" ]; then
     mkdir "${ROOT_PATH}/logs"
   fi
   touch "${LOG_FILE}"
   # Start destroying the infrastructure
-  if ! test -d ".terraform" ; then
-    terraform -chdir="${ROOT_PATH}" init | tee -a "${LOG_FILE}"
+  if [ -n "${DIFFERENT_ENVIRONMENT}" ] ; then
+    terraform -chdir="${ROOT_PATH}" init -no-color -migrate-state | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
-    echo "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully."
+    log "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully." "ERROR"
     exit 1
   fi
-  echo "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
+  log "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
 }
 
 
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ -z "${CLEAN_TFSTATE}" ]; then
-    echo "Skipped terraform state cleanup."
     return
   fi
+  echo
+  echo "Attempting to remove terraform backend."
+  echo
   TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
@@ -137,29 +141,47 @@ destroy_tfstate() {
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?
     set -e
-    if [ ${S3_BUCKET_EXISTS} -eq 0 ]
-    then
+    if [ ${S3_BUCKET_EXISTS} -eq 0 ]; then
       set +e
-      if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init | tee -a "${LOG_FILE}"
+      # Get the bucket key list of all installed environments in this region
+      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
+      if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
+        echo "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
+        echo "Here is the list of environments provisioned using this instance:"
+        echo "${ALL_BUCKET_KEYS}"
+        echo
+        echo "Without valid states, terraform cannot manage the environments anymore."
+        echo "Make sure you have already uninstalled all the environments before proceeding."
+        echo
+        read -p "Are you sure that you want to delete terraform states for the environments (Yes/No)? " yn
+        case $yn in
+            Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+            No|no|n|N ) \
+              echo "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
+              echo "As your request, the terraform state is not removed."; exit;;
+            * ) echo "Please answer 'Yes' to confirm deleting the terraform state."; exit;;
+        esac
       fi
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+      if ! test -d ".terraform" ; then
+        terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
+      fi
+      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
-        echo "Cleaning all the terraform generated files."
-        sh "${SCRIPT_PATH}/cleanup.sh" -t
-        echo Terraform state is removed successfully.
+        log "Cleaning all the terraform generated files."
+        sh "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
+        log Terraform state is removed successfully.
       else
-        echo "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed."
+        log "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
         exit 1
       fi
     else
       # Provided s3 bucket to be used for keep state of the terraform project does not exist
-      echo "S3 bucket '${S3_BUCKET}' is not existed. There is no 'tfstate' resource to destroy"
+      log "S3 bucket '${S3_BUCKET}' doesn't exist. There is no 'tfstate' resource to destroy" "ERROR"
       exit 1
     fi
   else
-      echo "Cannot cleanup the Terraform state because ${TF_STATE_FILE} does not exist."
+      log "Cannot cleanup the Terraform state because ${TF_STATE_FILE} does not exist." "ERROR"
       exit 1
   fi
 }
