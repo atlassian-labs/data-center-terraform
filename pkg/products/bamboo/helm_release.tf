@@ -6,7 +6,7 @@ resource "helm_release" "bamboo" {
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
-  version    = "0.0.1"
+  version    = "0.0.2"
 
   values = [
     yamlencode({
@@ -50,7 +50,11 @@ resource "helm_release" "bamboo" {
         }
       }
     }),
-    local.ingress_settings
+    local.ingress_settings,
+    local.license_settings,
+    local.admin_settings,
+    local.unattended_setup_setting,
+    local.security_token_setting,
   ]
 }
 

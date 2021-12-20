@@ -77,26 +77,49 @@ process_arguments() {
 verify_configuration_file() {
   log "Verifying the config file."
 
+  HAS_VALIDATION_ERR=
   # Make sure the config values are defined
   set +e
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
 
+  # check license and admin password
+  export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
+  export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
+
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
     log "Please make sure your environment name is less than 25 characters"
-    exit 1
+    HAS_VALIDATION_ERR=1
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then
-    log "Configuration file '${CONFIG_ABS_PATH}' is not valid."
+    log "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid."
     log "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
-    log "Please modify '${CONFIG_ABS_PATH}' using a text editor and complete the configuration. "
+    log "Please modify '${CONFIG_ABS_PATH##*/}' using a text editor and complete the configuration. "
     log "Then re-run the install.sh to deploy the infrastructure."
     echo
     log "${INVALID_CONTENT}"
-    exit 0
+    HAS_VALIDATION_ERR=1
+  fi
+
+  if [ -n "${POPULATED_LICENSE}" ];  then
+    if [ -n "${TF_VAR_bamboo_license}" ]; then
+      echo "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
+
+  if [ -n "${POPULATED_ADMIN_PWD}" ];  then
+    if [ -n "${TF_VAR_bamboo_admin_password}" ]; then
+      echo "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
+
+  if [ ! -n "${HAS_VALIDATION_ERR}" ]; then
+    exit 1
   fi
 }
 

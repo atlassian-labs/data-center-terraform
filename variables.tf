@@ -75,3 +75,30 @@ variable "dataset_url" {
   type        = string
   default     = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 }
+
+variable "bamboo_license" {
+  description = "Bamboo license."
+  type        = string
+  sensitive   = true
+}
+
+variable "bamboo_admin_username" {
+  description = "Bamboo system administrator username."
+  type        = string
+}
+
+variable "bamboo_admin_password" {
+  description = "Bamboo system administrator password."
+  type        = string
+  sensitive   = true
+}
+
+variable "bamboo_admin_display_name" {
+  description = "Bamboo system administrator display name."
+  type        = string
+}
+
+variable "bamboo_admin_email_address" {
+  description = "Bamboo system administrator email address."
+  type        = string
+}
