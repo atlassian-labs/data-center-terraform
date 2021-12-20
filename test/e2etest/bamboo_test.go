@@ -206,7 +206,7 @@ func assertBambooSecrets(t *testing.T, kubectlOptions *k8s.KubectlOptions, produ
 	licenseSecretName := product + "-license"
 	licenseSecretValue := getSecretValue(t, kubectlOptions, licenseSecretName, "license")
 
-	license := environment.GetFirstNonEmptyEnvVarOrFatal(t, []string{"TF_VAR_license"})
+	license := environment.GetFirstNonEmptyEnvVarOrFatal(t, []string{"TF_VAR_bamboo_license"})
 	assert.Equal(t, license, licenseSecretValue)
 
 	// SysAdminCredentials
