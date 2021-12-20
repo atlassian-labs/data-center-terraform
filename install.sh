@@ -106,7 +106,7 @@ verify_configuration_file() {
 
   if [ -n "${POPULATED_LICENSE}" ];  then
     if [ -n "${TF_VAR_bamboo_license}" ]; then
-      echo "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
+      log "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
       HAS_VALIDATION_ERR=1
     fi
   fi
