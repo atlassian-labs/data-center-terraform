@@ -89,13 +89,13 @@ verify_configuration_file() {
   export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
-    log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)."
-    log "Please make sure your environment name is less than 25 characters"
+    log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
+    log "Please make sure your environment name is less than 25 characters." 
     HAS_VALIDATION_ERR=true
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then
-    log "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid."
+    log "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid." "ERROR"
     log "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
     log "Please modify '${CONFIG_ABS_PATH##*/}' using a text editor and complete the configuration. "
     log "Then re-run the install.sh to deploy the infrastructure."
@@ -106,14 +106,14 @@ verify_configuration_file() {
 
   if [ -n "${POPULATED_LICENSE}" ];  then
     if [ -n "${TF_VAR_bamboo_license}" ]; then
-      log "Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'."
+      log "License is missing. Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
       HAS_VALIDATION_ERR=true
     fi
   fi
 
   if [ -n "${POPULATED_ADMIN_PWD}" ];  then
     if [ -n "${TF_VAR_bamboo_admin_password}" ]; then
-      log "Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'."
+      log "Admin password is missing. Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
       HAS_VALIDATION_ERR=true
     fi
   fi
