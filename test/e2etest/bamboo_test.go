@@ -252,6 +252,12 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 			"region":        environmentConfig.TerraformConfig.Variables["region"],
 			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
 			"state_type":    "local",
+			// dummy variables to pass end to end tests
+			"bamboo_license":             "test",
+			"bamboo_admin_username":      "test",
+			"bamboo_admin_password":      "test",
+			"bamboo_admin_display_name":  "test",
+			"bamboo_admin_email_address": "test",
 		},
 		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
 		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
