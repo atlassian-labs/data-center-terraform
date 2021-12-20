@@ -126,20 +126,16 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 }
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
-	//path := "setup/setupLicense.action"
-	//expectedContent := "Welcome to Bamboo Data Center"
-	//url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
-	expectedContent := "Time for an agent!"
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
 	fmt.Printf("testing url: %s", url)
 	get, err := http.Get(url)
-	require.NoError(t, err)
+	require.NoError(t, err, "Error accessing url: %s", url)
 
 	defer get.Body.Close()
 
-	assert.NoError(t, err, "Error accessing url: %s", url)
 	assert.Equal(t, 200, get.StatusCode)
 
+	expectedContent := "Time for an agent!"
 	content, err := io.ReadAll(get.Body)
 
 	assert.NoError(t, err, "Error reading response body")
