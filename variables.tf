@@ -96,3 +96,9 @@ variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
 }
+
+variable "number_of_bamboo_agents" {
+  description = "Number of Bamboo remote agents."
+  type        = number
+  default     = 50
+}
