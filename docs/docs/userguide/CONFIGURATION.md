@@ -201,8 +201,8 @@ db_iops = 1000
 number_of_bamboo_agents = 50
 ```
 
-* Note: This number should not be greater than the value of Edition in the issued license. 
-  Any exceeded number of agents won't be able to join. 
+* Note: This number should not be greater than the number of allowed remote agents in your license.
+  Any agents exceeding the allowed number won't be able to join.
 
 ## Sensitive Data
 
