@@ -7,6 +7,7 @@ resource "helm_release" "bamboo" {
   repository = "https://atlassian.github.io/data-center-helm-charts"
   chart      = "bamboo"
   version    = "0.0.2"
+  timeout    = 40 * 60 # dataset import can take a long time
 
   values = [
     yamlencode({
@@ -22,10 +23,6 @@ resource "helm_release" "bamboo" {
               memory = "1Gi"
             }
           }
-        }
-        import = {
-          type = "import"
-          path = "/var/atlassian/application-data/shared-home/${local.dataset_filename}"
         }
       }
       database = {
@@ -55,6 +52,7 @@ resource "helm_release" "bamboo" {
     local.admin_settings,
     local.unattended_setup_setting,
     local.security_token_setting,
+    local.dataset_settings,
   ]
 }
 

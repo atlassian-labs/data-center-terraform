@@ -59,5 +59,14 @@ locals {
     }
   })
 
+  dataset_settings = var.dataset_url != null ? yamlencode({}) : yamlencode({
+    bamboo = {
+      import = {
+        type = "import"
+        path = "/var/atlassian/application-data/shared-home/${local.dataset_filename}"
+      }
+    }
+  })
+
   dataset_filename = "dataset_to_import.zip"
 }

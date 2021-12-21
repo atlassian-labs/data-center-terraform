@@ -43,9 +43,15 @@ db_iops              = 1000
 #bamboo_license = "<license key>"
 
 # Bamboo system admin credentials
-bamboo_admin_username      = "<USERNAME>"
+bamboo_admin_username = "<USERNAME>"
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
 # If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
 #bamboo_admin_password      = "<password>"
 bamboo_admin_display_name  = "<DISPLAY NAME>"
 bamboo_admin_email_address = "<EMAIL ADDRESS>"
+
+# (Optional) URL for dataset to import
+# The provided default is the dataset used in the DCAPT framework.
+# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
+# for details
+#dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"

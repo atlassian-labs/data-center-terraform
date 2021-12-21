@@ -1,4 +1,6 @@
 resource "kubernetes_job" "import_dataset" {
+  count = var.dataset_url != null ? 1 : 0
+
   metadata {
     name      = "bamboo-import-dataset"
     namespace = kubernetes_namespace.bamboo.metadata[0].name

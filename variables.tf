@@ -73,7 +73,7 @@ variable "db_iops" {
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
-  default     = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
+  default     = null
 }
 
 variable "bamboo_license" {
