@@ -195,7 +195,7 @@ db_iops = 1000
 ```
 
 ### Number of Bamboo agents
-`number_of_bamboo_agents` sets the number of remote agents to be launched. 
+`number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.
 
 ```terraform
 number_of_bamboo_agents = 50
