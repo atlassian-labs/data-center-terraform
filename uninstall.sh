@@ -26,7 +26,7 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
+  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -t : Cleaning up the terraform state S3 bucket."
   echo "   -h : provides help to how executing this script."
