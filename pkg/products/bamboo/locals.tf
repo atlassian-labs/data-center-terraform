@@ -1,6 +1,8 @@
 locals {
-  product_name       = "bamboo"
-  helm_chart_version = "0.0.2"
+  product_name = "bamboo"
+
+  helm_chart_repository = "https://atlassian.github.io/data-center-helm-charts"
+  helm_chart_version    = "0.0.2"
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 

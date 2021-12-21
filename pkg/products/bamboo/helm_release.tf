@@ -3,7 +3,7 @@
 resource "helm_release" "bamboo" {
   name       = "bamboo"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
-  repository = "https://atlassian.github.io/data-center-helm-charts"
+  repository = local.helm_chart_repository
   chart      = "bamboo"
   version    = local.helm_chart_version
 
@@ -64,7 +64,7 @@ data "kubernetes_service" "bamboo" {
 resource "helm_release" "bamboo_agent" {
   name       = "bamboo-agent"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
-  repository = "https://atlassian.github.io/data-center-helm-charts"
+  repository = local.helm_chart_repository
   chart      = "bamboo-agent"
   version    = local.helm_chart_version
 
