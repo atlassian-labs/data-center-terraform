@@ -77,7 +77,7 @@ process_arguments() {
 verify_configuration_file() {
   log "Verifying the config file."
 
-  HAS_VALIDATION_ERR=false
+  HAS_VALIDATION_ERR=
   # Make sure the config values are defined
   set +e
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
