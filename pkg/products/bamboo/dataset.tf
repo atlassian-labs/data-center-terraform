@@ -2,7 +2,7 @@ resource "kubernetes_job" "import_dataset" {
   count = var.dataset_url != null ? 1 : 0
 
   timeouts {
-    create = "5m"
+    create = "15m"
     delete = "5m"
   }
 
