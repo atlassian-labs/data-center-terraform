@@ -59,6 +59,7 @@ func TestBambooModule(t *testing.T) {
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
 	assertBambooSecrets(t, kubectlOptions, environmentConfig.Product)
+	assertBambooAgentPod(t, kubectlOptions)
 }
 
 func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
@@ -263,4 +264,17 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 
 	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)
 	terraform.InitAndApply(t, taggingModuletfOption)
+}
+
+func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
+	listPodsFilter := v1.ListOptions{
+		LabelSelector: "app.kubernetes.io/name=bamboo-agent",
+	}
+	pods := k8s.ListPods(t, kubectlOptions, listPodsFilter)
+
+	assert.Equal(t, 50, len(pods))
+
+	for _, pod := range pods {
+		assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
+	}
 }
