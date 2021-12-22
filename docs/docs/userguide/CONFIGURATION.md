@@ -62,6 +62,39 @@ This value should be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/
 region = "<Region>"  # e.g: "ap-northeast-2"
 ```
 
+
+### Bamboo License
+`bamboo_license` takes the license key of Bamboo product.
+Make sure that there is no new lines or spaces in license key.
+
+```terraform
+bamboo_license = "<license key>"
+```
+
+!!!warning "Sensitive data"
+
+    `bamboo_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
+
+    Please refer to [Sensitive Data](#sensitive-data) section.
+
+
+### Bamboo System Admin Credentials
+Four values are required to configure Bamboo system admin credentials.
+
+```terraform
+bamboo_admin_username = "<username>"
+bamboo_admin_password = "<password>"
+bamboo_admin_display_name = "<display name>"
+bamboo_admin_email_address = "<email address>"
+```
+
+!!!warning "Sensitive data"
+
+    `bamboo_admin_password` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended.
+
+    Please refer to [Sensitive Data](#sensitive-data) section.
+
+
 ## Optional configuration
 
 ### Resource Tags
@@ -160,3 +193,25 @@ db_allocated_storage = 100
 ```terraform
 db_iops = 1000
 ```
+
+## Sensitive Data
+
+Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).
+
+We use `config.tfvars` file to pass configuration values to Terraform stack. 
+The file itself is plain-text on local machine, and will not be stored in remote backend 
+where all the Terraform state files will be stored encrypted. 
+More info regarding sensitive data in Terraform state can be found [here](https://www.terraform.io/docs/language/state/sensitive-data.html).
+
+To avoid storing sensitive data in a plain-text file like `config.tfvars`, we recommend storing them in environment variables
+prefixed with [`TF_VAR_`](https://www.terraform.io/docs/cli/config/environment-variables.html#tf_var_name).
+
+Take`bamboo_admin_password` for example, for Linux-like sytems, run the following command to write bamboo admin password to environment variable: 
+
+```shell
+export TF_VAR_bamboo_admin_password=<password>
+```
+
+If storing these data as plain-text is not a particular concern for the environment to be deployed, 
+you can also choose to supply the values in `config.tfvars` file.
+Uncomment the corresponding line and configure the value there.
