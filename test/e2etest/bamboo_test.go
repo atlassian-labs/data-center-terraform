@@ -272,7 +272,7 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 	}
 	pods := k8s.ListPods(t, kubectlOptions, listPodsFilter)
 
-	assert.Equal(t, 50, len(pods))
+	assert.Equal(t, bambooAgentCount, len(pods))
 
 	for _, pod := range pods {
 		assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
