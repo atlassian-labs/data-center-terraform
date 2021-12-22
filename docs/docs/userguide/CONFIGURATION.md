@@ -204,6 +204,7 @@ number_of_bamboo_agents = 50
 * Note: This number should not be greater than the number of allowed remote agents in your license.
   Any agents exceeding the allowed number won't be able to join.
 
+
 ## Sensitive Data
 
 Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).

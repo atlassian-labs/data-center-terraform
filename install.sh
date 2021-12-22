@@ -90,8 +90,8 @@ verify_configuration_file() {
 
   if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
-    log "Please make sure your environment name is less than 25 characters." 
-    HAS_VALIDATION_ERR=
+    log "Please make sure your environment name is less than 25 characters."
+    HAS_VALIDATION_ERR=1
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then

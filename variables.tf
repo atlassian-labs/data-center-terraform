@@ -103,6 +103,6 @@ variable "number_of_bamboo_agents" {
   type        = number
   validation {
     condition     = var.number_of_bamboo_agents >= 0
-    error_message = "Number of agents must be greater or equal 0."
+    error_message = "Number of agents must be greater than or equal to 0."
   }
 }
