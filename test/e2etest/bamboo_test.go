@@ -136,7 +136,7 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 
 	assert.Equal(t, 200, get.StatusCode)
 
-	expectedContent := "Let&#39;s get building!"
+	expectedContent := "Time for an agent!"
 	content, err := io.ReadAll(get.Body)
 
 	assert.NoError(t, err, "Error reading response body")
