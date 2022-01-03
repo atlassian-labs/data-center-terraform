@@ -65,6 +65,39 @@ The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/lat
 region = "<Region>"  # e.g: "ap-northeast-2"
 ```
 
+
+### Bamboo License
+`bamboo_license` takes the license key of Bamboo product.
+Make sure that there is no new lines or spaces in license key.
+
+```terraform
+bamboo_license = "<license key>"
+```
+
+!!!warning "Sensitive data"
+
+    `bamboo_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
+
+    Please refer to [Sensitive Data](#sensitive-data) section.
+
+
+### Bamboo System Admin Credentials
+Four values are required to configure Bamboo system admin credentials.
+
+```terraform
+bamboo_admin_username = "<username>"
+bamboo_admin_password = "<password>"
+bamboo_admin_display_name = "<display name>"
+bamboo_admin_email_address = "<email address>"
+```
+
+!!!warning "Sensitive data"
+
+    `bamboo_admin_password` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended.
+
+    Please refer to [Sensitive Data](#sensitive-data) section.
+
+
 ## Optional configuration
 
 ### Resource tags
@@ -89,20 +122,23 @@ resource_tags = {
 
 `instance_types` provides the instance types for the Kubernetes cluster node group.
 
-The default value is `m5.xlarge` if it is not defined in the configuration file.
-
-An instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
-
 ```terraform
 instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
 ```
+
+If an `instance_types` value is not defined in the configuration file, the default value of `m5.4xlarge` is used.
+
+The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
+
+!!! warning "You cannot change this value after the infrastructure is provisioned."
 
 ### Cluster size
 
 `desired_capacity` provides the desired number of nodes that the node group should launch with initially.
 
-* The default value for the number of nodes in Kubernetes node groups is `1`.
+* The default value for the number of nodes in Kubernetes node groups is `2`.
 * Minimum is `1` and maximum is `10`.
+* This value cannot be changed after the infrastructure is provisioned. 
 
 ```terraform
 desired_capacity = <number-of-nodes>  # between 1 and 10
@@ -165,3 +201,25 @@ db_iops = 1000
 
 !!! info "The allowed value range of IOPS may vary based on instance class"
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+
+## Sensitive Data
+
+Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).
+
+We use `config.tfvars` file to pass configuration values to Terraform stack. 
+The file itself is plain-text on local machine, and will not be stored in remote backend 
+where all the Terraform state files will be stored encrypted. 
+More info regarding sensitive data in Terraform state can be found [here](https://www.terraform.io/docs/language/state/sensitive-data.html).
+
+To avoid storing sensitive data in a plain-text file like `config.tfvars`, we recommend storing them in environment variables
+prefixed with [`TF_VAR_`](https://www.terraform.io/docs/cli/config/environment-variables.html#tf_var_name).
+
+Take`bamboo_admin_password` for example, for Linux-like sytems, run the following command to write bamboo admin password to environment variable: 
+
+```shell
+export TF_VAR_bamboo_admin_password=<password>
+```
+
+If storing these data as plain-text is not a particular concern for the environment to be deployed, 
+you can also choose to supply the values in `config.tfvars` file.
+Uncomment the corresponding line and configure the value there.

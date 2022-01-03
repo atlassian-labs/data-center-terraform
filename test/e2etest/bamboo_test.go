@@ -14,6 +14,7 @@ import (
 	awsSdk "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/environment"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -57,23 +58,24 @@ func TestBambooModule(t *testing.T) {
 	assertBambooPod(t, kubectlOptions, environmentConfig.Product)
 	assertIngressAccess(t, environmentConfig.Product, environmentConfig.EnvironmentName, fmt.Sprintf("%v", environmentConfig.TerraformConfig.Variables["domain"]))
 	assertRDS(t, tfOptions, kubectlOptions, environmentConfig.AwsRegion, environmentConfig.Product)
+	assertBambooSecrets(t, kubectlOptions, environmentConfig.Product)
 }
 
 func assertVPC(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
 	vpc := aws.GetVpcById(t, vpcOutput.Id, awsRegion)
-	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]string)
 
-	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
+	assert.Equal(t, fmt.Sprintf("atlas-%s-vpc", environmentConfig.EnvironmentName), vpc.Name)
 	assert.Equal(t, resourceTags["resource_owner"], vpc.Tags["resource_owner"])
 	assert.Len(t, vpc.Subnets, 4)
 }
 
 func assertEKS(t *testing.T, awsRegion string, vpcOutput VpcOutput, environmentConfig EnvironmentConfig) {
-	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]interface{})
+	resourceTags := environmentConfig.TerraformConfig.Variables["resource_tags"].(map[string]string)
 	session := GenerateAwsSession(awsRegion)
 	eksClient := eks.New(session)
 	describeClusterInput := &eks.DescribeClusterInput{
-		Name: awsSdk.String(fmt.Sprintf("atlassian-dc-%s-cluster", environmentConfig.EnvironmentName)),
+		Name: awsSdk.String(fmt.Sprintf("atlas-%s-cluster", environmentConfig.EnvironmentName)),
 	}
 
 	eksInfo, err := eksClient.DescribeCluster(describeClusterInput)
@@ -111,21 +113,29 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 	assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
 	assert.Equal(t, fmt.Sprintf("atlassian-dc-%s-share-home-pvc", product), shareHomeVolume.PersistentVolumeClaim.ClaimName)
+
+	// Make sure Bamboo is fully pre-seeded with setup wizard skipped. (<setupStep> will have 'complete' value)
+	output, execErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "exec", podName,
+		"--", "cat", "/var/atlassian/application-data/bamboo/bamboo.cfg.xml")
+	assert.Nil(t, execErr)
+
+	startIndex := strings.Index(output, "<setupStep>")
+	endIndex := strings.Index(output, "</setupStep>")
+	setupStep := output[startIndex+11 : endIndex]
+	assert.Equal(t, "complete", setupStep)
 }
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
-	path := "setup/setupLicense.action"
-	expectedContent := "Welcome to Bamboo Data Center"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, environment, domain, path)
+	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
 	fmt.Printf("testing url: %s", url)
 	get, err := http.Get(url)
-	require.NoError(t, err)
+	require.NoError(t, err, "Error accessing url: %s", url)
 
 	defer get.Body.Close()
 
-	assert.NoError(t, err, "Error accessing url: %s", url)
 	assert.Equal(t, 200, get.StatusCode)
 
+	expectedContent := "Time for an agent!"
 	content, err := io.ReadAll(get.Body)
 
 	assert.NoError(t, err, "Error reading response body")
@@ -189,6 +199,44 @@ func assertRDS(t *testing.T, tfOptions *terraform.Options, kubectlOptions *k8s.K
 
 }
 
+func assertBambooSecrets(t *testing.T, kubectlOptions *k8s.KubectlOptions, product string) {
+	// License
+	licenseSecretName := product + "-license"
+	licenseSecretValue := getSecretValue(t, kubectlOptions, licenseSecretName, "license")
+
+	license := environment.GetFirstNonEmptyEnvVarOrFatal(t, []string{"TF_VAR_bamboo_license"})
+	assert.Equal(t, license, licenseSecretValue)
+
+	// SysAdminCredentials
+	adminSecretName := product + "-admin"
+	usernameSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "username")
+	passwordSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "password")
+	displayNameSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "displayName")
+	emailSecretValue := getSecretValue(t, kubectlOptions, adminSecretName, "emailAddress")
+
+	assert.Equal(t, "admin", usernameSecretValue)
+	assert.Equal(t, "admin", passwordSecretValue)
+	assert.Equal(t, "Admin", displayNameSecretValue)
+	assert.Equal(t, "admin@foo.com", emailSecretValue)
+
+	// Security Token
+	tokenSecretName := product + "-security-token"
+	tokenSecretValue := getSecretValue(t, kubectlOptions, tokenSecretName, "security-token")
+	assert.Equal(t, 40, len(tokenSecretValue))
+}
+
+func getSecretValue(t *testing.T, kubectlOptions *k8s.KubectlOptions, secretName string, secretKey string) (secretValue string) {
+	secret, secretErr := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, "get", "secret", secretName, "-o", "jsonpath='{.data."+secretKey+"}'")
+	assert.Nil(t, secretErr)
+	assert.NotNil(t, secret)
+
+	decSecret, decodeErr := base64.StdEncoding.DecodeString(secret[1 : len(secret)-1])
+	assert.Nil(t, decodeErr)
+	secretValue = string(decSecret)
+
+	return secretValue
+}
+
 func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 	vpcOutput := VpcOutput{}
 	terraform.OutputStruct(t, tfOptions, "vpc", &vpcOutput)
@@ -202,6 +250,12 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 			"region":        environmentConfig.TerraformConfig.Variables["region"],
 			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
 			"state_type":    "local",
+			// dummy variables to pass end to end tests
+			"bamboo_license":             "test",
+			"bamboo_admin_username":      "test",
+			"bamboo_admin_password":      "test",
+			"bamboo_admin_display_name":  "test",
+			"bamboo_admin_email_address": "test",
 		},
 		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
 		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",

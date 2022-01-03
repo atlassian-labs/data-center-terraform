@@ -17,10 +17,10 @@ resource_tags = {
 }
 
 # Instance types that is preferred for node group.
-instance_types = ["m5.xlarge"]
+instance_types = ["m5.4xlarge"]
 
 # Desired number of nodes that the node group should launch with initially.
-desired_capacity = 1
+desired_capacity = 2
 
 # (Optional) Domain name used by the ingress controller.
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
@@ -37,4 +37,15 @@ db_instance_class    = "db.t3.micro"
 db_allocated_storage = 1000
 db_iops              = 1000
 
+# Bamboo license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
+#bamboo_license = "<license key>"
 
+# Bamboo system admin credentials
+bamboo_admin_username      = "<USERNAME>"
+# To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
+#bamboo_admin_password      = "<password>"
+bamboo_admin_display_name  = "<DISPLAY NAME>"
+bamboo_admin_email_address = "<EMAIL ADDRESS>"

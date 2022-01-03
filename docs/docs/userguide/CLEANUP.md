@@ -14,7 +14,7 @@ The uninstallation script is located in the `pkg/scripts` project directory.
 Usage:
 
 ```shell
-./pkg/scripts/uninstall [-t] [-c <config.tfvars>]
+./uninstall.sh [-t] [-c <config.tfvars>]
 ```
 
 The following options are available:
@@ -33,15 +33,15 @@ You can remove environments provisioned with the default configuration file as w
 If you used the default configuration file (`config.tfvars`) from the root folder of the project, run the following command:
 
 ```shell 
-./pkg/scripts/uninstall
+./uninstall.sh
 ```
 
 ## Removing environments provisioned with a custom configuration file
 
 If you used a custom configuration file to provision multiple environments, run the following command using the same configuration file you used to provision the environment:
 
-```shell
-./pkg/scripts/uninstall -c <config_file>
+```
+./uninstall.sh -c <custom-config-file>
 ```
 
 ## Removing Terraform state files
@@ -49,5 +49,5 @@ If you used a custom configuration file to provision multiple environments, run 
 By default, the script does not remove Terraform state files. If you want to remove Terraform state files, run the uninstallation script with the `-t` switch:
 
 ```shell 
-./pkg/scripts/uninstall -t [-c <config_file>]
-``` 
+./uninstall.sh -t [-c <custom-config-file>]
+```

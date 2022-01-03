@@ -51,3 +51,30 @@ variable "db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   type        = number
 }
+
+variable "license" {
+  description = "Bamboo license."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_username" {
+  description = "System administrator username."
+  type        = string
+}
+
+variable "admin_password" {
+  description = "System administrator password."
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_display_name" {
+  description = "System administrator display name."
+  type        = string
+}
+
+variable "admin_email_address" {
+  description = "System administrator email address."
+  type        = string
+}

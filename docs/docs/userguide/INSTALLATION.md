@@ -36,12 +36,16 @@ The installation script provisions the environment infrastructure and installs t
 
 The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an S3 bucket to store the current state of the environment. A DynamoDB table is created to handle the locking of remote state files during installation, upgrade, and cleanup to prevent the environment from being modified by more than one process at a time. 
  
-The installation script is located in the `pkg/scripts` project directory.
+The installation script is located in the root directory.
 
 Usage:
+=======
+The installation script is located in the root folder of the project.
+
+Usage:  
 
 ```shell
-./pkg/scripts/install.sh [-c <config_file] [-h]
+./install.sh [-c <config-file] [-h]
 ```
 
 The following options are available:
@@ -56,7 +60,7 @@ Running the installation script with no parameters will use the default configur
 To provision the infrastructure using the default `config.tfvars` file, run:
 
 ```shell
-./pkg/scripts/install.sh
+./install.sh
 ```
 
 ### Start the installation using a custom configuration file
@@ -64,9 +68,9 @@ To provision the infrastructure using the default `config.tfvars` file, run:
 If you want to use a custom configuration file to handle more than one environment, run:
 
 ```shell
-./pkg/scripts/install.sh -c <config_file_path>
+./install.sh -c <config_file_path>
 ```
- 
+
 !!! help "How to run the product after installation?"    
     When the installation process finishes successfully, you can find some detailed information about the infrastructure on your console including the endpoint url (`product_urls`/`load_balancer_hostname`) to open the product on your browser and more.      
 

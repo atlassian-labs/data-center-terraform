@@ -27,4 +27,35 @@ locals {
 
   ingress_settings   = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
   storage_class_name = "efs-cs"
+
+  license_settings = yamlencode({
+    bamboo = {
+      license = {
+        secretName = kubernetes_secret.license_secret.metadata[0].name
+      }
+    }
+  })
+
+  admin_settings = yamlencode({
+    bamboo = {
+      sysadminCredentials = {
+        secretName = kubernetes_secret.admin_secret.metadata[0].name
+      }
+    }
+  })
+
+  unattended_setup_setting = yamlencode({
+    bamboo = {
+      unattendedSetup = true
+    }
+  })
+
+  security_token_setting = yamlencode({
+    bamboo = {
+      securityToken = {
+        secretName = kubernetes_secret.security_token_secret.metadata[0].name
+      }
+      disableAgentAuth = "true"
+    }
+  })
 }

@@ -36,7 +36,7 @@ func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.O
 }
 
 func GenerateKubectlOptions(config KubectlConfig, tfOptions *terraform.Options, environmentName string) *k8s.KubectlOptions {
-	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
+	return k8s.NewKubectlOptions(config.ContextName, fmt.Sprintf("%s/kubeconfig_atlas-%s-cluster", tfOptions.TerraformDir, environmentName), config.Namespace)
 }
 
 func GenerateConfigForProductE2eTest(t *testing.T, product string, customConfigFilename string) EnvironmentConfig {
@@ -64,7 +64,11 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 				"service_name":   "dc-infrastructure",
 				"git_repository": "github.com/atlassian-labs/data-center-terraform",
 			},
-			"domain": domain,
+			"domain":                     domain,
+			"bamboo_admin_username":      "admin",
+			"bamboo_admin_password":      "admin",
+			"bamboo_admin_display_name":  "Admin",
+			"bamboo_admin_email_address": "admin@foo.com",
 		},
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
@@ -72,7 +76,7 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 		TestFolder: testStructure.CopyTerraformFolderToTemp(t, "../..", "."),
 	}
 	kubectlConfig := KubectlConfig{
-		ContextName: fmt.Sprintf("eks_atlassian-dc-%s-cluster", environmentName),
+		ContextName: fmt.Sprintf("eks_atlas-%s-cluster", environmentName),
 		Namespace:   product,
 	}
 
@@ -99,7 +103,7 @@ func GenerateAwsSession(awsRegion string) *session.Session {
 }
 
 func K8sDriver(t *testing.T, tfOptions *terraform.Options, environmentName string) *kubernetes.Clientset {
-	config, err := clientcmd.BuildConfigFromFlags("", fmt.Sprintf("%s/kubeconfig_atlassian-dc-%s-cluster", tfOptions.TerraformDir, environmentName))
+	config, err := clientcmd.BuildConfigFromFlags("", fmt.Sprintf("%s/kubeconfig_atlas-%s-cluster", tfOptions.TerraformDir, environmentName))
 	require.NoError(t, err)
 
 	clientset, err := kubernetes.NewForConfig(config)
