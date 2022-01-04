@@ -96,3 +96,13 @@ variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
 }
+
+variable "number_of_bamboo_agents" {
+  description = "Number of Bamboo remote agents."
+  default     = 50
+  type        = number
+  validation {
+    condition     = var.number_of_bamboo_agents >= 0
+    error_message = "Number of agents must be greater than or equal to 0."
+  }
+}

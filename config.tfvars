@@ -49,3 +49,7 @@ bamboo_admin_username      = "<USERNAME>"
 #bamboo_admin_password      = "<password>"
 bamboo_admin_display_name  = "<DISPLAY NAME>"
 bamboo_admin_email_address = "<EMAIL ADDRESS>"
+
+# Number of Bamboo remote agents to launch
+number_of_bamboo_agents = 50
+

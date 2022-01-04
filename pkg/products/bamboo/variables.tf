@@ -78,3 +78,8 @@ variable "admin_email_address" {
   description = "System administrator email address."
   type        = string
 }
+
+variable "number_of_agents" {
+  description = "Number of remote agents."
+  type        = number
+}
