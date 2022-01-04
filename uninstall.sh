@@ -117,7 +117,7 @@ destroy_infrastructure() {
     log "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully." "ERROR"
     exit 1
   fi
-  log "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
+  log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
 }
 
 
