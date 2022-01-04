@@ -26,6 +26,7 @@ import (
 )
 
 const defaultConfigFilename = "e2e_test_env_config.json"
+const bambooAgentCount = 3 // Set to 3 so that all pods can be scheduled with default resources (i.e. one m5.xlarge node)
 
 func GenerateTerraformOptions(config TerraformConfig, t *testing.T) *terraform.Options {
 	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
@@ -69,6 +70,7 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 			"bamboo_admin_password":      "admin",
 			"bamboo_admin_display_name":  "Admin",
 			"bamboo_admin_email_address": "admin@foo.com",
+			"number_of_bamboo_agents":    bambooAgentCount,
 		},
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,

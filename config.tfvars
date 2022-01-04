@@ -54,8 +54,12 @@ bamboo_admin_username = "<USERNAME>"
 bamboo_admin_display_name  = "<DISPLAY NAME>"
 bamboo_admin_email_address = "<EMAIL ADDRESS>"
 
+# Number of Bamboo remote agents to launch
+number_of_bamboo_agents = 50
+
 # (Optional) URL for dataset to import
 # The provided default is the dataset used in the DCAPT framework.
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
 # for details
+#
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"

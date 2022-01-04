@@ -30,4 +30,6 @@ module "bamboo" {
   admin_password      = var.bamboo_admin_password
   admin_display_name  = var.bamboo_admin_display_name
   admin_email_address = var.bamboo_admin_email_address
+
+  number_of_agents = var.number_of_bamboo_agents
 }
