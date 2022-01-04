@@ -26,7 +26,8 @@ desired_capacity = 2
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
 # When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
-# domain = "<example.com>"
+#
+#domain = "<example.com>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -40,9 +41,12 @@ db_iops              = 1000
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
+#
 #bamboo_license = "<license key>"
 
 # Bamboo system admin credentials
+# WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use
+# the credentials that exists in the dataset. In this case, the `bamboo_admin_*` properties below are ignored.
 bamboo_admin_username = "<USERNAME>"
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
 # If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
