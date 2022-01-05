@@ -12,9 +12,9 @@ SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
 source "${SCRIPT_PATH}/common.sh"
 
 show_help() {
-    echo "The terraform config filename for infrastructure is missing."
+    log "The terraform config filename for infrastructure is missing." "ERROR"
     echo
-    echo "Usage: generate-variables.sh <config_file> [<root_repo>]"
+    log "Usage: generate-variables.sh <config_file> [<root_repo>]"
     exit 1
 }
 
@@ -23,7 +23,7 @@ if [ $# -lt 1 ]; then
 fi
 CONFIG_ABS_PATH="$(cd "$(dirname "${1}")"; pwd)/$(basename "${1}")"
 if [ ! -f "${CONFIG_ABS_PATH}" ]; then
-  log "Could not find config file '${1}'."
+  log "Could not find config file '${1}'." "ERROR"
   show_help
 fi
 
@@ -54,18 +54,18 @@ cleanup_existing_files() {
     set +e
     if ! grep -q "${S3_BUCKET}" "${BACKEND_TF}"  ; then
       EXISTING_S3_BUCKET=$(grep 'bucket' ${BACKEND_TF} | sed -nE 's/^.*"(.*)".*$/\1/p')
-      echo "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
-      echo "It means the repo was used to provision environments in different account or region."
-      echo "Terraform loses the existing S3 backend if you proceed with this configuration."
-      echo "As the result, you are not able to manage the previous environments anymore."
+      log "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
+      log "It means the repo was used to provision environments in different account or region."
+      log "Terraform loses the existing S3 backend if you proceed with this configuration."
+      log "As the result, you are not able to manage the previous environments anymore."
       echo
-      echo "Before proceeding make sure you have cleaned up all environments that provisioned with this repo previously."
+      log "Before proceeding make sure you have cleaned up all environments that provisioned with this repo previously."
       echo
       read -p "Are you sure that you want to proceed(Yes/No)? " yn
       case $yn in
-          Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
-          No|no|n|N ) exit;;
-          * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+          Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
+          No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit;;
+          * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit;;
       esac
     fi
     # If the environment is different from last run then we need to cleanup the terraform generated files
