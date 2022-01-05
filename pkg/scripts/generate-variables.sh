@@ -14,7 +14,7 @@ source "${SCRIPT_PATH}/common.sh"
 show_help() {
     log "The terraform config filename for infrastructure is missing." "ERROR"
     echo
-    log "Usage: generate-variables.sh <config_file> [<root_repo>]"
+    echo "Usage: generate-variables.sh <config_file> [<root_repo>]"
     exit 1
 }
 
