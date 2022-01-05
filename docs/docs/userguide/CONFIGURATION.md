@@ -95,8 +95,8 @@ bamboo_admin_email_address = "<email address>"
     Please refer to [Sensitive Data](#sensitive-data) section.
 
 !!!info "Restoring from existing dataset"
-    If the [`dataset_url` variable](#restoring-from-backup) is provided, the following properties are ignored and you will need to use user
-    credentials from the dataset.
+    If the [`dataset_url` variable](#restoring-from-backup) is provided, the _Bamboo System Admin Credentials_ properties are ignored.
+    You will need to use user credentials from the dataset to log into the instance.
 
 
 ## Optional configuration
