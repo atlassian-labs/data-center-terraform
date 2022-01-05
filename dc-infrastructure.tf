@@ -23,10 +23,13 @@ module "bamboo" {
   db_instance_class    = var.db_instance_class
   db_iops              = var.db_iops
 
-  license = var.bamboo_license
+  license     = var.bamboo_license
+  dataset_url = var.dataset_url
 
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
   admin_display_name  = var.bamboo_admin_display_name
   admin_email_address = var.bamboo_admin_email_address
+
+  number_of_agents = var.number_of_bamboo_agents
 }

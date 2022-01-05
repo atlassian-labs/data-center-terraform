@@ -41,9 +41,11 @@ Atlassian supports Helm Charts for some of its [Data Center products](https://at
 Before using this project, make sure that Helm v3.3 or later is installed on your machine. 
 
 1. Check if Helm v3.3 or later is already installed by running the following command:
+
    ```shell
    helm version --short
    ```
+
 2. If Helm is not installed or you're running a version lower than 3.3, install Helm by following the [official instructions](https://helm.sh/docs/intro/install/){.external}.
 
 ### :material-aws: AWS CLI

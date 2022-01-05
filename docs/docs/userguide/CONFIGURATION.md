@@ -97,16 +97,32 @@ bamboo_admin_email_address = "<email address>"
 
     Please refer to [Sensitive Data](#sensitive-data) section.
 
+!!!info "Restoring from existing dataset"
+    If the [`dataset_url` variable](#restoring-from-backup) is provided, the _Bamboo System Admin Credentials_ properties are ignored.
+    You will need to use user credentials from the dataset to log into the instance.
+
 
 ## Optional configuration
 
+### Restoring from backup
+To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
+you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
+
+```terraform
+dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/dcapt-bamboo-no-agents.zip"
+```
+
+This dataset is downloaded to the shared home and then imported by the Bamboo instance. To log in to the instance,
+you will need to use any credentials from the dataset. 
+
+!!!info "Provisioning time"
+    Restoring from the dataset will increase the time it takes to create the environment.
+
 ### Resource tags
 
-`resource_tags` are custom metadata for all resources in the environment.
+`resource_tags` are custom metadata for all resources in the environment. You can provide multiple tags as a list. 
 
 Tag names must be unique.
-
-You can add all tags you need to propagate among the resources as a list. Resource tags are optional.
 
 ```terraform
 resource_tags = {
@@ -116,8 +132,9 @@ resource_tags = {
   <tag-name-n> = "<tag-value>",
 }
 ```
-* Note: In order to apply tags to all resources, you must follow the recommended [installation guide](INSTALLATION.md). Using `terraform CLI` is not recommended and may leads to missing tags in some resources.
-
+!!! warning "Using Terraform CLI to apply tags is not recommended and may lead to missing tags in some resources."
+    To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
+    
 ### Cluster instance type
 
 `instance_types` provides the instance types for the Kubernetes cluster node group.
@@ -201,6 +218,18 @@ db_iops = 1000
 
 !!! info "The allowed value range of IOPS may vary based on instance class"
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+
+### Number of Bamboo agents
+
+`number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.
+
+```terraform
+number_of_bamboo_agents = 50
+```
+
+!!! warnng "The value should not be greater than the number of allowed agents in your license."
+    Any agents beyond the allowed number won't be able to join the cluster.
+
 
 ## Sensitive Data
 

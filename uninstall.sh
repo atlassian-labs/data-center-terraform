@@ -26,10 +26,10 @@ EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-s]"
+  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
-  echo "   -t : Cleaning up the terraform state S3 bucket."
   echo "   -h : provides help to how executing this script."
+  echo "   -t : Cleaning up the terraform state S3 bucket."
   echo
   exit 2
 }
@@ -43,7 +43,7 @@ EOF
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
-      ?)  log "Invalid arguments."; show_help
+      ?)  log "Invalid arguments." "ERROR"; show_help
       esac
   done
 
@@ -57,7 +57,7 @@ process_arguments() {
     CONFIG_FILE="${ROOT_PATH}/config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
-      log "Terraform configuration file '${CONFIG_FILE}' is not found!"
+      log "Terraform configuration file '${CONFIG_FILE}' was not found!" "ERROR"
       show_help
     fi
   fi
@@ -67,7 +67,7 @@ process_arguments() {
   log "Terraform uses '${CONFIG_ABS_PATH}' to uninstall the infrastructure."
 
   if [ ! -z "${UNKNOWN_ARGS}" ]; then
-    log "Unknown arguments:  ${UNKNOWN_ARGS}"
+    log "Unknown arguments:  ${UNKNOWN_ARGS}" "ERROR"
     show_help
   fi
 
@@ -83,7 +83,7 @@ confirm_action() {
   echo "Please make sure you have made a backup of your valuable data before proceeding."
   echo
 
-  read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (Yes/No)? " yn
+  read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
   case $yn in
       Yes|yes ) echo "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
       No|no|n|N ) exit;;
@@ -117,7 +117,7 @@ destroy_infrastructure() {
     log "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully." "ERROR"
     exit 1
   fi
-  log "'${ENVIRONMENT_NAME}' infrastructure is removed successfully."
+  log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
 }
 
 
@@ -153,7 +153,7 @@ destroy_tfstate() {
         echo "Without valid states, terraform cannot manage the environments anymore."
         echo "Make sure you have already uninstalled all the environments before proceeding."
         echo
-        read -p "Are you sure that you want to delete terraform states for the environments (Yes/No)? " yn
+        read -p "Are you sure that you want to delete terraform states for the environments (yes/no)? " yn
         case $yn in
             Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \

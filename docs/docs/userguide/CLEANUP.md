@@ -38,9 +38,9 @@ If you used the default configuration file (`config.tfvars`) from the root folde
 
 ## Removing environments provisioned with a custom configuration file
 
-If you used a custom configuration file to provision multiple environments, run the following command using the same configuration file you used to provision the environment:
+If you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
 
-```
+```shell
 ./uninstall.sh -c <custom-config-file>
 ```
 

@@ -1,6 +1,9 @@
 locals {
   product_name = "bamboo"
 
+  helm_chart_repository = "https://atlassian.github.io/data-center-helm-charts"
+  helm_chart_version    = "0.0.2"
+
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
   # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration
@@ -58,4 +61,15 @@ locals {
       disableAgentAuth = "true"
     }
   })
+
+  dataset_settings = var.dataset_url != null ? yamlencode({
+    bamboo = {
+      import = {
+        type = "import"
+        path = "/var/atlassian/application-data/shared-home/${local.dataset_filename}"
+      }
+    }
+  }) : yamlencode({})
+
+  dataset_filename = "dataset_to_import.zip"
 }

@@ -36,10 +36,6 @@ The installation script provisions the environment infrastructure and installs t
 
 The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an S3 bucket to store the current state of the environment. A DynamoDB table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
  
-The installation script is located in the root directory.
-
-Usage:
-=======
 The installation script is located in the root folder of the project.
 
 Usage:  
