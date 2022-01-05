@@ -1,11 +1,13 @@
 # Install helm chart for Bamboo Data Center.
 
 resource "helm_release" "bamboo" {
+  depends_on = [kubernetes_job.import_dataset]
   name       = "bamboo"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
   chart      = "bamboo"
   version    = local.helm_chart_version
+  timeout    = 40 * 60 # dataset import can take a long time
 
   values = [
     yamlencode({
@@ -50,6 +52,7 @@ resource "helm_release" "bamboo" {
     local.admin_settings,
     local.unattended_setup_setting,
     local.security_token_setting,
+    local.dataset_settings,
   ]
 }
 

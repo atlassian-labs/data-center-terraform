@@ -20,26 +20,26 @@ variable "environment_name" {
 
 variable "resource_tags" {
   description = "Additional tags for all resources to be created."
-  type        = map(string)
   default = {
     Terraform = "true"
   }
+  type = map(string)
 }
 
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
-  type        = list(string)
   default     = ["m5.xlarge"]
+  type        = list(string)
 }
 
 variable "desired_capacity" {
   description = "Desired number of nodes that the node group should launch with initially."
+  default     = 1
   type        = number
   validation {
     condition     = var.desired_capacity > 0 && var.desired_capacity <= 10
     error_message = "Desired cluster capacity must be between 1 and 10 (included)."
   }
-  default = 1
 }
 
 variable "domain" {
@@ -54,20 +54,26 @@ variable "domain" {
 
 variable "db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
-  type        = number
   default     = 1000
+  type        = number
 }
 
 variable "db_instance_class" {
   description = "Instance class of the RDS instance."
-  type        = string
   default     = "db.t3.micro"
+  type        = string
 }
 
 variable "db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
-  type        = number
   default     = 1000
+  type        = number
+}
+
+variable "dataset_url" {
+  description = "URL of the dataset to restore in the Bamboo instance"
+  type        = string
+  default     = null
 }
 
 variable "bamboo_license" {

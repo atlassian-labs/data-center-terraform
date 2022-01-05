@@ -83,3 +83,8 @@ variable "number_of_agents" {
   description = "Number of remote agents."
   type        = number
 }
+
+variable "dataset_url" {
+  description = "URL of the dataset to restore in the Bamboo instance"
+  type        = string
+}
