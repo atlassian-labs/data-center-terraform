@@ -8,7 +8,7 @@
 set -e
 set -o pipefail
 ROOT_PATH=$(cd $(dirname "${0}"); pwd)
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
@@ -129,14 +129,14 @@ destroy_tfstate() {
   echo
   echo "Attempting to remove terraform backend."
   echo
-  TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
+  TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
-    local TFSTATE_FOLDER="${ROOT_PATH}/pkg/tfstate"
+    local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?

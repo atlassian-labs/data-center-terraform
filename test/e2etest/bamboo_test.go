@@ -259,7 +259,7 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 			"bamboo_admin_email_address": "test",
 		},
 		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
-		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
+		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/modules/AWS/asg_ec2_tagging",
 	}
 
 	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)

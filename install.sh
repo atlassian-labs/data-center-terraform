@@ -7,7 +7,7 @@
 set -e
 set -o pipefail
 ROOT_PATH=$(cd $(dirname "${0}"); pwd)
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${ROOT_PATH}/logs/terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
@@ -123,7 +123,7 @@ verify_configuration_file() {
   fi
 }
 
-# Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
+# Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
@@ -139,7 +139,7 @@ create_tfstate_resources() {
     mkdir "${ROOT_PATH}/logs"
   fi
   touch "${LOG_FILE}"
-  local STATE_FOLDER="${SCRIPT_PATH}/../tfstate"
+  local STATE_FOLDER="${ROOT_PATH}/modules/tfstate"
   set +e
   aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
   S3_BUCKET_EXISTS=$?
@@ -172,7 +172,7 @@ create_update_infrastructure() {
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
   log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
-  TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+  TAG_MODULE_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
   terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
@@ -201,7 +201,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-# Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf
+# Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf
 generate_terraform_backend_variables
 
 # Create S3 bucket and dynamodb table to keep state

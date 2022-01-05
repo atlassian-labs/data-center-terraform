@@ -16,7 +16,7 @@ else
   # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 fi
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 
 source "${SCRIPT_PATH}/common.sh"
 
@@ -69,8 +69,8 @@ EOF
     show_help
   fi
 
-  TAG_MODULE_PATH="${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
-  TFSTATE_PATH="${ROOT_PATH}/pkg/tfstate"
+  TAG_MODULE_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
+  TFSTATE_PATH="${ROOT_PATH}/modules/tfstate"
 
 delete_terraform_files() {
     rm -rf "${CLEANING_PATH}/.terraform"
@@ -87,16 +87,16 @@ cleanup_terraform() {
     local folder_lists=(
 
       "${ROOT_PATH}"
-      "${ROOT_PATH}/pkg/modules/AWS/eks"
-      "${ROOT_PATH}/pkg/modules/AWS/s3"
-      "${ROOT_PATH}/pkg/modules/AWS/efs"
-      "${ROOT_PATH}/pkg/modules/AWS/dynamodb"
-      "${ROOT_PATH}/pkg/modules/AWS/ingress"
-      "${ROOT_PATH}/pkg/modules/AWS/rds"
-      "${ROOT_PATH}/pkg/modules/AWS/vpc"
-      "${ROOT_PATH}/pkg/products/bamboo"
-      "${ROOT_PATH}/pkg/products/common"
-      "${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+      "${ROOT_PATH}/modules/AWS/eks"
+      "${ROOT_PATH}/modules/AWS/s3"
+      "${ROOT_PATH}/modules/AWS/efs"
+      "${ROOT_PATH}/modules/AWS/dynamodb"
+      "${ROOT_PATH}/modules/AWS/ingress"
+      "${ROOT_PATH}/modules/AWS/rds"
+      "${ROOT_PATH}/modules/AWS/vpc"
+      "${ROOT_PATH}/modules/bamboo"
+      "${ROOT_PATH}/modules/common"
+      "${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
     )
 
     for TARGET_FOLDER in "${folder_lists[@]}"; do
@@ -128,7 +128,7 @@ cleanup_setup_files() {
 cleanup_local_terraform_state() {
   if [ ! -z "${CLEAN_TERRAFORM_STATE}" ]; then
     echo "Cleaning terraform state files."
-    CLEANING_PATH="${ROOT_PATH}/pkg/tfstate"
+    CLEANING_PATH="${ROOT_PATH}/modules/tfstate"
     delete_terraform_files
   fi
 }

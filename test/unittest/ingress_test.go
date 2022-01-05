@@ -10,11 +10,9 @@ import (
 func TestIngressIsCreated(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(
-		map[string]interface{}{
-			"ingress_domain": "test.deplops.com",
-		},
-		t, "ingress")
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"ingress_domain": "test.deplops.com",
+	}, t, "ingress")
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -45,8 +43,7 @@ func TestIngressIsCreated(t *testing.T) {
 func TestIngressRequireDomainVariable(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(
-		map[string]interface{}{}, t, "ingress")
+	tfOptions := GenerateTFOptions(map[string]interface{}{}, t, "ingress")
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 

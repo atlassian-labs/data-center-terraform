@@ -7,7 +7,7 @@ if [ "${0##*/}" == "generate-variables.sh" ]; then
    # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 fi
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 
 source "${SCRIPT_PATH}/common.sh"
 
@@ -43,8 +43,8 @@ set_variables() {
   DYNAMODB_TABLE="atlassian_data_center_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
 
   BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
-  TFSTATE_LOCALS="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
-  ASG_EC2_TAG_PATH="${ROOT_PATH}/pkg/modules/AWS/asg_ec2_tagging"
+  TFSTATE_LOCALS="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
+  ASG_EC2_TAG_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
 }
 
 # Cleaning all the generated terraform state variable and backend file
@@ -81,15 +81,15 @@ cleanup_existing_files() {
 inject_variables_to_templates() {
   # Generate the terraform backend, where terraform store the state of the infrastructure
   log "Generating the terraform backend definition file 'terraform.backend.tf'."
-  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/pkg/templates/terraform-backend.tf.tmpl" | \
+  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/templates/terraform-backend.tf.tmpl" | \
   sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
   sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
   sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
     > "${BACKEND_TF}"
 
   # Generate the locals for terraform state
-  log "Generating the terraform state local file 'pkg/tfstate/tfstate-locals.tf'."
-  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/pkg/templates/tfstate-locals.tf.tmpl" | \
+  log "Generating the terraform state local file 'modules/tfstate/tfstate-locals.tf'."
+  sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/templates/tfstate-locals.tf.tmpl" | \
   sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
   sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
   sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
@@ -98,8 +98,8 @@ inject_variables_to_templates() {
 
 copy_injected_files() {
   # fetch the config files from root
-  cp -fr "${ROOT_PATH}/variables.tf" "${ROOT_PATH}/pkg/tfstate"
-  cp -fr "${CONFIG_ABS_PATH}" "${ROOT_PATH}/pkg/tfstate"
+  cp -fr "${ROOT_PATH}/variables.tf" "${ROOT_PATH}/modules/tfstate"
+  cp -fr "${CONFIG_ABS_PATH}" "${ROOT_PATH}/modules/tfstate"
 
   # copy variable files for tagging module
   cp "${CONFIG_ABS_PATH}" "${ASG_EC2_TAG_PATH}"

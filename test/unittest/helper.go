@@ -1,13 +1,17 @@
 package unittest
 
 import (
+	"github.com/gruntwork-io/terratest/modules/aws"
 	"path/filepath"
 	"sync"
 	"testing"
 
-	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
+)
+
+const (
+	ProductModulePath = "../../modules"
 )
 
 // Helper functions
@@ -37,7 +41,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 }
 
 func GenerateTFOptions(variables map[string]interface{}, t *testing.T, module string) *terraform.Options {
-	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../../pkg/modules/AWS", "/"+module)
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, ProductModulePath, "/"+module)
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
 
