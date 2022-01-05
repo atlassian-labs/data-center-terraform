@@ -8,7 +8,7 @@ Configure your AWS credentials with admin access. [AWS Documentation](https://do
 
 ## 2. Clone the project
 Clone the Terraform for Atlassian DC Products into your local 
-```
+```shell
 git clone https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
 ```
 

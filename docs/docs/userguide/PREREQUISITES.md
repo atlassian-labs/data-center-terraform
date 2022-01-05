@@ -37,7 +37,7 @@ Before using this project make sure you have Helm v3.3 or later installed on you
 !!! help "How to confirm your Helm version?"
     Use the following command to see the installed Helm version on your local:
     
-    ```
+    ```shell
     helm version --short
     ```
 
@@ -48,7 +48,7 @@ need to [install Helm](https://helm.sh/docs/intro/install/){.external}.
 You need to have the AWS CLI tool installed on your local machine before installing the infrastructure. We recommend 
 having version 2 of `aws-cli`. 
 
-```
+```shell
 aws --version
 ```
 
