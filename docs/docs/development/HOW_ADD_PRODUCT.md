@@ -1,1 +1,1 @@
-# How to add product
+# How to add products
