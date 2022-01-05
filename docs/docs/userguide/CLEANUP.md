@@ -32,7 +32,7 @@ If you have used the default configuration file (`config.tfvars`) from the root 
 ```
 
 If you used a custom-defined config file when the infrastructure is installed, then you need to run the following command using the same config file you used in the install command instead:
-```
+```shell
 ./uninstall.sh -c <custom-config-file>
 ```
 

@@ -94,8 +94,26 @@ bamboo_admin_email_address = "<email address>"
 
     Please refer to [Sensitive Data](#sensitive-data) section.
 
+!!!info "Restoring from existing dataset"
+    If the [`dataset_url` variable](#restoring-from-backup) is provided, the _Bamboo System Admin Credentials_ properties are ignored.
+    You will need to use user credentials from the dataset to log into the instance.
+
 
 ## Optional configuration
+
+### Restoring from backup
+To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
+you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
+
+```terraform
+dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/dcapt-bamboo-no-agents.zip"
+```
+
+This dataset is downloaded to the shared home and then imported by the Bamboo instance. To log in to the instance,
+you will need to use any credentials from the dataset. 
+
+!!!info "Provisioning time"
+    Restoring from the dataset will increase the time it takes to create the environment.
 
 ### Resource Tags
 `resource_tags` are the custom tags for all resources to be created in the environment. Tag names should be unique.
