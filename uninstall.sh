@@ -77,17 +77,17 @@ process_arguments() {
 # Ask user confirmation for destroying the environment
 confirm_action() {
   echo
-  echo "You are about to destroy the '${ENVIRONMENT_NAME}' environment. "
+  log "You are about to destroy the '${ENVIRONMENT_NAME}' environment. "
   echo
-  echo "All data resources provisioned in this environment including database will be deleted permanently."
-  echo "Please make sure you have made a backup of your valuable data before proceeding."
+  log "All data resources provisioned in this environment including database will be deleted permanently."
+  log "Please make sure you have made a backup of your valuable data before proceeding."
   echo
 
   read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
   case $yn in
-      Yes|yes ) echo "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-      No|no|n|N ) exit;;
-      * ) echo "Please answer 'Yes' to confirm deleting the infrastructure."; exit;;
+      Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+      No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit;;
+      * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
   esac
   echo
 }
@@ -114,7 +114,7 @@ destroy_infrastructure() {
   if [ $? -eq 0 ]; then
     set -e
   else
-    log "'${ENVIRONMENT_NAME}' infrastructure could not be removed successfully." "ERROR"
+    log "Failed to remove '${ENVIRONMENT_NAME}' infrastructure." "ERROR"
     exit 1
   fi
   log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
@@ -127,7 +127,7 @@ destroy_tfstate() {
     return
   fi
   echo
-  echo "Attempting to remove terraform backend."
+  log "Attempting to remove terraform backend."
   echo
   TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
@@ -146,20 +146,20 @@ destroy_tfstate() {
       # Get the bucket key list of all installed environments in this region
       ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
       if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
-        echo "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
-        echo "Here is the list of environments provisioned using this instance:"
-        echo "${ALL_BUCKET_KEYS}"
+        log "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
+        log "Here is the list of environments provisioned using this instance:"
+        log "${ALL_BUCKET_KEYS}"
         echo
-        echo "Without valid states, terraform cannot manage the environments anymore."
-        echo "Make sure you have already uninstalled all the environments before proceeding."
+        log "Without valid states, terraform cannot manage the environments anymore."
+        log "Make sure you have already uninstalled all the environments before proceeding."
         echo
         read -p "Are you sure that you want to delete terraform states for the environments (yes/no)? " yn
         case $yn in
-            Yes|yes ) echo "Thank you. We have your confirmation to proceed.";;
+            Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \
-              echo "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
-              echo "As your request, the terraform state is not removed."; exit;;
-            * ) echo "Please answer 'Yes' to confirm deleting the terraform state."; exit;;
+              log "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
+              log "As your request, the terraform state is not removed."; exit;;
+            * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit;;
         esac
       fi
       if ! test -d ".terraform" ; then
