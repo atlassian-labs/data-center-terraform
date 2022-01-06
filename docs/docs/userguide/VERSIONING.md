@@ -1,17 +1,18 @@
 # Versioning
 
 ## Release naming
-Each product version is [semantically versioned](https://semver.org/){.external}. 
-Version name will be defined by the following pattern: `tf-dc-MAJOR.MINOR.PATCH` , e.g. `tf-dc-0.0.1`. 
+
+Each product version is [semantically versioned](https://semver.org/){.external}. Version names are defined by the following pattern: `tf-dc-MAJOR.MINOR.PATCH`, e.g. `tf-dc-0.0.1`. 
 
 ## Release versions
-The version number for first release starts from `0.0.1` and next release versions will be defined based on the nature of the delivered changes:
 
-If there is at least one change that breaks upgrading from the previous version (backwards incompatible), then the next version will be the next MAJOR version. 
-If at least one functional change is delivered and all changes are backward compatible, then the next release will be the next MINOR version. 
-Any other backward compatible bug fix will be in the next PATCH version. 
+The version number for the first release starts from `0.0.1` and next release versions will be defined based on the nature of the delivered changes:
+
+- If there is at least one backward-incompatible change, then the next version will be the next major version. 
+- If at least one functional change is delivered and all changes are backward-compatible, then the next release will be the next minor version.
+- Any other backward-compatible bug fixes will be included in the next patch version. 
 
 !!! Info "Breaking changes"
-    Any backwards-incompatible changes to the infrastructure should bump the MAJOR version.
+    Any backward-incompatible changes to the infrastructure should bump the major version number.
 
 
