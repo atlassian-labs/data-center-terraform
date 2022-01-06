@@ -100,7 +100,7 @@ var EfsInvalidVariable = map[string]interface{}{
 }
 
 // DB
-const databaseModule = "rds"
+const databaseModule = "AWS/rds"
 const inputVpcId = "dummy_vpc_id"
 
 var inputSubnets = []interface{}{"subnet1", "subnet2"}

@@ -8,10 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const efsModule = "AWS/efs"
+
 func TestEfsVariablesNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(nil, t, "efs")
+	tfOptions := GenerateTFOptions(nil, t, efsModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -27,7 +29,7 @@ func TestEfsVariablesNotProvided(t *testing.T) {
 func TestEfsVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EfsValidVariable, t, "efs")
+	tfOptions := GenerateTFOptions(EfsValidVariable, t, efsModule)
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
 	efsName := plan.RawPlan.Variables["efs_name"].Value
@@ -55,7 +57,7 @@ func TestEfsVariablesPopulatedWithValidValues(t *testing.T) {
 func TestEfsVariablesPopulatedWithInvalidRegion(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EfsInvalidVariable, t, "efs")
+	tfOptions := GenerateTFOptions(EfsInvalidVariable, t, efsModule)
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)

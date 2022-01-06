@@ -7,12 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var ingressModule = "AWS/ingress"
+
 func TestIngressIsCreated(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"ingress_domain": "test.deplops.com",
-	}, t, "ingress")
+	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -43,7 +45,7 @@ func TestIngressIsCreated(t *testing.T) {
 func TestIngressRequireDomainVariable(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{}, t, "ingress")
+	tfOptions := GenerateTFOptions(map[string]interface{}{}, t, ingressModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
