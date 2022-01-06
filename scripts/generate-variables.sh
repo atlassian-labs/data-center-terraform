@@ -1,8 +1,8 @@
-# This script will generate/override the `./pkg/tfstate/tfstate-locals.tf` and `./terraform-backend.tf`
+# This script will generate/override the `modules/tfstate/tfstate-locals.tf` and `terraform-backend.tf`
 
 if [ "${0##*/}" == "generate-variables.sh" ]; then
   # the script ran directly from terminal
-   ROOT_PATH=$(cd $(dirname "${0}")/../..; pwd)
+   ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
  else
    # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)

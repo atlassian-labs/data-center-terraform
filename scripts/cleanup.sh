@@ -11,7 +11,7 @@ set -e
 
 if [ "${0##*/}" == "cleanup.sh" ]; then
   # the script ran directly from terminal
-  ROOT_PATH=$(cd $(dirname "${0}")/../..; pwd)
+  ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
 else
   # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)

@@ -44,10 +44,10 @@ func TestEfsVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "test-efs", efsName)
 	assert.Equal(t, "us-east-1", regionName)
 	assert.Equal(t, EksDefaultModuleVariable, eks)
-	assert.Equal(t, VpcDefaultModuleVarialbe, vpc)
+	assert.Equal(t, VpcDefaultModuleVariable, vpc)
 	assert.Equal(t, "1", csiReplicaCount)
 	assert.Equal(t, fmt.Sprintf("%s-security-group", EfsValidVariable["efs_name"]), awsSecurityGroup.AttributeValues["name"])
-	assert.Equal(t, VpcDefaultModuleVarialbe["vpc_id"], awsSecurityGroup.AttributeValues["vpc_id"])
+	assert.Equal(t, VpcDefaultModuleVariable["vpc_id"], awsSecurityGroup.AttributeValues["vpc_id"])
 	assert.Equal(t, EksDefaultModuleVariable["cluster_name"], awsEfsFileSystem.AttributeValues["creation_token"])
 
 }
