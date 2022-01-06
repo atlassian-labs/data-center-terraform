@@ -29,16 +29,14 @@ func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "deployed", bambooAgent.AttributeValues["status"])
 	assert.Equal(t, "bamboo-agent", bambooAgent.AttributeValues["chart"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bambooAgent.AttributeValues["repository"])
-
-	// verify that import job didn't run (data_ur
-	assert.Nil(t, plan.ResourcePlannedValuesMap["kubernetes_job.import_dataset[0]"])
 }
 
 func TestBambooDatasetImport(t *testing.T) {
 	t.Parallel()
 
-	BambooCorrectVariables["dataset_url"] = DatasetUrl
-	tfOptions := GenerateTFOptions(BambooCorrectVariables, t, "products/bamboo")
+	datasetVars := BambooCorrectVariables
+	datasetVars["dataset_url"] = DatasetUrl
+	tfOptions := GenerateTFOptions(datasetVars, t, "products/bamboo")
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
 	// verify Dataset import job
