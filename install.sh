@@ -43,7 +43,7 @@ EOF
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
-      ?)    echo "Invalid arguments."; show_help
+      ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
 
@@ -57,7 +57,7 @@ process_arguments() {
     CONFIG_FILE="${ROOT_PATH}/config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
-      log "Terraform configuration file '${CONFIG_FILE}' not found!"
+      log "Terraform configuration file '${CONFIG_FILE}' not found!" "ERROR"
       show_help
     fi
   fi
@@ -67,7 +67,7 @@ process_arguments() {
   log "Terraform will use '${CONFIG_ABS_PATH}' to install the infrastructure."
 
   if [ -n "${UNKNOWN_ARGS}" ]; then
-    log "Unknown arguments:  ${UNKNOWN_ARGS}"
+    log "Unknown arguments:  ${UNKNOWN_ARGS}" "ERROR"
     show_help
   fi
 }
