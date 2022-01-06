@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const vpcModule = "vpc"
+const vpcModule = "AWS/vpc"
 
 func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
