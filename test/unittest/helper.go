@@ -10,9 +10,8 @@ import (
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-const (
-	ProductModulePath = "../../modules"
-)
+const ProductModulePath = "../../modules"
+const VpcModulePath = "AWS/vpc"
 
 // Helper functions
 var lock = &sync.Mutex{}
@@ -30,7 +29,7 @@ func GetVpcDefaultPlans(t *testing.T) *terraform.PlanStruct {
 	lock.Lock()
 	defer lock.Unlock()
 	if vpcPlanInstance == nil {
-		tfOptions := GenerateTFOptions(DefaultVpc, t, "vpc")
+		tfOptions := GenerateTFOptions(DefaultVpc, t, VpcModulePath)
 
 		// Run `terraform init`, `terraform plan`, and `terraform show`
 		plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)

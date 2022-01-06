@@ -7,12 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const vpcModule = "AWS/vpc"
-
 func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithoutName, t, vpcModule)
+	tfOptions := GenerateTFOptions(VpcWithoutName, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -34,7 +32,7 @@ func TestVpcNameCustomised(t *testing.T) {
 func TestVpcNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithInvalidName, t, vpcModule)
+	tfOptions := GenerateTFOptions(VpcWithInvalidName, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -55,7 +53,7 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 func TestVpcCidrBlockInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithInvalidCidr, t, vpcModule)
+	tfOptions := GenerateTFOptions(VpcWithInvalidCidr, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -88,7 +86,7 @@ func TestVpcDefaultPrivateSubnets(t *testing.T) {
 func TestVpcCidrAndSubnetsCustomised(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithCustomisedCidr, t, vpcModule)
+	tfOptions := GenerateTFOptions(VpcWithCustomisedCidr, t, VpcModulePath)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
