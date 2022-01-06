@@ -71,6 +71,7 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 			"bamboo_admin_display_name":  "Admin",
 			"bamboo_admin_email_address": "admin@foo.com",
 			"number_of_bamboo_agents":    bambooAgentCount,
+			"dataset_url":                "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip",
 		},
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,

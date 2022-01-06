@@ -128,18 +128,8 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
-	fmt.Printf("testing url: %s", url)
-	get, err := http.Get(url)
-	require.NoError(t, err, "Error accessing url: %s", url)
-
-	defer get.Body.Close()
-
-	assert.Equal(t, 200, get.StatusCode)
-
+	content := getPageContent(t, url)
 	expectedContent := "Time for an agent!"
-	content, err := io.ReadAll(get.Body)
-
-	assert.NoError(t, err, "Error reading response body")
 	assert.Contains(t, string(content), expectedContent)
 }
 
@@ -277,4 +267,24 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 	for _, pod := range pods {
 		assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
 	}
+}
+
+func assertRestoredDataset(t *testing.T, product string, environment string, domain string) {
+	url := fmt.Sprintf("https://%s.%s.%s/allProjects.action", product, environment, domain)
+	content := getPageContent(t, url)
+	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
+	assert.Contains(t, string(content), "totalRecords: 1")
+}
+
+//getPageContent returns the content of the page at the given url
+func getPageContent(t *testing.T, url string) []byte {
+	get, err := http.Get(url)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer get.Body.Close()
+
+	assert.Equal(t, 200, get.StatusCode)
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	return content
 }
