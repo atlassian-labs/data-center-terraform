@@ -5,15 +5,15 @@ locals {
   helm_chart_version    = "0.0.2"
 
   bamboo_software_resources = {
-    "minHeap" : "512m"
-    "maxHeap" : "256m"
-    "cpu" : "1"
-    "mem" : "1Gi"
+    "minHeap" : var.bamboo_min_heap
+    "maxHeap" : var.bamboo_max_heap
+    "cpu" : var.bamboo_cpu
+    "mem" : var.bamboo_mem
   }
 
   bamboo_agent_resources = {
-    "cpu" : "0.25"
-    "mem" : "256m"
+    "cpu" : var.bamboo_agent_cpu
+    "mem" : var.bamboo_agent_mem
   }
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
