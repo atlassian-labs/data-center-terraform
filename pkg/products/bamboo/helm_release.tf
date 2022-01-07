@@ -2,10 +2,10 @@
 
 resource "helm_release" "bamboo" {
   depends_on = [kubernetes_job.import_dataset]
-  name       = "bamboo"
+  name       = local.product_name
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
-  chart      = "bamboo"
+  chart      = local.product_name
   version    = local.helm_chart_version
   timeout    = 40 * 60 # dataset import can take a long time
 
@@ -14,13 +14,13 @@ resource "helm_release" "bamboo" {
       bamboo = {
         resources = {
           jvm = {
-            maxHeap = "512m"
-            minHeap = "256m"
+            maxHeap = local.bamboo_software_resources.maxHeap
+            minHeap = local.bamboo_software_resources.minHeap
           }
           container = {
             requests = {
-              cpu    = "1",
-              memory = "1Gi"
+              cpu    = local.bamboo_software_resources.cpu
+              memory = local.bamboo_software_resources.mem
             }
           }
         }
@@ -59,16 +59,16 @@ resource "helm_release" "bamboo" {
 data "kubernetes_service" "bamboo" {
   depends_on = [helm_release.bamboo]
   metadata {
-    name      = "bamboo"
+    name      = local.product_name
     namespace = kubernetes_namespace.bamboo.metadata[0].name
   }
 }
 
 resource "helm_release" "bamboo_agent" {
-  name       = "bamboo-agent"
+  name       = "${local.product_name}-agent"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
-  chart      = "bamboo-agent"
+  chart      = "${local.product_name}-agent"
   version    = local.helm_chart_version
 
   depends_on = [helm_release.bamboo]
@@ -84,8 +84,8 @@ resource "helm_release" "bamboo_agent" {
         resources = {
           container = {
             requests = {
-              cpu    = "0.25"
-              memory = "256m"
+              cpu    = local.bamboo_agent_resources.cpu
+              memory = local.bamboo_agent_resources.mem
             }
           }
         }

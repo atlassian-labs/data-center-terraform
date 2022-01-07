@@ -4,6 +4,18 @@ locals {
   helm_chart_repository = "https://atlassian.github.io/data-center-helm-charts"
   helm_chart_version    = "0.0.2"
 
+  bamboo_software_resources = {
+    "minHeap" : "512m"
+    "maxHeap" : "256m"
+    "cpu" : "1"
+    "mem" : "1Gi"
+  }
+
+  bamboo_agent_resources = {
+    "cpu" : "0.25"
+    "mem" : "256m"
+  }
+
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
   # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration
