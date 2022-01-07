@@ -1,6 +1,8 @@
 package e2etest
 
 import (
+	"fmt"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,9 +21,18 @@ func TestInstaller(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
-	// TODO add assertions
+	assertStatusEndpoint(t, testConfig)
 
 	runUninstallScript(testConfig.ConfigPath)
+}
+
+func assertStatusEndpoint(t *testing.T, testConfig TestConfig) {
+	product := "bamboo"
+	domain := "deplops.com"
+	statusUrl := "/rest/api/latest/status"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+	content := GetPageContent(t, url)
+	assert.Contains(t, fmt.Sprintf("%s", content), "RUNNING")
 }
 
 // TODO remove duplication
