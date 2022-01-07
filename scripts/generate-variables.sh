@@ -1,5 +1,14 @@
 # This script will generate/override the `modules/tfstate/tfstate-locals.tf` and `terraform-backend.tf`
 
+FORCE_FLAG=
+while getopts f?c: name ; do
+    case $name in
+    c)  CONFIG_PATH="${OPTARG}";;   # Config file name to install - this overrides the default, 'config.tfvars'
+    f)  FORCE_FLAG="true";;         # Force
+    ?)  echo "Invalid arguments."; show_help; exit 1;;
+    esac
+done
+
 if [ "${0##*/}" == "generate-variables.sh" ]; then
   # the script ran directly from terminal
    ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
@@ -14,16 +23,16 @@ source "${SCRIPT_PATH}/common.sh"
 show_help() {
     log "The terraform config filename for infrastructure is missing." "ERROR"
     echo
-    echo "Usage: generate-variables.sh <config_file> [<root_repo>]"
+    echo "Usage: generate-variables.sh -c <config_file> [-f]"
     exit 1
 }
 
 if [ $# -lt 1 ]; then
   show_help
 fi
-CONFIG_ABS_PATH="$(cd "$(dirname "${1}")"; pwd)/$(basename "${1}")"
+CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_PATH}")"; pwd)/$(basename "${CONFIG_PATH}")"
 if [ ! -f "${CONFIG_ABS_PATH}" ]; then
-  log "Could not find config file '${1}'." "ERROR"
+  log "Could not find config file '${CONFIG_PATH}'." "ERROR"
   show_help
 fi
 
@@ -58,15 +67,18 @@ cleanup_existing_files() {
       log "It means the repo was used to provision environments in different account or region."
       log "Terraform loses the existing S3 backend if you proceed with this configuration."
       log "As the result, you are not able to manage the previous environments anymore."
-      echo
-      log "Before proceeding make sure you have cleaned up all environments that provisioned with this repo previously."
-      echo
-      read -p "Are you sure that you want to proceed(Yes/No)? " yn
-      case $yn in
-          Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
-          No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit;;
-          * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit;;
-      esac
+      if [ "${FORCE_FLAG}" == "true" ]; then
+        log "Force flag was passed, continuing with the deployment." "WARN"
+      else
+        log "Before proceeding make sure you have cleaned up all environments that provisioned with this repo previously."
+        echo
+        read -p "Are you sure that you want to proceed(Yes/No)? " yn
+        case $yn in
+            Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
+            No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit;;
+            * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit;;
+        esac
+      fi
     fi
     # If the environment is different from last run then we need to cleanup the terraform generated files
     if ! grep -q "${BUCKET_KEY}" "${BACKEND_TF}"  ; then

@@ -50,8 +50,7 @@ func GenerateConfigForProductE2eTest(t *testing.T, product string, customConfigF
 
 func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
-	testId := strings.ToLower(random.UniqueId())
-	environmentName := "e2etest-" + testId
+	environmentName := EnvironmentName()
 	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
 		Variables: map[string]interface{}{
@@ -90,6 +89,12 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}
+}
+
+func EnvironmentName() string {
+	testId := strings.ToLower(random.UniqueId())
+	environmentName := "e2etest-" + testId
+	return environmentName
 }
 
 func LoadConfigForProductE2eTest(t *testing.T, customConfigFilename string) EnvironmentConfig {

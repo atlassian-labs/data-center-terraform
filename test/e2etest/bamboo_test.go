@@ -238,9 +238,10 @@ func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 	AsgEc2taggingModuleTfConfig := TerraformConfig{
 		Variables: map[string]interface{}{
-			"region":        environmentConfig.TerraformConfig.Variables["region"],
-			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
-			"state_type":    "local",
+			"region":           environmentConfig.TerraformConfig.Variables["region"],
+			"resource_tags":    environmentConfig.TerraformConfig.Variables["resource_tags"],
+			"environment_name": environmentConfig.TerraformConfig.Variables["environment_name"],
+			"state_type":       "local",
 			// dummy variables to pass end to end tests
 			"bamboo_license":             "test",
 			"bamboo_admin_username":      "test",

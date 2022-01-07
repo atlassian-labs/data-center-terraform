@@ -39,10 +39,12 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  while getopts h?c: name ; do
+  export FORCE_FLAG=
+  while getopts hf?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
+      f)    FORCE_FLAG="-f";;
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -128,7 +130,9 @@ generate_terraform_backend_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
   log "Terraform state backend/variable files are not created yet."
-  source "${SCRIPT_PATH}/generate-variables.sh" "${CONFIG_ABS_PATH}"
+
+  sh "${SCRIPT_PATH}/generate-variables.sh" "-c" "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -154,7 +158,7 @@ create_tfstate_resources() {
       terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
     fi
     terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
-    sleep 5s
+    sleep 5
   fi
 }
 
@@ -167,6 +171,7 @@ create_update_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   terraform -chdir="${ROOT_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" output -json > outputs.json
 }
 
 # Apply the tags into ASG and EC2 instances created by ASG
