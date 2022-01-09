@@ -86,8 +86,6 @@ confirm_action() {
   echo
 
   if [ -z "${FORCE_FLAG}" ]; then
-    log "Because -f option was provided, the environment will be destroyed without manual confirmation"
-  else
     read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
     case $yn in
         Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
@@ -95,13 +93,15 @@ confirm_action() {
         * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
     esac
     echo
+  else
+    log "Because -f option was provided, the environment will be destroyed without manual confirmation"
   fi
 }
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure uninstall is started using '${CONFIG_ABS_PATH##*/}'."
-  source "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
 }
 
 

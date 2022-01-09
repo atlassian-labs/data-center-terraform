@@ -39,7 +39,7 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  export FORCE_FLAG=
+  FORCE_FLAG=
   while getopts hf?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
@@ -131,7 +131,7 @@ generate_terraform_backend_variables() {
 
   log "Terraform state backend/variable files are not created yet."
 
-  sh "${SCRIPT_PATH}/generate-variables.sh" "-c" "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
   S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
@@ -194,7 +194,10 @@ set_current_context_k8s() {
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
-    aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
+    # No need to update Kubernetes context when run by e2e test
+    if [ -z "${FORCE_FLAG}" ]; then
+      aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
+    fi
   else
     log "Kubernetes context file '${CONTEXT_FILE}' could not be found."
   fi
