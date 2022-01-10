@@ -85,6 +85,7 @@ verify_configuration_file() {
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  REGION=$(grep 'region' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   # check license and admin password
   export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
