@@ -121,7 +121,7 @@ verify_configuration_file() {
   fi
 
   if [ -n "${HAS_VALIDATION_ERR}" ]; then
-    log "There was a problem with the configuration file. Aborting execution" "ERROR"
+    log "There was a problem with the configuration file. Execution is aborted." "ERROR"
     exit 1
   fi
 }
@@ -130,7 +130,7 @@ verify_configuration_file() {
 generate_terraform_backend_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
-  log "Terraform state backend/variable files are not created yet."
+  log "Terraform state backend/variable files are to be created."
 
   sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
   S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
