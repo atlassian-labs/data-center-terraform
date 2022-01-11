@@ -2,7 +2,7 @@
 
 ## Release naming
 
-Each product version is [semantically versioned](https://semver.org/){.external}. Version names are defined by the following pattern: `vMAJOR.MINOR.PATCH`, e.g. `v1.2.3`. 
+Each product version is [semantically versioned](https://semver.org/){.external}. Version names are defined by the following pattern: `MAJOR.MINOR.PATCH`, e.g. `1.2.3`. 
 
 ## Release versions
 
