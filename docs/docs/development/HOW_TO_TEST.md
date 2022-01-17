@@ -84,6 +84,7 @@ go test ./unittest/... -v
 End-to-end tests take approx. 40–60 min. to complete To run end-to-end tests, use the following commands:
 
 ```shell
+export TF_VAR_bamboo_license='<bamboo-license>'
 cd test && mkdir ./e2etest/artifacts
 go get -v -t -d ./... && go mod tidy
 go test ./e2etest -v -timeout 40m -run Bamboo | tee ./e2etest/artifacts/e2e-test.log

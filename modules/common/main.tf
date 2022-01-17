@@ -1,11 +1,11 @@
 module "vpc" {
-  source = "../../modules/AWS/vpc"
+  source = "../AWS/vpc"
 
   vpc_name = local.vpc_name
 }
 
 module "eks" {
-  source = "../../modules/AWS/eks"
+  source = "../AWS/eks"
 
   cluster_name = local.cluster_name
 
@@ -17,7 +17,7 @@ module "eks" {
 }
 
 module "efs" {
-  source = "../../modules/AWS/efs"
+  source = "../AWS/efs"
 
   efs_name                     = local.efs_name
   region_name                  = var.region_name
@@ -29,7 +29,7 @@ module "efs" {
 module "ingress" {
   count = local.ingress_domain != null ? 1 : 0
 
-  source     = "../../modules/AWS/ingress"
+  source     = "../AWS/ingress"
   depends_on = [module.eks]
 
   # inputs

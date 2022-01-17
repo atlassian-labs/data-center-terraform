@@ -7,7 +7,7 @@
 set -e
 set -o pipefail
 ROOT_PATH=$(cd $(dirname "${0}"); pwd)
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-install_$(date '+%Y-%m-%d_%H-%M-%S').log"
 LOG_TAGGING="${ROOT_PATH}/logs/terraform-dc-asg-tagging_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
@@ -39,10 +39,12 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  while getopts h?c: name ; do
+  FORCE_FLAG=
+  while getopts hf?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
+      f)    FORCE_FLAG="-f";;
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -83,6 +85,7 @@ verify_configuration_file() {
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
   set -e
   ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  REGION=$(grep 'region' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
 
   # check license and admin password
   export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
@@ -118,17 +121,19 @@ verify_configuration_file() {
   fi
 
   if [ -n "${HAS_VALIDATION_ERR}" ]; then
-    log "There was a problem with the configuration file. Aborting execution" "ERROR"
+    log "There was a problem with the configuration file. Execution is aborted." "ERROR"
     exit 1
   fi
 }
 
-# Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf using the content of local.tf and current aws account
+# Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
-  log "Terraform state backend/variable files are not created yet."
-  source "${SCRIPT_PATH}/generate-variables.sh" "${CONFIG_ABS_PATH}"
+  log "Terraform state backend/variable files are to be created."
+
+  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -139,7 +144,7 @@ create_tfstate_resources() {
     mkdir "${ROOT_PATH}/logs"
   fi
   touch "${LOG_FILE}"
-  local STATE_FOLDER="${SCRIPT_PATH}/../tfstate"
+  local STATE_FOLDER="${ROOT_PATH}/modules/tfstate"
   set +e
   aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
   S3_BUCKET_EXISTS=$?
@@ -154,7 +159,7 @@ create_tfstate_resources() {
       terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
     fi
     terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
-    sleep 5s
+    sleep 5
   fi
 }
 
@@ -167,12 +172,13 @@ create_update_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   terraform -chdir="${ROOT_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" output -json > outputs.json
 }
 
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
   log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
-  TAG_MODULE_PATH="${SCRIPT_PATH}/../modules/AWS/asg_ec2_tagging"
+  TAG_MODULE_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
   terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
@@ -189,7 +195,10 @@ set_current_context_k8s() {
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
-    aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
+    # No need to update Kubernetes context when run by e2e test
+    if [ -z "${FORCE_FLAG}" ]; then
+      aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
+    fi
   else
     log "Kubernetes context file '${CONTEXT_FILE}' could not be found."
   fi
@@ -201,7 +210,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-# Generates ./terraform-backend.tf and ./pkg/tfstate/tfstate-local.tf
+# Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf
 generate_terraform_backend_variables
 
 # Create S3 bucket and dynamodb table to keep state

@@ -7,10 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const eksModule = "AWS/eks"
+
 func TestEksVariablesNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(nil, t, "eks")
+	tfOptions := GenerateTFOptions(nil, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -26,7 +28,7 @@ func TestEksVariablesNotProvided(t *testing.T) {
 func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksWithValidValues, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithValidValues, t, eksModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -46,7 +48,7 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 func TestEksClusterNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksWithInvalidClusterName, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithInvalidClusterName, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -57,7 +59,7 @@ func TestEksClusterNameInvalid(t *testing.T) {
 func TestEksDesiredCapacityOverLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksWithDesiredCapacityOverLimit, t, "eks")
+	tfOptions := GenerateTFOptions(EksWithDesiredCapacityOverLimit, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -68,7 +70,7 @@ func TestEksDesiredCapacityOverLimit(t *testing.T) {
 func TestEksDesiredCapacityUnderLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksDesiredCapacityUnderLimit, t, "eks")
+	tfOptions := GenerateTFOptions(EksDesiredCapacityUnderLimit, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 

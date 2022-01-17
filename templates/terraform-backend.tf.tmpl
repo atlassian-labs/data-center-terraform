@@ -5,7 +5,7 @@ terraform {
   backend "s3" {
     region         = "<REGION>"
     dynamodb_table = "<DYNAMODB_TABLE>"
-    bucket         =  "<BUCKET_NAME>"
+    bucket         = "<BUCKET_NAME>"
     key            = "<BUCKET_KEY>/terraform.tfstate"
   }
 }

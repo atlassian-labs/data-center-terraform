@@ -130,9 +130,6 @@ func assertIngressAccess(t *testing.T, product string, environment string, domai
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
 	content := GetPageContent(t, url)
 	expectedContent := "Time for an agent!"
-	content, err := io.ReadAll(get.Body)
-
-	assert.NoError(t, err, "Error reading response body")
 	assert.Contains(t, string(content), expectedContent)
 }
 
@@ -253,7 +250,7 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 			"bamboo_admin_email_address": "test",
 		},
 		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
-		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
+		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/modules/AWS/asg_ec2_tagging",
 	}
 
 	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)
