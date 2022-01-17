@@ -119,6 +119,7 @@ func createConfig(t *testing.T) TestConfig {
 	testConfig.ConfigPath = filePath
 	return testConfig
 }
+
 func resumeServer(t *testing.T, testConfig TestConfig) {
 	resumeUrl := "rest/api/latest/server/resume"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
