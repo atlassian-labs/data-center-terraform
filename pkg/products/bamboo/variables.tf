@@ -79,12 +79,48 @@ variable "admin_email_address" {
   type        = string
 }
 
-variable "number_of_agents" {
-  description = "Number of remote agents."
-  type        = number
-}
-
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
+}
+
+variable "bamboo_cpu" {
+  description = "Number of CPUs for Bamboo instance"
+  type        = string
+  default     = "1"
+}
+
+variable "bamboo_mem" {
+  description = "Amount of memory for Bamboo instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bamboo_min_heap" {
+  description = "Minimum heap size for Bamboo instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "bamboo_max_heap" {
+  description = "Maximum heap size for Bamboo instance"
+  type        = string
+  default     = "512m"
+}
+
+variable "bamboo_agent_cpu" {
+  description = "Number of CPUs for Bamboo agent instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "bamboo_agent_mem" {
+  description = "Amount of memory for Bamboo agent instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "number_of_agents" {
+  description = "Number of remote agents."
+  type        = number
 }

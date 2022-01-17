@@ -5,6 +5,18 @@ locals {
   bamboo_helm_chart_version = "1.0.0"
   agent_helm_chart_version  = "1.0.0"
 
+  bamboo_software_resources = {
+    "minHeap" : var.bamboo_min_heap
+    "maxHeap" : var.bamboo_max_heap
+    "cpu" : var.bamboo_cpu
+    "mem" : var.bamboo_mem
+  }
+
+  bamboo_agent_resources = {
+    "cpu" : var.bamboo_agent_cpu
+    "mem" : var.bamboo_agent_mem
+  }
+
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
   # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration
