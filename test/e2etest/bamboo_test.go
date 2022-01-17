@@ -289,3 +289,12 @@ func GetPageContent(t *testing.T, url string) []byte {
 	assert.NoError(t, err, "Error reading response body")
 	return content
 }
+
+//PostPageContent performs a post request the given content using the given url
+func PostPageContent(t *testing.T, url string, contentType string, body io.Reader) {
+	resp, err := http.Post(url, contentType, body)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer resp.Body.Close()
+
+	assert.NoError(t, err, "Error reading response body")
+}
