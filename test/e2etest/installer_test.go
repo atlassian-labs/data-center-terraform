@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	license       = "AAABpQ0ODAoPeNqNkkuPmzAQgO/+FUi9tAc22Ks8GgmpWaBaJEjSgJIechnYCbEChhhDl/76Eh77qLpSb56xNf7mm/kUVqjZGGuMaowtjemSzjQrCDVmMEou2OxRljwXJp0ZxtxY3N9TEkEW5fmdx2MUJTpPXN0eOOvQ2W13buAQKxcKYrWGDE2RnOE3pDxCfklBfgOVQllyEHdxno2l1lUWodycHrrQy2NIVwkKVZr6y3c2KLDaHEpTyQrJtpLxGUps82jeaHXKdMbIiPVccNmMl0w3qN42NJA5PvD0/9Da17zG/st/0u4wyxUOuNQwDJL2BI9Qnk3f+mV9f7heJvVPZFfmJjXdxrwowseZv1dOvTr/KDKu/MN1MvHSA2+ckz392hz2TwsRJUfzaJKgispY8qKz/DHHNgXx1tfgIWwK7AZhbXzf2VnuyiNt961HASL+QNNQIlAgb75PkJY4inVt03PtwFnrHp0vFvP5lJI2Mt9nNjIBwUvooF/EEktil/p7aIOycdkYsfG1574/7fNtA7R+Bb4cl5pTQ1p11cjrsRf0B+Xc9r8wLQIUUb4wT0tppQ8pz5X9sFHg6Wu8ebwCFQCNX4pcExadZwH/e1nVGkrb3Giv5A==X02kc"
+	license       = ""
 	resourceOwner = "abrokes"
 	credential    = "admin:Atlassian21!"  // Admin credential 'username:password'
 	product 	  = "bamboo"
