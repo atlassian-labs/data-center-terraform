@@ -27,10 +27,19 @@ func TestInstaller(t *testing.T) {
 
 	// Tests come here
 
+	// Test the plans
+	assertPlanListEndpoint(t, testConfig)
+
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
 }
 
+func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
+	planUrl := "rest/api/latest/plan"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
+	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	assert.Contains(t,content, "TestPlan")
+}
 
 // TODO remove duplication
 func runInstallScript(configPath string) {
