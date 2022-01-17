@@ -27,10 +27,19 @@ func TestInstaller(t *testing.T) {
 
 	// Tests come here
 
+	// Test the number of online remote agents
+	assertRemoteAgentList(t, testConfig)
+
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
 }
 
+func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
+	agentUrl := "admin/agent/configureAgents!doDefault.action"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
+	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	assert.Contains(t,content, "There are currently 3 remote agents online.")
+}
 
 // TODO remove duplication
 func runInstallScript(configPath string) {
