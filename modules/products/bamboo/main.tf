@@ -59,7 +59,7 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pv
 }
 
 module "database" {
-  source = "../../modules/AWS/rds"
+  source = "../../AWS/rds"
 
   product           = local.product_name
   rds_instance_id   = local.rds_instance_name

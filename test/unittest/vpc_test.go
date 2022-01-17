@@ -10,7 +10,7 @@ import (
 func TestVpcNameNotProvided(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithoutName, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithoutName, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -32,7 +32,7 @@ func TestVpcNameCustomised(t *testing.T) {
 func TestVpcNameInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithInvalidName, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithInvalidName, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -53,7 +53,7 @@ func TestVpcDefaultCidrBlock(t *testing.T) {
 func TestVpcCidrBlockInvalid(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithInvalidCidr, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithInvalidCidr, t, VpcModulePath)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
@@ -86,7 +86,7 @@ func TestVpcDefaultPrivateSubnets(t *testing.T) {
 func TestVpcCidrAndSubnetsCustomised(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(VpcWithCustomisedCidr, t, "vpc")
+	tfOptions := GenerateTFOptions(VpcWithCustomisedCidr, t, VpcModulePath)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 

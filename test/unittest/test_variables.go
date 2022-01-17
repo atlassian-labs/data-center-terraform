@@ -24,10 +24,12 @@ var VpcWithInvalidCidr = map[string]interface{}{
 	"vpc_cidr": "10.0.0.0/0",
 }
 
-var VpcDefaultModuleVarialbe = map[string]interface{}{
+var VpcDefaultModuleVariable = map[string]interface{}{
 	"vpc_id":                      "dummy_vpc_id",
 	"private_subnets":             []interface{}{"subnet1", "subnet2"},
 	"private_subnets_cidr_blocks": []interface{}{"10.0.0.0/22", "10.0.4.0/22"},
+	"public_subnets":              []interface{}{"subnet1-pub", "subnet2-pub"},
+	"public_subnets_cidr_blocks":  []interface{}{"111.0.0.0/22", "111.0.4.0/22"},
 }
 
 // EKS
@@ -85,7 +87,7 @@ var EfsValidVariable = map[string]interface{}{
 	"efs_name":                     "test-efs",
 	"region_name":                  "us-east-1",
 	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVarialbe,
+	"vpc":                          VpcDefaultModuleVariable,
 	"csi_controller_replica_count": 1,
 }
 
@@ -93,12 +95,12 @@ var EfsInvalidVariable = map[string]interface{}{
 	"efs_name":                     "test-efs",
 	"region_name":                  "invalid-region",
 	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVarialbe,
+	"vpc":                          VpcDefaultModuleVariable,
 	"csi_controller_replica_count": 1,
 }
 
 // DB
-const databaseModule = "rds"
+const databaseModule = "AWS/rds"
 const inputVpcId = "dummy_vpc_id"
 
 var inputSubnets = []interface{}{"subnet1", "subnet2"}

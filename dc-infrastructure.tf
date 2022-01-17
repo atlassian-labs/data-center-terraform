@@ -1,5 +1,5 @@
 module "base-infrastructure" {
-  source = "./pkg/products/common"
+  source = "./modules/common"
 
   region_name      = var.region
   environment_name = var.environment_name
@@ -10,7 +10,7 @@ module "base-infrastructure" {
 }
 
 module "bamboo" {
-  source = "./pkg/products/bamboo"
+  source = "./modules/products/bamboo"
 
   region_name          = var.region
   environment_name     = var.environment_name

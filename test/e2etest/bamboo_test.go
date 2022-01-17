@@ -128,18 +128,8 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
-	fmt.Printf("testing url: %s", url)
-	get, err := http.Get(url)
-	require.NoError(t, err, "Error accessing url: %s", url)
-
-	defer get.Body.Close()
-
-	assert.Equal(t, 200, get.StatusCode)
-
+	content := GetPageContent(t, url)
 	expectedContent := "Time for an agent!"
-	content, err := io.ReadAll(get.Body)
-
-	assert.NoError(t, err, "Error reading response body")
 	assert.Contains(t, string(content), expectedContent)
 }
 
@@ -248,9 +238,10 @@ func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 	AsgEc2taggingModuleTfConfig := TerraformConfig{
 		Variables: map[string]interface{}{
-			"region":        environmentConfig.TerraformConfig.Variables["region"],
-			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
-			"state_type":    "local",
+			"region":           environmentConfig.TerraformConfig.Variables["region"],
+			"resource_tags":    environmentConfig.TerraformConfig.Variables["resource_tags"],
+			"environment_name": environmentConfig.TerraformConfig.Variables["environment_name"],
+			"state_type":       "local",
 			// dummy variables to pass end to end tests
 			"bamboo_license":             "test",
 			"bamboo_admin_username":      "test",
@@ -259,7 +250,7 @@ func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 			"bamboo_admin_email_address": "test",
 		},
 		EnvVariables: environmentConfig.TerraformConfig.EnvVariables,
-		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/pkg/modules/AWS/asg_ec2_tagging",
+		TestFolder:   environmentConfig.TerraformConfig.TestFolder + "/modules/AWS/asg_ec2_tagging",
 	}
 
 	taggingModuletfOption := GenerateTerraformOptions(AsgEc2taggingModuleTfConfig, t)

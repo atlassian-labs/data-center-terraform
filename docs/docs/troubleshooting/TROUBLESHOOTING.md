@@ -9,17 +9,17 @@ If you installed an environment and then changed any mandatory configuration set
 
 To clean up local Terraform files, run the following command:
 ```shell
-./pkg/scripts/cleanup.sh -t
+./scripts/cleanup.sh -t
 ```
 
 To clean up locally generated variable files, run the following command:
 ```shell
-./pkg/scripts/cleanup.sh -s
+./scripts/cleanup.sh -s
 ```
 !!! tip
     You can clean up both the local Terraform files and locally generated variable files by using the '-t' and '-s' switches in one command:
     ```shell
-    ./pkg/scripts/cleanup.sh -s -t
+    ./scripts/cleanup.sh -s -t
     ```
 
 !!! info 
@@ -117,6 +117,6 @@ terraform force-unlock <ID>
 Where '<ID>' is the value that appears in the error message.
 
 !!! hint "Are you still having the lock problem after running `terraform force-unlock`?"
-    There are two Terraform locks—one for the infrastructure and another for Terraform state. If running the following command from the repository directory does not unlock the resources, change the directory to `./pkg/tfstate` and retry the same command.
+    There are two Terraform locks—one for the infrastructure and another for Terraform state. If running the following command from the repository directory does not unlock the resources, change the directory to `./modules/tfstate` and retry the same command.
 
 

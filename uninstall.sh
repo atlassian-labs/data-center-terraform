@@ -8,7 +8,7 @@
 set -e
 set -o pipefail
 ROOT_PATH=$(cd $(dirname "${0}"); pwd)
-SCRIPT_PATH="${ROOT_PATH}/pkg/scripts"
+SCRIPT_PATH="${ROOT_PATH}/scripts"
 LOG_FILE="${ROOT_PATH}/logs/terraform-dc-uninstall_$(date '+%Y-%m-%d_%H-%M-%S').log"
 ENVIRONMENT_NAME=
 OVERRIDE_CONFIG_FILE=
@@ -38,11 +38,13 @@ EOF
   CONFIG_FILE=
   HELP_FLAG=
   CLEAN_TFSTATE=
-  while getopts th?c: name ; do
+  FORCE_FLAG=
+  while getopts thf?c: name ; do
       case $name in
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
+      f)  FORCE_FLAG="-f";;         # Force uninstall
       ?)  log "Invalid arguments." "ERROR"; show_help
       esac
   done
@@ -83,19 +85,23 @@ confirm_action() {
   log "Please make sure you have made a backup of your valuable data before proceeding."
   echo
 
-  read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
-  case $yn in
-      Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-      No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit;;
-      * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
-  esac
-  echo
+  if [ -z "${FORCE_FLAG}" ]; then
+    read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
+    case $yn in
+        Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
+        No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit;;
+        * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
+    esac
+    echo
+  else
+    log "Because -f option was provided, the environment will be destroyed without manual confirmation"
+  fi
 }
 
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure uninstall is started using '${CONFIG_ABS_PATH##*/}'."
-  source "${SCRIPT_PATH}/generate-variables.sh" ${CONFIG_ABS_PATH}
+  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
 }
 
 
@@ -129,14 +135,14 @@ destroy_tfstate() {
   echo
   log "Attempting to remove terraform backend."
   echo
-  TF_STATE_FILE="${ROOT_PATH}/pkg/tfstate/tfstate-locals.tf"
+  TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
     S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
     DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
 
-    local TFSTATE_FOLDER="${ROOT_PATH}/pkg/tfstate"
+    local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
     S3_BUCKET_EXISTS=$?
