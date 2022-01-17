@@ -128,14 +128,7 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
-	fmt.Printf("testing url: %s", url)
-	get, err := http.Get(url)
-	require.NoError(t, err, "Error accessing url: %s", url)
-
-	defer get.Body.Close()
-
-	assert.Equal(t, 200, get.StatusCode)
-
+	content := GetPageContent(t, url)
 	expectedContent := "Time for an agent!"
 	content, err := io.ReadAll(get.Body)
 
@@ -248,9 +241,10 @@ func getVpcOutput(t *testing.T, tfOptions *terraform.Options) VpcOutput {
 func tagAsgResources(t *testing.T, environmentConfig EnvironmentConfig) {
 	AsgEc2taggingModuleTfConfig := TerraformConfig{
 		Variables: map[string]interface{}{
-			"region":        environmentConfig.TerraformConfig.Variables["region"],
-			"resource_tags": environmentConfig.TerraformConfig.Variables["resource_tags"],
-			"state_type":    "local",
+			"region":           environmentConfig.TerraformConfig.Variables["region"],
+			"resource_tags":    environmentConfig.TerraformConfig.Variables["resource_tags"],
+			"environment_name": environmentConfig.TerraformConfig.Variables["environment_name"],
+			"state_type":       "local",
 			// dummy variables to pass end to end tests
 			"bamboo_license":             "test",
 			"bamboo_admin_username":      "test",
@@ -278,3 +272,24 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 		assert.Equal(t, true, pod.Status.ContainerStatuses[0].Ready)
 	}
 }
+
+func assertRestoredDataset(t *testing.T, product string, environment string, domain string) {
+	url := fmt.Sprintf("https://%s.%s.%s/allProjects.action", product, environment, domain)
+	content := GetPageContent(t, url)
+	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
+	assert.Contains(t, string(content), "totalRecords: 1")
+}
+
+//GetPageContent returns the content of the page at the given url
+func GetPageContent(t *testing.T, url string) []byte {
+	get, err := http.Get(url)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer get.Body.Close()
+
+	assert.Equal(t, 200, get.StatusCode)
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	return content
+}
+

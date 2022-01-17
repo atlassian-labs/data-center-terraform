@@ -50,8 +50,7 @@ func GenerateConfigForProductE2eTest(t *testing.T, product string, customConfigF
 
 func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion string) EnvironmentConfig {
 	testResourceOwner := "terraform_e2e_test"
-	testId := strings.ToLower(random.UniqueId())
-	environmentName := "e2etest-" + testId
+	environmentName := EnvironmentName()
 	domain := "deplops.com"
 	terraformConfig := TerraformConfig{
 		Variables: map[string]interface{}{
@@ -71,6 +70,7 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 			"bamboo_admin_display_name":  "Admin",
 			"bamboo_admin_email_address": "admin@foo.com",
 			"number_of_bamboo_agents":    bambooAgentCount,
+			"dataset_url":                "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip",
 		},
 		EnvVariables: map[string]string{
 			"AWS_DEFAULT_REGION": awsRegion,
@@ -89,6 +89,12 @@ func GenerateNewConfigForProductE2eTest(t *testing.T, product string, awsRegion 
 		KubectlConfig:   kubectlConfig,
 		EnvironmentName: environmentName,
 	}
+}
+
+func EnvironmentName() string {
+	testId := strings.ToLower(random.UniqueId())
+	environmentName := "e2etest-" + testId
+	return environmentName
 }
 
 func LoadConfigForProductE2eTest(t *testing.T, customConfigFilename string) EnvironmentConfig {
