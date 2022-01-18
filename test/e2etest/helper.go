@@ -3,9 +3,11 @@ package e2etest
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -277,4 +279,22 @@ func CopyFile(src, dst string) (err error) {
 	}
 
 	return
+}
+
+func getPageContent(t *testing.T, url string) []byte {
+	get, err := http.Get(url)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer get.Body.Close()
+
+	assert.Equal(t, 200, get.StatusCode)
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	return content
+}
+
+func sendPostRequest(t *testing.T, url string, contentType string, body io.Reader) {
+	resp, err := http.Post(url, contentType, body)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer resp.Body.Close()
 }

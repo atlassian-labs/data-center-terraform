@@ -5,8 +5,6 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
-	"io"
-	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -270,21 +268,63 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 	}
 }
 
-//GetPageContent returns the content of the page at the given url
-func getPageContent(t *testing.T, url string) []byte {
-	get, err := http.Get(url)
-	require.NoError(t, err, "Error accessing url: %s", url)
-	defer get.Body.Close()
 
-	assert.Equal(t, 200, get.StatusCode)
-	content, err := io.ReadAll(get.Body)
+func bambooHealthTests(t *testing.T, testConfig TestConfig) {
+	// Test the PAUSE status
+	pauseBambooServer(t, testConfig)
+	assertStatusEndpoint(t, testConfig, "PAUSED")
 
-	assert.NoError(t, err, "Error reading response body")
-	return content
+	// Test the RUNNING status
+	resumeBambooServer(t, testConfig)
+	assertStatusEndpoint(t, testConfig, "RUNNING")
+
+	// Test Restored Dataset
+	assertPlanListEndpoint(t, testConfig)
+	assertBambooProjects(t, testConfig)
+
+	// Test online remote agents
+	assertRemoteAgentList(t, testConfig)
 }
 
-func sendPostRequest(t *testing.T, url string, contentType string, body io.Reader) {
-	resp, err := http.Post(url, contentType, body)
-	require.NoError(t, err, "Error accessing url: %s", url)
-	defer resp.Body.Close()
+func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
+	statusUrl := "rest/api/latest/status"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+	content := fmt.Sprintf("%s", getPageContent(t, url))
+	assert.Contains(t,content, expectedStatus)
+}
+
+func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
+	planUrl := "rest/api/latest/plan"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
+	content := fmt.Sprintf("%s", getPageContent(t, url))
+	assert.Contains(t, content, "TestPlan")
+}
+
+func assertBambooProjects(t *testing.T, testConfig TestConfig) {
+	projUrl := "allProjects.action"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
+	content := getPageContent(t, url)
+	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
+	assert.Contains(t, string(content), "totalRecords: 1")
+}
+
+func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
+	agentUrl := "admin/agent/configureAgents!doDefault.action"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
+	content := fmt.Sprintf("%s", getPageContent(t, url))
+	assert.Contains(t, content, "There are currently 3 remote agents online.")
+}
+
+func resumeBambooServer(t *testing.T, testConfig TestConfig) {
+	resumeUrl := "rest/api/latest/server/resume"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
+
+	sendPostRequest(t, url, "application/json", nil)
+}
+
+func pauseBambooServer(t *testing.T, testConfig TestConfig) {
+	pauseUrl := "rest/api/latest/server/pause"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, pauseUrl)
+
+	sendPostRequest(t, url, "application/json", nil)
 }
