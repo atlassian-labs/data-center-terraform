@@ -278,7 +278,7 @@ func assertRestoredDataset(t *testing.T, product string, environment string, dom
 }
 
 //GetPageContent returns the content of the page at the given url
-func GetPageContent(t *testing.T, url string) []byte {
+func getPageContent(t *testing.T, url string) []byte {
 	get, err := http.Get(url)
 	require.NoError(t, err, "Error accessing url: %s", url)
 	defer get.Body.Close()
@@ -290,11 +290,8 @@ func GetPageContent(t *testing.T, url string) []byte {
 	return content
 }
 
-//PostPageContent performs a post request the given content using the given url
-func PostPageContent(t *testing.T, url string, contentType string, body io.Reader) {
+func sendPostRequest(t *testing.T, url string, contentType string, body io.Reader) {
 	resp, err := http.Post(url, contentType, body)
 	require.NoError(t, err, "Error accessing url: %s", url)
 	defer resp.Body.Close()
-
-	assert.NoError(t, err, "Error reading response body")
 }

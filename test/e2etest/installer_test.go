@@ -40,7 +40,7 @@ func TestInstaller(t *testing.T) {
 func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
-	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	content := fmt.Sprintf("%s", getPageContent(t, url))
 	assert.Contains(t,content, expectedStatus)
 }
 
@@ -124,13 +124,13 @@ func resumeServer(t *testing.T, testConfig TestConfig) {
 	resumeUrl := "rest/api/latest/server/resume"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
 
-	PostPageContent(t, url, "application/json", nil)
+	sendPostRequest(t, url, "application/json", nil)
 }
 
 func pauseServer(t *testing.T, testConfig TestConfig) {
 	pauseUrl := "rest/api/latest/server/pause"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, pauseUrl)
 
-	PostPageContent(t, url, "application/json", nil)
+	sendPostRequest(t, url, "application/json", nil)
 }
 
