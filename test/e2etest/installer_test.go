@@ -38,7 +38,7 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
 	content := fmt.Sprintf("%s", GetPageContent(t, url))
-	assert.Contains(t,content, "There are currently 3 remote agents online.")
+	assert.Contains(t, content, "There are currently 3 remote agents online.")
 }
 
 // TODO remove duplication
