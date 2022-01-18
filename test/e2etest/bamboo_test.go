@@ -128,7 +128,7 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
-	content := GetPageContent(t, url)
+	content := getPageContent(t, url)
 	expectedContent := "Time for an agent!"
 	assert.Contains(t, string(content), expectedContent)
 }
@@ -272,7 +272,7 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 
 func assertRestoredDataset(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s/allProjects.action", product, environment, domain)
-	content := GetPageContent(t, url)
+	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
 }
