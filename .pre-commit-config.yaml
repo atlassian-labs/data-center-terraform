@@ -5,3 +5,7 @@ repos:
       - id: terraform-fmt
       - id: terraform-validate
       - id: tflint
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.43.0
+    hooks:
+      - id: golangci-lint
