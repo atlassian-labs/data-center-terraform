@@ -20,10 +20,10 @@ import (
 
 const (
 	license       = ""
-	resourceOwner = "abrokes"
+	resourceOwner = "dc-deployment"
 	credential    = "admin:Atlassian21!"  // Admin credential 'username:password'
-	product 	  = "bamboo"
-	domain  	  = "deplops.com"
+	product       = "bamboo"
+	domain        = "deplops.com"
 )
 
 type TestConfig struct {
