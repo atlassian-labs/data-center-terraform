@@ -10,14 +10,14 @@ func TestInstaller(t *testing.T) {
 
 	testConfig := createConfig(t)
 
+	// Schedule uninstall and cleanup the environment
+	defer runUninstallScript(testConfig.ConfigPath)
+
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
 	// Run bamboo health tests
 	bambooHealthTests(t, testConfig)
-
-	// Uninstall and cleanup the environment
-	runUninstallScript(testConfig.ConfigPath)
 }
 
 func runInstallScript(configPath string) {
