@@ -1,8 +1,6 @@
 package e2etest
 
 import (
-	"fmt"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -25,55 +23,13 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
-	// Test the PAUSE status
-	pauseServer(t, testConfig)
-	assertStatusEndpoint(t, testConfig, "PAUSED")
-
-	// Test the RUNNING status
-	resumeServer(t, testConfig)
-	assertStatusEndpoint(t, testConfig, "RUNNING")
-
-  // Test Restored Dataset
-  assertPlanListEndpoint(t, testConfig)
-	assertBambooProjects(t, testConfig)
-  
-	// Test online remote agents
-	assertRemoteAgentList(t, testConfig)
+	// Run bamboo health tests
+	bambooHealthTests(t, testConfig)
 
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
 }
 
-func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
-	statusUrl := "rest/api/latest/status"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t,content, expectedStatus)
-}
-
-func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
-	planUrl := "rest/api/latest/plan"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t, content, "TestPlan")
-}
-
-func assertBambooProjects(t *testing.T, testConfig TestConfig) {
-	projUrl := "allProjects.action"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
-	content := getPageContent(t, url)
-	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
-	assert.Contains(t, string(content), "totalRecords: 1")
-}
-
-func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
-	agentUrl := "admin/agent/configureAgents!doDefault.action"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t, content, "There are currently 3 remote agents online.")
-}
-
-// TODO remove duplication
 func runInstallScript(configPath string) {
 	cmd := &exec.Cmd{
 		Path:   "install.sh",
@@ -84,10 +40,10 @@ func runInstallScript(configPath string) {
 	}
 
 	// run `cmd` in background
-	cmd.Start()
+	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	cmd.Wait()
+	_ = cmd.Wait()
 }
 
 func runUninstallScript(configPath string) {
@@ -100,10 +56,10 @@ func runUninstallScript(configPath string) {
 	}
 
 	// run `cmd` in background
-	cmd.Start()
+	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	cmd.Wait()
+	_ = cmd.Wait()
 }
 
 type TestConfig struct {
@@ -147,19 +103,5 @@ func createConfig(t *testing.T) TestConfig {
 
 	testConfig.ConfigPath = filePath
 	return testConfig
-}
-
-func resumeServer(t *testing.T, testConfig TestConfig) {
-	resumeUrl := "rest/api/latest/server/resume"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
-
-	sendPostRequest(t, url, "application/json", nil)
-}
-
-func pauseServer(t *testing.T, testConfig TestConfig) {
-	pauseUrl := "rest/api/latest/server/pause"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, pauseUrl)
-
-	sendPostRequest(t, url, "application/json", nil)
 }
 
