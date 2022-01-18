@@ -54,14 +54,14 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
-	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	content := fmt.Sprintf("%s", getPageContent(t, url))
 	assert.Contains(t, content, "TestPlan")
 }
 
 func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 	projUrl := "allProjects.action"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
-	content := GetPageContent(t, url)
+	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
 }
@@ -69,7 +69,7 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
-	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	content := fmt.Sprintf("%s", getPageContent(t, url))
 	assert.Contains(t, content, "There are currently 3 remote agents online.")
 }
 
