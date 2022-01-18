@@ -227,10 +227,12 @@ db_iops = 1000
 number_of_bamboo_agents = 50
 ```
 
-!!! warnng "The value should not be greater than the number of allowed agents in your license."
+!!! warning "The value should not be greater than the number of allowed agents in your license."
     Any agents beyond the allowed number won't be able to join the cluster.
 
-
+!!! warning "A valid license is required to install bamboo agents"
+    Bamboo needs a valid license to install remote agents. 
+    
 ## Sensitive Data
 
 Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).

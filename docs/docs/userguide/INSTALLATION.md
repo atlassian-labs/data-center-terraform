@@ -41,7 +41,7 @@ The installation script is located in the root folder of the project.
 Usage:  
 
 ```shell
-./install.sh [-c <config-file] [-h]
+./install.sh [-c <config-file>] [-h]
 ```
 
 The following options are available:
