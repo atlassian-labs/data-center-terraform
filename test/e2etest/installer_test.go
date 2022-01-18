@@ -25,7 +25,13 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
-	// Tests come here
+	// Test the PAUSE status
+	pauseServer(t, testConfig)
+	assertStatusEndpoint(t, testConfig, "PAUSED")
+
+	// Test the RUNNING status
+	resumeServer(t, testConfig)
+	assertStatusEndpoint(t, testConfig, "RUNNING")
 
 	// Test the plans
 	assertPlanListEndpoint(t, testConfig)
@@ -34,6 +40,13 @@ func TestInstaller(t *testing.T) {
 
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
+}
+
+func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
+	statusUrl := "rest/api/latest/status"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+	content := fmt.Sprintf("%s", getPageContent(t, url))
+	assert.Contains(t,content, expectedStatus)
 }
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
@@ -126,3 +139,18 @@ func createConfig(t *testing.T) TestConfig {
 	testConfig.ConfigPath = filePath
 	return testConfig
 }
+
+func resumeServer(t *testing.T, testConfig TestConfig) {
+	resumeUrl := "rest/api/latest/server/resume"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
+
+	sendPostRequest(t, url, "application/json", nil)
+}
+
+func pauseServer(t *testing.T, testConfig TestConfig) {
+	pauseUrl := "rest/api/latest/server/pause"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, pauseUrl)
+
+	sendPostRequest(t, url, "application/json", nil)
+}
+

@@ -128,7 +128,7 @@ func assertBambooPod(t *testing.T, kubectlOptions *k8s.KubectlOptions, product s
 
 func assertIngressAccess(t *testing.T, product string, environment string, domain string) {
 	url := fmt.Sprintf("https://%s.%s.%s", product, environment, domain)
-	content := GetPageContent(t, url)
+	content := getPageContent(t, url)
 	expectedContent := "Time for an agent!"
 	assert.Contains(t, string(content), expectedContent)
 }
@@ -271,7 +271,7 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 }
 
 //GetPageContent returns the content of the page at the given url
-func GetPageContent(t *testing.T, url string) []byte {
+func getPageContent(t *testing.T, url string) []byte {
 	get, err := http.Get(url)
 	require.NoError(t, err, "Error accessing url: %s", url)
 	defer get.Body.Close()
@@ -281,4 +281,10 @@ func GetPageContent(t *testing.T, url string) []byte {
 
 	assert.NoError(t, err, "Error reading response body")
 	return content
+}
+
+func sendPostRequest(t *testing.T, url string, contentType string, body io.Reader) {
+	resp, err := http.Post(url, contentType, body)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer resp.Body.Close()
 }
