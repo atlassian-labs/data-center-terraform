@@ -231,7 +231,7 @@ number_of_bamboo_agents = 50
     Any agents beyond the allowed number won't be able to join the cluster.
 
 !!! warning "A valid license is required to install bamboo agents"
-    Bamboo needs a valid license to install remote agents. Set `number_of_bamboo_agents = 0` if you don't provide the license in install time.
+    Bamboo needs a valid license to install remote agents. Set `number_of_bamboo_agents = 0` if you don't provide the license in installation time.
     
 ## Sensitive Data
 
