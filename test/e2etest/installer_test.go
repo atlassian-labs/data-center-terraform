@@ -40,7 +40,7 @@ func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
 	content := fmt.Sprintf("%s", GetPageContent(t, url))
-	assert.Contains(t,content, "TestPlan")
+	assert.Contains(t, content, "TestPlan")
 }
 
 func assertRestoredDataset(t *testing.T, testConfig TestConfig) {
