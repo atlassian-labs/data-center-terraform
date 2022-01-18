@@ -33,6 +33,11 @@ func TestInstaller(t *testing.T) {
 	resumeServer(t, testConfig)
 	assertStatusEndpoint(t, testConfig, "RUNNING")
 
+	// Test the plans
+	assertPlanListEndpoint(t, testConfig)
+
+	assertRestoredDataset(t, testConfig)
+
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
 }
@@ -42,6 +47,21 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := fmt.Sprintf("%s", getPageContent(t, url))
 	assert.Contains(t,content, expectedStatus)
+}
+
+func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
+	planUrl := "rest/api/latest/plan"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
+	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	assert.Contains(t, content, "TestPlan")
+}
+
+func assertRestoredDataset(t *testing.T, testConfig TestConfig) {
+	projUrl := "allProjects.action"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
+	content := GetPageContent(t, url)
+	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
+	assert.Contains(t, string(content), "totalRecords: 1")
 }
 
 // TODO remove duplication

@@ -270,13 +270,6 @@ func assertBambooAgentPod(t *testing.T, kubectlOptions *k8s.KubectlOptions) {
 	}
 }
 
-func assertRestoredDataset(t *testing.T, product string, environment string, domain string) {
-	url := fmt.Sprintf("https://%s.%s.%s/allProjects.action", product, environment, domain)
-	content := getPageContent(t, url)
-	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
-	assert.Contains(t, string(content), "totalRecords: 1")
-}
-
 //GetPageContent returns the content of the page at the given url
 func getPageContent(t *testing.T, url string) []byte {
 	get, err := http.Get(url)
