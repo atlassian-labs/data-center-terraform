@@ -40,7 +40,15 @@ jobs:
         run: |
           go get -v -t -d ./... && go mod tidy
           echo ::set-output name=exit_code::$?
-      
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: latest
+          working-directory: test/
+          # Optional: if set to true then the action will use pre-installed Go.
+          skip-go-installation: true
+
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
