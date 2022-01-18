@@ -289,15 +289,15 @@ func bambooHealthTests(t *testing.T, testConfig TestConfig) {
 func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t,content, expectedStatus)
+	content := getPageContent(t, url)
+	assert.Contains(t, string(content), expectedStatus)
 }
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t, content, "TestPlan")
+	content := getPageContent(t, url)
+	assert.Contains(t, string(content), "TestPlan")
 }
 
 func assertBambooProjects(t *testing.T, testConfig TestConfig) {
@@ -311,8 +311,8 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
-	content := fmt.Sprintf("%s", getPageContent(t, url))
-	assert.Contains(t, content, "There are currently 3 remote agents online.")
+	content :=getPageContent(t, url)
+	assert.Contains(t, string(content), "There are currently 3 remote agents online.")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {

@@ -40,10 +40,10 @@ func runInstallScript(configPath string) {
 	}
 
 	// run `cmd` in background
-	cmd.Start()
+	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	cmd.Wait()
+	_ = cmd.Wait()
 }
 
 func runUninstallScript(configPath string) {
@@ -56,10 +56,10 @@ func runUninstallScript(configPath string) {
 	}
 
 	// run `cmd` in background
-	cmd.Start()
+	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	cmd.Wait()
+	_ = cmd.Wait()
 }
 
 type TestConfig struct {
