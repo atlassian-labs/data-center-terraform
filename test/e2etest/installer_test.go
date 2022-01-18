@@ -33,10 +33,12 @@ func TestInstaller(t *testing.T) {
 	resumeServer(t, testConfig)
 	assertStatusEndpoint(t, testConfig, "RUNNING")
 
-	// Test the plans
-	assertPlanListEndpoint(t, testConfig)
-
-	assertRestoredDataset(t, testConfig)
+  // Test Restored Dataset
+  assertPlanListEndpoint(t, testConfig)
+	assertBambooProjects(t, testConfig)
+  
+	// Test online remote agents
+	assertRemoteAgentList(t, testConfig)
 
 	// Uninstall and cleanup the environment
 	runUninstallScript(testConfig.ConfigPath)
@@ -56,12 +58,19 @@ func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	assert.Contains(t, content, "TestPlan")
 }
 
-func assertRestoredDataset(t *testing.T, testConfig TestConfig) {
+func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 	projUrl := "allProjects.action"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
 	content := GetPageContent(t, url)
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
+}
+
+func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
+	agentUrl := "admin/agent/configureAgents!doDefault.action"
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
+	content := fmt.Sprintf("%s", GetPageContent(t, url))
+	assert.Contains(t, content, "There are currently 3 remote agents online.")
 }
 
 // TODO remove duplication
