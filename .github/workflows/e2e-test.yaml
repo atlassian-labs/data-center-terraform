@@ -40,7 +40,7 @@ jobs:
         run: |
           go get -v -t -d ./... && go mod tidy
           echo ::set-output name=exit_code::$?
-      
+
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 

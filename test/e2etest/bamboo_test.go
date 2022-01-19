@@ -1,13 +1,10 @@
 package e2etest
 
 import (
-	"flag"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
-
-var customConfigFilename = flag.String("config", "", "Name of test environment config file")
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig) {
 	// Test the PAUSE status
@@ -51,7 +48,7 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
-	content :=getPageContent(t, url)
+	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "There are currently 3 remote agents online.")
 }
 
