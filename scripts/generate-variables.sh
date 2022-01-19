@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # This script will generate/override the `modules/tfstate/tfstate-locals.tf` and `terraform-backend.tf`
 
 FORCE_FLAG=
@@ -9,7 +10,7 @@ while getopts f?c: name ; do
     esac
 done
 
-if [[ "${0##*/}" == "generate-variables.sh" ]]; then
+if [ "${0##*/}" == "generate-variables.sh" ]; then
   # the script ran directly from terminal
   ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
 else
@@ -28,11 +29,11 @@ show_help() {
     exit 1
 }
 
-if [[ $# -lt 1 ]]; then
+if [ $# -lt 1 ]; then
   show_help
 fi
 CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_PATH}")"; pwd)/$(basename "${CONFIG_PATH}")"
-if [[ ! -f "${CONFIG_ABS_PATH}" ]]; then
+if [ ! -f "${CONFIG_ABS_PATH}" ]; then
   log "Could not find config file '${CONFIG_PATH}'." "ERROR"
   show_help
 fi
@@ -59,7 +60,7 @@ set_variables() {
 
 # Cleaning all the generated terraform state variable and backend file
 cleanup_existing_files() {
-  if [[ -f "${BACKEND_TF}" ]]; then
+  if [ -f "${BACKEND_TF}" ]; then
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
     if ! grep -q "${S3_BUCKET}" "${BACKEND_TF}"  ; then
