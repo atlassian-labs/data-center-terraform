@@ -89,7 +89,7 @@ cleanup_existing_files() {
     set -e
   fi
   log "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
+  bash "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
 }
 
 inject_variables_to_templates() {
