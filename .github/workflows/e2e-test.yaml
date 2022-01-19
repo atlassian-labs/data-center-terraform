@@ -44,31 +44,6 @@ jobs:
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
-      - name: E2E test
-        id: e2e-test
-        working-directory: test/
-        run: |
-          set -o pipefail
-          # this is required to use aws-iam-authenticator.
-          export PATH=$PATH:$HOME/bin
-          cp ../variables.tf ../modules/AWS/asg_ec2_tagging/
-          echo "environment_name = \"dummy-environment\"" >> ../modules/AWS/asg_ec2_tagging/dummy-config.auto.tfvars
-          echo " locals {" > ../modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          echo "     dynamodb_name = \"dummy\"" >> ../modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          echo "     bucket_name   = \"dummy\"" >> ../modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          echo "     bucket_key    = \"dummy\"" >> ../modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          echo " }" >> ../modules/AWS/asg_ec2_tagging/dummy-tfstate-local.tf
-          go test ./e2etest -v -timeout 40m -run Bamboo | tee ./e2etest/artifacts/e2etest.log
-
-      - name: Clean up test
-        if: always()
-        working-directory: test/
-        run: |
-          set -o pipefail
-          # this is required to use aws-iam-authenticator.
-          export PATH=$PATH:$HOME/bin
-          go test ./e2etest -v -timeout 40m -run Cleanup | tee ./e2etest/artifacts/e2e-test-cleanup.log
-
       - name: Upload test log files
         if: always()
         uses: actions/upload-artifact@v2

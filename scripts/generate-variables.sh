@@ -11,11 +11,12 @@ done
 
 if [ "${0##*/}" == "generate-variables.sh" ]; then
   # the script ran directly from terminal
-   ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
- else
-   # the script called by install.sh or uninstall.sh
+  ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
+else
+  # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 fi
+
 SCRIPT_PATH="${ROOT_PATH}/scripts"
 
 source "${SCRIPT_PATH}/common.sh"
