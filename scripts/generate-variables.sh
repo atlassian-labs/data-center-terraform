@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # This script will generate/override the `modules/tfstate/tfstate-locals.tf` and `terraform-backend.tf`
 
 FORCE_FLAG=

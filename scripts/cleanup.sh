@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # This script cleanup the generated files and makes the environment ready for a clean install
 #
 # Usage: cleanup.sh [-s] [-t] [-h] [-r <root_repo>]
