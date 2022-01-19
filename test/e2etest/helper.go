@@ -15,13 +15,12 @@ import (
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/require"
-
 )
 
 const (
 	license       = ""
 	resourceOwner = "dc-deployment"
-	credential    = "admin:Atlassian21!"  // Admin credential 'username:password'
+	credential    = "admin:Atlassian21!" // Admin credential 'username:password'
 	product       = "bamboo"
 	domain        = "deplops.com"
 )
@@ -108,7 +107,8 @@ func createConfig(t *testing.T) TestConfig {
 	defer file.Close()
 
 	// apply the template to the vars map and write the result to file.
-	tmpl.Execute(file, vars)
+	err := tmpl.Execute(file, vars)
+	require.NoError(t, err, "Error applying template to .tfvars file")
 
 	filePath, _ := filepath.Abs(file.Name())
 
