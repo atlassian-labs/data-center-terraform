@@ -8,14 +8,16 @@
 # -r <path_root_repo>: define path to root folder of repo. If is not provided it calculated it based on script path
 # -h: help
 set -e
+set -x
 
-if [ "${0##*/}" == "cleanup.sh" ]; then
+if [[ "${0##*/}" = "cleanup.sh" ]]; then
   # the script ran directly from terminal
   ROOT_PATH=$(cd $(dirname "${0}")/..; pwd)
 else
   # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 fi
+
 SCRIPT_PATH="${ROOT_PATH}/scripts"
 
 source "${SCRIPT_PATH}/common.sh"
@@ -136,3 +138,5 @@ cleanup_local_terraform_state() {
 cleanup_terraform
 cleanup_setup_files
 cleanup_local_terraform_state
+
+set +x
