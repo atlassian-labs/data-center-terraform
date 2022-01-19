@@ -44,6 +44,15 @@ jobs:
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
+      - name: E2E test
+        id: e2e-test
+        working-directory: test/
+        run: |
+          set -o pipefail
+          # this is required to use aws-iam-authenticator.
+          export PATH=$PATH:$HOME/bin
+          go test ./e2etest -v -timeout 40m -run Installer | tee ./e2etest/artifacts/e2etest.log
+
       - name: Upload test log files
         if: always()
         uses: actions/upload-artifact@v2
