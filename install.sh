@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
 # Usage:  install.sh [-c <config_file>] [-h]
