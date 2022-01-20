@@ -29,10 +29,3 @@ module "eks" {
     }
   }
 }
-
-resource "null_resource" "update-kub-config" {
-  depends_on = [module.eks]
-  provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region_name}"
-  }
-}

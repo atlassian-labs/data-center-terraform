@@ -8,7 +8,6 @@ module "eks" {
   source = "../AWS/eks"
 
   cluster_name = local.cluster_name
-  region_name  = var.region_name
 
   vpc_id  = module.vpc.vpc_id
   subnets = module.vpc.private_subnets
