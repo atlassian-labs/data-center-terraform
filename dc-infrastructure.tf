@@ -31,5 +31,18 @@ module "bamboo" {
   admin_display_name  = var.bamboo_admin_display_name
   admin_email_address = var.bamboo_admin_email_address
 
-  number_of_agents = var.number_of_bamboo_agents
+  bamboo_configuration = {
+    "helm_ver" = var.bamboo_helm_chart_version
+    "cpu"      = var.bamboo_cpu
+    "mem"      = var.bamboo_mem
+    "min_heap" = var.bamboo_min_heap
+    "max_heap" = var.bamboo_max_heap
+  }
+
+  bamboo_agent_configuration = {
+    "helm_ver"    = var.bamboo_agent_helm_chart_version
+    "cpu"         = var.bamboo_agent_cpu
+    "mem"         = var.bamboo_agent_mem
+    "agent_count" = var.number_of_bamboo_agents
+  }
 }
