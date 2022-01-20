@@ -29,3 +29,9 @@ module "eks" {
     }
   }
 }
+
+resource "null_resource" "update-kub-config" {
+  provisioner "local-exec" {
+    command = "export KUBECONFIG=$KUBECONFIG:kubeconfig_${var.cluster_name} && echo $KUBECONFIG"
+  }
+}
