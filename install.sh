@@ -204,6 +204,20 @@ set_current_context_k8s() {
   fi
 }
 
+resume_bamboo_server() {
+  # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
+  # is matched with admin info stored in dataset you import
+  ADMIN_USERNAME=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_username' | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ADMIN_PASSWORD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password' | sed -nE 's/^.*"(.*)".*$/\1/p')
+  if [ -n "${ADMIN_USERNAME}" ]; then
+    if [ -n "${ADMIN_PASSWORD}" ]; then
+      bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+      resume_bamboo_url="${bamboo_url}/rest/api/latest/server/resume"
+      curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}"
+    fi
+  fi
+}
+
 # Process the arguments
 process_arguments
 
@@ -221,6 +235,9 @@ create_update_infrastructure
 
 # Manually add resource tags into ASG and EC2 
 add_tags_to_asg_resources
+
+# Resume bamboo server if the credential is provided
+resume_bamboo_server
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s
