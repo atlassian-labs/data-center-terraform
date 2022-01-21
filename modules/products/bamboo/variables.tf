@@ -87,9 +87,19 @@ variable "dataset_url" {
 variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)
+  validation {
+    condition = (length(var.bamboo_configuration) == 5 &&
+    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_ver", "cpu", "mem", "min_heap", "max_heap"], o)]))
+    error_message = "Bamboo configuration is not valid1."
+  }
 }
 
 variable "bamboo_agent_configuration" {
   description = "Bamboo agent resource spec and chart version"
   type        = map(any)
+  validation {
+    condition = (length(var.bamboo_agent_configuration) == 4 &&
+    alltrue([for o in keys(var.bamboo_agent_configuration) : contains(["helm_ver", "cpu", "mem", "agent_count"], o)]))
+    error_message = "Bamboo Agent configuration is not valid."
+  }
 }
