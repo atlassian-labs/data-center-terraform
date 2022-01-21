@@ -29,7 +29,7 @@ jobs:
           mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator &&  export PATH=$PATH:$HOME/bin
           aws-iam-authenticator version
           aws --version
-          aws sts get-caller-identity --query Account --output text
+          echo $(aws sts get-caller-identity --query Account --output text)
 
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
