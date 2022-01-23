@@ -105,7 +105,7 @@ variable "bamboo_admin_email_address" {
 
 variable "number_of_bamboo_agents" {
   description = "Number of Bamboo remote agents."
-  default     = 50
+  default     = 5
   type        = number
   validation {
     condition     = var.number_of_bamboo_agents >= 0
