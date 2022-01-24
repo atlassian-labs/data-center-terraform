@@ -3,22 +3,24 @@
 provider "kubernetes" {
   host                   = var.eks.kubernetes_provider_config.host
   cluster_ca_certificate = var.eks.kubernetes_provider_config.cluster_ca_certificate
-  exec {
-    api_version = "client.authentication.k8s.io/v1alpha1"
-    args        = ["eks", "get-token", "--cluster-name", var.eks.cluster_name, "--debug"]
-    command     = "aws"
-  }
+  token                  = var.eks.kubernetes_provider_config.token
+  #  exec {
+  #    api_version = "client.authentication.k8s.io/v1alpha1"
+  #    args        = ["eks", "get-token", "--cluster-name", var.eks.cluster_name, "--debug"]
+  #    command     = "aws"
+  #  }
 }
 
 provider "helm" {
   kubernetes {
     host                   = var.eks.kubernetes_provider_config.host
     cluster_ca_certificate = var.eks.kubernetes_provider_config.cluster_ca_certificate
-    exec {
-      api_version = "client.authentication.k8s.io/v1alpha1"
-      args        = ["eks", "get-token", "--cluster-name", var.eks.cluster_name, "--debug"]
-      command     = "aws"
-    }
+    token                  = var.eks.kubernetes_provider_config.token
+    #    exec {
+    #      api_version = "client.authentication.k8s.io/v1alpha1"
+    #      args        = ["eks", "get-token", "--cluster-name", var.eks.cluster_name, "--debug"]
+    #      command     = "aws"
+    #    }
   }
 }
 
