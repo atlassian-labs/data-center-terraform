@@ -2,17 +2,9 @@
 
 Before installing the infrastructure for Atlassian Data Center products, make sure that you meet the following requirements and that your local environment is configured with all the necessary tools.
 
-## Requirements
-
-In order to deploy Atlassian’s Data Center infrastructure to Amazon Web Services (AWS), the following are required:
-
-1. An understanding of [Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/){.external} and [Helm](https://helm.sh/){.external} concepts.
-2. An understanding of [Terraform](https://www.terraform.io/){.external}.
-3. An AWS account with admin access. 
-
 ## Environment setup
 
-Before creating the infrastructure, make sure that your development environment is configured with the following tools:
+Its advised that the tooling below is installed to your development environment. An understanding of these tools and their associated concepts is also advisable.
 
 1. [Terraform](#terraform) 
 2. [Helm v3.3 or later](#helm)

@@ -3,7 +3,7 @@
 This guide describes how to provision the cloud environment infrastructure and install Atlassian Data Center products in a Kubernetes cluster running on AWS.
 
 !!! info "Supported Atlassian Data Center products"
-    Currently, only Bamboo Data Center is supported. We are planning to to add support for more Data Center products in the future.
+    Currently, only Bamboo Data Center is supported. We are planning to add support for more Data Center products in the future.
 
 ## 1. Set up AWS security credentials
 
