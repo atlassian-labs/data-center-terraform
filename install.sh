@@ -225,7 +225,7 @@ resume_bamboo_server() {
     fi
     if [ -n "${ADMIN_USERNAME}" ]; then
       if [ -z "${ADMIN_PASSWORD}" ]; then
-        echo "Please enter the bamboo administrator password: "
+        echo "Please enter password of the Bamboo '${ADMIN_USERNAME}' user: "
         read -s ADMIN_PASSWORD
       fi
       bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
