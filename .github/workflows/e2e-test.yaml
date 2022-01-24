@@ -43,7 +43,6 @@ jobs:
         run: |
           set -o pipefail
           # this is required to use aws-iam-authenticator.
-          #export PATH=$PATH:$HOME/bin
           go test ./e2etest -v -timeout 40m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
