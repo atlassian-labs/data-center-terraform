@@ -17,7 +17,7 @@ Before creating the infrastructure, make sure that your development environment 
 1. [Terraform](#terraform) 
 2. [Helm v3.3 or later](#helm)
 3. [AWS CLI](#aws-cli)
-4. [Kubernetes cluster monitoring tools](#kubernetes-tools) (optional)
+4. [Kubernetes cluster monitoring tools](#kubernetes-cluster-monitoring-tools) (optional)
 
 ### :material-terraform: Terraform
 
