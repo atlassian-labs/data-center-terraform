@@ -32,17 +32,17 @@ module "bamboo" {
   admin_email_address = var.bamboo_admin_email_address
 
   bamboo_configuration = {
-    "helm_ver" = var.bamboo_helm_chart_version
-    "cpu"      = var.bamboo_cpu
-    "mem"      = var.bamboo_mem
-    "min_heap" = var.bamboo_min_heap
-    "max_heap" = var.bamboo_max_heap
+    "helm_version" = var.bamboo_helm_chart_version
+    "cpu"          = var.bamboo_cpu
+    "mem"          = var.bamboo_mem
+    "min_heap"     = var.bamboo_min_heap
+    "max_heap"     = var.bamboo_max_heap
   }
 
   bamboo_agent_configuration = {
-    "helm_ver"    = var.bamboo_agent_helm_chart_version
-    "cpu"         = var.bamboo_agent_cpu
-    "mem"         = var.bamboo_agent_mem
-    "agent_count" = var.number_of_bamboo_agents
+    "helm_version" = var.bamboo_agent_helm_chart_version
+    "cpu"          = var.bamboo_agent_cpu
+    "mem"          = var.bamboo_agent_mem
+    "agent_count"  = var.number_of_bamboo_agents
   }
 }

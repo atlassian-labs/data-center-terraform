@@ -89,7 +89,7 @@ variable "bamboo_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.bamboo_configuration) == 5 &&
-    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_ver", "cpu", "mem", "min_heap", "max_heap"], o)]))
+    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
     error_message = "Bamboo configuration is not valid1."
   }
 }
@@ -99,7 +99,7 @@ variable "bamboo_agent_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.bamboo_agent_configuration) == 4 &&
-    alltrue([for o in keys(var.bamboo_agent_configuration) : contains(["helm_ver", "cpu", "mem", "agent_count"], o)]))
+    alltrue([for o in keys(var.bamboo_agent_configuration) : contains(["helm_version", "cpu", "mem", "agent_count"], o)]))
     error_message = "Bamboo Agent configuration is not valid."
   }
 }

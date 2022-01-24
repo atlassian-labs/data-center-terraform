@@ -2,8 +2,8 @@ locals {
   product_name = "bamboo"
 
   helm_chart_repository     = "https://atlassian.github.io/data-center-helm-charts"
-  bamboo_helm_chart_version = var.bamboo_configuration["helm_ver"]
-  agent_helm_chart_version  = var.bamboo_agent_configuration["helm_ver"]
+  bamboo_helm_chart_version = var.bamboo_configuration["helm_version"]
+  agent_helm_chart_version  = var.bamboo_agent_configuration["helm_version"]
   number_of_agents          = var.bamboo_agent_configuration["agent_count"]
 
   bamboo_software_resources = {
