@@ -83,7 +83,19 @@ var BambooCorrectVariables = map[string]interface{}{
 	"admin_password":       "dummy_admin_password",
 	"admin_display_name":   "dummy_admin_display_name",
 	"admin_email_address":  "dummy_admin_email_address",
-	"number_of_agents":     50,
 	"ingress":              map[string]interface{}{},
 	"dataset_url":          nil,
+	"bamboo_configuration": map[string]interface{}{
+		"helm_ver" : "1.0.0",
+		"cpu"      : "1",
+		"mem"      : "1Gi",
+		"min_heap" : "256m",
+		"max_heap" : "512m",
+	},
+	"bamboo_agent_configuration": map[string]interface{}{
+		"helm_ver" : "1.0.0",
+		"cpu"      : "1",
+		"mem"      : "1Gi",
+		"agent_count": 5,
+	},
 }
