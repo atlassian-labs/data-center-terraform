@@ -27,7 +27,7 @@ desired_capacity = 2
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
 # When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
 #
-#domain = "<example.com>"
+#domain = "<DOMAIN NAME>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
