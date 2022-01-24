@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 var customConfigFilename = flag.String("config", "", "Name of test environment config file")
@@ -50,9 +51,14 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
+
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
-	content :=getPageContent(t, url)
-	assert.Contains(t, string(content), "There are currently 3 remote agents online.")
+	println("The url to get the remote agent page:")
+	println(url)
+	time.Sleep(60*5000*time.Millisecond)
+	content := getPageContent(t, url)
+
+	assert.Contains(t, string(content), "There are currently 3 remote agents online")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {
