@@ -4,7 +4,7 @@
 **NOTE: This project is under heavy development, and it is not officially supported yet.**
 
 Atlassian DC APP program provides App vendors in our ecosystem with ready-to-use environment setup tools. 
-This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
+This project provides a tool to provision infrastructure for Atlassian DC Helm chart products.
 At this stage the scope is providing the infrastructure for Bamboo on AWS.  
 
 
