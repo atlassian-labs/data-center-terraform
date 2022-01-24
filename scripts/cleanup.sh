@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script cleanup the generated files and makes the environment ready for a clean install
 #
 # Usage: cleanup.sh [-s] [-t] [-h] [-r <root_repo>]
@@ -16,7 +16,6 @@ else
   # the script called by install.sh or uninstall.sh
   ROOT_PATH=$(cd $(dirname "${0}"); pwd)
 fi
-
 SCRIPT_PATH="${ROOT_PATH}/scripts"
 
 source "${SCRIPT_PATH}/common.sh"

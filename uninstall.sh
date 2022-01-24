@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script manages to destroy the infrastructure of the Atlassian Data Center products
 #
 # Usage:  uninstall [-c <config_file>] [-s] [-h]
