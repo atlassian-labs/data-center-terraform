@@ -81,3 +81,6 @@ If you want to use a custom configuration file to handle more than one environme
     ``` 
 
     This saves the decoded username and password to the `$DB_USERNAME` and `$DB_PASSWORD` environment variables respectively.
+
+## Uninstall 
+The deployment and all of its associated resources can be un-installed by following the [Uninstallation and cleanup](../userguide/CLEANUP.md) guide.

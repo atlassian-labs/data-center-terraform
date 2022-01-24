@@ -3,53 +3,25 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md)
 
 !!! warning "This project is still under development and is not officially supported."
+This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. Soup to nut's, this tool will stand-up a Kubernetes cluster and all of the required infrastructure needed for running Bamboo DC. Using the existing [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external} it will also install Bamboo DC into this pre-provisioned cluster.
 
-The [Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale){.external}
-provides App vendors in Atlassian ecosystem with tools to setup ready-to-use environment. 
-This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
-At this stage the scope is providing the infrastructure for Bamboo DC.
+## Deploying a Data Center product
+* [Prerequisites](userguide/PREREQUISITES.md) - steps for environment setup including installation of 3rd party tooling
+* [Configuration](userguide/CONFIGURATION.md) - steps for configuring deployment
+* [Installation](userguide/INSTALLATION.md) - steps for running a deployment
 
+## Product support
+Atlassian Data Center products that can be provisioned with this tool:
 
-## Prerequisites
-
-In order to deploy the infrastructure for Atlassian Data Center products on Kubernetes you need to have the 
-following applications installed on your local machine:
-
-* [AWS CLI](https://aws.amazon.com/cli/){.external}
-* [Helm](https://helm.sh/){.external}
-* [Terraform](https://www.terraform.io/downloads){.external}
-
-See [prerequisites](userguide/PREREQUISITES.md) for details. 
-
-## Installation
-Before installing the infrastructure for Atlassian products, please make sure you read the 
-[prerequisites](userguide/PREREQUISITES.md) section and completed the [configuration](userguide/CONFIGURATION.md). 
-
-After you have done the above steps you can [install](userguide/INSTALLATION.md) the Atlassian Data Center infrastructure 
-for selected products. 
-
-## Uninstall the products and infrastructure 
-
-In installation process, Terraform created all required resources on AWS environment in order to provide the infrastructure to handle Atlassian Data Center products. 
-If you want to uninstall all products and cleanup the infrastructure see [cleanup page](userguide/CLEANUP.md).
-
+|  Bamboo DC                                                                                         |
+|----------------------------------------------------------------------------------------------------|
+| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}  |
 
 ## Feedback
-
-If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. If you have general feedback or question 
-regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes){.external}.
-  
+If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. If you have general feedback or question regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes){.external}.
 
 ## Contributions
-
 Contributions are welcome! [Find out how to contribute](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md). 
 
 ## License
-
-Copyright (c) [2021] Atlassian and others.
-Apache 2.0 licensed, see [LICENSE](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) file.
-
-<br/> 
-
-
-[![With ❤️ from Atlassian](https://raw.githubusercontent.com/atlassian-internal/oss-assets/master/banner-cheers-light.png)](https://www.atlassian.com)
+Apache 2.0 licensed, see [license file](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE){.external}.
