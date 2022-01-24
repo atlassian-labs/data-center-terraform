@@ -1,14 +1,11 @@
 package e2etest
 
 import (
-	"flag"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
-
-var customConfigFilename = flag.String("config", "", "Name of test environment config file")
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig) {
 	// Test the PAUSE status

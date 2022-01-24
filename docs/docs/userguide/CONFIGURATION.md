@@ -224,14 +224,14 @@ db_iops = 1000
 `number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.
 
 ```terraform
-number_of_bamboo_agents = 50
+number_of_bamboo_agents = 5
 ```
 
-!!! warning "The value should not be greater than the number of allowed agents in your license."
+!!! info "The number of agents is limited to the number of allowed agents in your license."
     Any agents beyond the allowed number won't be able to join the cluster.
 
 !!! warning "A valid license is required to install bamboo agents"
-    Bamboo needs a valid license to install remote agents. Set `number_of_bamboo_agents = 0` if you don't provide the license in installation time.
+    Bamboo needs a valid license to install remote agents. Disable agents if you don't provide a license at installation time.
     
 ## Sensitive Data
 
