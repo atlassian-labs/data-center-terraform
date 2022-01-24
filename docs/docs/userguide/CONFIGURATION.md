@@ -38,16 +38,16 @@ desired_capacity = 2
 domain           = "mydomain.com"
 ```
 
-## Mandatory configuration
+## Mandatory Configuration
 
-### Environment name
+### Environment Name
 
 `environment_name` provides your environment a unique name within a single cloud provider account.
 This value cannot be altered after the configuration has been applied.
 The value will be used to form the name of some resources including `VPC` and `Kubernetes cluster`.
 
 ```terraform
-environment_name = "<YOUR-ENVIRONMENT-NAME>"
+environment_name = "<YOUR-ENVIRONMENT-NAME>" # e.g. "my-terraform-env"
 ```
 
 Environment names should start with a letter and can contain letters, numbers, and dashes (`-`).
@@ -62,7 +62,7 @@ The maximum value length is 25 characters.
 The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
 ```terraform
-region = "<Region>"  # e.g: "ap-northeast-2"
+region = "<REGION>"  # e.g. "ap-northeast-2"
 ```
 
 
@@ -71,7 +71,7 @@ region = "<Region>"  # e.g: "ap-northeast-2"
 Make sure that there is no new lines or spaces in license key.
 
 ```terraform
-bamboo_license = "<license key>"
+bamboo_license = "<LICENSE KEY>"
 ```
 
 !!!warning "Sensitive data"
@@ -85,10 +85,10 @@ bamboo_license = "<license key>"
 Four values are required to configure Bamboo system admin credentials.
 
 ```terraform
-bamboo_admin_username = "<username>"
-bamboo_admin_password = "<password>"
-bamboo_admin_display_name = "<display name>"
-bamboo_admin_email_address = "<email address>"
+bamboo_admin_username = "<USERNAME>"
+bamboo_admin_password = "<PASSWORD>"
+bamboo_admin_display_name = "<DISPLAY NAME>"
+bamboo_admin_email_address = "<EMAIL ADDRESS>"
 ```
 
 !!!warning "Sensitive data"
@@ -102,9 +102,9 @@ bamboo_admin_email_address = "<email address>"
     You will need to use user credentials from the dataset to log into the instance.
 
 
-## Optional configuration
+## Optional Configuration
 
-### Restoring from backup
+### Restoring from Backup
 To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
 you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
 
