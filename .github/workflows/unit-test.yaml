@@ -16,4 +16,4 @@ jobs:
 
     steps:
       - name: Auth
-        run: aws sts get-caller-identity --query Account --output text
+        run: echo $(aws sts get-caller-identity --query Account --output text) && echo $?
