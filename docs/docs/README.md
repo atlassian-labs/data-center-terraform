@@ -4,7 +4,7 @@
 
 !!! warning "This project is still under development and is not officially supported."
 
-[Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale)
+The [Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale){.external}
 provides App vendors in Atlassian ecosystem with tools to setup ready-to-use environment. 
 This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
 At this stage the scope is providing the infrastructure for Bamboo DC.
@@ -15,9 +15,9 @@ At this stage the scope is providing the infrastructure for Bamboo DC.
 In order to deploy the infrastructure for Atlassian Data Center products on Kubernetes you need to have the 
 following applications installed on your local machine:
 
-* AWS CLI
-* helm
-* Terraform
+* [AWS CLI](https://aws.amazon.com/cli/){.external}
+* [Helm](https://helm.sh/){.external}
+* [Terraform](https://www.terraform.io/downloads){.external}
 
 See [prerequisites](userguide/PREREQUISITES.md) for details. 
 
@@ -36,8 +36,8 @@ If you want to uninstall all products and cleanup the infrastructure see [cleanu
 
 ## Feedback
 
-If you find any issue, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues). If you have general feedback or question 
-regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes).
+If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. If you have general feedback or question 
+regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes){.external}.
   
 
 ## Contributions
