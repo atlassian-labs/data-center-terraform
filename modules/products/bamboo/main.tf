@@ -1,5 +1,4 @@
 # Create the infrastructure for Bamboo Data Center.
-
 resource "aws_route53_record" "bamboo" {
   count = local.use_domain ? 1 : 0
 

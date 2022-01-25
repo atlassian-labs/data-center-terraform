@@ -132,7 +132,7 @@ generate_terraform_backend_variables() {
 
   log "Terraform state backend/variable files are to be created."
 
-  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  bash "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
   S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
 }
 
@@ -214,10 +214,10 @@ resume_bamboo_server() {
   if [ -n "${BAMBOO_DATASET}" ]; then
     ADMIN_USERNAME=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_username' | sed -nE 's/^.*"(.*)".*$/\1/p')
     ADMIN_PASSWORD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password' | sed -nE 's/^.*"(.*)".*$/\1/p')
-    if [ -z "${ADMIN_USERNAME}" ]
+    if [ -z "${ADMIN_USERNAME}" ]; then
       ADMIN_USERNAME="${TF_VAR_bamboo_admin_username}"
     fi
-    if [ -z "${ADMIN_PASSWORD}" ]
+    if [ -z "${ADMIN_PASSWORD}" ]; then
       ADMIN_PASSWORD="${TF_VAR_bamboo_admin_password}"
     fi
     if [ -z "${ADMIN_USERNAME}" ]; then

@@ -101,7 +101,7 @@ confirm_action() {
 # Cleaning all the generated terraform state variable and backend file and local terraform files
 regenerate_environment_variables() {
   log "${ENVIRONMENT_NAME}' infrastructure uninstall is started using '${CONFIG_ABS_PATH##*/}'."
-  sh "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
+  bash "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
 }
 
 
@@ -175,7 +175,7 @@ destroy_tfstate() {
       if [ $? -eq 0 ]; then
         set -e
         log "Cleaning all the terraform generated files."
-        sh "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
+        bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
         log Terraform state is removed successfully.
       else
         log "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
