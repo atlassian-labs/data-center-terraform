@@ -104,13 +104,13 @@ variable "bamboo_admin_email_address" {
 }
 
 variable "bamboo_helm_chart_version" {
-  description = "Version of Bamboo helm chart"
+  description = "Version of Bamboo Helm chart"
   type        = string
   default     = "1.0.0"
 }
 
 variable "bamboo_agent_helm_chart_version" {
-  description = "Version of Bamboo agent helm chart"
+  description = "Version of Bamboo agent Helm chart"
   type        = string
   default     = "1.0.0"
 }

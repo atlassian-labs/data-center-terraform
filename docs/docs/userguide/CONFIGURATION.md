@@ -219,6 +219,42 @@ db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+### Bamboo Helm chart version
+
+`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo instance. 
+
+```terraform
+bamboo_helm_chart_version = "1.0.0"
+```
+
+### Bamboo Agent Helm chart version
+
+`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
+
+```terraform
+bamboo_agent_helm_chart_version = "1.0.0"
+```
+
+### Bamboo instance resource configuration
+
+The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Bamboo instance. (Used default values as example.)
+
+```terraform
+bamboo_cpu = "1"
+bamboo_mem = "1Gi"
+bamboo_min_heap = "256m"
+bamboo_max_heap = "512m"
+```
+
+### Bamboo Agent instance resource configuration
+
+The following variables set number of CPU and amount of memory of Bamboo Agent instances. (Used default values as example.)
+
+```terraform
+bamboo_agent_cpu = "0.25"
+bamboo_agent_mem = "256m"
+```
+
 ### Number of Bamboo agents
 
 `number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.

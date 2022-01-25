@@ -6,7 +6,7 @@
 
 [Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale)
 provides App vendors in Atlassian ecosystem with tools to setup ready-to-use environment. 
-This project provides a tool to provision infrastructure for Atlassian DC helm chart products.
+This project provides a tool to provision infrastructure for Atlassian DC Helm chart products.
 At this stage the scope is providing the infrastructure for Bamboo DC.
 
 
@@ -16,7 +16,7 @@ In order to deploy the infrastructure for Atlassian Data Center products on Kube
 following applications installed on your local machine:
 
 * AWS CLI
-* helm
+* Helm
 * Terraform
 
 See [prerequisites](userguide/PREREQUISITES.md) for details. 
