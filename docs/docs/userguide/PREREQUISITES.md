@@ -18,7 +18,7 @@ Terraform is an open-source infrastructure as code tool that provides a consiste
 
 This project uses Terraform to create and manage the Atlassian Data Center infrastructure on AWS for use with supported Data Center products. 
 
-!!! warning "Supported Products and Platforms"
+!!! warning "Supported Products and Platforms"  
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
     * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only supported DC product
