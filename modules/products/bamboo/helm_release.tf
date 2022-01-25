@@ -75,7 +75,7 @@ resource "helm_release" "bamboo_agent" {
 
   values = [
     yamlencode({
-      replicaCount = var.number_of_agents
+      replicaCount = local.number_of_agents
       agent = {
         securityToken = {
           secretName = kubernetes_secret.security_token_secret.metadata[0].name

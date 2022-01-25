@@ -2,19 +2,20 @@ locals {
   product_name = "bamboo"
 
   helm_chart_repository     = "https://atlassian.github.io/data-center-helm-charts"
-  bamboo_helm_chart_version = "1.0.0"
-  agent_helm_chart_version  = "1.0.0"
+  bamboo_helm_chart_version = var.bamboo_configuration["helm_version"]
+  agent_helm_chart_version  = var.bamboo_agent_configuration["helm_version"]
+  number_of_agents          = var.bamboo_agent_configuration["agent_count"]
 
   bamboo_software_resources = {
-    "minHeap" : var.bamboo_min_heap
-    "maxHeap" : var.bamboo_max_heap
-    "cpu" : var.bamboo_cpu
-    "mem" : var.bamboo_mem
+    "minHeap" : var.bamboo_configuration["min_heap"]
+    "maxHeap" : var.bamboo_configuration["max_heap"]
+    "cpu" : var.bamboo_configuration["cpu"]
+    "mem" : var.bamboo_configuration["mem"]
   }
 
   bamboo_agent_resources = {
-    "cpu" : var.bamboo_agent_cpu
-    "mem" : var.bamboo_agent_mem
+    "cpu" : var.bamboo_agent_configuration["cpu"]
+    "mem" : var.bamboo_agent_configuration["mem"]
   }
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)

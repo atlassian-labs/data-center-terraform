@@ -84,43 +84,22 @@ variable "dataset_url" {
   type        = string
 }
 
-variable "bamboo_cpu" {
-  description = "Number of CPUs for Bamboo instance"
-  type        = string
-  default     = "1"
+variable "bamboo_configuration" {
+  description = "Bamboo resource spec and chart version"
+  type        = map(any)
+  validation {
+    condition = (length(var.bamboo_configuration) == 5 &&
+    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
+    error_message = "Bamboo configuration is not valid1."
+  }
 }
 
-variable "bamboo_mem" {
-  description = "Amount of memory for Bamboo instance"
-  type        = string
-  default     = "1Gi"
-}
-
-variable "bamboo_min_heap" {
-  description = "Minimum heap size for Bamboo instance"
-  type        = string
-  default     = "256m"
-}
-
-variable "bamboo_max_heap" {
-  description = "Maximum heap size for Bamboo instance"
-  type        = string
-  default     = "512m"
-}
-
-variable "bamboo_agent_cpu" {
-  description = "Number of CPUs for Bamboo agent instance"
-  type        = string
-  default     = "0.25"
-}
-
-variable "bamboo_agent_mem" {
-  description = "Amount of memory for Bamboo agent instance"
-  type        = string
-  default     = "256m"
-}
-
-variable "number_of_agents" {
-  description = "Number of remote agents."
-  type        = number
+variable "bamboo_agent_configuration" {
+  description = "Bamboo agent resource spec and chart version"
+  type        = map(any)
+  validation {
+    condition = (length(var.bamboo_agent_configuration) == 4 &&
+    alltrue([for o in keys(var.bamboo_agent_configuration) : contains(["helm_version", "cpu", "mem", "agent_count"], o)]))
+    error_message = "Bamboo Agent configuration is not valid."
+  }
 }
