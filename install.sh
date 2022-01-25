@@ -204,6 +204,37 @@ set_current_context_k8s() {
   fi
 }
 
+resume_bamboo_server() {
+  # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
+  # is matched with admin info stored in dataset you import
+
+  BAMBOO_DATASET=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'dataset_url' | sed -nE 's/^.*"(.*)".*$/\1/p')
+
+  # resume the server only if a dataset is imported
+  if [ -n "${BAMBOO_DATASET}" ]; then
+    ADMIN_USERNAME=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_username' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    ADMIN_PASSWORD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    if [ -z "${ADMIN_USERNAME}" ]; then
+      ADMIN_USERNAME="${TF_VAR_bamboo_admin_username}"
+    fi
+    if [ -z "${ADMIN_PASSWORD}" ]; then
+      ADMIN_PASSWORD="${TF_VAR_bamboo_admin_password}"
+    fi
+    if [ -z "${ADMIN_USERNAME}" ]; then
+      read -p "Please enter the bamboo administrator username: " ADMIN_USERNAME
+    fi
+    if [ -n "${ADMIN_USERNAME}" ]; then
+      if [ -z "${ADMIN_PASSWORD}" ]; then
+        echo "Please enter password of the Bamboo '${ADMIN_USERNAME}' user: "
+        read -s ADMIN_PASSWORD
+      fi
+      bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+      resume_bamboo_url="${bamboo_url}/rest/api/latest/server/resume"
+      curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}"
+    fi
+  fi
+}
+
 # Process the arguments
 process_arguments
 
@@ -221,6 +252,9 @@ create_update_infrastructure
 
 # Manually add resource tags into ASG and EC2 
 add_tags_to_asg_resources
+
+# Resume bamboo server if the credential is provided
+resume_bamboo_server
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s

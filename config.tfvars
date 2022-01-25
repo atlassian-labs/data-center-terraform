@@ -22,8 +22,8 @@ region = "<REGION>"
 #bamboo_license = "<license key>"
 
 # Bamboo system admin credentials
-# WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use
-# credentials existing in the dataset. In this case, the `bamboo_admin_*` properties below are ignored.
+# WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use credentials
+# existing in the dataset to set this section. Otherwise any other value for the `bamboo_admin_*` properties below are ignored.
 bamboo_admin_username = "<USERNAME>"
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
 # If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
