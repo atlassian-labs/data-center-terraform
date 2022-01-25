@@ -15,7 +15,7 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 
 ## 2. Clone the project repository
 
-Clone the Terraform for Atlassian DC Products project repository from GitHub:
+Clone the `data-center-terraform` project repository from GitHub:
 
 ```shell
 git clone https://github.com/atlassian-labs/data-center-terraform.git
@@ -29,8 +29,8 @@ Details of the desired infrastructure to be provisioned can be defined in `confi
     By default, Terraform uses `config.tfvars` located in the root level of the project.
        
 ??? tip "Can I use a custom configuration file?"
-    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars` and use it as a basis for defining your own infrastructure configuration.
-    
+    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, renaming the copy and using `config.tfvars` as a template to define your own infrastructure configuration.
+
 ??? Warning "Use the same configuration file for uninstallation and cleanup"  
     If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
 
@@ -60,9 +60,19 @@ The following options are available:
 - `-c <config_file_path>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
-!!!info "Installation using the default configuration file" 
+!!!info "Installation using default and configuration files" 
 
-    Running the installation script with no parameters will use the default configuration file to provision the environment.
+    Running the installation script with no parameters will use the default configuration file (`config.tfvars`) to provision the environment:
+
+    ```shell
+    ./install.sh
+    ```
+
+    Alternatively a custom configuration file can be specified as follows:
+
+    ```shell
+    ./install.sh -c my-custom-config.tfvars
+    ```
 
 ??? help "How do I find the service URL of the deployed DC product?"    
     When the installation process finishes successfully detailed information about the infrastructure is printed to `STDOUT`, this includes the service `URL` that can be used to launch the product in the browser.      
