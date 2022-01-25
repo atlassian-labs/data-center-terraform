@@ -2,8 +2,12 @@
 
 This guide describes how to provision the cloud environment infrastructure and install Atlassian Data Center products in a Kubernetes cluster running on AWS.
 
-!!! info "Supported Atlassian Data Center products"
-    Currently, only Bamboo Data Center is supported. We are planning to add support for more Data Center products in the future.
+!!! warning "Supported Products and Platforms"
+
+    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
+    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only supported DC product
+
+    Support for additional Cloud providers and DC products will be made available in future.
 
 ## 1. Set up AWS security credentials
 
@@ -14,12 +18,12 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 Clone the Terraform for Atlassian DC Products project repository from GitHub:
 
 ```shell
-git clone -b 0.0.2-beta https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+git clone https://github.com/atlassian-labs/data-center-terraform.git
 ```
 
 ## 3. Configure the infrastructure
 
-Configure the infrastructure for the selected product or products by opening the configuration file in a text editor and defining the required values. See [Configuration](CONFIGURATION.md).
+Configure the infrastructure for the selected product by opening the configuration file in a text editor and defining the required values. See [Configuration](CONFIGURATION.md).
 
 !!! info "Where is the configuration file?"
     By default, Terraform uses the `config.tfvars` file in the project root to configure the infrastructure during the installation or uninstallation processes.
