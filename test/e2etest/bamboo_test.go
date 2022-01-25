@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig) {
@@ -50,6 +51,8 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
+	// Wait 15 seconds to allow remote agents get online
+	time.Sleep(15*1000*time.Millisecond)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
