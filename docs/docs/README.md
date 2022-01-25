@@ -19,7 +19,7 @@ This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster.
 
 ## Deployment overview
 
-The diagram below provides a high level overview of what a typical deployment might look like:
+The diagram below provides a high level overview of what a typical deployment will look like:
 
 ![architecture](assets/images/Terraform.png "Deployment")
 
