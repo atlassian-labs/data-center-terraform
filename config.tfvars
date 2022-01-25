@@ -55,9 +55,9 @@ resource_tags = {
 }
 
 # Instance types that is preferred for EKS node group.
-instance_types = ["m5.4xlarge"]
+instance_types = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
-desired_capacity = 2
+desired_capacity = 1
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -83,4 +83,4 @@ bamboo_agent_cpu = "0.25"
 bamboo_agent_mem = "256m"
 
 # Number of Bamboo remote agents to launch
-number_of_bamboo_agents = 50
+number_of_bamboo_agents = 5
