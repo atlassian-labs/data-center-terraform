@@ -1,6 +1,6 @@
 # This file configures the Terraform for Atlassian DC on Kubernetes.
 # Please configure this file carefully before installing the infrastructure.
-# See https://github.com/atlassian-labs/data-center-terraform/blob/main/README.md for more information.
+# See https://atlassian-labs.github.io/data-center-terraform/userguide/CONFIGURATION/ for more information.
 
 ################################################################################
 # Mandatory
