@@ -7,9 +7,7 @@ This guide describes how to uninstall all Atlassian Data Center products and rem
 
     Before you begin, make sure that you have an up-to-date backup available in a secure location. 
 
-If you want to uninstall just one product, don't proceed with the uninstallation process and remove it from the configuration file instead. For more information, see [Configuration](CONFIGURATION.md). 
-
-The uninstallation script is located in the `pkg/scripts` project directory.
+The uninstallation script is located in the root folder of the project directory.
 
 Usage:
 
@@ -20,9 +18,9 @@ Usage:
 The following options are available:
 
 - `-t` - Delete Terraform state files
-- `-c <config_file>` - Pass a custom configuration file when uninstalling multiple environments
+- `-c <config_file>` - Pass a custom configuration file to uninstall the environment provisioned by it.
 
-Running the uninstallation script with no parameters will use the default configuration file. 
+Running the uninstallation script with no parameters will use the default configuration files (`config.tfvars`). 
 
 
 
@@ -41,7 +39,7 @@ If you used the default configuration file (`config.tfvars`) from the root folde
 If you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
 
 ```shell
-./uninstall.sh -c <custom-config-file>
+./uninstall.sh -c <config_file_path>
 ```
 
 ## Removing Terraform state files
@@ -49,5 +47,5 @@ If you used a custom configuration file to provision the infrastructure, run the
 By default, the script does not remove Terraform state files. If you want to remove Terraform state files, run the uninstallation script with the `-t` switch:
 
 ```shell 
-./uninstall.sh -t [-c <custom-config-file>]
+./uninstall.sh -t -c <config_file_path>
 ```

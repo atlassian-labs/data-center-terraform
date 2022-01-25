@@ -49,7 +49,7 @@ The following options are available:
 - `-c <config_file>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
-Running the installation script with no parameters will use the default configuration file(`config.tfvars`) to provision the environment. 
+Running the installation script with no parameters will use the default configuration file (`config.tfvars`) to provision the environment. 
 
 ### Start the installation using the default configuration file
 
