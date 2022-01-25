@@ -11,7 +11,7 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 
 ## 2. Clone the project repository
 
-Clone the Terraform for Atlassian DC Products project repository from GitHub:
+Clone the `data-center-terraform` project repository from GitHub:
 
 ```shell
 git clone -b 0.0.2-beta https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
@@ -25,7 +25,7 @@ Configure the infrastructure for the selected product or products by opening the
     By default, Terraform uses the `config.tfvars` file in the project root to configure the infrastructure during the installation or uninstallation processes.
        
 !!! tip "Can I use a custom configuration file?"
-    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, using it as a template to define your infrastructure configuration.
+    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, renaming the copy and using `config.tfvars` as a template to define your own infrastructure configuration.
     
 !!! Warning "Use the same configuration file for uninstallation and cleanup"  
     If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
@@ -34,7 +34,7 @@ Configure the infrastructure for the selected product or products by opening the
 
 The installation script provisions the environment infrastructure and installs the selected products based on the passed configuration file.
 
-The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an S3 bucket to store the current state of the environment. A DynamoDB table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
+The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an *S3* bucket to store the current state of the environment. A *DynamoDB* table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
  
 The installation script is located in the root folder of the project.
 
@@ -49,7 +49,7 @@ The following options are available:
 - `-c <config_file>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
-Running the installation script with no parameters will use the default configuration file to provision the environment. 
+Running the installation script with no parameters will use the default configuration file(`config.tfvars`) to provision the environment. 
 
 ### Start the installation using the default configuration file
 
@@ -66,7 +66,10 @@ If you want to use a custom configuration file to handle more than one environme
 ```shell
 ./install.sh -c <config_file_path>
 ```
-
+For instance, if your custom configuration file is in the root folder of the project, you can run:
+```shell
+./install.sh -c my-custom-config.tfvars
+```
 !!! help "How to run the product after installation?"    
     When the installation process finishes successfully, you can find some detailed information about the infrastructure in the console, including the product URL that you can follow to launch the product in the browser.      
 
