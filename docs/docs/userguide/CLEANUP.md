@@ -7,9 +7,7 @@ This guide describes how to uninstall all Atlassian Data Center products and rem
 
     Before you begin, make sure that you have an up-to-date backup available in a secure location. 
 
-If you want to uninstall just one product, don't proceed with the uninstallation process and remove it from the configuration file instead. For more information, see [Configuration](CONFIGURATION.md). 
-
-The uninstallation script is located in the `pkg/scripts` project directory.
+The uninstallation script is located in the root folder of the project directory.
 
 Usage:
 
