@@ -2,8 +2,6 @@
 # Please configure this file carefully before installing the infrastructure.
 # See https://github.com/atlassian-labs/data-center-terraform/blob/main/README.md for more information.
 
-# Please define the values to configure the infrastructure before install
-
 ################################################################################
 # Mandatory
 ################################################################################
@@ -50,10 +48,6 @@ bamboo_admin_email_address = "<EMAIL ADDRESS>"
 #
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
-
-################################################################################
-# Optional configurations
-################################################################################
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
