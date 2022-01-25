@@ -1,7 +1,6 @@
 # Configuration
 
-In order to provision the infrastructure and install an Atlassian Data Center product, you need to create a valid Terraform configuration.
-All configuration data should go to a terraform variable file.
+In order to provision the infrastructure and install an Atlassian Data Center product, you need to create a valid [Terraform configuration](https://www.terraform.io/language){.external}. All configuration data should go to a Terraform configuration file.
 
 The content of the configuration file is divided into two groups:
 
@@ -14,9 +13,9 @@ The content of the configuration file is divided into two groups:
     The config file must contain all mandatory configuration items with valid values.
     If any optional items are missing, the default values will be applied.
    
-The mandatory configuration items are those you should define once before the first installation. Mandatory values cannot be changed in the entire environment lifecycle.
+The [mandatory configuration](#mandatory-configuration) items are those you should define once before the first installation. Mandatory values cannot be changed during the entire environment lifecycle. 
 
-The optional configuration items are not required for installation by default. Optional values may change at any point in the environment lifecycle.
+The [optional configuration](#optional-configuration) items are not required for installation by default. Optional values may change at any point in the environment lifecycle.
 Terraform will retain the latest state of the environment and keep track of any configuration changes made later.
 
 The following is an example of a valid configuration file:
@@ -42,33 +41,33 @@ domain           = "mydomain.com"
 
 ### Environment name
 
-`environment_name` provides your environment a unique name within a single cloud provider account.
-This value cannot be altered after the configuration has been applied.
-The value will be used to form the name of some resources including `vpc` and `Kubernetes cluster`.
+`environment_name` provides your environment a unique name within a single cloud provider account. This value cannot be altered after the configuration has been applied. The value will be used to form the name of some resources including `vpc` and `Kubernetes cluster`.
 
 ```terraform
 environment_name = "<YOUR-ENVIRONMENT-NAME>"
 ```
 
-Environment names should start with a letter and can contain letters, numbers, and dashes (`-`).
-
-The maximum value length is 25 characters.
+!!! info "Format" 
+    
+    Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 25 characters.
 
 
 ### Region
 
 `region` defines the cloud provider region that the environment will be deployed to.
 
-The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
-
 ```terraform
 region = "<Region>"  # e.g: "ap-northeast-2"
 ```
 
+!!! info "Format"
+
+    The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
+
 
 ### Bamboo License
-`bamboo_license` takes the license key of Bamboo product.
-Make sure that there is no new lines or spaces in license key.
+
+`bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.
 
 ```terraform
 bamboo_license = "<license key>"
@@ -251,6 +250,4 @@ Take`bamboo_admin_password` for example, for Linux-like sytems, run the followin
 export TF_VAR_bamboo_admin_password=<password>
 ```
 
-If storing these data as plain-text is not a particular concern for the environment to be deployed, 
-you can also choose to supply the values in `config.tfvars` file.
-Uncomment the corresponding line and configure the value there.
+Storing this data as plain-text is not a particular concern for the environment to be deployed, you can also choose to supply the values in `config.tfvars` file. Uncomment the corresponding line and configure the value there.

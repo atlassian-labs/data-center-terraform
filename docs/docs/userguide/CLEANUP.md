@@ -20,7 +20,7 @@ Usage:
 The following options are available:
 
 - `-t` - Delete Terraform state files
-- `-c <config_file>` - Pass a custom configuration file when uninstalling multiple environments
+- `-c <config_file_path>` - Pass a custom configuration file when uninstalling multiple environments
 
 Running the uninstallation script with no parameters will use the default configuration file. 
 

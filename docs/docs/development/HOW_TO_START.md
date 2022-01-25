@@ -2,83 +2,49 @@
 
 Here's how to get started with contributing to the [Data Center Terraform](https://github.com/atlassian-labs/data-center-terraform) project.
 
-## Requirements
+## Dev environment
 
-Make sure that your development environment is configured with the following tools:
+See the [Prerequisites guide](../../userguide/PREREQUISITES/) for instructions on the CLI tools that should be installed prior to making changes to this project.
 
-1. [Terraform](#terraform)
-2. [Helm v3.3 or later](#helm)
-3. [AWS CLI](#aws-cli)
+### Go
 
-### Terraform
+[Go](https://go.dev/){.external} is used extensively for testing this project as such it needs to be installed. Check if Go is already installed by running the following command:
 
-This project uses Terraform to create and manage the Atlassian Data Center infrastructure on AWS for use with supported Data Center products.
+ ```shell
+ go version
+ ```
 
-1. Check if Terraform is already installed by running the following command:
+If Go is not installed, install it by following the [official instructions](https://golang.org/doc/install).
 
-    ```shell
-    terraform version
-    ```
+### Pre-commit hook
 
-2. If Terraform is not installed, install it by following the [official instructions](https://learn.hashicorp.com/tutorials/terraform/install-cli).
+Configure [pre-commit](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks){.external} hook and [TFLint](https://github.com/terraform-linters/tflint){.external} to maintain quality and consistency of the Terraform scripts.
 
-### Helm
-
-Make sure that Helm v3.3 or later is installed on your machine.
-
-1. Check if Helm v3.3 or later is already installed by running the following command:
-
-    ```shell
-    helm version --short
-    ```
-
-3. If Helm is not installed or you're running a version lower than 3.3, install Helm by following the [official instructions](https://helm.sh/docs/intro/install/){.external}.
-
-### AWS CLI
-
-We recommend using AWS CLI version 2.
-
-1. Check if AWS CLI version 2 is already installed by running the following command:
-    
-    ```shell
-    aws --version
-    ```
-
-2. If the AWS CLI is not installed or you're running version 1, install AWS CLI version 2 by following the [official instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external}.
-
-## Clone the project repository
-
-Clone the [Data Center Terraform](https://github.com/atlassian-labs/data-center-terraform) repository locally:
+Install [pre-commit](https://pre-commit.com/).
 
 ```shell
-git clone git@github.com:atlassian-labs/data-center-terraform.git && cd data-center-terraform
+brew install pre-commit
+```
+    
+In a terminal, change the directory to the repository root and run `pre-commit install`. Now install [TFLint](https://github.com/terraform-linters/tflint).
+   
+```shell
+brew install tflint
 ```
 
-## GitHub pre-commit hook
 
-Configure pre-commit and TFLint to maintain good quality of the committed Terraform code.
+Add the following content to `.tflint.hcl`:
 
-1. Install [pre-commit](https://pre-commit.com/).
+```hcl
+plugin "aws" {
+  enabled = true
+  version = "0.5.0"
+  source  = "github.com/terraform-linters/tflint-ruleset-aws"
+}
+```
 
-    For example: `brew install pre-commit`
+Initialize TFLint:
 
-2. In a terminal, change the directory to the repository root and run `pre-commit install`.
-3. Install [TFLint](https://github.com/terraform-linters/tflint).
-
-    For example: `brew install tflint`
-
-5. Add the following content to `.tflint.hcl`:
-
-    ```hcl
-    plugin "aws" {
-        enabled = true
-        version = "0.5.0"
-        source  = "github.com/terraform-linters/tflint-ruleset-aws"
-    }
-    ```
-
-6. Initialize TFLint:
-
-    ```shell
-    tflint --init
-    ```
+```shell
+tflint --init
+```

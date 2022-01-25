@@ -2,13 +2,13 @@
 
 ## Structure
 
-You can find the tests in the `unittest` and `e2etest` subdirectories under `/test`.
+You can find the tests in the `./unittest` and `./e2etest` subdirectories under `/test`.
 
-### `unittest`
+### Unit tests
 
 The `unittest` subdirectory includes module-level `terraform plan` validation tests. It is required to implement the unit tests for each module. Make sure each test case covers default, customised and invalid conditions.
 
-### `e2etest`
+### End-to-end tests
 
 The `e2etest` subdirectory contains the end-to-end infrastructure and product tests. The tests cover the entire deployment process, including the provisioning of resources into a cloud provider.
 
@@ -25,42 +25,9 @@ Once the cluster and product are initialized, assert functions will validate Ter
 !!! warning "The `bamboo_test.go` file will only test resource creation and validation"
     To test the destruction, run `cleanup_test.go`.
 
-
 ## Requirements
 
-The repo uses [Terratest](https://github.com/gruntwork-io/terratest) to run the tests.
-
-Make sure that your testing environment is correctly configured:
-
-### Installing Terraform
-
-1. Check if Terraform is already installed by running the following command:
-
-    ```shell
-    terraform version
-    ```
-
-2. If Terraform is not installed, install it by following the [official instructions](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-
-### Installing Go
-
-1. Check if Go is already installed by running the following command:
-
-    ```shell
-    go version
-    ```
-
-2. If Go is not installed, install it by following the [official instructions](https://golang.org/doc/install).
-
-### Installing AWS CLI
-
-We recommend using AWS CLI version 2.
-
-1. Check if AWS CLI version 2 is already installed by running the following command:
-    ```shell
-    aws --version
-    ```
-2. If the AWS CLI is not installed or you're running version 1, install AWS CLI version 2 by following the [official instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external}.
+See the [How to start development guide](HOW_TO_START.md) for details on how your environment should be setup prior to running tests. The repo also uses [Terratest](https://github.com/gruntwork-io/terratest) to run the tests.
 
 ### Setting up AWS security credentials
 
