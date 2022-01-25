@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Prints message to stdout
 # params: $1 - message, $2 - log level
 log(){

@@ -13,6 +13,7 @@ jobs:
     name: E2E Testing
     runs-on: ubuntu-latest
     env:
+      AWS_DEFAULT_REGION: us-east-1
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_VAR_bamboo_license: ${{ secrets.TF_VAR_LICENSE }}
@@ -20,14 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Install aws-iam-authenticator
-        working-directory: test/
-        run: |
-          curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-          chmod +x ./aws-iam-authenticator
-          mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator &&  export PATH=$PATH:$HOME/bin
-          aws-iam-authenticator version
 
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
@@ -43,6 +36,13 @@ jobs:
 
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
+
+      - name: E2E test
+        id: e2e-test
+        working-directory: test/
+        run: |
+          set -o pipefail
+          go test ./e2etest -v -timeout 40m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
         if: always()
