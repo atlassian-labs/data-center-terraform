@@ -237,7 +237,7 @@ bamboo_agent_helm_chart_version = "1.0.0"
 
 ### Bamboo instance resource configuration
 
-The following variables set number of cpu, amount of memory, maximum heap size and minimum heap size of Bamboo instance. (Used default values as example.)
+The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Bamboo instance. (Used default values as example.)
 
 ```terraform
 bamboo_cpu = "1"
@@ -248,7 +248,7 @@ bamboo_max_heap = "512m"
 
 ### Bamboo Agent instance resource configuration
 
-The following variables set number of cpu and amount of memory of Bamboo Agent instances. (Used default values as example.)
+The following variables set number of CPU and amount of memory of Bamboo Agent instances. (Used default values as example.)
 
 ```terraform
 bamboo_agent_cpu = "0.25"
