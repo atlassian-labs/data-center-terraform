@@ -60,7 +60,7 @@ The following options are available:
 - `-c <config_file_path>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
-!!!info "Installation using default and configuration files" 
+!!!info "Installation using default and custom configuration files" 
 
     Running the installation script with no parameters will use the default configuration file (`config.tfvars`) to provision the environment:
 
