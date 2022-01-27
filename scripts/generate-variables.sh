@@ -45,6 +45,11 @@ set_variables() {
 
   # Get the AWS account ID
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+  if [ -z "${AWS_ACCOUNT_ID}" ]; then
+    log "Authentication problem: Terraform cannot access to AWS CLI." "ERROR"
+    log "Please check the AWS CLI access account and make sure you are authenticated with an admin privileged."
+    exit 1
+  fi
 
   # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
   S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
