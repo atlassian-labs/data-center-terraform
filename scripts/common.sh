@@ -11,3 +11,18 @@ log(){
     echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] $1"
   fi
 }
+
+# Fetch the value of requested variable defined in config file
+# params: $1 - variable name, $2 - config file full path
+get_variable(){
+  if [ "$#" -eq 2 ]; then
+    if [ ! -f "${2}" ]; then
+      echo "File ${2} is not existed."
+      return 1
+    fi
+    echo $(grep -o '^[^#]*' "${2}" | grep "${1}" | sed 's/ //g' | grep "${1}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    return 0
+  fi
+  echo "Usage: fetch <config file> <variable name>"
+  return 1
+}
