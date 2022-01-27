@@ -91,9 +91,9 @@ verify_configuration_file() {
   export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
   export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
-  if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
+  if [ "${#ENVIRONMENT_NAME}" -gt 24 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
-    log "Please make sure your environment name is less than 25 characters."
+    log "Please make sure your environment name is less than 24 characters."
     HAS_VALIDATION_ERR=1
   fi
 
