@@ -239,7 +239,7 @@ resume_bamboo_server() {
       fi
     fi
     if [ -z $SERVER_STATUS ]; then
-      log "We were not able to login into the Bamboo software to resume the server." "Warning"
+      log "We were not able to login into the Bamboo software to resume the server." "WARN"
       log "Please login into the Bamboo and 'RESUME' the server before start using the product."
     fi
   fi
