@@ -234,6 +234,8 @@ resume_bamboo_server() {
       local RESULT=$(curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}")
       if [[ "x${RESULT}" == *"RUNNING"* ]]; then
         SERVER_STATUS="RUNNING"
+      elif [ "x${RESULT}" == *"AUTHENTICATED_FAILED"* ]; then
+        log "The provided admin username and password is not matched with the credential stored in the dataset." "ERROR"
       fi
     fi
     if [ -z $SERVER_STATUS ]; then
