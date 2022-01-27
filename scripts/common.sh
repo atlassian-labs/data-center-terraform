@@ -20,7 +20,13 @@ get_variable(){
       echo "File ${2} is not existed."
       return 1
     fi
-    echo $(grep -o '^[^#]*' "${2}" | grep "${1}" | sed 's/ //g' | grep "${1}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    local VALUE=$(grep -o '^[^#]*' "${2}" | grep "${1}" | sed 's/ //g' | grep "${1}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    if [ ! $(echo "${VALUE}" | wc -l) -eq 1 ];then
+      echo "ERROR - '${1}' is re-defined in '${2}'";
+      echo "${VALUE}"
+      return 1;
+    fi
+    echo "${VALUE}"
     return 0
   fi
   echo "Usage: fetch <config file> <variable name>"
