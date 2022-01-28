@@ -126,7 +126,7 @@ The same scenario when your active environment (the latest environment you insta
 If you use pre-existing state in install or uninstall an environment you may face with an error in the process.    
 
 !!! hint "Tip"
-    Answer 'yes' when you get a similar message during installation or uninstallation:
+    Answer '*NO*' when you get a similar message during installation or uninstallation:
     ```shellscript
     Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
     the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
