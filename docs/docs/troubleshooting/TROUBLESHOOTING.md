@@ -122,7 +122,7 @@ Where '<ID>' is the value that appears in the error message.
 ## Pre-existing state in multiple environment
 
 If you start installing an environment while you already have an active environment installed before, you should not use pre-existing state. 
-The same scenario when your active environment (the latest environment you installed or uninstalled). 
+The same scenario when you want to uninstall a non-active environment (active environment is the latest environment you installed or uninstalled). 
 If you use pre-existing state in install or uninstall an environment you may face with an error in the process.    
 
 !!! hint "Tip"
