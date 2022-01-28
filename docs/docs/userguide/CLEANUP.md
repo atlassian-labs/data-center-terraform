@@ -31,7 +31,7 @@ The following options are available:
     Alternatively if you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
 
     ```shell
-    ./install.sh -c my-custom-config.tfvars
+    ./uninstall.sh -c my-custom-config.tfvars
     ```
 
 
