@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # This script will generate/override the `modules/tfstate/tfstate-locals.tf` and `terraform-backend.tf`
 
 FORCE_FLAG=
@@ -39,11 +40,17 @@ fi
 
 set_variables() {
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
-  ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-  REGION=$(grep 'region' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
+  REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
   # Get the AWS account ID
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+  if [ -z "${AWS_ACCOUNT_ID}" ]; then
+    log "Authentication problem: Terraform cannot access to AWS services." "ERROR"
+    log "Please check the AWS credentials and make sure you are authenticated with administrator permissions. "
+    log "Read https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html for more details."
+    exit 1
+  fi
 
   # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
   S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
@@ -63,7 +70,7 @@ cleanup_existing_files() {
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
     if ! grep -q "${S3_BUCKET}" "${BACKEND_TF}"  ; then
-      EXISTING_S3_BUCKET=$(grep 'bucket' ${BACKEND_TF} | sed -nE 's/^.*"(.*)".*$/\1/p')
+      EXISTING_S3_BUCKET=$(get_variable 'bucket' ${BACKEND_TF})
       log "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
       log "It means the repo was used to provision environments in different account or region."
       log "Terraform loses the existing S3 backend if you proceed with this configuration."
@@ -76,8 +83,8 @@ cleanup_existing_files() {
         read -p "Are you sure that you want to proceed(Yes/No)? " yn
         case $yn in
             Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
-            No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit;;
-            * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit;;
+            No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit 1;;
+            * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit 1;;
         esac
       fi
     fi
@@ -88,7 +95,7 @@ cleanup_existing_files() {
     set -e
   fi
   log "Cleaning all the generated variable files."
-  sh "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
+  bash "${SCRIPT_PATH}/cleanup.sh" -s -r "${ROOT_PATH}"
 }
 
 inject_variables_to_templates() {
