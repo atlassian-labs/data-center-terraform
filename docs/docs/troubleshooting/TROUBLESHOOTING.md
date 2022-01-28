@@ -34,7 +34,7 @@ This guide contains general tips on how to investigate an application deployment
     
     **Solution**
 
-    Idenity the resource and delete it manually from the AWS console, and then restart the uninstallation process. Make sure to always use the same configuration file that was used to install the environment. 
+    Identify the resource and delete it manually from the AWS console, and then restart the uninstallation process. Make sure to always use the same configuration file that was used to install the environment. 
 
 
 
