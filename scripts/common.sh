@@ -12,7 +12,7 @@ log(){
   fi
 }
 
-# Fetch the value of requested variable defined in config file
+# Fetch the value of the requested variable defined in Terraform config file
 # params: $1 - variable name, $2 - config file full path
 get_variable(){
   if [ "$#" -eq 2 ]; then
