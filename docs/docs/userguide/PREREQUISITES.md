@@ -60,7 +60,7 @@ You need to have the AWS CLI tool installed on your local machine before creatin
 
 ### :material-kubernetes: Kubernetes cluster monitoring tools
 
-This step is not mandatory in order to use Terraform for Atlassian Data Center products, but we recommend installing tools such as [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/){.external} to be able monitor 
+This step is not mandatory in order to use Terraform for Atlassian Data Center products, but we recommend installing tools such as [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl){.external} to be able monitor 
 and diagnose the resources in the Kubernetes cluster. 
 
 !!! Tip "Other Kubernetes cluster monitoring tools"

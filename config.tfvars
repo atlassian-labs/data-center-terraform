@@ -43,8 +43,7 @@ bamboo_admin_email_address = "<EMAIL ADDRESS>"
 
 # (Optional) URL for dataset to import
 # The provided default is the dataset used in the DCAPT framework.
-# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
-# for details
+# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
@@ -65,7 +64,7 @@ desired_capacity = 1
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
 db_instance_class    = "db.t3.micro"
-db_allocated_storage = 1000
+db_allocated_storage = 100
 db_iops              = 1000
 
 # Helm chart version of Bamboo and Bamboo agent instances
