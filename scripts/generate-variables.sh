@@ -46,7 +46,7 @@ set_variables() {
   # Get the AWS account ID
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
   if [ -z "${AWS_ACCOUNT_ID}" ]; then
-    log "Authentication problem: Terraform cannot access to AWS CLI." "ERROR"
+    log "Authentication problem: Terraform cannot access to AWS services." "ERROR"
     log "Please check the AWS CLI access account and make sure you are authenticated with an admin privileged."
     exit 1
   fi
