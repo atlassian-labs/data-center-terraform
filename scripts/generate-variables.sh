@@ -77,8 +77,8 @@ cleanup_existing_files() {
         read -p "Are you sure that you want to proceed(Yes/No)? " yn
         case $yn in
             Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
-            No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit;;
-            * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit;;
+            No|no|n|N ) log "Execution is cancelled by the user" "ERROR" ; exit 1;;
+            * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR" ; exit 1;;
         esac
       fi
     fi

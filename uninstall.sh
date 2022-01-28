@@ -89,8 +89,8 @@ confirm_action() {
     read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
     case $yn in
         Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-        No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit;;
-        * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
+        No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit 1;;
+        * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit 1;;
     esac
     echo
   else
@@ -164,8 +164,8 @@ destroy_tfstate() {
             Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \
               log "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
-              log "As your request, the terraform state is not removed."; exit;;
-            * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit;;
+              log "As your request, the terraform state is not removed."; exit 1;;
+            * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit 1;;
         esac
       fi
       if ! test -d ".terraform" ; then

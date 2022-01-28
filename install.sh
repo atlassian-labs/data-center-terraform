@@ -91,9 +91,9 @@ verify_configuration_file() {
   export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
   export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
-  if [ "${#ENVIRONMENT_NAME}" -gt 25 ]; then
+  if [ "${#ENVIRONMENT_NAME}" -gt 24 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
-    log "Please make sure your environment name is less than 25 characters."
+    log "Please make sure your environment name is less than 24 characters."
     HAS_VALIDATION_ERR=1
   fi
 
@@ -206,9 +206,9 @@ set_current_context_k8s() {
 
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
-  # is matched with admin info stored in dataset you import
-
+  # is matched with admin info stored in dataset you import. 
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
+  local SERVER_STATUS=
 
   # resume the server only if a dataset is imported
   if [ -n "${BAMBOO_DATASET}" ]; then
@@ -230,7 +230,16 @@ resume_bamboo_server() {
       fi
       bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
       resume_bamboo_url="${bamboo_url}/rest/api/latest/server/resume"
-      curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}"
+      local RESULT=$(curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}")
+      if [[ "x${RESULT}" == *"RUNNING"* ]]; then
+        SERVER_STATUS="RUNNING"
+      elif [ "x${RESULT}" == *"AUTHENTICATED_FAILED"* ]; then
+        log "The provided admin username and password is not matched with the credential stored in the dataset." "ERROR"
+      fi
+    fi
+    if [ -z $SERVER_STATUS ]; then
+      log "We were not able to login into the Bamboo software to resume the server." "WARN"
+      log "Please login into the Bamboo and 'RESUME' the server before start using the product."
     fi
   fi
 }
