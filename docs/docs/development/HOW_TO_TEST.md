@@ -10,7 +10,7 @@ The `unittest` subdirectory includes module-level `terraform plan` validation te
 
 The `e2etest` subdirectory contains the end-to-end infrastructure and product tests. The tests cover the entire deployment process, including the provisioning of resources into a cloud provider.
 
-Each product will have one test function that covers all the states. The test function starts with generating configurations for the `terratest`, `helm`, `kubectl` commands. You can modify the configuration variables in the `GenerateConfigForProductE2eTest()` function.
+Each product will have one test function that covers all the states. The test function starts with generating configurations for a test environment. You can modify the configuration variables in the `createConfig()` function.
 
 The provisioning process is as follows:
 
@@ -18,11 +18,7 @@ The provisioning process is as follows:
 2. Create an EKS namespace (product name by default).
 3. Clone the Atlassian Helm chart repository and install the specified product using Helm.
     
-Once the cluster and product are initialized, assert functions will validate Terraform outputs.
-
-!!! warning "The `bamboo_test.go` file will only test resource creation and validation"
-    To test the destruction, run `cleanup_test.go`.
-
+Once the cluster and product are initialized, `bambooHealthTests()` function will validate the installation result.
 ## Requirements
 
 See the [How to start development guide](HOW_TO_START.md) for details on how your environment should be setup prior to running tests. The repo also uses [Terratest](https://github.com/gruntwork-io/terratest) to run the tests.
@@ -45,39 +41,14 @@ See the [How to start development guide](HOW_TO_START.md) for details on how you
 
 ??? info "Running end-to-end tests"
 
-    End-to-end tests take approx. 40–60 min. to complete To run end-to-end tests, use the following commands:
+    End-to-end tests take approx. 40–60 min. to complete. To run end-to-end tests, use the following commands:
     
     ```shell
     export TF_VAR_bamboo_license='<bamboo-license>'
     cd test && mkdir ./e2etest/artifacts
     go get -v -t -d ./... && go mod tidy
-    go test ./e2etest -v -timeout 40m -run Bamboo | tee ./e2etest/artifacts/e2e-test.log
+    go test ./e2etest -v -timeout 60m -run Installer | tee ./e2etest/artifacts/e2etest.log
     ```
-    
-    To clean up tests, run:
-    
-    ```shell
-    go test ./e2etest -v -timeout 40m -run Cleanup | tee ./e2etest/artifacts/e2e-test-cleanup.log
-    ```
-
-??? info "Reusing the end-to-end test environment"
-
-    When you run end-to-end test for the first time, the test function will create an environment configuration file in the `/test/e2etest/artifacts` directory (the default file name is `e2e_test_env_config.json`). You can use this file to reuse the existing Terraform environment directory created by Terratest.
-    
-    You can use the `-config` flag to specify the configuration file name on the second run and the function will load the configuration and reuse the existing environment. For example:
-    
-    ```shell
-    go test ./e2etest -v -timeout 40m -run Bamboo -config=e2e_test_env_config.json | tee ./e2etest/artifacts/e2e-test.log
-    ```
-    
-    You can do the same to clean up tests:
-    
-    ```shell
-    go test ./e2etest -v -timeout 40m -run Cleanup -config=e2e_test_env_config.json | tee ./e2etest/artifacts/e2e-test-cleanup.log
-    ```
-    
-    If the `-config` flag is missing, the second test will create a new test environment and overwrite the `e2e_test_env_config.json` file if it exists. Rename the `e2e_test_env_config.json` file to avoid overwriting it.
-
 ## GitHub Actions
 
 These unit and end-to-end tests run as part of the [GitHub Actions setup for this repo](https://github.com/atlassian-labs/data-center-terraform/actions){.external}. You can find the configuration file for these actions in `.github/workflows` within the root level of the project.
