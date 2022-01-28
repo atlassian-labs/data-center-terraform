@@ -25,7 +25,7 @@ The following options are available:
     If you used the default configuration file (`config.tfvars`) from the root folder of the project, run the following command:
 
     ```shell
-    ./install.sh
+    ./uninstall.sh
     ```
 
     Alternatively if you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
