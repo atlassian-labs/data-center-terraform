@@ -73,7 +73,7 @@ process_arguments() {
     show_help
   fi
 
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(get_variable 'environment_name' ${CONFIG_ABS_PATH})
 }
 
 # Ask user confirmation for destroying the environment
@@ -138,9 +138,9 @@ destroy_tfstate() {
   TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
-    S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-    BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-    DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+    S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
+    BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
+    DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
 
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e

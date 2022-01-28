@@ -40,8 +40,8 @@ fi
 
 set_variables() {
   # extract S3 bucket, dynamodb, tags, and region from locals.tf
-  ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-  REGION=$(grep 'region' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
+  REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
   # Get the AWS account ID
   AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -64,7 +64,7 @@ cleanup_existing_files() {
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
     set +e
     if ! grep -q "${S3_BUCKET}" "${BACKEND_TF}"  ; then
-      EXISTING_S3_BUCKET=$(grep 'bucket' ${BACKEND_TF} | sed -nE 's/^.*"(.*)".*$/\1/p')
+      EXISTING_S3_BUCKET=$(get_variable 'bucket' ${BACKEND_TF})
       log "We found this repo is using S3 backend '"${EXISTING_S3_BUCKET}"'."
       log "It means the repo was used to provision environments in different account or region."
       log "Terraform loses the existing S3 backend if you proceed with this configuration."
