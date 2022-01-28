@@ -28,3 +28,4 @@ PostgreSQL is the defined database engine for the products and cannot be modifie
 ### Scaling EKS
 
 You cannot change the number of the EKS cluster nodes (`desired_capacity`) and node type (`instance_types`) after provisioning the environment.
+However, the number of remote agents and application pods can be scaled up as long as the EKS cluster has enough resources. See [Product Scaling](https://atlassian.github.io/data-center-helm-charts/userguide/resource_management/RESOURCE_SCALING/#product-scaling) for more details.
