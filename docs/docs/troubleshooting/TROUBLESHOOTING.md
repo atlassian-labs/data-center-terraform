@@ -132,8 +132,7 @@ If you use pre-existing state in install or uninstall an environment you may fac
     the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
     exists in the new backend. The two states have been saved to temporary files that will be removed 
     after responding to this query. 
-    Previous (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/1-s3.tfstate 
-    New (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/2-s3.tfstate 
+    
     Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
     and "no" to start with the existing state in the newly configured "s3" backend.
     
