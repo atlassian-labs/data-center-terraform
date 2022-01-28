@@ -44,6 +44,6 @@ By default, the script does not remove Terraform state files. If you want to rem
 ```
 
 !!! warning "`-t` flag will remove the S3 Bucket that the Terraform state file is located"
-    This means if you have multiple environments provisioned under same AWS account and region, you will lose the track of them.
+    This means if you have multiple environments provisioned under same AWS account and region, you will lose track of them.
 
     Use this flag only if you are sure that there is no other environment left in your region and account.
