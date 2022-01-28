@@ -16,19 +16,20 @@ log(){
 # params: $1 - variable name, $2 - config file full path
 get_variable(){
   if [ "$#" -eq 2 ]; then
-    if [ ! -f "${2}" ]; then
-      echo "File ${2} is not existed."
+    local variable_name=${1}
+    local config_file=${2}
+    if [ ! -f "${config_file}" ]; then
+      log "File ${config_file} does not exist." "ERROR"
       return 1
     fi
-    local VALUE=$(grep -o '^[^#]*' "${2}" | grep "${1}" | sed 's/ //g' | grep "${1}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    local VALUE=$(grep -o '^[^#]*' "${config_file}" | grep "${variable_name}" | sed 's/ //g' | grep "${variable_name}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
     if [ ! $(echo "${VALUE}" | wc -l) -eq 1 ];then
-      log "ERROR - '${1}' is re-defined in '${2}'" "ERROR";
-      echo "${VALUE}"
+      log "ERROR - '${variable_name}' is re-defined in '${config_file}'" "ERROR";
       return 1;
     fi
     echo "${VALUE}"
     return 0
   fi
-  echo "Usage: fetch <config file> <variable name>"
+  echo "Usage: get_variable <variable name> <config file>"
   return 1
 }
