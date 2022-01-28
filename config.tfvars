@@ -45,7 +45,7 @@ bamboo_admin_email_address = "<EMAIL ADDRESS>"
 # The provided default is the dataset used in the DCAPT framework.
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
 #
-#dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
+#dataset_url = "https://centaurus-datasets.s3.us-east-2.amazonaws.com/bamboo/8.1.1/dcapt-bamboo.zip"
 
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
