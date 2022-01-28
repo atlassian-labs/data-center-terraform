@@ -120,3 +120,33 @@ Where '<ID>' is the value that appears in the error message.
     There are two Terraform locks—one for the infrastructure and another for Terraform state. If running the following command from the repository directory does not unlock the resources, change the directory to `./modules/tfstate` and retry the same command.
 
 
+??? tip "How do I fix when I accidentally chose to copy pre-existing environment's state file to new environment? "
+
+    **Symptom**
+
+    ```shell
+    Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
+    the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
+    exists in the new backend. The two states have been saved to temporary files that will be removed 
+    after responding to this query. 
+    Previous (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/1-s3.tfstate 
+    New (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/2-s3.tfstate 
+    Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
+    and "no" to start with the existing state in the newly configured "s3" backend.
+
+    Enter a value:
+    ```
+    You answered Yes to the prompt. 
+    
+    **Solution**
+
+    1. Clean up everything before proceed. In repository root directory, run
+    ```shell
+    ./scripts/cleanup.sh -s -t -x -r .
+    ```
+    2. In repository root directory, run `terraform init -var-file=<config file>`
+    3. re-run the install/uninstall script.
+    ```shell
+    ./install -c <config file>
+    ```
+

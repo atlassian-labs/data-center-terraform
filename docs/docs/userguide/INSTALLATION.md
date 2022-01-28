@@ -49,6 +49,28 @@ The following options are available:
 - `-c <config_file>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
+!!! info "Using the same cloned repository to manage more than one environment"
+
+    If the repository has already been used to deploy an environment, and that environment is still active, i.e. hasn't been uninstalled yet, 
+    deploying a new environment using install.sh will get a prompt with following message: 
+
+    ```shell
+    Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
+    the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
+    exists in the new backend. The two states have been saved to temporary files that will be removed 
+    after responding to this query. 
+    Previous (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/1-s3.tfstate 
+    New (type "s3"): /var/folders/vm/sz46pmw94f3f8nrvzyqhwmx00000gn/T/terraform3661306827/2-s3.tfstate 
+    Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
+    and "no" to start with the existing state in the newly configured "s3" backend.
+
+    Enter a value:
+    ```
+
+    This will happen everytime when you switch between different active environments. Since environemnts are independent, answer No to continue.  
+    If you answered Yes, Terraform will then use the state of active environment to plan and deploy new environment, which will pollute the state of both environments, and end up to an error state.  
+    Check [troubleshoting](../troubleshooting/TROUBLESHOOTING.md) guide if you accidentally answered Yes. 
+
 Running the installation script with no parameters will use the default configuration file to provision the environment. 
 
 ### Start the installation using the default configuration file
