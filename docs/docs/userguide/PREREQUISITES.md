@@ -4,7 +4,7 @@ Before installing the infrastructure for Atlassian Data Center products, make su
 
 ## Environment setup
 
-Its advised that the tooling below is installed to your development environment. An understanding of these tools and their associated concepts is also advisable.
+Its advised that the tooling below is installed to your development environment. A basic understanding of these tools and their associated concepts is also advisable.
 
 1. [Terraform](#terraform) 
 2. [Helm v3.3 or later](#helm)
