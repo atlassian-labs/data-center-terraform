@@ -73,7 +73,7 @@ process_arguments() {
     show_help
   fi
 
-  ENVIRONMENT_NAME=$(grep 'environment_name' ${CONFIG_ABS_PATH} | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(get_variable 'environment_name' ${CONFIG_ABS_PATH})
 }
 
 # Ask user confirmation for destroying the environment
@@ -89,8 +89,8 @@ confirm_action() {
     read -p "Are you sure that you want to **DELETE** the environment '${ENVIRONMENT_NAME}' (yes/no)? " yn
     case $yn in
         Yes|yes ) log "Deletion confirmed. Environment '${ENVIRONMENT_NAME}' will be deleted soon.";;
-        No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit;;
-        * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit;;
+        No|no|n|N ) log "Uninstall is cancelled by the user." "ERROR";  exit 1;;
+        * ) log "Please answer 'Yes' to confirm deleting the infrastructure." "ERROR"; exit 1;;
     esac
     echo
   else
@@ -138,9 +138,9 @@ destroy_tfstate() {
   TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
     # extract S3 bucket and bucket key from tfstate-locals.tf
-    S3_BUCKET=$(grep "bucket_name" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-    BUCKET_KEY=$(grep "bucket_key" "${TF_STATE_FILE}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-    DYNAMODB_TABLE=$(grep 'dynamodb_name' ${TF_STATE_FILE} | sed -nE 's/^.*"(.*)".*$/\1/p')
+    S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
+    BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
+    DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
 
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
@@ -164,8 +164,8 @@ destroy_tfstate() {
             Yes|yes ) log "Thank you. We have your confirmation to proceed.";;
             No|no|n|N ) \
               log "Thank you. The environment ${ENVIRONMENT_NAME} is uninstalled successfully.";\
-              log "As your request, the terraform state is not removed."; exit;;
-            * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit;;
+              log "As your request, the terraform state is not removed."; exit 1;;
+            * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit 1;;
         esac
       fi
       if ! test -d ".terraform" ; then

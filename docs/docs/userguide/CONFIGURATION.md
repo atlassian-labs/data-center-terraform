@@ -49,7 +49,7 @@ environment_name = "<YOUR-ENVIRONMENT-NAME>" # e.g. "my-terraform-env"
 
 !!! info "Format" 
     
-    Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 25 characters.
+    Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 24 characters.
 
 
 ### Region
