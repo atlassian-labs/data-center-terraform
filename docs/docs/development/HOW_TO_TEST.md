@@ -21,7 +21,7 @@ The provisioning process is as follows:
 Once the cluster and product are initialized, `bambooHealthTests()` function will validate the installation result.
 ## Requirements
 
-See the [How to start development guide](HOW_TO_START.md) for details on how your environment should be setup prior to running tests. The repo also uses [Terratest](https://github.com/gruntwork-io/terratest) to run the tests.
+See the [How to start development guide](HOW_TO_START.md) for details on how your environment should be setup prior to running tests. The repository also uses [Terratest](https://github.com/gruntwork-io/terratest) to run the tests.
 
 ### Setting up AWS security credentials
 
