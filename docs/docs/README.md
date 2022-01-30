@@ -1,4 +1,4 @@
-# Infrastructure for Atlassian Data Center products on Kubernetes
+# Deployment automation for Atlassian DC on K8s
 
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md)
@@ -13,9 +13,9 @@
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
     * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only DC product supported by this project.
 
-    Support for additional Cloud providers and DC products will be made available in future.
+    Support for additional cloud providers and DC products will be made available in future.
     
-This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. Soup to nut's, this tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. Using the existing [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external} it will also install Bamboo DC into this pre-provisioned cluster.
+This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. Using the existing [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external} it will also install Bamboo DC into this pre-provisioned cluster.
 
 ## Deployment overview
 
@@ -48,3 +48,6 @@ Contributions are welcome! [Find out how to contribute](https://github.com/atlas
 ## License
 
 Apache 2.0 licensed, see [license file](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE){.external}.
+
+
+[![With ❤️ from Atlassian](https://raw.githubusercontent.com/atlassian-internal/oss-assets/master/banner-cheers-light.png)](https://www.atlassian.com)

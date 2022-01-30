@@ -8,7 +8,7 @@ A number of tools have been used for building this project. When working on the 
 
 ??? info "Golang"
 
-    [Go language](https://go.dev/){.external} is used extensively for testing this project, as such it needs to be installed. Check if Go is already installed by running the following command:
+    [Golang](https://go.dev/){.external} is used extensively for testing this project, as such it needs to be installed. Check if Go is already installed by running the following command:
     
      ```shell
      go version
@@ -26,7 +26,7 @@ A number of tools have been used for building this project. When working on the 
     brew install pre-commit
     ```
         
-    In a terminal, change the directory to the repository root and run `pre-commit install`. Now install [TFLint](https://github.com/terraform-linters/tflint).
+    In a terminal, change the directory to the repository root and run `pre-commit install`.
        
     ```shell
     brew install tflint
