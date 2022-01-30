@@ -287,4 +287,4 @@ Take`bamboo_admin_password` for example, for Linux-like sytems, run the followin
 export TF_VAR_bamboo_admin_password=<password>
 ```
 
-Storing this data as plain-text is not a particular concern for the environment to be deployed, you can also choose to supply the values in `config.tfvars` file. Uncomment the corresponding line and configure the value there.
+If storing this data as plain-text is not a particular concern for the environment to be deployed, you can also choose to supply the values in `config.tfvars` file. Uncomment the corresponding line and configure the value there.
