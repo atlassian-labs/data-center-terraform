@@ -8,7 +8,7 @@ A number of tools have been used for building this project. When working on the 
 
 ??? info "Golang"
 
-    [Go](https://go.dev/){.external} is used extensively for testing this project, as such it needs to be installed. Check if Go is already installed by running the following command:
+    [Go language](https://go.dev/){.external} is used extensively for testing this project, as such it needs to be installed. Check if Go is already installed by running the following command:
     
      ```shell
      go version
