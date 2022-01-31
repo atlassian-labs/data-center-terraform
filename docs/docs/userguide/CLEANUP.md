@@ -36,7 +36,7 @@ The following options are available:
 
 ### Removing Terraform state files
 
-We create an AWS S3 bucket and DynamoDB to store terraform state of the environments for each region. Without the state information, terraform cannot maintain the infrastructure.
+We create an AWS S3 bucket and DynamoDB table to store the Terraform state of the environments for each region. Without the state information, Terraform cannot maintain the infrastructure.
 All environments installed in the same region share one S3 bucket to store the state files.  
 By default, the uninstall script does not remove Terraform state files.  
 
