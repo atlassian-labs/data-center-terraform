@@ -2,7 +2,8 @@
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
 # Usage:  install.sh [-c <config_file>] [-h]
-# -p <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
+# -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
+# -f : Auto-approve
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
@@ -44,7 +45,7 @@ EOF
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
-      f)    FORCE_FLAG="-f";;
+      f)    FORCE_FLAG="-f";;         # Auto-approve
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
