@@ -5,7 +5,7 @@
 **Release date:** 2022-01-31
 
 * Improved documentation
-* Changed the defualt values in configuration template
+* Changed the default values in the configuration template
 * Resume the Bamboo server after installation
 * Improved install and uninstall scripts
 * Made the product version, Bamboo software and Bamboo agent resources configurable
