@@ -119,39 +119,39 @@ Where '<ID>' is the value that appears in the error message.
 !!! hint "Are you still having the lock problem after running `terraform force-unlock`?"
     There are two Terraform locks—one for the infrastructure and another for Terraform state. If running the following command from the repository directory does not unlock the resources, change the directory to `./modules/tfstate` and retry the same command.
 
-## Pre-existing state in multiple environment
+??? hint "How do I deal with Pre-existing state in multiple environment?"
 
-If you start installing an environment while you already have an active environment installed before, you should not use pre-existing state. 
-The same scenario when you want to uninstall a non-active environment (active environment is the latest environment you installed or uninstalled). 
-If you use pre-existing state in install or uninstall an environment you may face with an error in the process.    
-
-!!! hint "Tip"
-    Answer '*NO*' when you get a similar message during installation or uninstallation:
-    ```shellscript
-    Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
-    the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
-    exists in the new backend. The two states have been saved to temporary files that will be removed 
-    after responding to this query. 
+    If you start installing a new environment while you already have an active environment installed before, you should NOT use the pre-existing state. 
+    The same scenario when you want to uninstall a non-active environment (active environment is the latest environment you installed or uninstalled). 
+    If you use pre-existing state in install or uninstall an environment you will face with an error in the process.    
     
-    Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
-    and "no" to start with the existing state in the newly configured "s3" backend.
+    !!! hint "Tip"
+        Answer '*NO*' when you get a similar message during installation or uninstallation:
+        ```shellscript
+        Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
+        the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
+        exists in the new backend. The two states have been saved to temporary files that will be removed 
+        after responding to this query. 
+        
+        Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
+        and "no" to start with the existing state in the newly configured "s3" backend.
+        
+        Enter a value:
+        ```
+         
     
-    Enter a value:
+    **Symptom**
+    
+    Installation or uninstallation break after you chose to use pre-existing state. 
+    
+    
+    **Solution**
+    
+    1. Clean up everything before proceed. In repository root directory, run:
+    ```shell
+    ./scripts/cleanup.sh -s -t -x -r .
     ```
-     
-
-**Symptom**
-
-Installation or uninstallation break after you chose to use pre-existing state. 
-
-
-**Solution**
-
-1. Clean up everything before proceed. In repository root directory, run:
-```shell
-./scripts/cleanup.sh -s -t -x -r .
-```
-2. In repository root directory, run `terraform init -var-file=<config file>`
-3. re-run the install/uninstall script.
-
+    2. In repository root directory, run `terraform init -var-file=<config file>`
+    3. re-run the install/uninstall script.
+    
 
