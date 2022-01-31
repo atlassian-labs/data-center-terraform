@@ -78,7 +78,7 @@ The following options are available:
     Enter a value:
     ```
 
-    This will happen everytime when you switch between different active environments. Since environemnts are independent, answer No to continue.  
+    This will happen everytime when you switch between different active environments. Since environemnts are independent, answer '*NO*' to continue.  
     If you answered Yes, Terraform will then use the state of active environment to plan and deploy new environment, which will pollute the state of both environments, and end up to an error state.  
     Check [troubleshoting](../troubleshooting/TROUBLESHOOTING.md) guide if you accidentally answered Yes. 
 
