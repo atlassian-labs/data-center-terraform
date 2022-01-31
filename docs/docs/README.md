@@ -1,4 +1,4 @@
-# Deployment automation for Atlassian DC on K8s
+# Deployment Automation for Atlassian DC on K8s
 
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md)
@@ -6,14 +6,14 @@
 ## Support disclaimer
 
 !!! warning "Supported Products and Platforms"
-    **This project is still under development and is not officially supported.**
+    **This project is designed for Atlassian vendors to run DCAPT performance toolkit and is not officially supported.**
 
     Current project limitations listed below:
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
     * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only DC product supported by this project.
 
-    Support for additional cloud providers and DC products will be made available in future.
+    Support for additional DC products will be made available in future.
     
 This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. It will also install Bamboo DC into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
