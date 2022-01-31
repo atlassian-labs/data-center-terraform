@@ -1,4 +1,4 @@
-name: Feature request
+name: Report an issue
 description: Do you have experienced any problem with deployment Atlassian products on Kubernetes?
 title: "[Issue] - "
 labels: [issue, triage]
