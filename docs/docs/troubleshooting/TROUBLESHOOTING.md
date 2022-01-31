@@ -103,16 +103,16 @@ This guide contains general tips on how to investigate an application deployment
     
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
-??? hint "How do I deal with Pre-existing state in multiple environment?"
+??? tip "How do I deal with Pre-existing state in multiple environment?"
 
-    If you start installing a new environment while you already have an active environment installed before, you should NOT use the pre-existing state. 
+    If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
     
     The same scenario when you want to uninstall a non-active environment.     
     
     !!! help "What is active environment?"
          Active environment is the latest environment you installed or uninstalled.
             
-    !!! hint "Tip"
+    !!! tip "Tip"
         Answer '**NO**' when you get a similar message during installation or uninstallation:
         ```shellscript
         Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
