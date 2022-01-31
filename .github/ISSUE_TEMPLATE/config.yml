@@ -4,5 +4,5 @@ contact_links:
     url: https://atlassian-labs.github.io/data-center-terraform/troubleshooting/SUPPORT_BOUNDARIES/
     about: Please read the scope of support before raising an issue
   - name: Infrastructure installation issues
-    url: https://support.atlassian.com/contact/
-    about: Contact Atlassian Support with issues relating to the installation
+    url: https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes?_ga=2.69675861.438040045.1643570310-315565043.1638262533
+    about: Contact Atlassian Data Center on Kubernetes with issues relating to the installation
