@@ -112,7 +112,7 @@ This guide contains general tips on how to investigate an application deployment
        
     **Solution**
     
-    1. Open the Bamboo application in the browser and login as `administrator`. 
+    1. Open the Bamboo application in the browser and log in as _Administrator_. 
     2. Go to `Agents` page and select `Agent authentication` tab.
     3. Select `All` and press `Approve access` button. 
     4. Wait until all remote agents get online.
