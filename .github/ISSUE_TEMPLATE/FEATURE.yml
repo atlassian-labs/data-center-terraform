@@ -1,19 +1,19 @@
 name: Feature request
-description: Do you have an idea or suggestion for a Helm charts improvement?
-title: "[Suggestion] - "
-labels: [suggestion, triage]
+description: Do you have experienced any problem with deployment Atlassian products on Kubernetes?
+title: "[Issue] - "
+labels: [issue, triage]
 body:
   - type: markdown
     attributes:
       value: |
-        ## 💡 Feature requests only 💡
+        ## 💡 Report issues only 💡
         
-        Thanks for taking the time to suggest a new feature! If you are experiencing issues in Terraform installation, please read [Supported Boundaries document](https://github.com/atlassian-labs/data-center-terraform/troubleshooting/SUPPORT_BOUNDARIES/) and contact [Atlassian Support directly](https://support.atlassian.com/contact/).
+        Thanks for taking the time to report an issue! Before reporting the problem, please read [Supported Boundaries document](https://github.com/atlassian-labs/data-center-terraform/troubleshooting/SUPPORT_BOUNDARIES/) and [Troubleshooting](https://atlassian-labs.github.io/data-center-terraform/troubleshooting/TROUBLESHOOTING/) page.
   - type: textarea
-    id: suggestion-description
+    id: issue-description
     attributes:
-      label: Suggestion
-      description: Describe your idea in detail, including the use case when it will be useful
+      label: Issue
+      description: Describe your problem, including the use case and details of the issue
     validations:
       required: true
   - type: dropdown
