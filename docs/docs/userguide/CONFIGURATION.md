@@ -47,7 +47,7 @@ This value cannot be altered after the configuration has been applied.
 The value will be used to form the name of some resources including `vpc` and `Kubernetes cluster`.
 
 ```terraform
-environment_name = "<YOUR-ENVIRONMENT-NAME>"
+environment_name = "<your-environment-name>"
 ```
 
 An environment name should start with a lower case letter and can contain lower case letters, numbers, and dashes (`-`).
