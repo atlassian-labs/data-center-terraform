@@ -17,7 +17,7 @@ Usage:
 
 The following options are available:
 
-- `-t` - Delete Terraform state files
+- `-t` - Delete Terraform state files for all installed environment in the same region using the same AWS account.
 - `-c <config_file_path>` - Pass a custom configuration file to uninstall the environment provisioned by it.
 
 !!!info "Uninstallation using default and custom configuration files"
@@ -34,16 +34,21 @@ The following options are available:
     ./uninstall.sh -c my-custom-config.tfvars
     ```
 
-
 ### Removing Terraform state files
 
-By default, the script does not remove Terraform state files. If you want to remove Terraform state files, run the uninstallation script with the `-t` switch:
+We create an AWS S3 bucket and DynamoDB to store terraform state of the environments for each region. Without the state information, terraform cannot maintain the infrastructure.
+All environments installed in the same region share one S3 bucket to store the state files.  
+By default, the uninstall script does not remove Terraform state files.  
+
+!!! warning "Remove Terraform state files only if you confirm there is no other installed environment in the same region."
+    If you have installed multiple environments using the same AWS account in the same region, you need to make sure all those environments are uninstalled before removing terraform state.
+    
+    After deleting the state files, **Terraform cannot manage the installed environments**.
+    
+If you have **no other environment installed in the same region**, you may want to remove the Terraform state files permanently. 
+To remove Terraform state files permanently and delete AWS S3 bucket and DynamoDB, run the uninstallation script with the `-t` switch:
 
 ```shell 
 ./uninstall.sh -t -c <config_file_path>
 ```
 
-!!! warning "`-t` flag will remove the S3 Bucket that the Terraform state file is located"
-    This means if you have multiple environments provisioned under same AWS account and region, you will lose track of them.
-
-    Use this flag only if you are sure that there is no other environment left in your region and account.
