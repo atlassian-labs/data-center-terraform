@@ -1,4 +1,4 @@
-site_name: Terraform for Atlassian DC on Kubernetes
+site_name: Deployment Automation for Atlassian DC on Kubernetes
 theme:
   name: material
   custom_dir: overrides

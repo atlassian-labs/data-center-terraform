@@ -1,7 +1,7 @@
-# Terraform for Bamboo DC on Kubernetes
+# Deployment Automation for Atlassian DC on K8s
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 
-**NOTE: This project is under heavy development, and it is not officially supported yet.**
+**NOTE: This project is designed for Atlassian vendors to run DCAPT performance toolkit and is not officially supported.**
 
 Atlassian DC APP program provides App vendors in our ecosystem with ready-to-use environment setup tools. 
 This project provides a tool to provision infrastructure for Atlassian DC products deployed with [Helm charts](https://atlassian.github.io/data-center-helm-charts/).
