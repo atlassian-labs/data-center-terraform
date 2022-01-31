@@ -1,44 +1,45 @@
-# Infrastructure for Atlassian Data Center products on Kubernetes
+# Deployment automation for Atlassian DC on K8s
+
 [![Atlassian license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/atlassian-labs/data-center-terraform/blob/main/CONTRIBUTING.md)
 
-!!! warning "This project is still under development and is not officially supported."
+## Support disclaimer
 
-[Atlassian DC Apps program](https://developer.atlassian.com/platform/marketplace/dc-apps-submitting-your-app/#step-2--test-your-app-s-performance-at-scale)
-provides App vendors in Atlassian ecosystem with tools to setup ready-to-use environment. 
-This project provides a tool to provision infrastructure for Atlassian DC Helm chart products.
-At this stage the scope is providing the infrastructure for Bamboo DC.
+!!! warning "Supported Products and Platforms"
+    **This project is still under development and is not officially supported.**
 
+    Current project limitations listed below:
 
-## Prerequisites
+    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
+    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only DC product supported by this project.
 
-In order to deploy the infrastructure for Atlassian Data Center products on Kubernetes you need to have the 
-following applications installed on your local machine:
+    Support for additional cloud providers and DC products will be made available in future.
+    
+This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. It will also install Bamboo DC into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
-* AWS CLI
-* Helm
-* Terraform
+## Deployment overview
 
-See [prerequisites](userguide/PREREQUISITES.md) for details. 
+The diagram below provides a high level overview of what a typical deployment will look like:
 
-## Installation
-Before installing the infrastructure for Atlassian products, please make sure you read the 
-[prerequisites](userguide/PREREQUISITES.md) section and completed the [configuration](userguide/CONFIGURATION.md). 
+![architecture](assets/images/Terraform.png "Deployment")
 
-After you have done the above steps you can [install](userguide/INSTALLATION.md) the Atlassian Data Center infrastructure 
-for selected products. 
+## Deploying a Data Center product
 
-## Uninstall the products and infrastructure 
+* [Prerequisites](userguide/PREREQUISITES.md) - steps for environment setup including installation of 3rd party tooling
+* [Configuration](userguide/CONFIGURATION.md) - steps for configuring deployment
+* [Installation](userguide/INSTALLATION.md) - steps for running a deployment
 
-In installation process, Terraform created all required resources on AWS environment in order to provide the infrastructure to handle Atlassian Data Center products. 
-If you want to uninstall all products and cleanup the infrastructure see [cleanup page](userguide/CLEANUP.md).
+## Product support
 
+Atlassian Data Center products that can be provisioned with this tool:
+
+|  Bamboo DC                                                                                         |
+|----------------------------------------------------------------------------------------------------|
+| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}  |
 
 ## Feedback
 
-If you find any issue, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues). If you have general feedback or question 
-regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes).
-  
+If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. If you have general feedback or question regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes){.external}.
 
 ## Contributions
 
@@ -46,10 +47,7 @@ Contributions are welcome! [Find out how to contribute](https://github.com/atlas
 
 ## License
 
-Copyright (c) [2021] Atlassian and others.
-Apache 2.0 licensed, see [LICENSE](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE) file.
-
-<br/> 
+Apache 2.0 licensed, see [license file](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE){.external}.
 
 
 [![With ❤️ from Atlassian](https://raw.githubusercontent.com/atlassian-internal/oss-assets/master/banner-cheers-light.png)](https://www.atlassian.com)

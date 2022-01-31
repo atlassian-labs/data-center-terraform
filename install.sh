@@ -84,8 +84,8 @@ verify_configuration_file() {
   set +e
   INVALID_CONTENT=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep '<\|>')
   set -e
-  ENVIRONMENT_NAME=$(grep 'environment_name' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
-  REGION=$(grep 'region' "${CONFIG_ABS_PATH}" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
+  REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
   # check license and admin password
   export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
@@ -133,7 +133,7 @@ generate_terraform_backend_variables() {
   log "Terraform state backend/variable files are to be created."
 
   bash "${SCRIPT_PATH}/generate-variables.sh" -c "${CONFIG_ABS_PATH}" "${FORCE_FLAG}"
-  S3_BUCKET=$(grep 'bucket' "${ROOT_PATH}/terraform-backend.tf" | sed -nE 's/^.*"(.*)".*$/\1/p')
+  S3_BUCKET=$(get_variable 'bucket' "${ROOT_PATH}/terraform-backend.tf")
 }
 
 # Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
@@ -206,15 +206,14 @@ set_current_context_k8s() {
 
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
-  # is matched with admin info stored in dataset you import
-
-  BAMBOO_DATASET=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'dataset_url' | sed -nE 's/^.*"(.*)".*$/\1/p')
+  # is matched with admin info stored in dataset you import. 
+  BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
   local SERVER_STATUS=
 
   # resume the server only if a dataset is imported
   if [ -n "${BAMBOO_DATASET}" ]; then
-    ADMIN_USERNAME=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_username' | sed -nE 's/^.*"(.*)".*$/\1/p')
-    ADMIN_PASSWORD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    ADMIN_USERNAME=$(get_variable 'bamboo_admin_username' "${CONFIG_ABS_PATH}")
+    ADMIN_PASSWORD=$(get_variable 'bamboo_admin_password' "${CONFIG_ABS_PATH}")
     if [ -z "${ADMIN_USERNAME}" ]; then
       ADMIN_USERNAME="${TF_VAR_bamboo_admin_username}"
     fi

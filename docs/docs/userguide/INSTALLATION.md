@@ -2,8 +2,12 @@
 
 This guide describes how to provision the cloud environment infrastructure and install Atlassian Data Center products in a Kubernetes cluster running on AWS.
 
-!!! info "Supported Atlassian Data Center products"
-    Currently, only Bamboo Data Center is supported. We are planning to to add support for more Data Center products in the future.
+!!! warning "Supported Products and Platforms"
+
+    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
+    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only supported DC product
+
+    Support for additional Cloud providers and DC products will be made available in future.
 
 ## 1. Set up AWS security credentials
 
@@ -11,42 +15,49 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 
 ## 2. Clone the project repository
 
-Clone the Terraform for Atlassian DC Products project repository from GitHub:
+Clone the `data-center-terraform` project repository from GitHub:
 
 ```shell
-git clone -b 0.0.2-beta https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+git clone https://github.com/atlassian-labs/data-center-terraform.git
 ```
 
 ## 3. Configure the infrastructure
 
-Configure the infrastructure for the selected product or products by opening the configuration file in a text editor and defining the required values. See [Configuration](CONFIGURATION.md).
+Details of the desired infrastructure to be provisioned can be defined in `config.tfvars` located in the root level of the cloned project. Additional details on how this file can/should be configured can be found in the [Configuration guide](CONFIGURATION.md).
 
-!!! info "Where is the configuration file?"
-    By default, Terraform uses the `config.tfvars` file in the project root to configure the infrastructure during the installation or uninstallation processes.
+??? info "Configuration file location?"
+    By default, Terraform uses `config.tfvars` located in the root level of the project.
        
-!!! tip "Can I use a custom configuration file?"
-    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, using it as a template to define your infrastructure configuration.
-    
-!!! Warning "Use the same configuration file for uninstallation and cleanup"  
+??? tip "Can I use a custom configuration file?"
+    You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, renaming the copy and using `config.tfvars` as a template to define your own infrastructure configuration.
+
+??? Warning "Use the same configuration file for uninstallation and cleanup"  
     If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
 
 ## 4. Run the installation script
 
-The installation script provisions the environment infrastructure and installs the selected products based on the passed configuration file.
+Based on how `config.tfvars` has been configured the installation script will 
 
-The installation is unattended and invokes Terraform to handle the creation and management of the Kubernetes infrastructure. To keep track of the current state of the resources and manage changes, Terraform creates an S3 bucket to store the current state of the environment. A DynamoDB table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
- 
-The installation script is located in the root folder of the project.
+1. Provision the environment and infrastructure 
+2. Install the selected DC product(s) 
+
+Installation is fully automated and requires no user intervention. Terraform is invoked under the hood which handles the creation and management of the Kubernetes infrastructure.
+
+
+??? info "Terraform deployment details"
+    To keep track of the current state of the resources and manage changes, Terraform creates an [AWS S3 bucket](https://aws.amazon.com/s3/){.external} to store the current state of the environment. An [AWS DynamoDB](https://aws.amazon.com/dynamodb/) table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
+
+    The installation script, `install.sh`, is located in the root folder of the project.
 
 Usage:  
 
 ```shell
-./install.sh [-c <config-file>] [-h]
+./install.sh [-c <config_file_path>] [-h]
 ```
 
 The following options are available:
 
-- `-c <config_file>` - Pass a custom configuration file when provisioning multiple environments
+- `-c <config_file_path>` - Pass a custom configuration file when provisioning multiple environments
 - `-h` - Display help information
 
 !!! info "Using the same cloned repository to manage more than one environment"
@@ -73,27 +84,25 @@ The following options are available:
 
 Running the installation script with no parameters will use the default configuration file to provision the environment. 
 
-### Start the installation using the default configuration file
+!!!info "Installation using default and custom configuration files" 
 
-To provision the infrastructure using the default `config.tfvars` file, run:
+    Running the installation script with no parameters will use the default configuration file (`config.tfvars`) to provision the environment:
 
-```shell
-./install.sh
-```
+    ```shell
+    ./install.sh
+    ```
 
-### Start the installation using a custom configuration file
+    Alternatively a custom configuration file can be specified as follows:
 
-If you want to use a custom configuration file to handle more than one environment, run:
+    ```shell
+    ./install.sh -c my-custom-config.tfvars
+    ```
 
-```shell
-./install.sh -c <config_file_path>
-```
+??? help "How do I find the service URL of the deployed DC product?"    
+    When the installation process finishes successfully detailed information about the infrastructure is printed to `STDOUT`, this includes the `product_urls` value that can be used to launch the product in the browser.      
 
-!!! help "How to run the product after installation?"    
-    When the installation process finishes successfully, you can find some detailed information about the infrastructure in the console, including the product URL that you can follow to launch the product in the browser.      
-
-!!! help "Where do I find the database username and password?"
-    The database master username and password for each product are generated by Terraform and saved in a Kubernetes secret in the product namespace.
+??? help "Where do I find the database `username` and `password`?"
+    The database master `username` and `password` for each product is dynamically generated by Terraform and saved in a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/){.external} within the product `namespace`.
 
     To access the database username and password, run the following commands:
     ```
@@ -103,3 +112,6 @@ If you want to use a custom configuration file to handle more than one environme
     ``` 
 
     This saves the decoded username and password to the `$DB_USERNAME` and `$DB_PASSWORD` environment variables respectively.
+
+## Uninstall 
+The deployment and all of its associated resources can be un-installed by following the [Uninstallation and cleanup](../userguide/CLEANUP.md) guide.
