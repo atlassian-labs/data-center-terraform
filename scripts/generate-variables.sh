@@ -5,7 +5,7 @@ FORCE_FLAG=
 while getopts f?c: name ; do
     case $name in
     c)  CONFIG_PATH="${OPTARG}";;   # Config file name to install - this overrides the default, 'config.tfvars'
-    f)  FORCE_FLAG="true";;         # Force
+    f)  FORCE_FLAG="true";;         # Auto-approve
     ?)  echo "Invalid arguments."; show_help; exit 1;;
     esac
 done
@@ -39,7 +39,7 @@ if [ ! -f "${CONFIG_ABS_PATH}" ]; then
 fi
 
 set_variables() {
-  # extract S3 bucket, dynamodb, tags, and region from locals.tf
+  # Set the backend variables using Terraform config file
   ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
   REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
@@ -52,7 +52,7 @@ set_variables() {
     exit 1
   fi
 
-  # Generates the unique s3 bucket and key names for the deployment for keeping the terraform state
+  # Generates the unique s3 bucket and key names for the deployment to keep the terraform state
   S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
   BUCKET_KEY="${ENVIRONMENT_NAME}"
 
@@ -64,7 +64,7 @@ set_variables() {
   ASG_EC2_TAG_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
 }
 
-# Cleaning all the generated terraform state variable and backend file
+# Cleaning all the generated terraform state variable and terraform backend file
 cleanup_existing_files() {
   if [ -f "${BACKEND_TF}" ]; then
     # remove terraform generated files if the environment name or AWS Account ID or Region has changed
@@ -99,7 +99,7 @@ cleanup_existing_files() {
 }
 
 inject_variables_to_templates() {
-  # Generate the terraform backend, where terraform store the state of the infrastructure
+  # Generate the terraform backend to migrate terraform state to S3 bucket
   log "Generating the terraform backend definition file 'terraform.backend.tf'."
   sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/templates/terraform-backend.tf.tmpl" | \
   sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \

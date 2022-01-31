@@ -13,10 +13,6 @@ This page describes what is within our scope of support for Terraform Data Cente
 
     Support for additional Cloud providers and DC products will be made available in future.
 
-
->>>>> WE NEED TO DEFINE OUR SUPPORT BOUNDARY
-
-
 ???+ info "Additional information"
     * Read our [troubleshooting tips](TROUBLESHOOTING.md).
     * Read about the [product and platform limitations](LIMITATIONS.md).

@@ -3,7 +3,8 @@
 #
 # Usage:  uninstall [-c <config_file>] [-s] [-h]
 # -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
-# -s : Skip cleaning up the terraform state
+# -t : clean up the terraform state
+# -f : Auto-approve
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
@@ -28,8 +29,9 @@ EOF
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
+  echo "   -t : Cleaning up the terraform state S3 bucket permanently."
+  echo "        Use this option only when there is no other environment installed in the region."
   echo "   -h : provides help to how executing this script."
-  echo "   -t : Cleaning up the terraform state S3 bucket."
   echo
   exit 2
 }
@@ -44,7 +46,7 @@ EOF
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
-      f)  FORCE_FLAG="-f";;         # Force uninstall
+      f)  FORCE_FLAG="-f";;         # Force uninstall - Auto-approve
       ?)  log "Invalid arguments." "ERROR"; show_help
       esac
   done

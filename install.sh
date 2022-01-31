@@ -2,7 +2,8 @@
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
 # Usage:  install.sh [-c <config_file>] [-h]
-# -p <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
+# -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
+# -f : Auto-approve
 # -h : provides help to how executing this script.
 set -e
 set -o pipefail
@@ -44,7 +45,7 @@ EOF
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
-      f)    FORCE_FLAG="-f";;
+      f)    FORCE_FLAG="-f";;         # Auto-approve
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -207,6 +208,7 @@ set_current_context_k8s() {
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
   # is matched with admin info stored in dataset you import. 
+  log "Resuming Bamboo server."
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
   local SERVER_STATUS=
 
@@ -230,11 +232,14 @@ resume_bamboo_server() {
       fi
       bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
       resume_bamboo_url="${bamboo_url}/rest/api/latest/server/resume"
-      local RESULT=$(curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}")
+      local RESULT=$(curl -s -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}")
       if [[ "x${RESULT}" == *"RUNNING"* ]]; then
         SERVER_STATUS="RUNNING"
+        log "Bamboo server was resumed and it is running successfully."
       elif [ "x${RESULT}" == *"AUTHENTICATED_FAILED"* ]; then
         log "The provided admin username and password is not matched with the credential stored in the dataset." "ERROR"
+      else
+        log "Unexpected state when resuming Bamboo server, state: ${RESULT}" "ERROR"
       fi
     fi
     if [ -z $SERVER_STATUS ]; then
