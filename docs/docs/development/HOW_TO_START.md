@@ -18,33 +18,8 @@ A number of tools have been used for building this project. When working on the 
 
 ??? info "Pre-commit hook"
 
-    Configure [pre-commit](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks){.external} hook and [TFLint](https://github.com/terraform-linters/tflint){.external} to maintain quality and consistency of the Terraform scripts.
-    
-    Install [pre-commit](https://pre-commit.com/).
+    Configure [pre-commit](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks){.external} hook to maintain quality and consistency of the Terraform scripts. Install [pre-commit](https://pre-commit.com/) as follows:
     
     ```shell
     brew install pre-commit
-    ```
-        
-    In a terminal, change the directory to the repository root and run `pre-commit install`.
-       
-    ```shell
-    brew install tflint
-    ```
-    
-    
-    Add the following content to `.tflint.hcl`:
-    
-    ```hcl
-    plugin "aws" {
-      enabled = true
-      version = "0.5.0"
-      source  = "github.com/terraform-linters/tflint-ruleset-aws"
-    }
-    ```
-    
-    Initialize TFLint:
-    
-    ```shell
-    tflint --init
     ```

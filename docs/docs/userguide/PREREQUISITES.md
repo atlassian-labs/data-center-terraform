@@ -23,7 +23,7 @@ This project uses Terraform to create and manage the Atlassian Data Center infra
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
     * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only supported DC product
 
-    Support for additional Cloud providers and DC products will be made available in future.
+    Support for additional DC products will be made available in future.
 
 1. Check if Terraform is already installed by running the following command:
    ```shell
@@ -33,7 +33,7 @@ This project uses Terraform to create and manage the Atlassian Data Center infra
 
 ### :material-package: Helm
 
-Atlassian supports Helm Charts for some of its [Data Center products](https://atlassian.github.io/data-center-helm-charts/){.external}, including Bamboo. This project uses Helm charts to package Bamboo Data Center as a turnkey solution for your cloud infrastructure.
+Atlassian supports Helm Charts for its [Data Center products](https://www.atlassian.com/enterprise/data-center){.external}. This project uses the [Data Center Helm charts](https://atlassian.github.io/data-center-helm-charts/){.external} to package Atlassian DC products as a turnkey solution for your cloud infrastructure.
 
 Before using this project, make sure that Helm v3.3 or later is installed on your machine. 
 
