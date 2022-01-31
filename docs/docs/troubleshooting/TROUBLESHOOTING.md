@@ -103,6 +103,43 @@ This guide contains general tips on how to investigate an application deployment
     
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
+??? tip "How do I deal with Pre-existing state in multiple environment?"
+
+    If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
+    
+    The same scenario when you want to uninstall a non-active environment.     
+    
+    !!! help "What is active environment?"
+         Active environment is the latest environment you installed or uninstalled.
+            
+    !!! tip "Tip"
+        Answer '**NO**' when you get a similar message during installation or uninstallation:
+        ```shellscript
+        Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
+        the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
+        exists in the new backend. The two states have been saved to temporary files that will be removed 
+        after responding to this query. 
+        
+        Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
+        and "no" to start with the existing state in the newly configured "s3" backend.
+        
+        Enter a value:
+        ```
+         
+    **Symptom**
+    
+    Installation or uninstallation break after you chose to use pre-existing state. 
+    
+    
+    **Solution**
+    
+    1. Clean up the project before proceed. In root directory of the project run:
+    ```shell
+    ./scripts/cleanup.sh -s -t -x -r .
+    terraform init -var-file=<config file>
+    ```
+    3. Then re-run the install/uninstall script.
+    
 
 ??? tip "How do I deal with `Module not installed` error during uninstallation?"
 
