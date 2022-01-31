@@ -1,7 +1,6 @@
 # Configuration
 
-In order to provision the infrastructure and install an Atlassian Data Center product, you need to create a valid Terraform configuration.
-All configuration data should go to a terraform variable file.
+In order to provision the infrastructure and install an Atlassian Data Center product, you need to create a valid [Terraform configuration](https://www.terraform.io/language){.external}. All configuration data should go to a Terraform configuration file.
 
 The content of the configuration file is divided into two groups:
 
@@ -14,9 +13,9 @@ The content of the configuration file is divided into two groups:
     The config file must contain all mandatory configuration items with valid values.
     If any optional items are missing, the default values will be applied.
    
-The mandatory configuration items are those you should define once before the first installation. Mandatory values cannot be changed in the entire environment lifecycle.
+The [mandatory configuration](#mandatory-configuration) items are those you should define once before the first installation. Mandatory values cannot be changed during the entire environment lifecycle. 
 
-The optional configuration items are not required for installation by default. Optional values may change at any point in the environment lifecycle.
+The [optional configuration](#optional-configuration) items are not required for installation by default. Optional values may change at any point in the environment lifecycle.
 Terraform will retain the latest state of the environment and keep track of any configuration changes made later.
 
 The following is an example of a valid configuration file:
@@ -38,40 +37,40 @@ desired_capacity = 2
 domain           = "mydomain.com"
 ```
 
-## Mandatory configuration
+## Mandatory Configuration
 
-### Environment name
+### Environment Name
 
-`environment_name` provides your environment a unique name within a single cloud provider account.
-This value cannot be altered after the configuration has been applied.
-The value will be used to form the name of some resources including `vpc` and `Kubernetes cluster`.
+`environment_name` provides your environment a unique name within a single cloud provider account. This value cannot be altered after the configuration has been applied. The value will be used to form the name of some resources including `VPC` and `Kubernetes cluster`.
 
 ```terraform
-environment_name = "<YOUR-ENVIRONMENT-NAME>"
+environment_name = "<YOUR-ENVIRONMENT-NAME>" # e.g. "my-terraform-env"
 ```
 
-Environment names should start with a letter and can contain letters, numbers, and dashes (`-`).
-
-The maximum value length is 24 characters.
+!!! info "Format" 
+    
+    Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 24 characters.
 
 
 ### Region
 
 `region` defines the cloud provider region that the environment will be deployed to.
 
-The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
-
 ```terraform
-region = "<Region>"  # e.g: "ap-northeast-2"
+region = "<REGION>"  # e.g. "ap-northeast-2"
 ```
+
+!!! info "Format"
+
+    The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
 
 ### Bamboo License
-`bamboo_license` takes the license key of Bamboo product.
-Make sure that there is no new lines or spaces in license key.
+
+`bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.
 
 ```terraform
-bamboo_license = "<license key>"
+bamboo_license = "<LICENSE KEY>"
 ```
 
 !!!warning "Sensitive data"
@@ -85,10 +84,10 @@ bamboo_license = "<license key>"
 Four values are required to configure Bamboo system admin credentials.
 
 ```terraform
-bamboo_admin_username = "<username>"
-bamboo_admin_password = "<password>"
-bamboo_admin_display_name = "<display name>"
-bamboo_admin_email_address = "<email address>"
+bamboo_admin_username = "<USERNAME>"
+bamboo_admin_password = "<PASSWORD>"
+bamboo_admin_display_name = "<DISPLAY NAME>"
+bamboo_admin_email_address = "<EMAIL ADDRESS>"
 ```
 
 !!!warning "Sensitive data"
@@ -102,9 +101,9 @@ bamboo_admin_email_address = "<email address>"
     You will need to use user credentials from the dataset to log into the instance.
 
 
-## Optional configuration
+## Optional Configuration
 
-### Restoring from backup
+### Restoring from Backup
 To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
 you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
 
@@ -118,7 +117,7 @@ you will need to use any credentials from the dataset.
 !!!info "Provisioning time"
     Restoring from the dataset will increase the time it takes to create the environment.
 
-### Resource tags
+### Resource Tags
 
 `resource_tags` are custom metadata for all resources in the environment. You can provide multiple tags as a list. 
 
@@ -135,12 +134,12 @@ resource_tags = {
 !!! warning "Using Terraform CLI to apply tags is not recommended and may lead to missing tags in some resources."
     To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
     
-### Cluster instance type
+### Cluster Instance Type
 
 `instance_types` provides the instance types for the Kubernetes cluster node group.
 
 ```terraform
-instance_types = ["instance-type"]  # e.g: ["m5.2xlarge"]
+instance_types = ["instance-type"]  # e.g. ["m5.2xlarge"]
 ```
 
 If an `instance_types` value is not defined in the configuration file, the default value of `m5.4xlarge` is used.
@@ -149,26 +148,27 @@ The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2
 
 !!! warning "You cannot change this value after the infrastructure is provisioned."
 
-### Cluster size
+### Cluster Size
 
 `desired_capacity` provides the desired number of nodes that the node group should launch with initially.
 
 * The default value for the number of nodes in Kubernetes node groups is `2`.
 * Minimum is `1` and maximum is `10`.
-* This value cannot be changed after the infrastructure is provisioned. 
 
 ```terraform
-desired_capacity = <number-of-nodes>  # between 1 and 10
+desired_capacity = <NUMBER OF NODES>  # between 1 and 10
 ```
 
-### Domain name
+!!! warning "You cannot change this value after the infrastructure is provisioned."
+
+### Domain Name
 
 We recommend using a domain name to access the application via HTTPS. You will be required to secure a domain name and supply the configuration to the config file.
 
 When the domain is provided, Terraform will create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
 ```terraform
-domain="<domain-name>" # for example: "mydomain.com"
+domain="<DOMAIN NAME>" # e.g. "mydomain.com"
 ```
 
 A fully qualified domain name uses the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
@@ -194,10 +194,10 @@ The final URL is printed out as part of the outputs after the infrastructure has
 `db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
 
 ```terraform
-db_instance_class = "<instance.class>"  # e.g. "db.t3.micro"
+db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
 ```
 
-### Database allocated storage
+### Database Allocated Storage
 
 `db_allocated_storage` sets the allocated storage for the database instance in GiB.
   
@@ -287,6 +287,4 @@ Take`bamboo_admin_password` for example, for Linux-like sytems, run the followin
 export TF_VAR_bamboo_admin_password=<password>
 ```
 
-If storing these data as plain-text is not a particular concern for the environment to be deployed, 
-you can also choose to supply the values in `config.tfvars` file.
-Uncomment the corresponding line and configure the value there.
+If storing this data as plain-text is not a particular concern for the environment to be deployed, you can also choose to supply the values in `config.tfvars` file. Uncomment the corresponding line and configure the value there.
