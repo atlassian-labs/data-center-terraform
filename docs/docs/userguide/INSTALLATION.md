@@ -18,7 +18,7 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 Clone the `data-center-terraform` project repository from GitHub:
 
 ```shell
-git clone https://github.com/atlassian-labs/data-center-terraform.git
+git clone -b 1.0.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
 ```
 
 ## 3. Configure the infrastructure
