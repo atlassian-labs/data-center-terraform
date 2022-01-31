@@ -8,7 +8,7 @@
 * Changed the default values in the configuration template
 * Resume the Bamboo server after installation
 * Improved install and uninstall scripts
-* Made the product version, Bamboo software and Bamboo agent resources configurable
+* Added optional configuration for Bamboo version and resources available to Bamboo DC and Bamboo agents
 * Improved the end to end tests
 * Changed the default product version (Bamboo software and Bamboo agent Helm charts) to `1.0.0`
 * Changed the maximum length for environment name to 24 characters
