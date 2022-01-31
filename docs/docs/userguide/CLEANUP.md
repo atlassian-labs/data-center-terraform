@@ -1,15 +1,13 @@
-# Uninstallation and cleanup 
+# Uninstallation and Cleanup 
 
 This guide describes how to uninstall all Atlassian Data Center products and remove cloud environments 
 
 !!! warning "The uninstallation process is destructive"
-    The uninstallation process will **permanently delete** the local volume, shared volume, database, and Terraform state information.
+    The uninstallation process will **permanently delete** the local volume, shared volume, and the database. Terraform state information can also optionally be removed.
 
     Before you begin, make sure that you have an up-to-date backup available in a secure location. 
 
-If you want to uninstall just one product, don't proceed with the uninstallation process and remove it from the configuration file instead. For more information, see [Configuration](CONFIGURATION.md). 
-
-The uninstallation script is located in the `pkg/scripts` project directory.
+The uninstallation script is located in the root folder of the project directory.
 
 Usage:
 
@@ -20,34 +18,32 @@ Usage:
 The following options are available:
 
 - `-t` - Delete Terraform state files
-- `-c <config_file>` - Pass a custom configuration file when uninstalling multiple environments
+- `-c <config_file_path>` - Pass a custom configuration file to uninstall the environment provisioned by it.
 
-Running the uninstallation script with no parameters will use the default configuration file. 
+!!!info "Uninstallation using default and custom configuration files"
+
+    If you used the default configuration file (`config.tfvars`) from the root folder of the project, run the following command:
+
+    ```shell
+    ./uninstall.sh
+    ```
+
+    Alternatively if you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
+
+    ```shell
+    ./uninstall.sh -c my-custom-config.tfvars
+    ```
 
 
-
-You can remove environments provisioned with the default configuration file as well as the ones provisioned with a custom configuration file.
-
-## Removing environments provisioned with the default configuration file
-
-If you used the default configuration file (`config.tfvars`) from the root folder of the project, run the following command:
-
-```shell 
-./uninstall.sh
-```
-
-## Removing environments provisioned with a custom configuration file
-
-If you used a custom configuration file to provision the infrastructure, run the following command using the same configuration file:
-
-```shell
-./uninstall.sh -c <custom-config-file>
-```
-
-## Removing Terraform state files
+### Removing Terraform state files
 
 By default, the script does not remove Terraform state files. If you want to remove Terraform state files, run the uninstallation script with the `-t` switch:
 
 ```shell 
-./uninstall.sh -t [-c <custom-config-file>]
+./uninstall.sh -t -c <config_file_path>
 ```
+
+!!! warning "`-t` flag will remove the S3 Bucket that the Terraform state file is located"
+    This means if you have multiple environments provisioned under same AWS account and region, you will lose track of them.
+
+    Use this flag only if you are sure that there is no other environment left in your region and account.
