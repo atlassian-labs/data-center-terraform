@@ -128,5 +128,5 @@ This guide contains general tips on how to investigate an application deployment
     cd modules/tfstate
     terraform init -var-file=<config file>
     ```
-    2. Back to the root of the project and re-run the uninstall.sh` script.
+    2. Back to the root of the project and re-run the `uninstall.sh` script.
     
