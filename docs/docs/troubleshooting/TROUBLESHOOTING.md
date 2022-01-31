@@ -106,11 +106,14 @@ This guide contains general tips on how to investigate an application deployment
 ??? hint "How do I deal with Pre-existing state in multiple environment?"
 
     If you start installing a new environment while you already have an active environment installed before, you should NOT use the pre-existing state. 
-    The same scenario when you want to uninstall a non-active environment (active environment is the latest environment you installed or uninstalled). 
-    If you use pre-existing state in install or uninstall an environment you will face with an error in the process.    
     
+    The same scenario when you want to uninstall a non-active environment.     
+    
+    !!! help "What is active environment?"
+         Active environment is the latest environment you installed or uninstalled.
+            
     !!! hint "Tip"
-        Answer '*NO*' when you get a similar message during installation or uninstallation:
+        Answer '**NO**' when you get a similar message during installation or uninstallation:
         ```shellscript
         Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
         the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
@@ -123,7 +126,6 @@ This guide contains general tips on how to investigate an application deployment
         Enter a value:
         ```
          
-    
     **Symptom**
     
     Installation or uninstallation break after you chose to use pre-existing state. 
@@ -131,12 +133,12 @@ This guide contains general tips on how to investigate an application deployment
     
     **Solution**
     
-    1. Clean up everything before proceed. In repository root directory, run:
+    1. Clean up the project before proceed. In root directory of the project run:
     ```shell
     ./scripts/cleanup.sh -s -t -x -r .
+    terraform init -var-file=<config file>
     ```
-    2. In repository root directory, run `terraform init -var-file=<config file>`
-    3. re-run the install/uninstall script.
+    3. Then re-run the install/uninstall script.
     
 
 ??? tip "How do I deal with `Module not installed` error during uninstallation?"
