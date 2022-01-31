@@ -104,7 +104,7 @@ This guide contains general tips on how to investigate an application deployment
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
 
-??? tip "How do I deal when remote agents are offline after provision the Bamboo?"
+??? tip "How do I deal when remote agents are offline after provisioning the Bamboo DC?"
        
     **Symptom**
     
