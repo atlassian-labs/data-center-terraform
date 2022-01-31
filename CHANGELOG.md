@@ -10,8 +10,7 @@
 * Improved install and uninstall scripts
 * Added optional configuration for Bamboo version and resources available to Bamboo DC and Bamboo agents
 * Improved the end to end tests
-* Changed the default product version (Bamboo software and Bamboo agent Helm charts) to `1.0.0`
-* Changed the maximum length for environment name to 24 characters
+* Changed the maximum length for environment name to 24 characters and restricted to lowercase 
 
 ## 0.0.2-beta
 
