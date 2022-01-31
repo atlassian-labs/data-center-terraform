@@ -130,3 +130,18 @@ This guide contains general tips on how to investigate an application deployment
     ```
     2. Go back to the root of the project and re-run the `uninstall.sh` script.
     
+
+??? tip "How do I deal when remote agents are offline after provisioning the Bamboo DC?"
+       
+    **Symptom**
+    
+    The remote agents are installed but remain offline after installation. 
+       
+    **Solution**
+    
+    1. Open the Bamboo application in the browser and log in as _Administrator_. 
+    2. Go to `Agents` page and select `Agent authentication` tab.
+    3. Select `All` and press `Approve access` button. 
+    4. Wait until all remote agents get online.
+
+
