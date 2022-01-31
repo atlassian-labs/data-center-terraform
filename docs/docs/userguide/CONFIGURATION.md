@@ -44,7 +44,7 @@ domain           = "mydomain.com"
 `environment_name` provides your environment a unique name within a single cloud provider account. This value cannot be altered after the configuration has been applied. The value will be used to form the name of some resources including `VPC` and `Kubernetes cluster`.
 
 ```terraform
-environment_name = "<YOUR-ENVIRONMENT-NAME>" # e.g. "my-terraform-env"
+environment_name = "<your-environment-name>" # e.g. "my-terraform-env"
 ```
 
 !!! info "Format" 
