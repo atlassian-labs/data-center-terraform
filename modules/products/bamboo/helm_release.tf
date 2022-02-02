@@ -68,7 +68,7 @@ resource "helm_release" "bamboo_agent" {
   name       = "${local.product_name}-agent"
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
-  chart      = "${local.product_name}-agent"
+  chart      = local.agent_name
   version    = local.agent_helm_chart_version
 
   depends_on = [helm_release.bamboo]
