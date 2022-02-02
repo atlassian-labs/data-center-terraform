@@ -103,6 +103,12 @@ variable "bamboo_admin_email_address" {
   type        = string
 }
 
+variable "bamboo_internal_use" {
+  description = "This variable is reserved for internal use"
+  type        = string
+  default     = null
+}
+
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
   type        = string
