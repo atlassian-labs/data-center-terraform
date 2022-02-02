@@ -59,3 +59,7 @@ test/e2etest/artifacts
 
 # built docs site
 docs/site
+
+# Node
+package-lock.json
+node_modules

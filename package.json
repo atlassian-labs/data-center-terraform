@@ -1,0 +1,26 @@
+{
+  "name": "data-center-terraform-cli",
+  "version": "1.0.0",
+  "description": "terraform config cli",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atlassian-labs/data-center-terraform.git"
+  },
+  "author": "dc-deployment",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atlassian-labs/data-center-terraform/issues"
+  },
+  "homepage": "https://github.com/atlassian-labs/data-center-terraform#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
+}
