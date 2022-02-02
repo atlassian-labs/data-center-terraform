@@ -103,3 +103,8 @@ variable "bamboo_agent_configuration" {
     error_message = "Bamboo Agent configuration is not valid."
   }
 }
+
+variable "bamboo_internal_use" {
+  description = "This variable is reserved for internal use"
+  type = string
+}
