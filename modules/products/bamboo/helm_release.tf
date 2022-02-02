@@ -65,7 +65,7 @@ data "kubernetes_service" "bamboo" {
 }
 
 resource "helm_release" "bamboo_agent" {
-  name       = "${local.product_name}-agent"
+  name       = local.agent_name
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
   chart      = local.agent_helm_chart_name
