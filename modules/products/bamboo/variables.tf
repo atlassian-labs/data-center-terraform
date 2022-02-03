@@ -107,4 +107,5 @@ variable "bamboo_agent_configuration" {
 variable "bamboo_internal_use" {
   description = "This variable is reserved for internal use"
   type = string
+  default = null
 }
