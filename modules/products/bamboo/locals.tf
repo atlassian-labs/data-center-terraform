@@ -1,7 +1,9 @@
 locals {
   product_name = "bamboo"
   agent_name = "bamboo-agent"
-  use_local = fileexists("${var.bamboo_internal_use}/Chart.yaml")
+  
+  local_helm_charts_path = var.bamboo_internal_use == null ? "" : var.bamboo_internal_use
+  use_local              = fileexists("${local.local_helm_charts_path}/Chart.yaml")
 
   helm_chart_repository     = local.use_local ? null : "https://atlassian.github.io/data-center-helm-charts"
   bamboo_helm_chart_name    = local.use_local ? var.bamboo_internal_use : local.product_name
@@ -9,9 +11,6 @@ locals {
   agent_helm_chart_name     = local.use_local ? "${var.bamboo_internal_use}-agent" : local.agent_name
   agent_helm_chart_version  = local.use_local ? null : var.bamboo_agent_configuration["helm_version"]
   number_of_agents          = var.bamboo_agent_configuration["agent_count"]
-
-
-
 
 bamboo_software_resources = {
     "minHeap" : var.bamboo_configuration["min_heap"]
