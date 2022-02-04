@@ -105,7 +105,7 @@ variable "bamboo_agent_configuration" {
 }
 
 variable "local_helm_charts_path" {
-  description = "Path to local Helm charts repo to install local helm charts"
+  description = "Path to a local directory with Helm charts to install"
   type = string
   default = null
 }
