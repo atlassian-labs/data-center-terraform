@@ -6,7 +6,7 @@ on:
     paths-ignore: # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-ignoring-paths
       - 'docs/**'
       - '.atlassian/**'
-      - 'test/**'
+      - 'test/unittest**'
   workflow_dispatch:
 
 jobs:
