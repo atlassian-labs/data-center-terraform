@@ -46,5 +46,5 @@ module "bamboo" {
     "agent_count"  = var.number_of_bamboo_agents
   }
 
-  bamboo_internal_use = var.bamboo_internal_use
+  internal_use_e2e_path = var.internal_use_e2e_path
 }
