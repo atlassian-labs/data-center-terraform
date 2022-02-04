@@ -32,7 +32,10 @@ output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
-    bamboo = module.bamboo.product_domain_name
+    bamboo     = module.bamboo.product_domain_name
+    jira       = module.jira.product_domain_name
+    confluence = module.confluence.product_domain_name
+    bitbucket  = module.bitbucket.product_domain_name
   }
 }
 
@@ -54,5 +57,7 @@ output "eks" {
     cluster_name     = module.base-infrastructure.eks.cluster_name
     cluster_id       = module.base-infrastructure.eks.cluster_id
     cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
+    provider_config  = module.base-infrastructure.eks.kubernetes_provider_config
   }
+  sensitive = true
 }

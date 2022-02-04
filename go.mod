@@ -6,6 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.41.16
 	github.com/gruntwork-io/terratest v0.38.8
 	github.com/stretchr/testify v1.7.0
+	github.com/urfave/cli/v2 v2.3.0
 	k8s.io/api v0.22.3
 	k8s.io/apimachinery v0.22.3
 	k8s.io/client-go v0.22.3

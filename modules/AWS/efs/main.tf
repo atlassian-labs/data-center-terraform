@@ -137,7 +137,6 @@ resource "aws_security_group" "this" {
   }
 }
 
-
 resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name
 
@@ -150,3 +149,44 @@ resource "aws_efs_mount_target" "this" {
   subnet_id       = var.vpc.private_subnets[count.index]
   security_groups = [aws_security_group.this.id]
 }
+
+
+# TODO - move to a single PVC for all products - this would mean the products will live in the same namespace (e.g. atlassian)
+
+resource "kubernetes_persistent_volume" "atlassian-dc-share-home-pv" {
+  metadata {
+    name = "atlassian-dc-share-home-pv"
+  }
+  spec {
+    capacity = {
+      storage = local.shared_home_size
+    }
+    volume_mode        = "Filesystem"
+    access_modes       = ["ReadWriteMany"]
+    storage_class_name = local.storage_class_name
+    mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev"]
+    persistent_volume_source {
+      csi {
+        driver        = "efs.csi.aws.com"
+        volume_handle = aws_efs_file_system.this.id
+      }
+    }
+  }
+}
+#
+#resource "kubernetes_persistent_volume_claim" "atlassian-dc-share-home-pvc" {
+#  metadata {
+#    name      = "atlassian-dc-share-home-pvc"
+#    namespace = "atlassian"
+#  }
+#  spec {
+#    access_modes = ["ReadWriteMany"]
+#    resources {
+#      requests = {
+#        storage = local.shared_home_size
+#      }
+#    }
+#    volume_name        = kubernetes_persistent_volume.atlassian-dc-share-home-pv.metadata[0].name
+#    storage_class_name = local.storage_class_name
+#  }
+#}

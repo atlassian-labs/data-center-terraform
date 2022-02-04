@@ -35,6 +35,9 @@ locals {
   # If the region changes, set the new repository according to https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
   efs_csi_image_repository = "${local.efs_repositories[var.region_name]}/eks/aws-efs-csi-driver"
   efs_csi_version          = "2.1.3"
+
+  storage_class_name = "efs-cs"
+  shared_home_size   = "5Gi"
 }
 
 

@@ -32,6 +32,13 @@ resource "helm_release" "bamboo" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
+      fluentd = {
+        enabled = true
+        #        image         = "fluent/fluentd-kubernetes-daemonset:v1.14-debian-elasticsearch7-1"
+        elasticsearch = {
+          hostname = "elasticsearch-master.elasticsearch.svc.cluster.local"
+        }
+      }
       volumes = {
         localHome = {
           persistentVolumeClaim = {
@@ -44,6 +51,7 @@ resource "helm_release" "bamboo" {
               claimName = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
             }
           }
+          subPath = "bamboo"
         }
       }
     }),
