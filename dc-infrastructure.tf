@@ -46,5 +46,5 @@ module "bamboo" {
     "agent_count"  = var.number_of_bamboo_agents
   }
 
-  internal_use_e2e_path = var.internal_use_e2e_path
+  local_helm_charts_path = var.local_helm_charts_path
 }
