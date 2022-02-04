@@ -103,7 +103,7 @@ variable "bamboo_admin_email_address" {
   type        = string
 }
 
-variable "bamboo_internal_use" {
+variable "internal_use_e2e_path" {
   description = "This variable is reserved for internal use"
   type        = string
   default     = null
