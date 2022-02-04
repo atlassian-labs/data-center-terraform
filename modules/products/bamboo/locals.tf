@@ -3,7 +3,7 @@ locals {
   agent_name = "bamboo-agent"
 
   # Install local helm charts if local helm chart path is provided (for test purposes)
-  local_helm_charts_path = var.internal_use_e2e_path == null ? "" : "${var.internal_use_e2e_path}/src/main/charts"
+  local_helm_charts_path = var.local_helm_charts_path == null ? "" : "${var.local_helm_charts_path}/src/main/charts"
   use_local              = fileexists("${local.local_helm_charts_path}/${product_name}/Chart.yaml")
 
   helm_chart_repository     = local.use_local ? null : "https://atlassian.github.io/data-center-helm-charts"

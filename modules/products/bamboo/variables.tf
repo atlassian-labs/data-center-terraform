@@ -104,8 +104,8 @@ variable "bamboo_agent_configuration" {
   }
 }
 
-variable "internal_use_e2e_path" {
-  description = "This variable is reserved for internal use"
+variable "local_helm_charts_path" {
+  description = "Path to local Helm charts repo to install local helm charts"
   type = string
   default = null
 }
