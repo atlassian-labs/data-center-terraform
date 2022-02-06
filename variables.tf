@@ -106,7 +106,11 @@ variable "bamboo_admin_email_address" {
 variable "local_helm_charts_path" {
   description = "Path to local Helm charts repo to install local helm charts"
   type        = string
-  default     = null
+  validation {
+    condition     = can(regex("^[.?\/?[a-zA-Z0-9|\-|_]*]*$", var.local_helm_charts_path))
+    error_message = "Invalid local Helm chart path."
+  }
+  default     = ""
 }
 
 variable "bamboo_helm_chart_version" {
