@@ -46,5 +46,7 @@ module "bamboo" {
     "agent_count"  = var.number_of_bamboo_agents
   }
 
-  local_helm_charts_path = var.local_helm_charts_path
+  # If local Helm charts is provided then terraform install charts locally and will ignore using remote registery
+  local_bamboo_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo"
+  local_agent_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
 }

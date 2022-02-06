@@ -104,8 +104,23 @@ variable "bamboo_agent_configuration" {
   }
 }
 
-variable "local_helm_charts_path" {
-  description = "Path to a local directory with Helm charts to install"
+variable "local_bamboo_chart_path" {
+  description = "Path to local Helm charts to install local Bamboo software"
   type = string
-  default = null
+  validation {
+    condition     = can(regex("^[.?\/?[a-zA-Z0-9|\-|_]*]*$", var.local_bamboo_chart_path))
+    error_message = "Invalid local Bamboo Helm chart path."
+  }
+  default = ""
 }
+
+variable "local_agent_chart_path" {
+  description = "Path to local Helm charts to install local Bamboo Agents"
+  type = string
+  validation {
+    condition     = can(regex("^[.?\/?[a-zA-Z0-9|\-|_]*]*$", var.local_agent_chart_path))
+    error_message = "Invalid local Bamboo Agent Helm chart path."
+  }
+  default = ""
+}
+
