@@ -1,12 +1,20 @@
 locals {
   product_name = "bamboo"
+  agent_name = "bamboo-agent"
 
-  helm_chart_repository     = "https://atlassian.github.io/data-center-helm-charts"
-  bamboo_helm_chart_version = var.bamboo_configuration["helm_version"]
-  agent_helm_chart_version  = var.bamboo_agent_configuration["helm_version"]
-  number_of_agents          = var.bamboo_agent_configuration["agent_count"]
+  # Install local bamboo/agent helm charts if local path is provided
+  use_local_bamboo         = fileexists("${var.local_bamboo_chart_path}/Chart.yaml")
+  use_local_agent         = fileexists("${var.local_bamboo_chart_path}/Chart.yaml")
 
-  bamboo_software_resources = {
+  helm_chart_repository     = local.use_local_bamboo ? null : "https://atlassian.github.io/data-center-helm-charts"
+  bamboo_helm_chart_name    = local.use_local_bamboo ? var.local_bamboo_chart_path : local.product_name
+  bamboo_helm_chart_version = local.use_local_bamboo ? null : var.bamboo_configuration["helm_version"]
+
+  agent_helm_chart_name    = local.use_local_agent ? var.local_agent_chart_path : local.agent_name
+  agent_helm_chart_version = local.use_local_agent ? null : var.bamboo_agent_configuration["helm_version"]
+  number_of_agents         = var.bamboo_agent_configuration["agent_count"]
+
+bamboo_software_resources = {
     "minHeap" : var.bamboo_configuration["min_heap"]
     "maxHeap" : var.bamboo_configuration["max_heap"]
     "cpu" : var.bamboo_configuration["cpu"]

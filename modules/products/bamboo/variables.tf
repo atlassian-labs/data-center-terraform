@@ -103,3 +103,24 @@ variable "bamboo_agent_configuration" {
     error_message = "Bamboo Agent configuration is not valid."
   }
 }
+
+variable "local_bamboo_chart_path" {
+  description = "Path to local Helm charts to install local Bamboo software"
+  type = string
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_bamboo_chart_path))
+    error_message = "Invalid local Bamboo Helm chart path."
+  }
+  default = ""
+}
+
+variable "local_agent_chart_path" {
+  description = "Path to local Helm charts to install local Bamboo Agents"
+  type = string
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_agent_chart_path))
+    error_message = "Invalid local Bamboo Agent Helm chart path."
+  }
+  default = ""
+}
+
