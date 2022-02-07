@@ -107,7 +107,7 @@ variable "local_helm_charts_path" {
   description = "Path to a local directory with Helm charts to install"
   type        = string
   validation {
-    condition     = can(regex("^[.?\/?[a-zA-Z0-9|\-|_]*]*$", var.local_helm_charts_path))
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
     error_message = "Invalid local Helm chart path."
   }
   default     = ""
