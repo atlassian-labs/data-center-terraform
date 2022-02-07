@@ -5,7 +5,7 @@ resource "helm_release" "bamboo" {
   name       = local.product_name
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
-  chart      = local.product_name
+  chart      = local.bamboo_helm_chart_name
   version    = local.bamboo_helm_chart_version
   timeout    = 40 * 60 # dataset import can take a long time
 
@@ -65,10 +65,10 @@ data "kubernetes_service" "bamboo" {
 }
 
 resource "helm_release" "bamboo_agent" {
-  name       = "${local.product_name}-agent"
+  name       = local.agent_name
   namespace  = kubernetes_namespace.bamboo.metadata[0].name
   repository = local.helm_chart_repository
-  chart      = "${local.product_name}-agent"
+  chart      = local.agent_helm_chart_name
   version    = local.agent_helm_chart_version
 
   depends_on = [helm_release.bamboo]
