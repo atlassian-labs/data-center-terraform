@@ -5,7 +5,7 @@
 **Release date:** 2022-02-07
 
 * Improved integration testing
-* Added optional local helm charts installation
+* Added optional local Helm charts installation
 * Updated the copyright info
 
 
