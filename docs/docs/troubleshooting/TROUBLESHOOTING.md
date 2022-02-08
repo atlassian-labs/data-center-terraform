@@ -19,11 +19,11 @@ This guide contains general tips on how to investigate an application deployment
 
     Uninstall fails to remove the persistent volume.
     ```shell
-    Error: Persistent volume atlassian-dc-bamboo-share-home-pv still exists (Bound)
+    Error: Persistent volume atlassian-dc-share-home-pv still exists (Bound)
     
     Error: context deadline exceeded
     
-    Error: Persistent volume claim atlassian-dc-bamboo-share-home-pvc still exists with 
+    Error: Persistent volume claim atlassian-dc-share-home-pvc still exists with 
     ```
     **Solution**
 

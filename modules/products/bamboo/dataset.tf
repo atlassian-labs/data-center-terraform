@@ -8,7 +8,7 @@ resource "kubernetes_job" "import_dataset" {
 
   metadata {
     name      = "bamboo-import-dataset"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
   spec {
     template {
@@ -30,7 +30,7 @@ resource "kubernetes_job" "import_dataset" {
         volume {
           name = "shared-home"
           persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
+            claim_name = var.pvc_claim_name
           }
         }
       }
