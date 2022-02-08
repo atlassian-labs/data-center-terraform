@@ -36,5 +36,5 @@ output "pvc_claim_name" {
 
 output "namespace" {
   value       = kubernetes_namespace.products.metadata[0].name
-  description = "Namespace name for the all products"
+  description = "Namespace name for all products"
 }
