@@ -27,3 +27,17 @@ variable "domain" {
   type        = string
 }
 
+variable "namespace" {
+  description = "Namespace for Atlassian products."
+  type        = string
+  validation {
+    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-]*[a-zA-Z]+$", var.namespace)) // RFC 1123 DNS labels
+    error_message = "Invalid namespace. Namespace should only have alphanumeric characters and '-' and start and end with a letter."
+  }
+}
+
+variable "share_home_size" {
+  description = "Shared home persistent volume size."
+  type        = string
+}
+

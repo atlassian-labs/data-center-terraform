@@ -13,50 +13,6 @@ resource "aws_route53_record" "bamboo" {
   }
 }
 
-resource "kubernetes_namespace" "bamboo" {
-  metadata {
-    name = local.product_name
-  }
-}
-
-resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
-  metadata {
-    name = "atlassian-dc-bamboo-share-home-pv"
-  }
-  spec {
-    capacity = {
-      storage = var.share_home_size
-    }
-    volume_mode        = "Filesystem"
-    access_modes       = ["ReadWriteMany"]
-    storage_class_name = local.storage_class_name
-    mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev"]
-    persistent_volume_source {
-      csi {
-        driver        = "efs.csi.aws.com"
-        volume_handle = var.efs.efs_id
-      }
-    }
-  }
-}
-
-resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
-  metadata {
-    name      = "atlassian-dc-bamboo-share-home-pvc"
-    namespace = local.product_name
-  }
-  spec {
-    access_modes = ["ReadWriteMany"]
-    resources {
-      requests = {
-        storage = var.share_home_size
-      }
-    }
-    volume_name        = kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv.metadata[0].name
-    storage_class_name = local.storage_class_name
-  }
-}
-
 module "database" {
   source = "../../AWS/rds"
 

@@ -28,3 +28,13 @@ output "ingress" {
   value       = module.ingress
   description = "Ingress Module"
 }
+
+output "pvc_claim_name" {
+  value       = kubernetes_persistent_volume_claim.atlassian-dc-share-home-pvc.metadata[0].name
+  description = "Persistent volume claim name"
+}
+
+output "namespace" {
+  value       = kubernetes_namespace.products.metadata[0].name
+  description = "Namespace name for all products"
+}

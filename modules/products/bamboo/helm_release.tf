@@ -3,7 +3,7 @@
 resource "helm_release" "bamboo" {
   depends_on = [kubernetes_job.import_dataset]
   name       = local.product_name
-  namespace  = kubernetes_namespace.bamboo.metadata[0].name
+  namespace  = var.namespace
   repository = local.helm_chart_repository
   chart      = local.bamboo_helm_chart_name
   version    = local.bamboo_helm_chart_version
@@ -41,9 +41,10 @@ resource "helm_release" "bamboo" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
+              claimName = var.pvc_claim_name
             }
           }
+          subPath = local.product_name
         }
       }
     }),
@@ -60,13 +61,13 @@ data "kubernetes_service" "bamboo" {
   depends_on = [helm_release.bamboo]
   metadata {
     name      = local.product_name
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
 }
 
 resource "helm_release" "bamboo_agent" {
   name       = local.agent_name
-  namespace  = kubernetes_namespace.bamboo.metadata[0].name
+  namespace  = var.namespace
   repository = local.helm_chart_repository
   chart      = local.agent_helm_chart_name
   version    = local.agent_helm_chart_version
@@ -80,7 +81,7 @@ resource "helm_release" "bamboo_agent" {
         securityToken = {
           secretName = kubernetes_secret.security_token_secret.metadata[0].name
         }
-        server = "${helm_release.bamboo.metadata[0].name}.${kubernetes_namespace.bamboo.metadata[0].name}.svc.cluster.local"
+        server = "${helm_release.bamboo.metadata[0].name}.${var.namespace}.svc.cluster.local"
         resources = {
           container = {
             requests = {
