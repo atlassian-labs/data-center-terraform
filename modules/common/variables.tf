@@ -28,7 +28,7 @@ variable "domain" {
 }
 
 variable "namespace" {
-  description = "Namespace for the atlassian deployment."
+  description = "Namespace for Atlassian products."
   type        = string
   validation {
     condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-]*[a-zA-Z]+$", var.namespace)) // RFC 1123 DNS labels

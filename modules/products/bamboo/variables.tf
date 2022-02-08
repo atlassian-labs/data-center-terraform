@@ -13,12 +13,12 @@ variable "environment_name" {
 }
 
 variable "namespace" {
-  description = "EKS namespace to install Bamboo."
+  description = "Kubernetes namespace to install Bamboo."
   type        = string
 }
 
 variable "vpc" {
-  description = "vpc module that hosts the product."
+  description = "VPC module that hosts the products."
   type        = any
 }
 
@@ -120,10 +120,10 @@ variable "local_agent_chart_path" {
 }
 
 variable "pvc_claim_name" {
-  description = "Shared home persistent volume size."
+  description = "Persistent volume claim name for shared home."
   type        = string
   validation {
     condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-    error_message = "Invalid local Bamboo Helm chart path."
+    error_message = "Invalid claim name."
   }
 }
