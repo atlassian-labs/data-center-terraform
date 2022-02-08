@@ -30,7 +30,7 @@ output "ingress" {
 }
 
 output "pvc_claim_name" {
-  value       = kubernetes_persistent_volume_claim.atlassian-dc-bamboo-share-home-pvc.metadata[0].name
+  value       = kubernetes_persistent_volume_claim.atlassian-dc-share-home-pvc.metadata[0].name
   description = "Persistent volume claim name"
 }
 

@@ -42,9 +42,9 @@ resource "kubernetes_namespace" "products" {
   }
 }
 
-resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
+resource "kubernetes_persistent_volume" "atlassian-dc-share-home-pv" {
   metadata {
-    name = "atlassian-dc-bamboo-share-home-pv"
+    name = "atlassian-dc-share-home-pv"
   }
   spec {
     capacity = {
@@ -63,9 +63,9 @@ resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
+resource "kubernetes_persistent_volume_claim" "atlassian-dc-share-home-pvc" {
   metadata {
-    name      = "atlassian-dc-bamboo-share-home-pvc"
+    name      = "atlassian-dc-share-home-pvc"
     namespace = kubernetes_namespace.products.metadata[0].name
   }
   spec {
@@ -75,7 +75,7 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pv
         storage = var.share_home_size
       }
     }
-    volume_name        = kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv.metadata[0].name
+    volume_name        = kubernetes_persistent_volume.atlassian-dc-share-home-pv.metadata[0].name
     storage_class_name = local.storage_class_name
   }
 }
