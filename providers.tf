@@ -1,5 +1,6 @@
 locals {
   cluster_name = format("atlas-%s-cluster", var.environment_name)
+  namespace    = "atlassian"
 }
 
 provider "aws" {

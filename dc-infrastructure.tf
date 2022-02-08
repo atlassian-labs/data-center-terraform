@@ -7,6 +7,8 @@ module "base-infrastructure" {
   instance_types   = var.instance_types
   desired_capacity = var.desired_capacity
   domain           = var.domain
+  namespace        = local.namespace
+  share_home_size  = "5Gi"
 }
 
 module "bamboo" {
@@ -14,17 +16,18 @@ module "bamboo" {
 
   region_name          = var.region
   environment_name     = var.environment_name
+  namespace            = module.base-infrastructure.namespace
   vpc                  = module.base-infrastructure.vpc
   eks                  = module.base-infrastructure.eks
-  efs                  = module.base-infrastructure.efs
   ingress              = module.base-infrastructure.ingress
-  share_home_size      = "5Gi"
   db_allocated_storage = var.db_allocated_storage
   db_instance_class    = var.db_instance_class
   db_iops              = var.db_iops
 
   license     = var.bamboo_license
   dataset_url = var.dataset_url
+
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
@@ -48,5 +51,5 @@ module "bamboo" {
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bamboo_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo"
-  local_agent_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
+  local_agent_chart_path  = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
 }

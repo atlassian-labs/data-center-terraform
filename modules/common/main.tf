@@ -35,3 +35,47 @@ module "ingress" {
   # inputs
   ingress_domain = local.ingress_domain
 }
+
+resource "kubernetes_namespace" "products" {
+  metadata {
+    name = var.namespace
+  }
+}
+
+resource "kubernetes_persistent_volume" "atlassian-dc-bamboo-share-home-pv" {
+  metadata {
+    name = "atlassian-dc-bamboo-share-home-pv"
+  }
+  spec {
+    capacity = {
+      storage = var.share_home_size
+    }
+    volume_mode        = "Filesystem"
+    access_modes       = ["ReadWriteMany"]
+    storage_class_name = local.storage_class_name
+    mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev"]
+    persistent_volume_source {
+      csi {
+        driver        = "efs.csi.aws.com"
+        volume_handle = module.efs.efs_id
+      }
+    }
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "atlassian-dc-bamboo-share-home-pvc" {
+  metadata {
+    name      = "atlassian-dc-bamboo-share-home-pvc"
+    namespace = kubernetes_namespace.products.metadata[0].name
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = var.share_home_size
+      }
+    }
+    volume_name        = kubernetes_persistent_volume.atlassian-dc-bamboo-share-home-pv.metadata[0].name
+    storage_class_name = local.storage_class_name
+  }
+}

@@ -12,6 +12,11 @@ variable "environment_name" {
   }
 }
 
+variable "namespace" {
+  description = "EKS namespace to install Bamboo."
+  type        = string
+}
+
 variable "vpc" {
   description = "vpc module that hosts the product."
   type        = any
@@ -22,19 +27,9 @@ variable "eks" {
   type        = any
 }
 
-variable "efs" {
-  description = "EFS module to provide shared-home to the product."
-  type        = any
-}
-
 variable "ingress" {
   default = null
   type    = any
-}
-
-variable "share_home_size" {
-  description = "Shared home persistent volume size."
-  type        = string
 }
 
 variable "db_allocated_storage" {
@@ -106,7 +101,7 @@ variable "bamboo_agent_configuration" {
 
 variable "local_bamboo_chart_path" {
   description = "Path to local Helm charts to install local Bamboo software"
-  type = string
+  type        = string
   validation {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_bamboo_chart_path))
     error_message = "Invalid local Bamboo Helm chart path."
@@ -116,7 +111,7 @@ variable "local_bamboo_chart_path" {
 
 variable "local_agent_chart_path" {
   description = "Path to local Helm charts to install local Bamboo Agents"
-  type = string
+  type        = string
   validation {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_agent_chart_path))
     error_message = "Invalid local Bamboo Agent Helm chart path."
@@ -124,3 +119,11 @@ variable "local_agent_chart_path" {
   default = ""
 }
 
+variable "pvc_claim_name" {
+  description = "Shared home persistent volume size."
+  type        = string
+  validation {
+    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
+    error_message = "Invalid local Bamboo Helm chart path."
+  }
+}

@@ -4,7 +4,7 @@
 resource "kubernetes_secret" "rds_secret" {
   metadata {
     name      = "${local.product_name}-db-cred"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -19,7 +19,7 @@ resource "kubernetes_secret" "rds_secret" {
 resource "kubernetes_secret" "license_secret" {
   metadata {
     name      = "${local.product_name}-license"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -33,7 +33,7 @@ resource "kubernetes_secret" "license_secret" {
 resource "kubernetes_secret" "admin_secret" {
   metadata {
     name      = "${local.product_name}-admin"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -54,7 +54,7 @@ resource "random_id" "security_token" {
 resource "kubernetes_secret" "security_token_secret" {
   metadata {
     name      = "${local.product_name}-security-token"
-    namespace = kubernetes_namespace.bamboo.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
