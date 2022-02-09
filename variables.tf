@@ -110,7 +110,7 @@ variable "local_helm_charts_path" {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
     error_message = "Invalid local Helm chart path."
   }
-  default     = ""
+  default = ""
 }
 
 variable "bamboo_helm_chart_version" {
@@ -169,4 +169,40 @@ variable "number_of_bamboo_agents" {
     condition     = var.number_of_bamboo_agents >= 0
     error_message = "Number of agents must be greater than or equal to 0."
   }
+}
+
+variable "jira_license" {
+  description = "Jira license."
+  type        = string
+  sensitive   = true
+}
+
+variable "jira_helm_chart_version" {
+  description = "Version of Jira Helm chart"
+  type        = string
+  default     = "1.0.0"
+}
+
+variable "jira_cpu" {
+  description = "Number of CPUs for Jira instance"
+  type        = string
+  default     = "1"
+}
+
+variable "jira_mem" {
+  description = "Amount of memory for Jira instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "jira_min_heap" {
+  description = "Minimum heap size for Jira instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "jira_max_heap" {
+  description = "Maximum heap size for Jira instance"
+  type        = string
+  default     = "512m"
 }

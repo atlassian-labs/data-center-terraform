@@ -2,9 +2,9 @@ output "vpc" {
   description = "VPC network information"
 
   value = {
-    id                   = module.bamboo.vpc_id
-    public_subnets_cidr  = module.bamboo.public_subnets_cidr_blocks
-    private_subnets_cidr = module.bamboo.private_subnets_cidr_blocks
+    id                   = module.base-infrastructure.vpc.vpc_id
+    public_subnets_cidr  = module.base-infrastructure.vpc.public_subnets_cidr_blocks
+    private_subnets_cidr = module.base-infrastructure.vpc.private_subnets_cidr_blocks
   }
 }
 
@@ -28,24 +28,24 @@ output "ingress" {
   }
 }
 
-output "product_urls" {
-  description = "URLs to access the deployed Atlassian products"
+# output "product_urls" {
+#   description = "URLs to access the deployed Atlassian products"
 
-  value = {
-    bamboo = module.bamboo.product_domain_name
-  }
-}
+#   value = {
+#     bamboo = module.bamboo.product_domain_name
+#   }
+# }
 
-output "database" {
-  description = "Database information"
+# output "database" {
+#   description = "Database information"
 
-  value = {
-    rds_instance_id        = module.bamboo.rds_instance_id
-    db_name                = module.bamboo.db_name
-    kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
-    jdbc_connection        = module.bamboo.rds_jdbc_connection
-  }
-}
+#   value = {
+#     rds_instance_id        = module.bamboo.rds_instance_id
+#     db_name                = module.bamboo.db_name
+#     kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
+#     jdbc_connection        = module.bamboo.rds_jdbc_connection
+#   }
+# }
 
 output "eks" {
   description = "EKS cluster information"
