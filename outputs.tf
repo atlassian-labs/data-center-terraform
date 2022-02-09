@@ -42,10 +42,10 @@ output "bamboo_database" {
   description = "Bamboo database information"
 
   value = local.install_bamboo ? {
-    rds_instance_id        = module.bamboo.rds_instance_id
-    db_name                = module.bamboo.db_name
-    kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
-    jdbc_connection        = module.bamboo.rds_jdbc_connection
+    rds_instance_id        = module.bamboo[0].rds_instance_id
+    db_name                = module.bamboo[0].db_name
+    kubernetes_secret_name = module.bamboo[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.bamboo[0].rds_jdbc_connection
   } : null
 }
 
@@ -53,10 +53,10 @@ output "confluence_database" {
   description = "Confluence database information"
 
   value = local.install_confluence ? {
-    rds_instance_id        = module.confluence.rds_instance_id
-    db_name                = module.confluence.db_name
-    kubernetes_secret_name = module.confluence.kubernetes_rds_secret_name
-    jdbc_connection        = module.confluence.rds_jdbc_connection
+    rds_instance_id        = module.confluence[0].rds_instance_id
+    db_name                = module.confluence[0].db_name
+    kubernetes_secret_name = module.confluence[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.confluence[0].rds_jdbc_connection
   } : null
 }
 
@@ -64,7 +64,7 @@ output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
-    bamboo     = local.install_bamboo ? module.bamboo.product_domain_name : null
-    confluence = local.install_bamboo ? module.confluence.product_domain_name : null
+    bamboo     = local.install_bamboo ? module.bamboo[0].product_domain_name : null
+    confluence = local.install_bamboo ? module.confluence[0].product_domain_name : null
   }
 }
