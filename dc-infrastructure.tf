@@ -70,7 +70,7 @@ module "jira" {
   db_iops              = var.jira_db_iops
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
-  
+
   jira_configuration = {
     "helm_version"        = var.jira_helm_chart_version
     "cpu"                 = var.jira_cpu
