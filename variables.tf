@@ -253,3 +253,9 @@ variable "confluence_db_iops" {
   default     = 1000
   type        = number
 }
+
+variable "confluence_install_local_chart" {
+  description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
+  type        = bool
+  default     = false
+}

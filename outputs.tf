@@ -39,7 +39,7 @@ output "ingress" {
 }
 
 output "bamboo_database" {
-  description = "Database information"
+  description = "Bamboo database information"
 
   value = local.install_bamboo ? {
     rds_instance_id        = module.bamboo.rds_instance_id
@@ -49,11 +49,22 @@ output "bamboo_database" {
   } : null
 }
 
+output "confluence_database" {
+  description = "Confluence database information"
+
+  value = local.install_confluence ? {
+    rds_instance_id        = module.confluence.rds_instance_id
+    db_name                = module.confluence.db_name
+    kubernetes_secret_name = module.confluence.kubernetes_rds_secret_name
+    jdbc_connection        = module.confluence.rds_jdbc_connection
+  } : null
+}
+
 output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
     bamboo     = local.install_bamboo ? module.bamboo.product_domain_name : null
-    confluence = module.confluence.product_domain_name
+    confluence = local.install_bamboo ? module.confluence.product_domain_name : null
   }
 }

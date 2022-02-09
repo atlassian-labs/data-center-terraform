@@ -57,6 +57,7 @@ module "bamboo" {
 
 module "confluence" {
   source = "./modules/products/confluence"
+  count  = local.install_confluence ? 1 : 0
 
   region_name          = var.region
   environment_name     = var.environment_name
@@ -81,5 +82,5 @@ module "confluence" {
   }
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
-  local_confluence_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/confluence"
+  local_confluence_chart_path = local.local_confluence_chart_path
 }
