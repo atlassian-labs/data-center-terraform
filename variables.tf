@@ -1,5 +1,9 @@
 # To customise the infrastructure you must provide the value for each of these parameters in config.tfvar
 
+################################################################################
+# Common Variables
+################################################################################
+
 variable "region" {
   description = "Name of the AWS region."
   type        = string
@@ -15,6 +19,15 @@ variable "environment_name" {
   validation {
     condition     = can(regex("^[a-z][a-z0-9\\-]{1,24}$", var.environment_name))
     error_message = "Invalid environment name. Valid name is up to 24 characters starting with lower case alphabet and followed by alphanumerics. '-' is allowed as well."
+  }
+}
+
+variable "products" {
+  description = "List of the products to be installed."
+  type        = list(string)
+  validation {
+    condition     = alltrue([for o in var.products : contains(["jira", "bitbucket", "confluence", "bamboo"], lower(o))])
+    error_message = "Non-supported product is provided. Only 'jira', 'bitbucket', 'confluence',  and 'bamboo' are supported."
   }
 }
 
@@ -52,23 +65,6 @@ variable "domain" {
   }
 }
 
-variable "db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  default     = 1000
-  type        = number
-}
-
-variable "db_instance_class" {
-  description = "Instance class of the RDS instance."
-  default     = "db.t3.micro"
-  type        = string
-}
-
-variable "db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  default     = 1000
-  type        = number
-}
 
 variable "local_helm_charts_path" {
   description = "Path to a local directory with Helm charts to install"
@@ -80,12 +76,29 @@ variable "local_helm_charts_path" {
   default = ""
 }
 
-
 ################################################################################
-# Bamboo variables
+# Bamboo Variables
 ################################################################################
 
-variable "dataset_url" {
+variable "bamboo_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 1000
+  type        = number
+}
+
+variable "bamboo_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "bamboo_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
   default     = null
@@ -176,6 +189,12 @@ variable "number_of_bamboo_agents" {
   }
 }
 
+variable "bamboo_install_local_chart" {
+  description = "If true installs Bamboo and Agents using local Helm charts located in local_helm_charts_path"
+  type        = bool
+  default     = false
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################
@@ -215,4 +234,28 @@ variable "confluence_max_heap" {
   description = "Maximum heap size for confluence instance"
   type        = string
   default     = "512m"
+}
+
+variable "confluence_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 1000
+  type        = number
+}
+
+variable "confluence_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "confluence_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "confluence_install_local_chart" {
+  description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
+  type        = bool
+  default     = false
 }

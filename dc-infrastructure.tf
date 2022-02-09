@@ -13,6 +13,7 @@ module "base-infrastructure" {
 
 module "bamboo" {
   source = "./modules/products/bamboo"
+  count  = local.install_bamboo ? 1 : 0
 
   region_name          = var.region
   environment_name     = var.environment_name
@@ -20,12 +21,12 @@ module "bamboo" {
   vpc                  = module.base-infrastructure.vpc
   eks                  = module.base-infrastructure.eks
   ingress              = module.base-infrastructure.ingress
-  db_allocated_storage = var.db_allocated_storage
-  db_instance_class    = var.db_instance_class
-  db_iops              = var.db_iops
+  db_allocated_storage = var.bamboo_db_allocated_storage
+  db_instance_class    = var.bamboo_db_instance_class
+  db_iops              = var.bamboo_db_iops
 
   license     = var.bamboo_license
-  dataset_url = var.dataset_url
+  dataset_url = var.bamboo_dataset_url
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
@@ -50,12 +51,13 @@ module "bamboo" {
   }
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
-  local_bamboo_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo"
-  local_agent_chart_path  = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
+  local_bamboo_chart_path = local.local_bamboo_chart_path
+  local_agent_chart_path  = local.local_agent_chart_path
 }
 
 module "confluence" {
   source = "./modules/products/confluence"
+  count  = local.install_confluence ? 1 : 0
 
   region_name          = var.region
   environment_name     = var.environment_name
@@ -63,9 +65,9 @@ module "confluence" {
   vpc                  = module.base-infrastructure.vpc
   eks                  = module.base-infrastructure.eks
   ingress              = module.base-infrastructure.ingress
-  db_allocated_storage = var.db_allocated_storage
-  db_instance_class    = var.db_instance_class
-  db_iops              = var.db_iops
+  db_allocated_storage = var.confluence_db_allocated_storage
+  db_instance_class    = var.confluence_db_instance_class
+  db_iops              = var.confluence_db_iops
 
   license = var.confluence_license
 
@@ -80,5 +82,5 @@ module "confluence" {
   }
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
-  local_confluence_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/confluence"
+  local_confluence_chart_path = local.local_confluence_chart_path
 }
