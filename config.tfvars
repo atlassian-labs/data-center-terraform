@@ -95,10 +95,19 @@ bamboo_db_iops              = 1000
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.0.0"
+confluence_helm_chart_version = "1.1.0"
 
 # Confluence instance resource configuration
 confluence_cpu      = "1"
 confluence_mem      = "1Gi"
 confluence_min_heap = "256m"
 confluence_max_heap = "512m"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+confluence_db_instance_class    = "db.t3.micro"
+confluence_db_allocated_storage = 100
+confluence_db_iops              = 1000

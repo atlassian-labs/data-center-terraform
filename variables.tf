@@ -65,7 +65,6 @@ variable "domain" {
   }
 }
 
-
 variable "local_helm_charts_path" {
   description = "Path to a local directory with Helm charts to install"
   type        = string
@@ -79,24 +78,6 @@ variable "local_helm_charts_path" {
 ################################################################################
 # Bamboo Variables
 ################################################################################
-
-variable "bamboo_db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  default     = 1000
-  type        = number
-}
-
-variable "bamboo_db_instance_class" {
-  description = "Instance class of the RDS instance."
-  default     = "db.t3.micro"
-  type        = string
-}
-
-variable "bamboo_db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  default     = 1000
-  type        = number
-}
 
 variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
@@ -129,6 +110,16 @@ variable "bamboo_admin_display_name" {
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
+}
+
+variable "number_of_bamboo_agents" {
+  description = "Number of Bamboo remote agents."
+  default     = 5
+  type        = number
+  validation {
+    condition     = var.number_of_bamboo_agents >= 0
+    error_message = "Number of agents must be greater than or equal to 0."
+  }
 }
 
 variable "bamboo_helm_chart_version" {
@@ -179,14 +170,22 @@ variable "bamboo_agent_mem" {
   default     = "256m"
 }
 
-variable "number_of_bamboo_agents" {
-  description = "Number of Bamboo remote agents."
-  default     = 5
+variable "bamboo_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 1000
   type        = number
-  validation {
-    condition     = var.number_of_bamboo_agents >= 0
-    error_message = "Number of agents must be greater than or equal to 0."
-  }
+}
+
+variable "bamboo_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "bamboo_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
 }
 
 variable "bamboo_install_local_chart" {
@@ -209,7 +208,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.0.0"
+  default     = "1.1.0"
 }
 
 variable "confluence_cpu" {
