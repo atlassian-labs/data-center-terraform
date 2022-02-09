@@ -1,5 +1,9 @@
 # To customise the infrastructure you must provide the value for each of these parameters in config.tfvar
 
+################################################################################
+# Common Settings
+################################################################################
+
 variable "region" {
   description = "Name of the AWS region."
   type        = string
@@ -15,6 +19,15 @@ variable "environment_name" {
   validation {
     condition     = can(regex("^[a-z][a-z0-9\\-]{1,24}$", var.environment_name))
     error_message = "Invalid environment name. Valid name is up to 24 characters starting with lower case alphabet and followed by alphanumerics. '-' is allowed as well."
+  }
+}
+
+variable "products" {
+  description = "List of the products to be installed."
+  type        = list(string)
+  validation {
+    condition     = alltrue([for o in var.products : contains(["jira", "bitbucket", "confluence", "bamboo"], lower(o))])
+    error_message = "Non-supported product is provided. Only 'jira', 'bitbucket', 'confluence',  and 'bamboo' are supported."
   }
 }
 
@@ -52,25 +65,29 @@ variable "domain" {
   }
 }
 
-variable "db_allocated_storage" {
+################################################################################
+# Bamboo Settings
+################################################################################
+
+variable "bamboo_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
   default     = 1000
   type        = number
 }
 
-variable "db_instance_class" {
+variable "bamboo_db_instance_class" {
   description = "Instance class of the RDS instance."
   default     = "db.t3.micro"
   type        = string
 }
 
-variable "db_iops" {
+variable "bamboo_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
 }
 
-variable "dataset_url" {
+variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
   default     = null
@@ -110,7 +127,7 @@ variable "local_helm_charts_path" {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
     error_message = "Invalid local Helm chart path."
   }
-  default     = ""
+  default = ""
 }
 
 variable "bamboo_helm_chart_version" {
@@ -170,3 +187,4 @@ variable "number_of_bamboo_agents" {
     error_message = "Number of agents must be greater than or equal to 0."
   }
 }
+
