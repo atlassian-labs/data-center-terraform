@@ -14,8 +14,9 @@ environment_name = "<ENVIRONMENT>"
 region = "<REGION>"
 
 
-# List of the products to be installed. (optional) e.g. products = ["jira", "confluence"]
+# (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
+# e.g.: products = ["jira", "confluence"]
 products = ["<LIST_OF_PRODUCTS>"]
 
 # (Optional) Domain name used by the ingress controller.
@@ -32,7 +33,7 @@ products = ["<LIST_OF_PRODUCTS>"]
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
 
-# Custom tags for all resources to be created. Please add all tags you need to propagate among the resources. (optional)
+# (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Terraform = "true"
 }

@@ -190,7 +190,7 @@ variable "number_of_bamboo_agents" {
 }
 
 variable "bamboo_install_local_chart" {
-  description = "Install Bamboo and Agents using local Helm charts"
+  description = "If true installs Bamboo and Agents using local Helm charts located in local_helm_charts_path"
   type        = bool
   default     = false
 }

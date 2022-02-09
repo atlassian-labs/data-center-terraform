@@ -38,7 +38,7 @@ output "ingress" {
   }
 }
 
-output "bamboo-database" {
+output "bamboo_database" {
   description = "Database information"
 
   value = local.install_bamboo ? {
