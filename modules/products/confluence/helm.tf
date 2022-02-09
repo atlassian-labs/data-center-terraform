@@ -33,6 +33,9 @@ resource "helm_release" "confluence" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
+      synchrony = {
+        enabled = true
+      }
       volumes = {
         localHome = {
           persistentVolumeClaim = {
