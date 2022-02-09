@@ -2,10 +2,9 @@ package unittest
 
 import (
 	"fmt"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"testing"
-
-	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
 func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
@@ -62,7 +61,7 @@ var DatasetUrl = "https://s3.aws.com/bucket/dataset.zip"
 var BambooCorrectVariables = map[string]interface{}{
 	"region_name":      "dummy_region_name",
 	"environment_name": "dummy-environment",
-	"namespace": "dummy-namespace",
+	"namespace":        "dummy-namespace",
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -71,8 +70,8 @@ var BambooCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc": VpcDefaultModuleVariable,
-	"pvc_claim_name": "dummy_pvc_claimname",
+	"vpc":                  VpcDefaultModuleVariable,
+	"pvc_claim_name":       "dummy_pvc_claimname",
 	"db_allocated_storage": 5,
 	"db_instance_class":    "dummy_db_instance_class",
 	"db_iops":              1000,
@@ -84,16 +83,16 @@ var BambooCorrectVariables = map[string]interface{}{
 	"ingress":              map[string]interface{}{},
 	"dataset_url":          nil,
 	"bamboo_configuration": map[string]interface{}{
-		"helm_version" : "1.0.0",
-		"cpu"          : "1",
-		"mem"          : "1Gi",
-		"min_heap"     : "256m",
-		"max_heap"     : "512m",
+		"helm_version": "1.0.0",
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "256m",
+		"max_heap":     "512m",
 	},
 	"bamboo_agent_configuration": map[string]interface{}{
-		"helm_version" : "1.0.0",
-		"cpu"          : "1",
-		"mem"          : "1Gi",
-		"agent_count"  : 5,
+		"helm_version": "1.0.0",
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"agent_count":  5,
 	},
 }

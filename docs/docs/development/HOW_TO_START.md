@@ -23,3 +23,10 @@ A number of tools have been used for building this project. When working on the 
     ```shell
     brew install pre-commit
     ```
+
+    Then configure `pre-commit` to use the project `.pre-commit-config.yaml`
+
+    ```shell
+    git add .pre-commit-config.yaml
+    ```
+
