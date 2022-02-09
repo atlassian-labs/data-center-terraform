@@ -27,8 +27,30 @@ resource "helm_release" "jira" {
           }
         }
       }
+      database = {
+        type = "postgresql"
+        url  = module.database.rds_jdbc_connection
+        credentials = {
+          secretName = kubernetes_secret.rds_secret.metadata[0].name
+        }
+      }
+      volumes = {
+        localHome = {
+          persistentVolumeClaim = {
+            create = true
+          }
+        }
+        sharedHome = {
+          customVolume = {
+            persistentVolumeClaim = {
+              claimName = var.pvc_claim_name
+            }
+          }
+          subPath = local.product_name
+        }
+      }
     }),
-    local.license_settings,
+    local.ingress_settings,
   ]
 }
 

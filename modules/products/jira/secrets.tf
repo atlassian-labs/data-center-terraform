@@ -1,13 +1,14 @@
 ################################################################################
-# Kubernetes secret to store license
+# Kubernetes secret to store db credential
 ################################################################################
-resource "kubernetes_secret" "license_secret" {
+resource "kubernetes_secret" "rds_secret" {
   metadata {
-    name      = "${local.product_name}-license"
+    name      = "${local.product_name}-db-cred"
     namespace = var.namespace
   }
 
   data = {
-    license-key = var.license
+    username = module.database.rds_master_username
+    password = module.database.rds_master_password
   }
 }

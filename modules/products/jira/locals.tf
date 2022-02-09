@@ -11,11 +11,30 @@ locals {
     "mem" : var.jira_configuration["mem"]
   }
 
-  license_settings = yamlencode({
-    jira = {
-      license = {
-        secretName = kubernetes_secret.license_secret.metadata[0].name
-      }
+  rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
+
+  # if the domain wasn't provided we will start Jira with LoadBalancer service without ingress configuration
+  use_domain          = length(var.ingress) == 1
+  product_domain_name = local.use_domain ? "${local.product_name}.${var.ingress[0].ingress.domain}" : null
+  # ingress settings for Bamboo service
+  ingress_with_domain = yamlencode({
+    ingress = {
+      create = "true"
+      host   = local.product_domain_name
     }
   })
+
+  service_as_loadbalancer = yamlencode({
+    jira = {
+      service = {
+        type = "LoadBalancer"
+      }
+    }
+    ingress = {
+      https = false
+    }
+  })
+
+  ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
+
 }

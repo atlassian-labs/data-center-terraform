@@ -8,6 +8,16 @@ output "vpc" {
   }
 }
 
+output "eks" {
+  description = "EKS cluster information"
+
+  value = {
+    cluster_name     = module.base-infrastructure.eks.cluster_name
+    cluster_id       = module.base-infrastructure.eks.cluster_id
+    cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
+  }
+}
+
 output "efs" {
   description = "EFS shared storage"
 
@@ -28,31 +38,21 @@ output "ingress" {
   }
 }
 
-# output "product_urls" {
-#   description = "URLs to access the deployed Atlassian products"
+output "bamboo_database" {
+  description = "Database information"
 
-#   value = {
-#     bamboo = module.bamboo.product_domain_name
-#   }
-# }
+  value = local.install_bamboo ? {
+    rds_instance_id        = module.bamboo.rds_instance_id
+    db_name                = module.bamboo.db_name
+    kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
+    jdbc_connection        = module.bamboo.rds_jdbc_connection
+  } : null
+}
 
-# output "database" {
-#   description = "Database information"
-
-#   value = {
-#     rds_instance_id        = module.bamboo.rds_instance_id
-#     db_name                = module.bamboo.db_name
-#     kubernetes_secret_name = module.bamboo.kubernetes_rds_secret_name
-#     jdbc_connection        = module.bamboo.rds_jdbc_connection
-#   }
-# }
-
-output "eks" {
-  description = "EKS cluster information"
+output "product_urls" {
+  description = "URLs to access the deployed Atlassian products"
 
   value = {
-    cluster_name     = module.base-infrastructure.eks.cluster_name
-    cluster_id       = module.base-infrastructure.eks.cluster_id
-    cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
+    bamboo = local.install_bamboo ? module.bamboo.product_domain_name : null
   }
 }
