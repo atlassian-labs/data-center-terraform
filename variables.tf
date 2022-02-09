@@ -65,6 +65,17 @@ variable "domain" {
   }
 }
 
+
+variable "local_helm_charts_path" {
+  description = "Path to a local directory with Helm charts to install"
+  type        = string
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
+    error_message = "Invalid local Helm chart path."
+  }
+  default = ""
+}
+
 ################################################################################
 # Bamboo Settings
 ################################################################################
@@ -118,16 +129,6 @@ variable "bamboo_admin_display_name" {
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
-}
-
-variable "local_helm_charts_path" {
-  description = "Path to a local directory with Helm charts to install"
-  type        = string
-  validation {
-    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
-    error_message = "Invalid local Helm chart path."
-  }
-  default = ""
 }
 
 variable "bamboo_helm_chart_version" {
@@ -188,3 +189,8 @@ variable "number_of_bamboo_agents" {
   }
 }
 
+variable "bamboo_install_local_chart" {
+  description = "Install Bamboo and Agents using local Helm charts"
+  type        = bool
+  default     = false
+}

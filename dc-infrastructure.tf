@@ -51,6 +51,6 @@ module "bamboo" {
   }
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
-  local_bamboo_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo"
-  local_agent_chart_path  = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
+  local_bamboo_chart_path = local.local_bamboo_chart_path
+  local_agent_chart_path  = local.local_agent_chart_path
 }
