@@ -44,6 +44,4 @@ variable "major_engine_version" {
     condition     = contains(["10", "11", "12", "13"], var.major_engine_version)
     error_message = "Invalid major engine version."
   }
-
-
 }

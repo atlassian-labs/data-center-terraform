@@ -2,10 +2,9 @@ package unittest
 
 import (
 	"fmt"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"testing"
-
-	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
 func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {

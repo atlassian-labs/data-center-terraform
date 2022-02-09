@@ -39,7 +39,7 @@ output "ingress" {
 }
 
 output "bamboo_database" {
-  description = "Database information"
+  description = "Bamboo Database information"
 
   value = local.install_bamboo ? {
     rds_instance_id        = module.bamboo[0].rds_instance_id
