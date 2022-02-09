@@ -67,12 +67,12 @@ variable "domain" {
 
 variable "local_helm_charts_path" {
   description = "Path to a local directory with Helm charts to install"
+  default     = ""
   type        = string
   validation {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
     error_message = "Invalid local Helm chart path."
   }
-  default = ""
 }
 
 ################################################################################
@@ -99,8 +99,8 @@ variable "bamboo_db_iops" {
 
 variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
-  type        = string
   default     = null
+  type        = string
 }
 
 variable "bamboo_license" {
@@ -132,8 +132,9 @@ variable "bamboo_admin_email_address" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  type        = string
   default     = "1.0.0"
+  type        = string
+
 }
 
 variable "bamboo_agent_helm_chart_version" {
@@ -252,3 +253,4 @@ variable "jira_reserved_code_Cache" {
   type        = string
   default     = "512m"
 }
+

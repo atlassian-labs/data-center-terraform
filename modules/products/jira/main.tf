@@ -1,5 +1,5 @@
 # Create the infrastructure for Jira Data Center.
-resource "aws_route53_record" "bamboo" {
+resource "aws_route53_record" "jira" {
   count = local.use_domain ? 1 : 0
 
   zone_id = var.ingress[0].ingress.r53_zone
@@ -16,11 +16,12 @@ resource "aws_route53_record" "bamboo" {
 module "database" {
   source = "../../AWS/rds"
 
-  product           = local.product_name
-  rds_instance_id   = local.rds_instance_name
-  allocated_storage = var.db_allocated_storage
-  eks               = var.eks
-  instance_class    = var.db_instance_class
-  iops              = var.db_iops
-  vpc               = var.vpc
+  product              = local.product_name
+  rds_instance_id      = local.rds_instance_name
+  allocated_storage    = var.db_allocated_storage
+  eks                  = var.eks
+  instance_class       = var.db_instance_class
+  iops                 = var.db_iops
+  vpc                  = var.vpc
+  major_engine_version = local.rds_major_engine_version
 }

@@ -57,10 +57,20 @@ module "bamboo" {
 
 module "jira" {
   source = "./modules/products/jira"
+  count  = local.install_jira ? 1 : 0
 
-  namespace = module.base-infrastructure.namespace
+  region_name          = var.region
+  environment_name     = var.environment_name
+  namespace            = module.base-infrastructure.namespace
+  vpc                  = module.base-infrastructure.vpc
+  eks                  = module.base-infrastructure.eks
+  ingress              = module.base-infrastructure.ingress
+  db_allocated_storage = var.jira_db_allocated_storage
+  db_instance_class    = var.jira_db_instance_class
+  db_iops              = var.jira_db_iops
 
-  license = var.jira_license
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+
 
   jira_configuration = {
     "helm_version"        = var.jira_helm_chart_version

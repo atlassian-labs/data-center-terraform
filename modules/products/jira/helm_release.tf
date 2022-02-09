@@ -16,8 +16,9 @@ resource "helm_release" "jira" {
         }
         resources = {
           jvm = {
-            maxHeap = local.jira_software_resources.maxHeap
-            minHeap = local.jira_software_resources.minHeap
+            maxHeap           = local.jira_software_resources.maxHeap
+            minHeap           = local.jira_software_resources.minHeap
+            reservedCodeCache = local.jira_software_resources.reservedCodeCache
           }
           container = {
             requests = {
@@ -28,8 +29,9 @@ resource "helm_release" "jira" {
         }
       }
       database = {
-        type = "postgresql"
-        url  = module.database.rds_jdbc_connection
+        type   = "postgres72"
+        url    = module.database.rds_jdbc_connection
+        driver = "org.postgresql.Driver"
         credentials = {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }

@@ -35,3 +35,15 @@ variable "vpc" {
   description = "VPC module that hosts the product."
   type        = any
 }
+
+variable "major_engine_version" {
+  description = "RDS Major engine version for the product."
+  default     = "11"
+  type        = string
+  validation {
+    condition     = contains(["10", "11", "12", "13"], var.major_engine_version)
+    error_message = "Invalid major engine version."
+  }
+
+
+}

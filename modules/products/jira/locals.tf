@@ -9,9 +9,11 @@ locals {
     "maxHeap" : var.jira_configuration["max_heap"]
     "cpu" : var.jira_configuration["cpu"]
     "mem" : var.jira_configuration["mem"]
+    "reservedCodeCache" : var.jira_configuration["reserved_code_cache"]
   }
 
-  rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
+  rds_instance_name        = format("atlas-%s-%s-db", var.environment_name, local.product_name)
+  rds_major_engine_version = "12"
 
   # if the domain wasn't provided we will start Jira with LoadBalancer service without ingress configuration
   use_domain          = length(var.ingress) == 1
