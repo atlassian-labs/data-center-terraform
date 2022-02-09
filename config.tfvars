@@ -13,6 +13,10 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
+################################################################################
+# Bamboo
+################################################################################
+
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
@@ -47,6 +51,9 @@ bamboo_admin_email_address = "<EMAIL ADDRESS>"
 #
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
+################################################################################
+# EKS
+################################################################################
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
@@ -58,6 +65,10 @@ instance_types = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
 
+################################################################################
+# Database
+################################################################################
+
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
 # Documentation can be found via:
@@ -67,13 +78,17 @@ db_instance_class    = "db.t3.micro"
 db_allocated_storage = 100
 db_iops              = 1000
 
+################################################################################
+# Bamboo
+################################################################################
+
 # Helm chart version of Bamboo and Bamboo agent instances
 bamboo_helm_chart_version       = "1.0.0"
 bamboo_agent_helm_chart_version = "1.0.0"
 
 # Bamboo instance resource configuration
-bamboo_cpu = "1"
-bamboo_mem = "1Gi"
+bamboo_cpu      = "1"
+bamboo_mem      = "1Gi"
 bamboo_min_heap = "256m"
 bamboo_max_heap = "512m"
 
@@ -83,3 +98,16 @@ bamboo_agent_mem = "256m"
 
 # Number of Bamboo remote agents to launch
 number_of_bamboo_agents = 5
+
+################################################################################
+# Confluence
+################################################################################
+
+# Helm chart version of Confluence
+confluence_helm_chart_version = "1.0.0"
+
+# Confluence instance resource configuration
+confluence_cpu      = "1"
+confluence_mem      = "1Gi"
+confluence_min_heap = "256m"
+confluence_max_heap = "512m"

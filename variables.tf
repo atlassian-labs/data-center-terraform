@@ -70,6 +70,21 @@ variable "db_iops" {
   type        = number
 }
 
+variable "local_helm_charts_path" {
+  description = "Path to a local directory with Helm charts to install"
+  type        = string
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
+    error_message = "Invalid local Helm chart path."
+  }
+  default = ""
+}
+
+
+################################################################################
+# Bamboo variables
+################################################################################
+
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
@@ -101,16 +116,6 @@ variable "bamboo_admin_display_name" {
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
-}
-
-variable "local_helm_charts_path" {
-  description = "Path to a local directory with Helm charts to install"
-  type        = string
-  validation {
-    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
-    error_message = "Invalid local Helm chart path."
-  }
-  default     = ""
 }
 
 variable "bamboo_helm_chart_version" {
@@ -169,4 +174,45 @@ variable "number_of_bamboo_agents" {
     condition     = var.number_of_bamboo_agents >= 0
     error_message = "Number of agents must be greater than or equal to 0."
   }
+}
+
+################################################################################
+# Confluence variables
+################################################################################
+
+variable "confluence_license" {
+  description = "Confluence license."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "confluence_helm_chart_version" {
+  description = "Version of confluence Helm chart"
+  type        = string
+  default     = "1.0.0"
+}
+
+variable "confluence_cpu" {
+  description = "Number of CPUs for confluence instance"
+  type        = string
+  default     = "1"
+}
+
+variable "confluence_mem" {
+  description = "Amount of memory for confluence instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "confluence_min_heap" {
+  description = "Minimum heap size for confluence instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "confluence_max_heap" {
+  description = "Maximum heap size for confluence instance"
+  type        = string
+  default     = "512m"
 }

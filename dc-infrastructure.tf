@@ -53,3 +53,32 @@ module "bamboo" {
   local_bamboo_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo"
   local_agent_chart_path  = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/bamboo-agent"
 }
+
+module "confluence" {
+  source = "./modules/products/confluence"
+
+  region_name          = var.region
+  environment_name     = var.environment_name
+  namespace            = module.base-infrastructure.namespace
+  vpc                  = module.base-infrastructure.vpc
+  eks                  = module.base-infrastructure.eks
+  ingress              = module.base-infrastructure.ingress
+  db_allocated_storage = var.db_allocated_storage
+  db_instance_class    = var.db_instance_class
+  db_iops              = var.db_iops
+
+  license = var.confluence_license
+
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+
+  confluence_configuration = {
+    "helm_version" = var.confluence_helm_chart_version
+    "cpu"          = var.confluence_cpu
+    "mem"          = var.confluence_mem
+    "min_heap"     = var.confluence_min_heap
+    "max_heap"     = var.confluence_max_heap
+  }
+
+  # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
+  local_confluence_chart_path = var.local_helm_charts_path == "" ? "" : "${var.local_helm_charts_path}/confluence"
+}

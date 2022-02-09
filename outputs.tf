@@ -32,7 +32,8 @@ output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
-    bamboo = module.bamboo.product_domain_name
+    bamboo     = module.bamboo.product_domain_name
+    confluence = module.confluence.product_domain_name
   }
 }
 
