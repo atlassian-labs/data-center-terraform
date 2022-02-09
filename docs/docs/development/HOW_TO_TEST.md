@@ -37,7 +37,7 @@ See the [How to start development guide](HOW_TO_START.md) for details on how you
     go test ./unittest/... -v
     ```
     
-    You can use `regex` keywords to run specific groups of test cases. For example, you can run only `VPC` module-related tests with `go test./unittest/... -v -run TestVpc`.
+    You can use `regex` keywords to run specific groups of test cases. For example, you can run only `VPC` module-related tests with `go test ./unittest/... -v -run TestVpc`.
 
 ??? info "Running end-to-end tests"
 
