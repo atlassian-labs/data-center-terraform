@@ -38,6 +38,9 @@ resource "helm_release" "confluence" {
   values = [
     yamlencode({
       confluence = {
+        clustering = {
+          enabled = true
+        }
         resources = {
           jvm = {
             maxHeap = local.confluence_software_resources.maxHeap
