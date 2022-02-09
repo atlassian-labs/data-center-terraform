@@ -5,7 +5,7 @@ resource "helm_release" "confluence" {
   repository = local.helm_chart_repository
   chart      = local.confluence_helm_chart_name
   version    = local.confluence_helm_chart_version
-  timeout    = 40 * 60 # dataset import can take a long time
+  timeout    = 10 * 60
 
   values = [
     yamlencode({
@@ -33,9 +33,6 @@ resource "helm_release" "confluence" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
-      synchrony = {
-        enabled = true
-      }
       volumes = {
         localHome = {
           persistentVolumeClaim = {
@@ -52,6 +49,7 @@ resource "helm_release" "confluence" {
         }
       }
     }),
+    local.synchrony_settings,
     local.ingress_settings,
     local.license_settings,
   ]

@@ -48,4 +48,13 @@ locals {
       }
     }
   }) : yamlencode({})
+
+  synchrony_settings = local.use_domain ? yamlencode({
+    synchrony = {
+      enabled    = true
+      ingressUrl = "https://${local.product_domain_name}"
+    }
+  }) : yamlencode({})
+  # TODO add synchrony settings if domain name is not used, beware of cyclic dependency
+  # "http://${data.kubernetes_service.confluence.status[0].load_balancer[0].ingress[0].hostname}"
 }
