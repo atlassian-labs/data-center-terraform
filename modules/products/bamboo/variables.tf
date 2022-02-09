@@ -32,48 +32,6 @@ variable "ingress" {
   type    = any
 }
 
-variable "db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  type        = number
-}
-
-variable "db_instance_class" {
-  description = "Instance class of the RDS instance."
-  type        = string
-}
-
-variable "db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  type        = number
-}
-
-variable "license" {
-  description = "Bamboo license."
-  type        = string
-  sensitive   = true
-}
-
-variable "admin_username" {
-  description = "System administrator username."
-  type        = string
-}
-
-variable "admin_password" {
-  description = "System administrator password."
-  type        = string
-  sensitive   = true
-}
-
-variable "admin_display_name" {
-  description = "System administrator display name."
-  type        = string
-}
-
-variable "admin_email_address" {
-  description = "System administrator email address."
-  type        = string
-}
-
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
@@ -83,9 +41,9 @@ variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.bamboo_configuration) == 5 &&
-    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
-    error_message = "Bamboo configuration is not valid1."
+    condition = (length(var.bamboo_configuration) == 6 &&
+    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
+    error_message = "Bamboo configuration is not valid."
   }
 }
 
@@ -96,6 +54,26 @@ variable "bamboo_agent_configuration" {
     condition = (length(var.bamboo_agent_configuration) == 4 &&
     alltrue([for o in keys(var.bamboo_agent_configuration) : contains(["helm_version", "cpu", "mem", "agent_count"], o)]))
     error_message = "Bamboo Agent configuration is not valid."
+  }
+}
+
+variable "admin_configuration" {
+  description = "Bamboo admin configuration"
+  type        = map(any)
+  validation {
+    condition = (length(var.admin_configuration) == 4 &&
+    alltrue([for o in keys(var.admin_configuration) : contains(["admin_username", "admin_password", "admin_display_name", "admin_email_address"], o)]))
+    error_message = "Bamboo administrator configuration is not valid."
+  }
+}
+
+variable "db_configuration" {
+  description = "Bamboo database spec"
+  type        = map(any)
+  validation {
+    condition = (length(var.db_configuration) == 3 &&
+    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops"], o)]))
+    error_message = "Bamboo database configuration is not valid."
   }
 }
 

@@ -32,34 +32,23 @@ variable "ingress" {
   type    = any
 }
 
-variable "db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  type        = number
-}
-
-variable "db_instance_class" {
-  description = "Instance class of the RDS instance."
-  type        = string
-}
-
-variable "db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  type        = number
-}
-
-variable "license" {
-  description = "Confluence license."
-  type        = string
-  sensitive   = true
+variable "db_configuration" {
+  description = "Confluence database spec"
+  type        = map(any)
+  validation {
+    condition = (length(var.db_configuration) == 3 &&
+    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops"], o)]))
+    error_message = "Confluence database configuration is not valid."
+  }
 }
 
 variable "confluence_configuration" {
   description = "Confluence resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.confluence_configuration) == 5 &&
-    alltrue([for o in keys(var.confluence_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
-    error_message = "Confluence configuration is not valid1."
+    condition = (length(var.confluence_configuration) == 6 &&
+    alltrue([for o in keys(var.confluence_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
+    error_message = "Confluence configuration is not valid."
   }
 }
 

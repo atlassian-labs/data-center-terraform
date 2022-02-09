@@ -41,7 +41,7 @@ locals {
 
   ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
 
-  license_settings = var.license != null ? yamlencode({
+  license_settings = var.confluence_configuration["license"] != null ? yamlencode({
     confluence = {
       license = {
         secretName = kubernetes_secret.license_secret.metadata[0].name
