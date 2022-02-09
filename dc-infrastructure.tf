@@ -78,6 +78,6 @@ module "jira" {
     "mem"                 = var.jira_mem
     "min_heap"            = var.jira_min_heap
     "max_heap"            = var.jira_max_heap
-    "reserved_code_cache" = var.jira_reserved_code_Cache
+    "reserved_code_cache" = var.jira_reserved_code_cache
   }
 }

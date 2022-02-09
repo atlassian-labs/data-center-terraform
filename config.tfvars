@@ -101,12 +101,12 @@ bamboo_db_iops              = 1000
 ################################################################################
 
 
-jira_helm_chart_version = "1.0.0"
-jira_cpu                = "2"
-jira_mem                = "2Gi"
-jira_min_heap           = "384m"
-jira_max_heap           = "786m"
-reserved_code_cache     = "512m"
+jira_helm_chart_version  = "1.0.0"
+jira_cpu                 = "2"
+jira_mem                 = "2Gi"
+jira_min_heap            = "384m"
+jira_max_heap            = "786m"
+jira_reserved_code_cache = "512m"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.

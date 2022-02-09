@@ -248,7 +248,7 @@ variable "jira_max_heap" {
   default     = "768m"
 }
 
-variable "jira_reserved_code_Cache" {
+variable "jira_reserved_code_cache" {
   description = "Reserved code cache for Jira instance"
   type        = string
   default     = "512m"
