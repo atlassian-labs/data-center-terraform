@@ -13,7 +13,6 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
-
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
@@ -32,7 +31,6 @@ products = ["<LIST_OF_PRODUCTS>"]
 #
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
-
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Terraform = "true"
@@ -42,7 +40,6 @@ resource_tags = {
 instance_types = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
-
 
 ################################################################################
 # Bamboo Settings
@@ -90,13 +87,14 @@ bamboo_db_instance_class    = "db.t3.micro"
 bamboo_db_allocated_storage = 100
 bamboo_db_iops              = 1000
 
-
 ################################################################################
 # Jira Settings
 ################################################################################
 
-
+# Helm chart version of Jira
 jira_helm_chart_version  = "1.0.0"
+
+# Jira instance resource configuration
 jira_cpu                 = "2"
 jira_mem                 = "2Gi"
 jira_min_heap            = "384m"
