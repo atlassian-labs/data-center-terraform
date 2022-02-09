@@ -19,14 +19,6 @@ func TestJiraVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "deployed", jira.AttributeValues["status"])
 	assert.Equal(t, "jira", jira.AttributeValues["chart"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", jira.AttributeValues["repository"])
-
-	// verify Jira Agents
-	jiraAgentKey := "helm_release.jira_agent"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, jiraAgentKey)
-	jiraAgent := plan.ResourcePlannedValuesMap[jiraAgentKey]
-	assert.Equal(t, "deployed", jiraAgent.AttributeValues["status"])
-	assert.Equal(t, "jira-agent", jiraAgent.AttributeValues["chart"])
-	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", jiraAgent.AttributeValues["repository"])
 }
 
 // Variables
