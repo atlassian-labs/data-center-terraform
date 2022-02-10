@@ -8,7 +8,9 @@ import (
 
 func TestInstaller(t *testing.T) {
 
-	testConfig := createConfig(t)
+	// List of the products to test
+	productList := []string {"bamboo"}
+	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
