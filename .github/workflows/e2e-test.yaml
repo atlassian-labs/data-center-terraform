@@ -43,7 +43,7 @@ jobs:
         working-directory: test/
         run: |
           set -o pipefail
-          go test ./e2etest -v -timeout 60m -run Installer | tee ./e2etest/artifacts/e2etest.log
+          go test ./e2etest -v -timeout 70m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
         if: always()

@@ -8,7 +8,9 @@ import (
 
 func TestInstaller(t *testing.T) {
 
-	testConfig := createConfig(t)
+	// List of the products to test
+	productList := []string {"bamboo", "confluence"}
+	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
@@ -16,8 +18,15 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
-	// Run bamboo health tests
-	bambooHealthTests(t, testConfig)
+	// Run Bamboo health tests
+	if contains(productList, "bamboo") {
+		bambooHealthTests(t, testConfig)
+	}
+
+	// Run Confluence health tests
+	if contains(productList, "confluence") {
+		confluenceHealthTests(t, testConfig)
+	}
 }
 
 func runInstallScript(configPath string) {
@@ -51,5 +60,4 @@ func runUninstallScript(configPath string) {
 	// wait `cmd` until it finishes
 	_ = cmd.Wait()
 }
-
 

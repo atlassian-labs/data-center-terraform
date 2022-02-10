@@ -1,12 +1,14 @@
 package e2etest
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 	"text/template"
@@ -18,19 +20,25 @@ import (
 )
 
 const (
-	license       = ""
-	resourceOwner = "dc-deployment"
-	credential    = "admin:Atlassian21!" // Admin credential 'username:password'
-	product       = "bamboo"
-	domain        = "deplops.com"
+	resourceOwner     = "dc-deployment"
+	credential        = "admin:Atlassian21!" // Admin credential 'username:password'
+	product           = "bamboo"
+	domain            = "deplops.com"
+	jiraLicense       = ""
+	confluenceLicense = ""
+	bitbucketLicense  = ""
+	bambooLicense     = ""
 )
 
 type TestConfig struct {
-	AwsRegion       string
-	License         string
-	EnvironmentName string
-	ConfigPath      string
-	ResourceOwner   string
+	AwsRegion         string
+	EnvironmentName   string
+	ConfigPath        string
+	ResourceOwner     string
+	JiraLicense       string
+	ConfluenceLicense string
+	BitbucketLicense  string
+	BambooLicense     string
 }
 
 func EnvironmentName() string {
@@ -80,24 +88,53 @@ func sendPostRequest(t *testing.T, url string, contentType string, body io.Reade
 	defer resp.Body.Close()
 }
 
-func createConfig(t *testing.T) TestConfig {
-	var bambooLicense = license
-	if len(bambooLicense) == 0 {
-		bambooLicense = os.Getenv("TF_VAR_bamboo_license")
+func getLicense(productList []string, product string) string {
+	license := ""
+	if contains(productList, product) {
+		switch product {
+		case "jira":
+			license = jiraLicense
+		case "confluence":
+			license = confluenceLicense
+		case "bitbucket":
+			license = bitbucketLicense
+		case "bamboo":
+			license = bambooLicense		}
+		if len(license) == 0 {
+			license = os.Getenv(fmt.Sprintf("TF_VAR_%s_license", product))
+		}
 	}
+	return license
+}
+
+func createConfig(t *testing.T, productList []string) TestConfig {
+
 	testConfig := TestConfig{
-		AwsRegion:       GetAvailableRegion(t),
-		License:         bambooLicense,
-		EnvironmentName: EnvironmentName(),
-		ResourceOwner:   resourceOwner,
+		AwsRegion:         GetAvailableRegion(t),
+		EnvironmentName:   EnvironmentName(),
+		ResourceOwner:     resourceOwner,
+		JiraLicense:       getLicense(productList, "jira"),
+		ConfluenceLicense: getLicense(productList, "confluence"),
+		BitbucketLicense:  getLicense(productList, "bitbucket"),
+		BambooLicense:     getLicense(productList, "bamboo"),
+	}
+
+	// Product list
+	products := strings.Join(productList[:], "\",\"")
+	if len(products) > 0 {
+		products = "\"" + products + "\""
 	}
 
 	// variables
 	vars := make(map[string]interface{})
-	vars["license"] = testConfig.License
 	vars["resource_owner"] = resourceOwner
 	vars["environment_name"] = testConfig.EnvironmentName
 	vars["region"] = testConfig.AwsRegion
+	vars["products"] = products
+	vars["jira_license"] = testConfig.JiraLicense
+	vars["confluence_license"] = testConfig.ConfluenceLicense
+	vars["bitbucket_license"] = testConfig.BitbucketLicense
+	vars["bamboo_license"] = testConfig.BambooLicense
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")
@@ -114,4 +151,9 @@ func createConfig(t *testing.T) TestConfig {
 
 	testConfig.ConfigPath = filePath
 	return testConfig
+}
+
+func contains(s []string, item string) bool {
+	i := sort.SearchStrings(s, item)
+	return i < len(s) && s[i] == item
 }

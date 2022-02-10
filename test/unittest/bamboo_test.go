@@ -51,8 +51,11 @@ func TestBambooDatasetImport(t *testing.T) {
 	container := jobSpec.(map[string]interface{})["container"].([]interface{})[0]
 	commands := container.(map[string]interface{})["command"].([]interface{})
 
-	// we need to download the dataset
-	assert.Contains(t, commands, fmt.Sprintf("apk update && apk add wget && wget %s -O /shared-home/dataset_to_import.zip", DatasetUrl))
+	// verify the dataset
+	expectedCommand := fmt.Sprintf("mkdir /shared-home/bamboo && apk update && apk add wget && wget %s -O %s",
+		DatasetUrl,
+		"/shared-home/bamboo/bamboo_dataset_to_import.zip")
+	assert.Contains(t, commands, expectedCommand)
 }
 
 // Variables
@@ -62,7 +65,7 @@ var DatasetUrl = "https://s3.aws.com/bucket/dataset.zip"
 var BambooCorrectVariables = map[string]interface{}{
 	"region_name":      "dummy_region_name",
 	"environment_name": "dummy-environment",
-	"namespace": "dummy-namespace",
+	"namespace":        "dummy-namespace",
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -87,17 +90,17 @@ var BambooCorrectVariables = map[string]interface{}{
 		"admin_email_address" : "dummy_admin_email_address",
 	},
 	"bamboo_configuration": map[string]interface{}{
-		"helm_version" : "1.0.0",
-		"cpu"          : "1",
-		"mem"          : "1Gi",
-		"min_heap"     : "256m",
-		"max_heap"     : "512m",
-		"license"      : "dummy_license",
+		"helm_version": "1.0.0",
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "256m",
+		"max_heap":     "512m",
+		"license" :     "dummy_license",
 	},
 	"bamboo_agent_configuration": map[string]interface{}{
-		"helm_version" : "1.0.0",
-		"cpu"          : "1",
-		"mem"          : "1Gi",
-		"agent_count"  : 5,
+		"helm_version": "1.0.0",
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"agent_count":  5,
 	},
 }
