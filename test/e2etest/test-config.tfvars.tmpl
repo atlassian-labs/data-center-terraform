@@ -11,6 +11,8 @@ environment_name = "{{.environment_name}}"
 # Cloud provider region that this configuration will deploy to.
 region = "{{.region}}"
 
+products = ["bamboo"]
+
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Name           = "{{.environment_name}}"
