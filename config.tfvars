@@ -66,8 +66,8 @@ bamboo_helm_chart_version       = "1.0.0"
 bamboo_agent_helm_chart_version = "1.0.0"
 
 # Bamboo instance resource configuration
-bamboo_cpu = "1"
-bamboo_mem = "1Gi"
+bamboo_cpu      = "1"
+bamboo_mem      = "1Gi"
 bamboo_min_heap = "256m"
 bamboo_max_heap = "512m"
 
@@ -92,7 +92,7 @@ bamboo_db_iops              = 1000
 ################################################################################
 
 # Helm chart version of Jira
-jira_helm_chart_version  = "1.0.0"
+jira_helm_chart_version = "1.0.0"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
