@@ -84,6 +84,9 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	var bambooLicense = bambooLicense
 	if len(bambooLicense) == 0 {
 		bambooLicense = os.Getenv("TF_VAR_bamboo_license")
+		if len(bambooLicense) == 0 {
+			bambooLicense = os.Getenv("TF_VAR_BAMBOO_LICENSE")
+		}
 	}
 	testConfig := TestConfig{
 		AwsRegion:       GetAvailableRegion(t),
