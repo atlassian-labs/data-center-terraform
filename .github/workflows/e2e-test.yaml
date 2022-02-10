@@ -38,12 +38,12 @@ jobs:
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
-      - name: E2E test
-        id: e2e-test
-        working-directory: test/
-        run: |
-          set -o pipefail
-          go test ./e2etest -v -timeout 60m -run Installer | tee ./e2etest/artifacts/e2etest.log
+#       - name: E2E test
+#         id: e2e-test
+#         working-directory: test/
+#         run: |
+#           set -o pipefail
+#           go test ./e2etest -v -timeout 60m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
         if: always()
