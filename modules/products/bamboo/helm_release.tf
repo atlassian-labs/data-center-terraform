@@ -57,6 +57,7 @@ resource "helm_release" "bamboo" {
   ]
 }
 
+
 data "kubernetes_service" "bamboo" {
   depends_on = [helm_release.bamboo]
   metadata {

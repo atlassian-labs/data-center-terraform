@@ -18,6 +18,7 @@ func TestInstaller(t *testing.T) {
 
 	// Run bamboo health tests
 	bambooHealthTests(t, testConfig)
+	jiraHealthTests(t, testConfig)
 }
 
 func runInstallScript(configPath string) {
@@ -51,5 +52,3 @@ func runUninstallScript(configPath string) {
 	// wait `cmd` until it finishes
 	_ = cmd.Wait()
 }
-
-
