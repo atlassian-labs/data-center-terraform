@@ -258,3 +258,9 @@ variable "confluence_install_local_chart" {
   default     = false
   type        = bool
 }
+
+variable "confluence_enable_synchrony" {
+  description = "If true, Collaborative editing service will be enabled."
+  type        = bool
+  default     = true
+}

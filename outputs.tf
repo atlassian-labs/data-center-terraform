@@ -66,5 +66,6 @@ output "product_urls" {
   value = {
     bamboo     = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
     confluence = local.install_confluence && length(module.confluence) == 1 ? module.confluence[0].product_domain_name : null
+    synchrony  = var.confluence_enable_synchrony && length(module.confluence) == 1 ? module.confluence[0].synchrony_url : null
   }
 }

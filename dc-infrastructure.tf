@@ -86,6 +86,8 @@ module "confluence" {
     license      = var.confluence_license
   }
 
+  enable_synchrony = var.confluence_enable_synchrony
+
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
 }

@@ -1,4 +1,6 @@
-# Install helm chart for confluence Data Center.
+################################################################################
+# Confluence DC helm installation
+################################################################################
 resource "helm_release" "confluence" {
   name       = local.product_name
   namespace  = var.namespace
@@ -49,12 +51,15 @@ resource "helm_release" "confluence" {
         }
       }
     }),
-    local.synchrony_settings,
     local.ingress_settings,
     local.license_settings,
+    local.synchrony_settings_stanza,
   ]
 }
 
+################################################################################
+# Fetch Confluence service details
+################################################################################
 data "kubernetes_service" "confluence" {
   depends_on = [helm_release.confluence]
   metadata {

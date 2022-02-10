@@ -23,7 +23,7 @@ output "public_subnets_cidr_blocks" {
 }
 
 output "product_domain_name" {
-  value = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.confluence.status[0].load_balancer[0].ingress[0].hostname}"
+  value = local.confluence_ingress_url
 }
 
 output "rds_instance_id" {
@@ -40,4 +40,8 @@ output "db_name" {
 
 output "kubernetes_rds_secret_name" {
   value = kubernetes_secret.rds_secret.metadata[0].name
+}
+
+output "synchrony_url" {
+  value = var.enable_synchrony ? local.synchrony_ingress_url : "Synchrony is disabled"
 }

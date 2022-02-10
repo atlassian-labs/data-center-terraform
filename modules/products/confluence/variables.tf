@@ -37,7 +37,11 @@ variable "db_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.db_configuration) == 3 &&
-    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops"], o)]))
+      alltrue([
+        for o in keys(var.db_configuration) : contains([
+          "db_allocated_storage", "db_instance_class", "db_iops"
+        ], o)
+    ]))
     error_message = "Confluence database configuration is not valid."
   }
 }
@@ -47,7 +51,11 @@ variable "confluence_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.confluence_configuration) == 6 &&
-    alltrue([for o in keys(var.confluence_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
+      alltrue([
+        for o in keys(var.confluence_configuration) : contains([
+          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
+        ], o)
+    ]))
     error_message = "Confluence configuration is not valid."
   }
 }
@@ -55,11 +63,11 @@ variable "confluence_configuration" {
 variable "local_confluence_chart_path" {
   description = "Path to local Helm charts to install local confluence software"
   type        = string
+  default     = ""
   validation {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_confluence_chart_path))
     error_message = "Invalid local confluence Helm chart path."
   }
-  default = ""
 }
 
 variable "pvc_claim_name" {
@@ -69,4 +77,9 @@ variable "pvc_claim_name" {
     condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
     error_message = "Invalid claim name."
   }
+}
+
+variable "enable_synchrony" {
+  description = "If true, Collaborative editing service will be enabled."
+  type        = bool
 }
