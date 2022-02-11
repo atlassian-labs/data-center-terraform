@@ -37,7 +37,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for EKS node group.
-instance_types = ["m5.xlarge"]
+instance_types   = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
 
@@ -54,7 +54,7 @@ desired_capacity = 1
 # Bamboo system admin credentials
 # WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use credentials
 # existing in the dataset to set this section. Otherwise any other value for the `bamboo_admin_*` properties below are ignored.
-bamboo_admin_username = "<USERNAME>"
+bamboo_admin_username      = "<USERNAME>"
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
 # If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
 #bamboo_admin_password      = "<PASSWORD>"
@@ -66,8 +66,8 @@ bamboo_helm_chart_version       = "1.0.0"
 bamboo_agent_helm_chart_version = "1.0.0"
 
 # Bamboo instance resource configuration
-bamboo_cpu = "1"
-bamboo_mem = "1Gi"
+bamboo_cpu      = "1"
+bamboo_mem      = "1Gi"
 bamboo_min_heap = "256m"
 bamboo_max_heap = "512m"
 
@@ -83,16 +83,17 @@ number_of_bamboo_agents = 5
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bamboo_db_instance_class    = "db.t3.micro"
-bamboo_db_allocated_storage = 100
-bamboo_db_iops              = 1000
+bamboo_db_major_engine_version = "13"
+bamboo_db_instance_class       = "db.t3.micro"
+bamboo_db_allocated_storage    = 100
+bamboo_db_iops                 = 1000
 
 ################################################################################
 # Jira Settings
 ################################################################################
 
 # Helm chart version of Jira
-jira_helm_chart_version  = "1.0.0"
+jira_helm_chart_version = "1.1.0"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
@@ -106,6 +107,7 @@ jira_reserved_code_cache = "512m"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-jira_db_instance_class    = "db.t3.micro"
-jira_db_allocated_storage = 100
-jira_db_iops              = 1000
+jira_db_major_engine_version = "12"
+jira_db_instance_class       = "db.t3.micro"
+jira_db_allocated_storage    = 100
+jira_db_iops                 = 1000

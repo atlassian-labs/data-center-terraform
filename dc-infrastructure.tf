@@ -15,15 +15,16 @@ module "bamboo" {
   source = "./modules/products/bamboo"
   count  = local.install_bamboo ? 1 : 0
 
-  region_name          = var.region
-  environment_name     = var.environment_name
-  namespace            = module.base-infrastructure.namespace
-  vpc                  = module.base-infrastructure.vpc
-  eks                  = module.base-infrastructure.eks
-  ingress              = module.base-infrastructure.ingress
-  db_allocated_storage = var.bamboo_db_allocated_storage
-  db_instance_class    = var.bamboo_db_instance_class
-  db_iops              = var.bamboo_db_iops
+  region_name             = var.region
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.bamboo_db_major_engine_version
+  db_allocated_storage    = var.bamboo_db_allocated_storage
+  db_instance_class       = var.bamboo_db_instance_class
+  db_iops                 = var.bamboo_db_iops
 
   license     = var.bamboo_license
   dataset_url = var.bamboo_dataset_url
@@ -59,15 +60,16 @@ module "jira" {
   source = "./modules/products/jira"
   count  = local.install_jira ? 1 : 0
 
-  region_name          = var.region
-  environment_name     = var.environment_name
-  namespace            = module.base-infrastructure.namespace
-  vpc                  = module.base-infrastructure.vpc
-  eks                  = module.base-infrastructure.eks
-  ingress              = module.base-infrastructure.ingress
-  db_allocated_storage = var.jira_db_allocated_storage
-  db_instance_class    = var.jira_db_instance_class
-  db_iops              = var.jira_db_iops
+  region_name             = var.region
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.jira_db_major_engine_version
+  db_allocated_storage    = var.jira_db_allocated_storage
+  db_instance_class       = var.jira_db_instance_class
+  db_iops                 = var.jira_db_iops
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
