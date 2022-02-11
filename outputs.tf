@@ -39,13 +39,24 @@ output "ingress" {
 }
 
 output "bamboo_database" {
-  description = "Bamboo database information"
+  description = "Bamboo Database information"
 
   value = local.install_bamboo && length(module.bamboo) == 1 ? {
     rds_instance_id        = module.bamboo[0].rds_instance_id
     db_name                = module.bamboo[0].db_name
     kubernetes_secret_name = module.bamboo[0].kubernetes_rds_secret_name
     jdbc_connection        = module.bamboo[0].rds_jdbc_connection
+  } : null
+}
+
+output "jira_database" {
+  description = "Jira Database information"
+
+  value = local.install_jira && length(module.jira) == 1 ? {
+    rds_instance_id        = module.jira[0].rds_instance_id
+    db_name                = module.jira[0].db_name
+    kubernetes_secret_name = module.jira[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.jira[0].rds_jdbc_connection
   } : null
 }
 
@@ -65,6 +76,7 @@ output "product_urls" {
 
   value = {
     bamboo     = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
+    jira       = local.install_jira && length(module.jira) == 1 ? module.jira[0].product_domain_name : null
     confluence = local.install_confluence && length(module.confluence) == 1 ? module.confluence[0].product_domain_name : null
     synchrony  = var.confluence_enable_synchrony && length(module.confluence) == 1 ? module.confluence[0].synchrony_url : null
   }

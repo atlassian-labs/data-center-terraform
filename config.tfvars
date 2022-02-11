@@ -13,7 +13,6 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
-
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
@@ -32,7 +31,6 @@ products = ["<LIST_OF_PRODUCTS>"]
 #
 #dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
 
-
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Terraform = "true"
@@ -42,7 +40,6 @@ resource_tags = {
 instance_types = ["m5.2xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
-
 
 ################################################################################
 # Bamboo Settings
@@ -57,7 +54,6 @@ desired_capacity = 1
 # Bamboo system admin credentials
 # WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use credentials
 # existing in the dataset to set this section. Otherwise any other value for the `bamboo_admin_*` properties below are ignored.
-
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
 # If storing password as plain-text is not a concern for this environment.
 
@@ -90,9 +86,34 @@ number_of_bamboo_agents = 5
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-bamboo_db_instance_class    = "db.t3.micro"
-bamboo_db_allocated_storage = 100
-bamboo_db_iops              = 1000
+bamboo_db_major_engine_version = "13"
+bamboo_db_instance_class       = "db.t3.micro"
+bamboo_db_allocated_storage    = 100
+bamboo_db_iops                 = 1000
+
+################################################################################
+# Jira Settings
+################################################################################
+
+# Helm chart version of Jira
+jira_helm_chart_version = "1.1.0"
+
+# Jira instance resource configuration
+jira_cpu                 = "2"
+jira_mem                 = "2Gi"
+jira_min_heap            = "384m"
+jira_max_heap            = "786m"
+jira_reserved_code_cache = "512m"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+jira_db_major_engine_version = "12"
+jira_db_instance_class       = "db.t3.micro"
+jira_db_allocated_storage    = 100
+jira_db_iops                 = 1000
 
 ################################################################################
 # Confluence Settings
@@ -112,9 +133,10 @@ confluence_max_heap = "512m"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-confluence_db_instance_class    = "db.t3.micro"
-confluence_db_allocated_storage = 100
-confluence_db_iops              = 1000
+confluence_db_major_engine_version = "11"
+confluence_db_instance_class       = "db.t3.micro"
+confluence_db_allocated_storage    = 100
+confluence_db_iops                 = 1000
 
 # Enable collaborator editing in Confluence
 # WARNING: Collaborative editing can be only enabled if the `domain` variable is set.

@@ -32,6 +32,11 @@ variable "ingress" {
   type    = any
 }
 
+variable "db_major_engine_version" {
+  description = "The Database major version to use."
+  type        = string
+}
+
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string
