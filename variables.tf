@@ -144,8 +144,8 @@ variable "bamboo_helm_chart_version" {
 
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
-  type        = string
   default     = "1.0.0"
+  type        = string
 }
 
 variable "bamboo_cpu" {
@@ -232,7 +232,7 @@ variable "jira_db_iops" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.0.0"
+  default     = "1.1.0"
 }
 
 variable "jira_cpu" {
