@@ -65,9 +65,10 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":            VpcDefaultModuleVariable,
-	"pvc_claim_name": "dummy_pvc_claimname",
-	"ingress":        map[string]interface{}{},
+	"vpc":                     VpcDefaultModuleVariable,
+	"pvc_claim_name":          "dummy_pvc_claimname",
+	"ingress":                 map[string]interface{}{},
+	"db_major_engine_version": "11",
 	"db_configuration": map[string]interface{}{
 		"db_allocated_storage": 5,
 		"db_instance_class":    "dummy_db_instance_class",
