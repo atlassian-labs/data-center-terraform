@@ -29,7 +29,7 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), expectedStatus)
-	println("assertStatusEndpoint ..... PASSED")
+	println("assertBambooStatusEndpoint ..... PASSED")
 }
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
@@ -37,7 +37,7 @@ func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "TestPlan")
-	println("assertPlanListEndpoint ... PASSED")
+	println("assertBambooPlanListEndpoint ... PASSED")
 }
 
 func assertBambooProjects(t *testing.T, testConfig TestConfig) {
@@ -52,11 +52,11 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	// Wait 15 seconds to allow remote agents get online
-	time.Sleep(15*1000*time.Millisecond)
+	time.Sleep(15 * 1000 * time.Millisecond)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
-	println("assertRemoteAgentList .... PASSED")
+	println("assertBambooRemoteAgentList .... PASSED")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {
