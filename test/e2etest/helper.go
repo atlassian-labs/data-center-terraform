@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	license       = ""
+	bambooLicense = ""
 	resourceOwner = "dc-deployment"
 	credential    = "admin:Atlassian21!" // Admin credential 'username:password'
 	product       = "bamboo"
@@ -27,7 +27,7 @@ const (
 
 type TestConfig struct {
 	AwsRegion       string
-	License         string
+	BambooLicense   string
 	EnvironmentName string
 	ConfigPath      string
 	ResourceOwner   string
@@ -80,24 +80,32 @@ func sendPostRequest(t *testing.T, url string, contentType string, body io.Reade
 	defer resp.Body.Close()
 }
 
-func createConfig(t *testing.T) TestConfig {
-	var bambooLicense = license
+func createConfig(t *testing.T, productList []string) TestConfig {
+	var bambooLicense = bambooLicense
 	if len(bambooLicense) == 0 {
 		bambooLicense = os.Getenv("TF_VAR_bamboo_license")
 	}
 	testConfig := TestConfig{
 		AwsRegion:       GetAvailableRegion(t),
-		License:         bambooLicense,
+		BambooLicense:   bambooLicense,
 		EnvironmentName: EnvironmentName(),
 		ResourceOwner:   resourceOwner,
 	}
 
+	// Product list
+	products := strings.Join(productList[:], "\",\"")
+	if len(products) > 0 {
+		products = "\"" + products + "\""
+	}
+
 	// variables
 	vars := make(map[string]interface{})
-	vars["license"] = testConfig.License
+	vars["bamboo_license"] = testConfig.BambooLicense
 	vars["resource_owner"] = resourceOwner
 	vars["environment_name"] = testConfig.EnvironmentName
 	vars["region"] = testConfig.AwsRegion
+	vars["products"] = products
+
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")

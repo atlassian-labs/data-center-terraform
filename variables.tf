@@ -81,7 +81,7 @@ variable "local_helm_charts_path" {
 
 variable "bamboo_db_major_engine_version" {
   description = "The Postgres major version to use."
-  type = string
+  type        = string
 }
 
 variable "bamboo_db_allocated_storage" {
@@ -207,7 +207,7 @@ variable "bamboo_install_local_chart" {
 
 variable "jira_db_major_engine_version" {
   description = "The Postgres major version to use."
-  type = string
+  type        = string
 }
 
 

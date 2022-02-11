@@ -37,7 +37,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for EKS node group.
-instance_types = ["m5.xlarge"]
+instance_types = ["m5.2xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
 
@@ -54,12 +54,15 @@ desired_capacity = 1
 # Bamboo system admin credentials
 # WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use credentials
 # existing in the dataset to set this section. Otherwise any other value for the `bamboo_admin_*` properties below are ignored.
-bamboo_admin_username      = "<USERNAME>"
 # To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
-# If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
+# If storing password as plain-text is not a concern for this environment.
+
+# To pre-seed the Bamboo with the system admin information, feel free to uncomment the following settings and supply the system admin information:
+#
+#bamboo_admin_username      = "<USERNAME>"
 #bamboo_admin_password      = "<PASSWORD>"
-bamboo_admin_display_name  = "<DISPLAY NAME>"
-bamboo_admin_email_address = "<EMAIL ADDRESS>"
+#bamboo_admin_display_name  = "<DISPLAY NAME>"
+#bamboo_admin_email_address = "<EMAIL ADDRESS>"
 
 # Helm chart version of Bamboo and Bamboo agent instances
 bamboo_helm_chart_version       = "1.0.0"
