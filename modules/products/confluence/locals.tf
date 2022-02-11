@@ -60,5 +60,13 @@ locals {
       enabled    = true
       ingressUrl = "https://${local.product_domain_name}/synchrony"
     }
-  }) : yamlencode({})
+    }) : yamlencode({
+    synchrony = {
+      enabled    = true
+      ingressUrl = "https://localhost/synchrony" # this is a dummy url that needs to be updated after the synchrony service is created
+      service = {
+        type = "LoadBalancer"
+      }
+    }
+  })
 }
