@@ -65,24 +65,28 @@ variable "domain" {
   }
 }
 
-
 variable "local_helm_charts_path" {
   description = "Path to a local directory with Helm charts to install"
+  default     = ""
   type        = string
   validation {
     condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_helm_charts_path))
     error_message = "Invalid local Helm chart path."
   }
-  default = ""
 }
 
 ################################################################################
 # Bamboo Settings
 ################################################################################
 
+variable "bamboo_db_major_engine_version" {
+  description = "The database major version to use."
+  type        = string
+}
+
 variable "bamboo_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
-  default     = 1000
+  default     = 100
   type        = number
 }
 
@@ -100,8 +104,8 @@ variable "bamboo_db_iops" {
 
 variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
-  type        = string
   default     = null
+  type        = string
 }
 
 variable "bamboo_license" {
@@ -133,8 +137,9 @@ variable "bamboo_admin_email_address" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  type        = string
   default     = "1.0.0"
+  type        = string
+
 }
 
 variable "bamboo_agent_helm_chart_version" {
@@ -194,3 +199,68 @@ variable "bamboo_install_local_chart" {
   type        = bool
   default     = false
 }
+
+################################################################################
+# Jira Settings
+################################################################################
+
+variable "jira_db_major_engine_version" {
+  description = "The database major version to use."
+  default     = "12"
+  type        = string
+}
+
+variable "jira_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 100
+  type        = number
+}
+
+variable "jira_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "jira_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "jira_helm_chart_version" {
+  description = "Version of Jira Helm chart"
+  type        = string
+  default     = "1.1.0"
+}
+
+variable "jira_cpu" {
+  description = "Number of CPUs for Jira instance"
+  type        = string
+  default     = "2"
+}
+
+variable "jira_mem" {
+  description = "Amount of memory for Jira instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "jira_min_heap" {
+  description = "Minimum heap size for Jira instance"
+  type        = string
+  default     = "384m"
+}
+
+variable "jira_max_heap" {
+  description = "Maximum heap size for Jira instance"
+  type        = string
+  default     = "768m"
+}
+
+variable "jira_reserved_code_cache" {
+  description = "Reserved code cache for Jira instance"
+  type        = string
+  default     = "512m"
+}
+

@@ -16,15 +16,16 @@ module "bamboo" {
   count      = local.install_bamboo ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name          = var.region
-  environment_name     = var.environment_name
-  namespace            = module.base-infrastructure.namespace
-  vpc                  = module.base-infrastructure.vpc
-  eks                  = module.base-infrastructure.eks
-  ingress              = module.base-infrastructure.ingress
-  db_allocated_storage = var.bamboo_db_allocated_storage
-  db_instance_class    = var.bamboo_db_instance_class
-  db_iops              = var.bamboo_db_iops
+  region_name             = var.region
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.bamboo_db_major_engine_version
+  db_allocated_storage    = var.bamboo_db_allocated_storage
+  db_instance_class       = var.bamboo_db_instance_class
+  db_iops                 = var.bamboo_db_iops
 
   license     = var.bamboo_license
   dataset_url = var.bamboo_dataset_url
@@ -54,4 +55,32 @@ module "bamboo" {
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bamboo_chart_path = local.local_bamboo_chart_path
   local_agent_chart_path  = local.local_agent_chart_path
+}
+
+module "jira" {
+  source     = "./modules/products/jira"
+  count      = local.install_jira ? 1 : 0
+  depends_on = [module.base-infrastructure]
+
+  region_name             = var.region
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.jira_db_major_engine_version
+  db_allocated_storage    = var.jira_db_allocated_storage
+  db_instance_class       = var.jira_db_instance_class
+  db_iops                 = var.jira_db_iops
+
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+
+  jira_configuration = {
+    "helm_version"        = var.jira_helm_chart_version
+    "cpu"                 = var.jira_cpu
+    "mem"                 = var.jira_mem
+    "min_heap"            = var.jira_min_heap
+    "max_heap"            = var.jira_max_heap
+    "reserved_code_cache" = var.jira_reserved_code_cache
+  }
 }

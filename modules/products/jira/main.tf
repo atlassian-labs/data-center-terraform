@@ -1,5 +1,5 @@
-# Create the infrastructure for Bamboo Data Center.
-resource "aws_route53_record" "bamboo" {
+# Create the infrastructure for Jira Data Center.
+resource "aws_route53_record" "jira" {
   count = local.use_domain ? 1 : 0
 
   zone_id = var.ingress[0].ingress.r53_zone

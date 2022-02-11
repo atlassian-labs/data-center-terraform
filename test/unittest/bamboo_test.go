@@ -2,10 +2,10 @@ package unittest
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
@@ -74,18 +74,19 @@ var BambooCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":                  VpcDefaultModuleVariable,
-	"pvc_claim_name":       "dummy_pvc_claimname",
-	"db_allocated_storage": 5,
-	"db_instance_class":    "dummy_db_instance_class",
-	"db_iops":              1000,
-	"license":              "dummy_license",
-	"admin_username":       "dummy_admin_username",
-	"admin_password":       "dummy_admin_password",
-	"admin_display_name":   "dummy_admin_display_name",
-	"admin_email_address":  "dummy_admin_email_address",
-	"ingress":              map[string]interface{}{},
-	"dataset_url":          nil,
+	"vpc":                     VpcDefaultModuleVariable,
+	"pvc_claim_name":          "dummy_pvc_claimname",
+	"db_major_engine_version": "13",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"license":                 "dummy_license",
+	"admin_username":          "dummy_admin_username",
+	"admin_password":          "dummy_admin_password",
+	"admin_display_name":      "dummy_admin_display_name",
+	"admin_email_address":     "dummy_admin_email_address",
+	"ingress":                 map[string]interface{}{},
+	"dataset_url":             nil,
 	"bamboo_configuration": map[string]interface{}{
 		"helm_version": "1.0.0",
 		"cpu":          "1",
