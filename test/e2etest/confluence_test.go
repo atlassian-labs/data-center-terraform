@@ -9,7 +9,7 @@ import (
 func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 
 	// Test the PAUSE status
-	assertConfluenceStatusEndpoint(t, testConfig, "FIRST_RUN")
+	assertConfluenceStatusEndpoint(t, testConfig, "RUNNING")
 }
 
 // TODO: Add MORE integration tests here if needed
