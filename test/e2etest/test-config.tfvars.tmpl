@@ -11,6 +11,8 @@ environment_name = "{{.environment_name}}"
 # Cloud provider region that this configuration will deploy to.
 region = "{{.region}}"
 
+products = [{{.products}}]
+
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Name           = "{{.environment_name}}"
@@ -21,7 +23,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for node group.
-instance_types = ["m5.xlarge"]
+instance_types = ["m5.2xlarge"]
 
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
@@ -34,11 +36,11 @@ domain = "deplops.com"
 # Documentation can be found via:
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
-db_instance_class    = "db.t3.micro"
-db_allocated_storage = 100
-db_iops              = 1000
+bamboo_db_instance_class    = "db.t3.micro"
+bamboo_db_allocated_storage = 100
+bamboo_db_iops              = 1000
 
-bamboo_license =  "{{.license}}"
+bamboo_license =  "{{.bamboo_license}}"
 
 # Bamboo system admin credentials
 bamboo_admin_username      = "admin"
@@ -55,5 +57,5 @@ number_of_bamboo_agents = 3
 # The provided default is the dataset used in the DCAPT framework.
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
 # for details
-dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip"
+bamboo_dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip"
 

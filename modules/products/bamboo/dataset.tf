@@ -23,7 +23,8 @@ resource "kubernetes_job" "import_dataset" {
             name       = "shared-home"
           }
           command = [
-            "/bin/sh", "-c", "apk update && apk add wget && wget ${var.dataset_url} -O /shared-home/${local.dataset_filename}"
+            "/bin/sh", "-c",
+            "mkdir /shared-home/${local.product_name} && apk update && apk add wget && wget ${var.dataset_url} -O /shared-home/${local.product_name}/${local.dataset_filename}"
           ]
         }
         restart_policy = "Never"
