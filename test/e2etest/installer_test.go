@@ -3,12 +3,15 @@ package e2etest
 import (
 	"os"
 	"os/exec"
+	"sort"
 	"testing"
 )
 
 func TestInstaller(t *testing.T) {
 
-	testConfig := createConfig(t)
+	// List of the products to test
+	productList := []string {"bamboo"}
+	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
@@ -17,7 +20,9 @@ func TestInstaller(t *testing.T) {
 	runInstallScript(testConfig.ConfigPath)
 
 	// Run bamboo health tests
-	bambooHealthTests(t, testConfig)
+	if contains(productList, "bamboo") {
+		bambooHealthTests(t, testConfig)
+	}
 }
 
 func runInstallScript(configPath string) {
@@ -52,4 +57,8 @@ func runUninstallScript(configPath string) {
 	_ = cmd.Wait()
 }
 
+func contains(s []string, item string) bool {
+	i := sort.SearchStrings(s, item)
+	return i < len(s) && s[i] == item
+}
 
