@@ -42,6 +42,6 @@ variable "major_engine_version" {
   type        = string
   validation {
     condition     = contains(["10", "11", "12", "13"], var.major_engine_version)
-    error_message = "Invalid major engine version."
+    error_message = "Invalid major engine version. Valid ranges are from 10 to 13 (integer)."
   }
 }

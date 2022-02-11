@@ -33,10 +33,9 @@ variable "ingress" {
 }
 
 variable "db_major_engine_version" {
-  description = "The Postgres major version to use."
+  description = "The database major version to use."
   type        = string
 }
-
 
 variable "db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."

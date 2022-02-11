@@ -80,13 +80,13 @@ variable "local_helm_charts_path" {
 ################################################################################
 
 variable "bamboo_db_major_engine_version" {
-  description = "The Postgres major version to use."
+  description = "The database major version to use."
   type        = string
 }
 
 variable "bamboo_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
-  default     = 1000
+  default     = 100
   type        = number
 }
 
@@ -200,20 +200,19 @@ variable "bamboo_install_local_chart" {
   default     = false
 }
 
-
 ################################################################################
 # Jira Settings
 ################################################################################
 
 variable "jira_db_major_engine_version" {
-  description = "The Postgres major version to use."
+  description = "The database major version to use."
+  default     = "12"
   type        = string
 }
 
-
 variable "jira_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
-  default     = 1000
+  default     = 100
   type        = number
 }
 
@@ -232,7 +231,7 @@ variable "jira_db_iops" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.0.0"
+  default     = "1.1.0"
 }
 
 variable "jira_cpu" {

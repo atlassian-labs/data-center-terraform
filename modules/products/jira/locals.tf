@@ -17,7 +17,8 @@ locals {
   # if the domain wasn't provided we will start Jira with LoadBalancer service without ingress configuration
   use_domain          = length(var.ingress) == 1
   product_domain_name = local.use_domain ? "${local.product_name}.${var.ingress[0].ingress.domain}" : null
-  # ingress settings for Bamboo service
+
+  # ingress settings for Jira service
   ingress_with_domain = yamlencode({
     ingress = {
       create = "true"
