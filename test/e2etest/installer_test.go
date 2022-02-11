@@ -10,7 +10,7 @@ import (
 func TestInstaller(t *testing.T) {
 
 	// List of the products to test
-	productList := []string {"bamboo"}
+	productList := []string{"bamboo", "jira"}
 	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
@@ -19,9 +19,14 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
-	// Run bamboo health tests
+	// Run Bamboo health tests
 	if contains(productList, "bamboo") {
 		bambooHealthTests(t, testConfig)
+	}
+
+	// Run Jira health tests
+	if contains(productList, "jira") {
+		jiraHealthTests(t, testConfig)
 	}
 }
 
@@ -61,4 +66,3 @@ func contains(s []string, item string) bool {
 	i := sort.SearchStrings(s, item)
 	return i < len(s) && s[i] == item
 }
-
