@@ -15,5 +15,5 @@ func assertJiraStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatu
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), expectedStatus)
-	println("assertStatusEndpoint ..... PASSED")
+	println("assertJiraStatusEndpoint ..... PASSED")
 }
