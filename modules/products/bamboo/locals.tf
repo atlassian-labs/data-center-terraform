@@ -93,5 +93,5 @@ locals {
     }
   }) : yamlencode({})
 
-  dataset_filename = "dataset_to_import.zip"
+  dataset_filename = "bamboo_dataset_to_import.zip"
 }

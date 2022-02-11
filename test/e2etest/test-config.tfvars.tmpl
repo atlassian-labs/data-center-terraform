@@ -26,7 +26,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for node group.
-instance_types = ["m5.xlarge"]
+instance_types = ["m5.2xlarge"]
 
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
@@ -47,7 +47,7 @@ bamboo_db_instance_class    = "db.t3.micro"
 bamboo_db_allocated_storage = 100
 bamboo_db_iops              = 1000
 
-bamboo_license =  "{{.license}}"
+bamboo_license =  "{{.bamboo_license}}"
 
 # Bamboo system admin credentials
 bamboo_admin_username      = "admin"
@@ -64,7 +64,7 @@ number_of_bamboo_agents = 3
 # The provided default is the dataset used in the DCAPT framework.
 # See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
 # for details
-dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip"
+bamboo_dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip"
 
 ################################################################################
 # Jira Settings

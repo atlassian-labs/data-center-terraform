@@ -12,8 +12,9 @@ module "base-infrastructure" {
 }
 
 module "bamboo" {
-  source = "./modules/products/bamboo"
-  count  = local.install_bamboo ? 1 : 0
+  source     = "./modules/products/bamboo"
+  count      = local.install_bamboo ? 1 : 0
+  depends_on = [module.base-infrastructure]
 
   region_name          = var.region
   environment_name     = var.environment_name

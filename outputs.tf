@@ -41,7 +41,7 @@ output "ingress" {
 output "bamboo_database" {
   description = "Bamboo Database information"
 
-  value = local.install_bamboo ? {
+  value = local.install_bamboo && length(module.bamboo) == 1 ? {
     rds_instance_id        = module.bamboo[0].rds_instance_id
     db_name                = module.bamboo[0].db_name
     kubernetes_secret_name = module.bamboo[0].kubernetes_rds_secret_name
@@ -50,9 +50,9 @@ output "bamboo_database" {
 }
 
 output "jira_database" {
-  description = "Jira database information"
+  description = "Jira Database information"
 
-  value = local.install_jira ? {
+  value = local.install_jira && length(module.jira) == 1 ? {
     rds_instance_id        = module.jira[0].rds_instance_id
     db_name                = module.jira[0].db_name
     kubernetes_secret_name = module.jira[0].kubernetes_rds_secret_name
@@ -64,7 +64,7 @@ output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
-    bamboo = local.install_bamboo ? module.bamboo[0].product_domain_name : null
-    jira   = local.install_jira ? module.jira[0].product_domain_name : null
+    bamboo = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
+    jira = local.install_jira && length(module.jira) == 1 ? module.jira[0].product_domain_name : null
   }
 }
