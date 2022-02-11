@@ -7,7 +7,7 @@ import (
 )
 
 func jiraHealthTests(t *testing.T, testConfig TestConfig) {
-	assertJiraStatusEndpoint(t, testConfig, "PAUSED")
+	assertJiraStatusEndpoint(t, testConfig, "RUNNING")
 }
 
 func assertJiraStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
