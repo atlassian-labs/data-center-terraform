@@ -59,3 +59,7 @@ test/e2etest/artifacts
 
 # built docs site
 docs/site
+
+
+# Terraform Outputs
+Output.json

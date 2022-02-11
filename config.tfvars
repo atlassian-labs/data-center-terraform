@@ -37,7 +37,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for EKS node group.
-instance_types   = ["m5.xlarge"]
+instance_types = ["m5.xlarge"]
 # Desired number of nodes that the node group should launch with initially.
 desired_capacity = 1
 
