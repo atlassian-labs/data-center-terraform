@@ -23,5 +23,5 @@ module "database" {
   instance_class       = var.db_instance_class
   iops                 = var.db_iops
   vpc                  = var.vpc
-  major_engine_version = local.rds_major_engine_version
+  major_engine_version = var.db_major_engine_version
 }
