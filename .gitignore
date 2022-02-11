@@ -62,4 +62,4 @@ docs/site
 
 
 # Terraform Outputs
-Output.json
+outputs.json
