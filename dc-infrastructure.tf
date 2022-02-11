@@ -61,8 +61,9 @@ module "bamboo" {
 }
 
 module "confluence" {
-  source = "./modules/products/confluence"
-  count  = local.install_confluence ? 1 : 0
+  source     = "./modules/products/confluence"
+  count      = local.install_confluence ? 1 : 0
+  depends_on = [module.base-infrastructure]
 
   region_name      = var.region
   environment_name = var.environment_name
