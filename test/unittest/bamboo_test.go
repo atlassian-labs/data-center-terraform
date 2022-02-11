@@ -2,9 +2,10 @@ package unittest
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
@@ -50,8 +51,11 @@ func TestBambooDatasetImport(t *testing.T) {
 	container := jobSpec.(map[string]interface{})["container"].([]interface{})[0]
 	commands := container.(map[string]interface{})["command"].([]interface{})
 
-	// we need to download the dataset
-	assert.Contains(t, commands, fmt.Sprintf("apk update && apk add wget && wget %s -O /shared-home/dataset_to_import.zip", DatasetUrl))
+	// verify the dataset
+	expectedCommand := fmt.Sprintf("mkdir /shared-home/bamboo && apk update && apk add wget && wget %s -O %s",
+		DatasetUrl,
+		"/shared-home/bamboo/bamboo_dataset_to_import.zip")
+	assert.Contains(t, commands, expectedCommand)
 }
 
 // Variables
