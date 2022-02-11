@@ -6,7 +6,7 @@ module "security_group" {
   version = "~> 4"
 
   name        = "${var.product}_rds_sg"
-  description = "Postgres security group"
+  description = "Database security group"
   vpc_id      = var.vpc.vpc_id
 
   # ingress

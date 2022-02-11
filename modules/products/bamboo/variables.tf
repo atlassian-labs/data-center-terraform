@@ -33,7 +33,7 @@ variable "ingress" {
 }
 
 variable "db_major_engine_version" {
-  description = "The Postgres major version to use."
+  description = "The Database major version to use."
   type        = string
 }
 
