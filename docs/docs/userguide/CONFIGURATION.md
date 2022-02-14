@@ -4,7 +4,7 @@ In order to provision the infrastructure and install an Atlassian Data Center pr
 
 The content of the configuration file is divided into two groups:
 
-1. [Mandatory configuration](#mandatory-configuration)
+1. [Common configuration](#common-configuration)
 2. [Product specific configuration](#product-specific-configuration)
 3. [Optional configuration](#optional-configuration)
 
@@ -38,7 +38,7 @@ desired_capacity = 2
 domain           = "mydomain.com"
 ```
 
-## Mandatory Configuration
+## Common Configuration
 
 ### Environment Name
 
