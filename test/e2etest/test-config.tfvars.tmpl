@@ -14,7 +14,7 @@ region = "{{.region}}"
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
-products = ["jira", "bamboo"]
+products = ["jira", "confluence", "bamboo"]
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
@@ -44,9 +44,9 @@ domain = "deplops.com"
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
 bamboo_db_major_engine_version = "13"
-bamboo_db_instance_class    = "db.t3.micro"
-bamboo_db_allocated_storage = 100
-bamboo_db_iops              = 1000
+bamboo_db_instance_class       = "db.t3.micro"
+bamboo_db_allocated_storage    = 100
+bamboo_db_iops                 = 1000
 
 bamboo_license =  "{{.bamboo_license}}"
 
@@ -89,6 +89,13 @@ jira_reserved_code_cache = "512m"
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
 jira_db_major_engine_version = "12"
-jira_db_instance_class    = "db.t3.micro"
-jira_db_allocated_storage = 100
-jira_db_iops              = 1000
+jira_db_instance_class       = "db.t3.micro"
+jira_db_allocated_storage    = 100
+jira_db_iops                 = 1000
+
+################################################################################
+# Confluence Settings
+################################################################################
+
+confluence_license                 = "{{.confluence_license}}"
+confluence_db_major_engine_version = 11

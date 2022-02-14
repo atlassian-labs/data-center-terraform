@@ -3,14 +3,13 @@ package e2etest
 import (
 	"os"
 	"os/exec"
-	"sort"
 	"testing"
 )
 
 func TestInstaller(t *testing.T) {
 
 	// List of the products to test
-	productList := []string{"bamboo", "jira"}
+	productList := []string {"bamboo", "jira", "confluence"}
 	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
@@ -27,6 +26,11 @@ func TestInstaller(t *testing.T) {
 	// Run Jira health tests
 	if contains(productList, "jira") {
 		jiraHealthTests(t, testConfig)
+	}
+
+	// Run Confluence health tests
+	if contains(productList, "confluence") {
+		confluenceHealthTests(t, testConfig)
 	}
 }
 
@@ -60,9 +64,4 @@ func runUninstallScript(configPath string) {
 
 	// wait `cmd` until it finishes
 	_ = cmd.Wait()
-}
-
-func contains(s []string, item string) bool {
-	i := sort.SearchStrings(s, item)
-	return i < len(s) && s[i] == item
 }
