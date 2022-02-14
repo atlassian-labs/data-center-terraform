@@ -177,8 +177,25 @@ region = "<REGION>"  # e.g. "ap-northeast-2"
 
 === "Jira"
 
-    !!! info "Jira specific configuration data"
-        Jira has no product specific configuration data.
+    ### Jira Helm chart version
+
+    `jira_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Jira instance.
+
+    ```terraform
+    jira_helm_chart_version = "1.1.0"
+    ```
+    
+    ### Jira instance resource configuration
+    
+    The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
+    
+    ```terraform
+    jira_cpu                 = "2"
+    jira_mem                 = "2Gi"
+    jira_min_heap            = "384m"
+    jira_max_heap            = "786m"
+    jira_reserved_code_cache = "512m"
+    ```
 
 ## Optional Configuration
 
