@@ -21,17 +21,20 @@ This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster.
 
 The diagram below provides a high level overview of what a typical deployment will look like for each DC product:
 
-=== "Confluence"
-    !!! info "Architectural overview for Confluence"
-
-    ![architecture](assets/images/confluence/Terraform.png "Deployment")
-
 === "Bamboo"
+
     !!! info "Architectural overview Bamboo"
 
     ![architecture](assets/images/bamboo/Terraform.png "Deployment")
 
+=== "Confluence"
+
+    !!! info "Architectural overview for Confluence"
+
+    ![architecture](assets/images/confluence/Terraform.png "Deployment")
+
 === "Jira"
+
     !!! info "Architectural overview for Jira"
 
     ![architecture](assets/images/jira/Terraform.png "Deployment")
@@ -47,9 +50,9 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 Atlassian Data Center products that can be provisioned with this tool:
 
-|  Bamboo DC                                                                                         |
-|----------------------------------------------------------------------------------------------------|
-| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}  |
+|  Bamboo DC                                                                                         | Confluence DC                                                                                          | Jira DC                                                                                                                  |
+|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}  | [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}      |  
 
 ## Feedback
 
