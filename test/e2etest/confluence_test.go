@@ -8,7 +8,7 @@ import (
 
 func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 
-	// Test the PAUSE status
+	// Test the RUNNING status
 	assertConfluenceStatusEndpoint(t, testConfig, "RUNNING")
 }
 
