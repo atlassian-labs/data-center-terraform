@@ -10,8 +10,8 @@ locals {
     "cpu" : var.bitbucket_configuration["cpu"]
     "mem" : var.bitbucket_configuration["mem"]
   }
-  #
-  #  rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
+
+  rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
   #
   #  # if the domain wasn't provided we will start bitbucket with LoadBalancer service without ingress configuration
   #  use_domain          = length(var.ingress) == 1

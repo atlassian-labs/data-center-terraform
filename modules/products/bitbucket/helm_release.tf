@@ -27,14 +27,13 @@ resource "helm_release" "bitbucket" {
           }
         }
       }
-      #      database = {
-      #        type   = "postgres72"
-      #        url    = module.database.rds_jdbc_connection
-      #        driver = "org.postgresql.Driver"
-      #        credentials = {
-      #          secretName = kubernetes_secret.rds_secret.metadata[0].name
-      #        }
-      #      }
+      database = {
+        url    = module.database.rds_jdbc_connection
+        driver = "org.postgresql.Driver"
+        credentials = {
+          secretName = kubernetes_secret.rds_secret.metadata[0].name
+        }
+      }
       #      volumes = {
       #        localHome = {
       #          persistentVolumeClaim = {
