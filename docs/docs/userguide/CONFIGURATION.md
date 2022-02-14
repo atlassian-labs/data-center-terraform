@@ -175,13 +175,10 @@ region = "<REGION>"  # e.g. "ap-northeast-2"
 
 === "Confluence"
 
-
 === "Jira"
 
     !!! info "Jira specific configuration data"
         Jira has no product specific configuration data.
-
-
 
 ## Optional Configuration
 
