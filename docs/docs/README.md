@@ -23,7 +23,7 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 === "Bamboo"
 
-    !!! info "Architectural overview Bamboo"
+    !!! info "Architectural overview for Bamboo"
 
     ![architecture](assets/images/bamboo/Terraform.png "Deployment")
 
