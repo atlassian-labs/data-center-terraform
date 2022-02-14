@@ -19,9 +19,23 @@ This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster.
 
 ## Deployment overview
 
-The diagram below provides a high level overview of what a typical deployment will look like:
+The diagram below provides a high level overview of what a typical deployment will look like for each DC product:
 
-![architecture](assets/images/Terraform.png "Deployment")
+=== "Confluence"
+    !!! info "Architectural overview for Confluence"
+
+    ![architecture](assets/images/confluence/Terraform.png "Deployment")
+
+=== "Bamboo"
+    !!! info "Architectural overview Bamboo"
+
+    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
+
+=== "Jira"
+    !!! info "Architectural overview for Jira"
+
+    ![architecture](assets/images/jira/Terraform.png "Deployment")
+
 
 ## Deploying a Data Center product
 
