@@ -25,12 +25,6 @@ products = ["<LIST_OF_PRODUCTS>"]
 #
 #domain = "<example.com>"
 
-# (Optional) URL for dataset to import
-# The provided default is the dataset used in the DCAPT framework.
-# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
-#
-#dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
-
 # (optional) Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
   Terraform = "true"
@@ -149,3 +143,9 @@ bamboo_db_major_engine_version = "13"
 bamboo_db_instance_class       = "db.t3.micro"
 bamboo_db_allocated_storage    = 100
 bamboo_db_iops                 = 1000
+
+# (Optional) URL for dataset to import
+# The provided default is the dataset used in the DCAPT framework.
+# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo
+#
+#dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
