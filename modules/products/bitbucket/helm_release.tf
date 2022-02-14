@@ -1,4 +1,4 @@
-# Install helm chart for Jira Data Center.
+# Install Helm chart for Bitbucket Data Center.
 
 resource "helm_release" "bitbucket" {
   name       = local.product_name
@@ -16,9 +16,8 @@ resource "helm_release" "bitbucket" {
         }
         resources = {
           jvm = {
-            maxHeap           = local.bitbucket_software_resources.maxHeap
-            minHeap           = local.bitbucket_software_resources.minHeap
-            reservedCodeCache = local.bitbucket_software_resources.reservedCodeCache
+            maxHeap = local.bitbucket_software_resources.maxHeap
+            minHeap = local.bitbucket_software_resources.minHeap
           }
           container = {
             requests = {
@@ -28,31 +27,31 @@ resource "helm_release" "bitbucket" {
           }
         }
       }
-      database = {
-        type   = "postgres72"
-        url    = module.database.rds_jdbc_connection
-        driver = "org.postgresql.Driver"
-        credentials = {
-          secretName = kubernetes_secret.rds_secret.metadata[0].name
-        }
-      }
-      volumes = {
-        localHome = {
-          persistentVolumeClaim = {
-            create = true
-          }
-        }
-        sharedHome = {
-          customVolume = {
-            persistentVolumeClaim = {
-              claimName = var.pvc_claim_name
-            }
-          }
-          subPath = local.product_name
-        }
-      }
+      #      database = {
+      #        type   = "postgres72"
+      #        url    = module.database.rds_jdbc_connection
+      #        driver = "org.postgresql.Driver"
+      #        credentials = {
+      #          secretName = kubernetes_secret.rds_secret.metadata[0].name
+      #        }
+      #      }
+      #      volumes = {
+      #        localHome = {
+      #          persistentVolumeClaim = {
+      #            create = true
+      #          }
+      #        }
+      #        sharedHome = {
+      #          customVolume = {
+      #            persistentVolumeClaim = {
+      #              claimName = var.pvc_claim_name
+      #            }
+      #          }
+      #          subPath = local.product_name
+      #        }
+      #      }
     }),
-    local.ingress_settings,
+    #    local.ingress_settings,
   ]
 }
 
