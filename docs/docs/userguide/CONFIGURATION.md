@@ -65,6 +65,14 @@ region = "<REGION>"  # e.g. "ap-northeast-2"
 
     The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
+### Products
+
+The `products` list can be configured with a one or many products. This will result in these product(s) being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
+
+```terraform
+products = ["jira", "confluence"]
+```
+
 ## Product specific configuration
 
 === "Bamboo"
