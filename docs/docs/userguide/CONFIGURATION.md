@@ -73,6 +73,10 @@ The `products` list can be configured with a one or many products. This will res
 products = ["jira", "confluence"]
 ```
 
+!!! info "Product specific infrastructure"
+
+    All of the appropriate infrastructure for the product selection will be stood up by Terraform.
+
 ## Product specific configuration
 
 === "Bamboo"
