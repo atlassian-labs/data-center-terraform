@@ -84,3 +84,32 @@ module "jira" {
     "reserved_code_cache" = var.jira_reserved_code_cache
   }
 }
+
+
+module "bitbucket" {
+  source     = "./modules/products/bitbucket"
+  count      = local.install_bitbucket ? 1 : 0
+  depends_on = [module.base-infrastructure]
+
+  region_name             = var.region
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.bitbucket_db_major_engine_version
+  db_allocated_storage    = var.bitbucket_db_allocated_storage
+  db_instance_class       = var.bitbucket_db_instance_class
+  db_iops                 = var.bitbucket_db_iops
+
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+
+  bitbucket_configuration = {
+    "helm_version"        = var.bitbucket_helm_chart_version
+    "cpu"                 = var.bitbucket_cpu
+    "mem"                 = var.bitbucket_mem
+    "min_heap"            = var.bitbucket_min_heap
+    "max_heap"            = var.bitbucket_max_heap
+    "reserved_code_cache" = var.bitbucket_reserved_code_cache
+  }
+}
