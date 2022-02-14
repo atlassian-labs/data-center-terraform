@@ -24,7 +24,6 @@ const (
 	credential        = "admin:Atlassian21!" // Admin credential 'username:password'
 	product           = "bamboo"
 	domain            = "deplops.com"
-	jiraLicense       = ""
 	confluenceLicense = ""
 	bitbucketLicense  = ""
 	bambooLicense     = ""
@@ -35,7 +34,6 @@ type TestConfig struct {
 	EnvironmentName   string
 	ConfigPath        string
 	ResourceOwner     string
-	JiraLicense       string
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
@@ -92,14 +90,13 @@ func getLicense(productList []string, product string) string {
 	license := ""
 	if contains(productList, product) {
 		switch product {
-		case "jira":
-			license = jiraLicense
 		case "confluence":
 			license = confluenceLicense
 		case "bitbucket":
 			license = bitbucketLicense
 		case "bamboo":
-			license = bambooLicense		}
+			license = bambooLicense
+		}
 		if len(license) == 0 {
 			license = os.Getenv(fmt.Sprintf("TF_VAR_%s_license", product))
 		}
@@ -113,7 +110,6 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
 		ResourceOwner:     resourceOwner,
-		JiraLicense:       getLicense(productList, "jira"),
 		ConfluenceLicense: getLicense(productList, "confluence"),
 		BitbucketLicense:  getLicense(productList, "bitbucket"),
 		BambooLicense:     getLicense(productList, "bamboo"),
@@ -131,7 +127,6 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	vars["environment_name"] = testConfig.EnvironmentName
 	vars["region"] = testConfig.AwsRegion
 	vars["products"] = products
-	vars["jira_license"] = testConfig.JiraLicense
 	vars["confluence_license"] = testConfig.ConfluenceLicense
 	vars["bitbucket_license"] = testConfig.BitbucketLicense
 	vars["bamboo_license"] = testConfig.BambooLicense

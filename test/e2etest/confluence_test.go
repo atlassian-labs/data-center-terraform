@@ -12,7 +12,6 @@ func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 	assertConfluenceStatusEndpoint(t, testConfig, "RUNNING")
 }
 
-// TODO: Add MORE integration tests here if needed
 func assertConfluenceStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
