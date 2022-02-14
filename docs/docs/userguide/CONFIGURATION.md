@@ -67,7 +67,7 @@ region = "<REGION>"  # e.g. "ap-northeast-2"
 
 ### Products
 
-The `products` list can be configured with a one or many products. This will result in these product(s) being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
+The `products` list can be configured with one or many products. This will result in these products being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
 
 ```terraform
 products = ["jira", "confluence"]
