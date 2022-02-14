@@ -1,7 +1,7 @@
 # To customise the infrastructure you must provide the value for each of these parameters in config.tfvar
 
 ################################################################################
-# Common Settings
+# Common Variables
 ################################################################################
 
 variable "region" {
@@ -76,37 +76,148 @@ variable "local_helm_charts_path" {
 }
 
 ################################################################################
-# Bamboo Settings
+# Jira Settings
 ################################################################################
 
-variable "bamboo_db_major_engine_version" {
-  description = "The database major version to use."
+variable "jira_helm_chart_version" {
+  description = "Version of Jira Helm chart"
+  type        = string
+  default     = "1.1.0"
+}
+
+variable "jira_cpu" {
+  description = "Number of CPUs for Jira instance"
+  type        = string
+  default     = "2"
+}
+
+variable "jira_mem" {
+  description = "Amount of memory for Jira instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "jira_min_heap" {
+  description = "Minimum heap size for Jira instance"
+  type        = string
+  default     = "384m"
+}
+
+variable "jira_max_heap" {
+  description = "Maximum heap size for Jira instance"
+  type        = string
+  default     = "768m"
+}
+
+variable "jira_reserved_code_cache" {
+  description = "Reserved code cache for Jira instance"
+  type        = string
+  default     = "512m"
+}
+
+variable "jira_db_major_engine_version" {
+  description = "The database major version to use for Jira."
+  default     = "12"
   type        = string
 }
 
-variable "bamboo_db_allocated_storage" {
+variable "jira_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
   default     = 100
   type        = number
 }
 
-variable "bamboo_db_instance_class" {
+variable "jira_db_instance_class" {
   description = "Instance class of the RDS instance."
   default     = "db.t3.micro"
   type        = string
 }
 
-variable "bamboo_db_iops" {
+variable "jira_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
 }
 
-variable "bamboo_dataset_url" {
-  description = "URL of the dataset to restore in the Bamboo instance"
+################################################################################
+# Confluence variables
+################################################################################
+
+variable "confluence_license" {
+  description = "Confluence license."
+  type        = string
+  sensitive   = true
   default     = null
+}
+
+variable "confluence_helm_chart_version" {
+  description = "Version of confluence Helm chart"
+  type        = string
+  default     = "1.1.0"
+}
+
+variable "confluence_install_local_chart" {
+  description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
+  default     = false
+  type        = bool
+}
+
+variable "confluence_cpu" {
+  description = "Number of CPUs for confluence instance"
+  type        = string
+  default     = "1"
+}
+
+variable "confluence_mem" {
+  description = "Amount of memory for confluence instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "confluence_min_heap" {
+  description = "Minimum heap size for confluence instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "confluence_max_heap" {
+  description = "Maximum heap size for confluence instance"
+  type        = string
+  default     = "512m"
+}
+
+variable "confluence_db_major_engine_version" {
+  description = "The database major version to use for Confluence."
   type        = string
 }
+
+variable "confluence_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 1000
+  type        = number
+}
+
+variable "confluence_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "confluence_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "confluence_enable_synchrony" {
+  description = "If true, Collaborative editing service will be enabled."
+  type        = bool
+  default     = true
+}
+
+################################################################################
+# Bamboo Variables
+################################################################################
 
 variable "bamboo_license" {
   description = "Bamboo license."
@@ -135,11 +246,20 @@ variable "bamboo_admin_email_address" {
   type        = string
 }
 
+variable "number_of_bamboo_agents" {
+  description = "Number of Bamboo remote agents."
+  default     = 5
+  type        = number
+  validation {
+    condition     = var.number_of_bamboo_agents >= 0
+    error_message = "Number of agents must be greater than or equal to 0."
+  }
+}
+
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
   default     = "1.0.0"
   type        = string
-
 }
 
 variable "bamboo_agent_helm_chart_version" {
@@ -184,83 +304,37 @@ variable "bamboo_agent_mem" {
   default     = "256m"
 }
 
-variable "number_of_bamboo_agents" {
-  description = "Number of Bamboo remote agents."
-  default     = 5
-  type        = number
-  validation {
-    condition     = var.number_of_bamboo_agents >= 0
-    error_message = "Number of agents must be greater than or equal to 0."
-  }
-}
-
 variable "bamboo_install_local_chart" {
   description = "If true installs Bamboo and Agents using local Helm charts located in local_helm_charts_path"
   type        = bool
   default     = false
 }
 
-################################################################################
-# Jira Settings
-################################################################################
-
-variable "jira_db_major_engine_version" {
-  description = "The database major version to use."
-  default     = "12"
+variable "bamboo_db_major_engine_version" {
+  description = "The database major version to use for Bamboo."
   type        = string
 }
 
-variable "jira_db_allocated_storage" {
+variable "bamboo_db_allocated_storage" {
   description = "Allocated storage for database instance in GiB."
   default     = 100
   type        = number
 }
 
-variable "jira_db_instance_class" {
+variable "bamboo_db_instance_class" {
   description = "Instance class of the RDS instance."
   default     = "db.t3.micro"
   type        = string
 }
 
-variable "jira_db_iops" {
+variable "bamboo_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
 }
 
-variable "jira_helm_chart_version" {
-  description = "Version of Jira Helm chart"
+variable "bamboo_dataset_url" {
+  description = "URL of the dataset to restore in the Bamboo instance"
+  default     = null
   type        = string
-  default     = "1.1.0"
 }
-
-variable "jira_cpu" {
-  description = "Number of CPUs for Jira instance"
-  type        = string
-  default     = "2"
-}
-
-variable "jira_mem" {
-  description = "Amount of memory for Jira instance"
-  type        = string
-  default     = "2Gi"
-}
-
-variable "jira_min_heap" {
-  description = "Minimum heap size for Jira instance"
-  type        = string
-  default     = "384m"
-}
-
-variable "jira_max_heap" {
-  description = "Maximum heap size for Jira instance"
-  type        = string
-  default     = "768m"
-}
-
-variable "jira_reserved_code_cache" {
-  description = "Reserved code cache for Jira instance"
-  type        = string
-  default     = "512m"
-}
-
