@@ -32,8 +32,8 @@ Details of the desired infrastructure to be provisioned can be defined in `confi
     You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, renaming the copy and using `config.tfvars` as a template to define your own infrastructure configuration.
 
 ??? tip "How to install more than one DC product?"
-    More than one DC products can be provisioned to the same cluster. See the [Configuration guide](./CONFIGURATION.md#products) for more details.
-    You can also install DC products to an existing environment by adding the product in the environment's config file and re-run the install command.
+    More than one DC products can be provisioned to the same cluster. See the [Configuration guide](CONFIGURATION.md#products) for more details.
+    You can also install DC products to an existing environment by adding the [product](CONFIGURATION.md) in the environment's config file and re-run the [install](INSTALLATION.md) command.
 
 ??? Warning "Use the same configuration file for uninstallation and cleanup"  
     If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
