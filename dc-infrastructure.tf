@@ -147,4 +147,11 @@ module "bitbucket" {
     max_heap     = var.bitbucket_max_heap
     license      = var.bitbucket_license
   }
+
+  admin_configuration = {
+    admin_username      = var.bitbucket_admin_username
+    admin_password      = var.bitbucket_admin_password
+    admin_display_name  = var.bitbucket_admin_display_name
+    admin_email_address = var.bitbucket_admin_email_address
+  }
 }

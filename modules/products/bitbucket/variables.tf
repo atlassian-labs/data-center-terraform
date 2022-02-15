@@ -69,3 +69,13 @@ variable "pvc_claim_name" {
     error_message = "Invalid claim name."
   }
 }
+
+variable "admin_configuration" {
+  description = "Bitbucket admin configuration"
+  type        = map(any)
+  validation {
+    condition = (length(var.admin_configuration) == 4 &&
+    alltrue([for o in keys(var.admin_configuration) : contains(["admin_username", "admin_password", "admin_display_name", "admin_email_address"], o)]))
+    error_message = "Bitbucket administrator configuration is not valid."
+  }
+}

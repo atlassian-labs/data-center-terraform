@@ -226,6 +226,27 @@ variable "bitbucket_license" {
   default     = null
 }
 
+variable "bitbucket_admin_username" {
+  description = "Bitbucket system administrator username."
+  type        = string
+}
+
+variable "bitbucket_admin_password" {
+  description = "Bitbucket system administrator password."
+  type        = string
+  sensitive   = true
+}
+
+variable "bitbucket_admin_display_name" {
+  description = "Bitbucket system administrator display name."
+  type        = string
+}
+
+variable "bitbucket_admin_email_address" {
+  description = "Bitbucket system administrator email address."
+  type        = string
+}
+
 variable "bitbucket_db_major_engine_version" {
   description = "The database major version to use."
   default     = "13"

@@ -105,6 +105,18 @@ bitbucket_helm_chart_version = "1.2.0"
 #
 #bitbucket_license = "<LICENSE KEY>"
 
+# Bitbucket system admin credentials
+# To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
+#
+# To avoid storing password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`
+# (i.e. `TF_VAR_bitbucket_admin_password`) and keep `bamboo_admin_password` commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment `bamboo_admin_password` and supply system admin password here
+#
+#bitbucket_admin_username      = "<USERNAME>"
+#bitbucket_admin_password      = "<PASSWORD>"
+#bitbucket_admin_display_name  = "<DISPLAY NAME>"
+#bitbucket_admin_email_address = "<EMAIL ADDRESS>"
+
 # Bitbucket instance resource configuration
 bitbucket_cpu      = "1"
 bitbucket_mem      = "1Gi"
@@ -136,12 +148,14 @@ bamboo_agent_helm_chart_version = "1.0.0"
 #bamboo_license = "<LICENSE KEY>"
 
 # Bamboo system admin credentials
+# To pre-seed Bamboo with the system admin information, uncomment the following settings and supply the system admin information:
+#
 # WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use credentials
 # existing in the dataset to set this section. Otherwise any other value for the `bamboo_admin_*` properties below are ignored.
-# To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
-# If storing password as plain-text is not a concern for this environment.
-
-# To pre-seed the Bamboo with the system admin information, feel free to uncomment the following settings and supply the system admin information:
+#
+# To avoid storing password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`
+# (i.e. `TF_VAR_bamboo_admin_password`) and keep `bamboo_admin_password` commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment `bamboo_admin_password` and supply system admin password here
 #
 #bamboo_admin_username      = "<USERNAME>"
 #bamboo_admin_password      = "<PASSWORD>"

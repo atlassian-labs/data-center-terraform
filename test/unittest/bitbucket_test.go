@@ -40,10 +40,12 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
-	//"admin_username":          "dummy_admin_username",
-	//"admin_password":          "dummy_admin_password",
-	//"admin_display_name":      "dummy_admin_display_name",
-	//"admin_email_address":     "dummy_admin_email_address",
+	"admin_configuration": map[string]interface{}{
+		"admin_username":      "dummy_admin_username",
+		"admin_password":      "dummy_admin_password",
+		"admin_display_name":  "dummy_admin_display_name",
+		"admin_email_address": "dummy_admin_email_address",
+	},
 	"ingress": map[string]interface{}{},
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",

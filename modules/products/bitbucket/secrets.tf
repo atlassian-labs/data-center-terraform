@@ -26,3 +26,20 @@ resource "kubernetes_secret" "license_secret" {
     license-key = var.bitbucket_configuration["license"]
   }
 }
+
+################################################################################
+# Kubernetes secret to store system admin credentials
+################################################################################
+resource "kubernetes_secret" "admin_secret" {
+  metadata {
+    name      = "${local.product_name}-admin"
+    namespace = var.namespace
+  }
+
+  data = {
+    username     = var.admin_configuration["admin_username"]
+    password     = var.admin_configuration["admin_password"]
+    displayName  = var.admin_configuration["admin_display_name"]
+    emailAddress = var.admin_configuration["admin_email_address"]
+  }
+}

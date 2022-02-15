@@ -26,6 +26,9 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
+        sysadminCredentials = {
+          secretName = kubernetes_secret.admin_secret.metadata[0].name
+        }
       }
       database = {
         url    = module.database.rds_jdbc_connection
