@@ -4,9 +4,8 @@ In order to provision the infrastructure and install an Atlassian Data Center pr
 
 The content of the configuration file is divided into two groups:
 
-1. [Mandatory configuration](#mandatory-configuration)
-2. [Optional configuration](#optional-configuration)
-
+1. [Common configuration](#common-configuration)
+2. [Product specific configuration](#product-specific-configuration)
 
 !!! info "Configuration file format."
     The configuration file is an ASCII text file with the `.tfvars` extension.
@@ -37,7 +36,9 @@ desired_capacity = 2
 domain           = "mydomain.com"
 ```
 
-## Mandatory Configuration
+## Common Configuration
+
+Environmental properties common to all deployments.
 
 ### Environment Name
 
@@ -64,106 +65,21 @@ region = "<REGION>"  # e.g. "ap-northeast-2"
 
     The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
+### Products
 
-### Bamboo License
-
-`bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.
-
-```terraform
-bamboo_license = "<LICENSE KEY>"
-```
-
-!!!warning "Sensitive data"
-
-    `bamboo_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
-
-    Please refer to [Sensitive Data](#sensitive-data) section.
-
-
-### Bamboo System Admin Credentials
-Four values are required to configure Bamboo system admin credentials.
+The `products` list can be configured with one or many products. This will result in these products being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
 
 ```terraform
-bamboo_admin_username = "<USERNAME>"
-bamboo_admin_password = "<PASSWORD>"
-bamboo_admin_display_name = "<DISPLAY NAME>"
-bamboo_admin_email_address = "<EMAIL ADDRESS>"
+products = ["jira", "confluence"]
 ```
 
-!!!warning "Sensitive data"
+!!! info "Product specific infrastructure"
 
-    `bamboo_admin_password` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended.
+    All of the appropriate infrastructure for the product selection will be stood up by Terraform.
 
-    Please refer to [Sensitive Data](#sensitive-data) section.
+### Domain
 
-!!!info "Restoring from existing dataset"
-    If the [`dataset_url` variable](#restoring-from-backup) is provided, the _Bamboo System Admin Credentials_ properties are ignored.
-    You will need to use user credentials from the dataset to log into the instance.
-
-
-## Optional Configuration
-
-### Restoring from Backup
-To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
-you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
-
-```terraform
-dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/dcapt-bamboo-no-agents.zip"
-```
-
-This dataset is downloaded to the shared home and then imported by the Bamboo instance. To log in to the instance,
-you will need to use any credentials from the dataset. 
-
-!!!info "Provisioning time"
-    Restoring from the dataset will increase the time it takes to create the environment.
-
-### Resource Tags
-
-`resource_tags` are custom metadata for all resources in the environment. You can provide multiple tags as a list. 
-
-Tag names must be unique.
-
-```terraform
-resource_tags = {
-  <tag-name-0> = "<tag-value>",
-  <tag-name-1> = "<tag-value>",
-  ...
-  <tag-name-n> = "<tag-value>",
-}
-```
-!!! warning "Using Terraform CLI to apply tags is not recommended and may lead to missing tags in some resources."
-    To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
-    
-### Cluster Instance Type
-
-`instance_types` provides the instance types for the Kubernetes cluster node group.
-
-```terraform
-instance_types = ["instance-type"]  # e.g. ["m5.2xlarge"]
-```
-
-If an `instance_types` value is not defined in the configuration file, the default value of `m5.4xlarge` is used.
-
-The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
-
-!!! warning "You cannot change this value after the infrastructure is provisioned."
-
-### Cluster Size
-
-`desired_capacity` provides the desired number of nodes that the node group should launch with initially.
-
-* The default value for the number of nodes in Kubernetes node groups is `2`.
-* Minimum is `1` and maximum is `10`.
-
-```terraform
-desired_capacity = <NUMBER OF NODES>  # between 1 and 10
-```
-
-!!! warning "You cannot change this value after the infrastructure is provisioned."
-
-### Domain Name
-
-We recommend using a domain name to access the application via HTTPS. You will be required to secure a domain name and supply the configuration to the config file.
+We recommend using a domain name to access the application via `HTTPS`. You will be required to secure a domain name and supply the configuration to the config file.
 
 When the domain is provided, Terraform will create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
@@ -174,100 +90,361 @@ domain="<DOMAIN NAME>" # e.g. "mydomain.com"
 A fully qualified domain name uses the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
 
 !!! warning "Removing domain from deployment"
+
     Removing the domain name to revert to an insecure connection is not possible after the environment has been deployed (see below).
 
 !!! tip "Ingress controller"
-    If a domain name is defined, Terraform will create a [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) in the EKS cluster that will provide access to the application via the domain name.
     
+    If a domain name is defined, Terraform will create a [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) in the EKS cluster that will provide access to the application via the domain name.
+
     Terraform will also create an [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) to provide secure connections over HTTPS.
 
-#### Provisioning without a domain name
+!!! info "Provision the infrastructure without a domain"
 
-You can provision the infrastructure without a domain name by commenting out the `domain` variable in the `.tfvars` file.
+    When commented out the product will be exposed via an unsecured (`HTTP` only) DNS endpoint automatically provisioned as part of the AWS ELB load balancer, for example: `http://<load-balancer-id>.<region>.elb.amazonaws.com`. This DNS Name will be printed out as part of the outputs after the infrastructure has been provisioned.
 
-In that case, the application will run unsecured on an elastic load balancer domain: `http://<load-balancer-id>.<region>.elb.amazonaws.com`.
+### Resource tags
 
-The final URL is printed out as part of the outputs after the infrastructure has been provisioned.
+`resource_tags` are custom metadata for all resources in the environment. You can provide multiple tags as a list.
 
-### Database Instance Class
+!!! info "Tag propagation"
 
-`db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
+    Tag names must be unique, and tags will be propogated to all provisioned resources.
 
 ```terraform
-db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+resource_tags = {
+  <tag-name-0> = "<tag-value>",
+  <tag-name-1> = "<tag-value>",
+  ...
+  <tag-name-n> = "<tag-value>",
+}
 ```
 
-### Database Allocated Storage
+!!! warning "Using Terraform CLI to apply tags is not recommended and may lead to missing tags in some resources."
 
-`db_allocated_storage` sets the allocated storage for the database instance in GiB.
-  
+    To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
+
+### EKS instance type
+
+`instance_types` defines the instance type for the EKS cluster node group.
+
 ```terraform
-db_allocated_storage = 100 
+instance_types = ["m5.2xlarge"]
 ```
 
-!!! info "The allowed value range of allocated storage may vary based on instance class"
+The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
+
+!!! warning "Instance type selection"
+
+    The instance type cannot be changed once the infrastructure has been provisioned.
+
+### EKS node count
+
+`desired_capacity` provides the desired number of nodes that the EKS node group should launch with initially.
+
+* The default value for the number of nodes in Kubernetes node groups is `1`.
+* Minimum is `1` and maximum is `10`.
+
+```terraform
+desired_capacity = <NUMBER OF NODES>  # between 1 and 10
+```
+
+!!! warning "You cannot change this value after the infrastructure is provisioned."
+
+
+## Product specific configuration
+
+=== "Bamboo"
+
+    ### Bamboo Helm chart version
+
+    `bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo instance.
+
+    ```terraform
+    bamboo_helm_chart_version = "1.0.0"
+    ```
+    
+    ### Bamboo Agent Helm chart version
+    
+    `bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
+    
+    ```terraform
+    bamboo_agent_helm_chart_version = "1.0.0"
+    ```
+
+    ### Bamboo License
+
+    `bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.
+
+    ```terraform
+    bamboo_license = "<LICENSE KEY>"
+    ```
+
+    !!!warning "Sensitive data"
+
+        `bamboo_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
+
+        Please refer to [Sensitive Data](#sensitive-data) section.
+
+    ### Bamboo System Admin Credentials
+
+    Four values are required to configure Bamboo system admin credentials.
+    
+    ```terraform
+    bamboo_admin_username = "<USERNAME>"
+    bamboo_admin_password = "<PASSWORD>"
+    bamboo_admin_display_name = "<DISPLAY NAME>"
+    bamboo_admin_email_address = "<EMAIL ADDRESS>"
+    ```
+
+    !!!warning "Sensitive data"
+    
+        `bamboo_admin_password` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended.
+    
+        Please refer to [Sensitive Data](#sensitive-data) section.
+
+    !!!info "Restoring from existing dataset"
+
+        If the [`dataset_url` variable](#restoring-from-backup) is provided (see [Restoring from Backup](#restoring-from-backup) below), the _Bamboo System Admin Credentials_ properties are ignored.
+
+        You will need to use user credentials from the dataset to log into the instance.
+    
+    ### Bamboo instance resource configuration
+    
+    The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Bamboo instance. (Used default values as example.)
+    
+    ```terraform
+    bamboo_cpu = "1"
+    bamboo_mem = "1Gi"
+    bamboo_min_heap = "256m"
+    bamboo_max_heap = "512m"
+    ```
+    
+    ### Bamboo Agent instance resource configuration
+    
+    The following variables set number of CPU and amount of memory of Bamboo Agent instances. (Used default values as example.)
+    
+    ```terraform
+    bamboo_agent_cpu = "0.25"
+    bamboo_agent_mem = "256m"
+    ```
+    
+    ### Number of Bamboo agents
+    
+    `number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.
+    
+    ```terraform
+    number_of_bamboo_agents = 5
+    ```
+
+    !!! info "The number of agents is limited to the number of allowed agents in your license."
+        
+        Any agents beyond the allowed number won't be able to join the cluster.
+    
+    !!! warning "A valid license is required to install bamboo agents"
+        
+        Bamboo needs a valid license to install remote agents. Disable agents if you don't provide a license at installation time.
+
+    ### Database engine version
+
+    `bamboo_db_major_engine_version` sets the PostgeSQL engine version that will be used.
+
+    ```terraform
+    bamboo_db_major_engine_version = "13" 
+    ```
+
+    !!! info "Supported DB versions"
+
+        Be sure to use a [DB engine version that is supported by Bamboo](https://confluence.atlassian.com/bamboo/supported-platforms-289276764.html#Supportedplatforms-Databases){.external} 
+
+    ### Database Instance Class
+
+    `bamboo_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
+    
+    ```terraform
+    bamboo_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+    ```
+    
+    ### Database Allocated Storage
+    
+    `bamboo_db_allocated_storage` sets the allocated storage for the database instance in GiB.
+    
+    ```terraform
+    bamboo_db_allocated_storage = 100 
+    ```
+    
+    !!! info "The allowed value range of allocated storage may vary based on instance class"
+    You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+    
+    ### Database IOPS
+    
+    `bamboo_db_iops` sets the requested number of I/O operations per second that the DB instance can support.
+    
+    ```terraform
+    bamboo_db_iops = 1000
+    ```
+    
+    !!! info "The allowed value range of IOPS may vary based on instance class"
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
-### Database IOPS
+    ### Restoring from Backup
 
-`db_iops` sets the requested number of I/O operations per second that the DB instance can support.
+    To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
+    you can set the `dataset_url` variable to a publicly accessible URL where the dataset can be downloaded.
+    
+    ```terraform
+    dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/dcapt-bamboo-no-agents.zip"
+    ```
+    
+    This dataset is downloaded to the shared home and then imported by the Bamboo instance. To log in to the instance,
+    you will need to use any credentials from the dataset.
+    
+    !!!warning "Provisioning time"
+        
+        Restoring from the dataset will increase the time it takes to create the environment.
 
-```terraform
-db_iops = 1000
-```
 
-!!! info "The allowed value range of IOPS may vary based on instance class"
+=== "Confluence"
+
+    ### Conluence Helm chart version
+
+    `confluence_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Confluence instance.
+
+    ```terraform
+    confluence_helm_chart_version = "1.1.0"
+    ```
+
+    ### Confluence License
+
+    `confluence_license` takes the license key of Confluence product. Make sure that there is no new lines or spaces in license key.
+
+    ```terraform
+    confluence_license = "<LICENSE KEY>"
+    ```
+
+    !!!warning "Sensitive data"
+
+        `confluence_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
+
+        Please refer to [Sensitive Data](#sensitive-data) section.
+    
+    ### Confluence instance resource configuration
+    
+    The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
+    
+    ```terraform
+    confluence_cpu                 = "2"
+    confluence_mem                 = "1Gi"
+    confluence_min_heap            = "256m"
+    confluence_max_heap            = "512m"
+    ```
+
+    ### Database engine version
+
+    `confluence_db_major_engine_version` sets the PostgeSQL engine version that will be used.
+
+    ```terraform
+    confluence_db_major_engine_version = "11" 
+    ```
+
+    !!! info "Supported DB versions"
+
+        Be sure to use a [DB engine version that is supported by Confluence](https://confluence.atlassian.com/doc/supported-platforms-207488198.html#SupportedPlatforms-Databases){.external} 
+
+    ### Database Instance Class
+
+    `confluence_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
+    
+    ```terraform
+    confluence_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+    ```
+    
+    ### Database Allocated Storage
+    
+    `confluence_db_allocated_storage` sets the allocated storage for the database instance in GiB.
+    
+    ```terraform
+    confluence_db_allocated_storage = 100 
+    ```
+    
+    !!! info "The allowed value range of allocated storage may vary based on instance class"
+    You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+    
+    ### Database IOPS
+    
+    `confluence_db_iops` sets the requested number of I/O operations per second that the DB instance can support.
+    
+    ```terraform
+    confluence_db_iops = 1000
+    ```
+    
+    !!! info "The allowed value range of IOPS may vary based on instance class"
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
-### Bamboo Helm chart version
+=== "Jira"
 
-`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo instance. 
+    ### Jira Helm chart version
 
-```terraform
-bamboo_helm_chart_version = "1.0.0"
-```
+    `jira_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Jira instance.
 
-### Bamboo Agent Helm chart version
+    ```terraform
+    jira_helm_chart_version = "1.1.0"
+    ```
+    
+    ### Jira instance resource configuration
+    
+    The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
+    
+    ```terraform
+    jira_cpu                 = "2"
+    jira_mem                 = "2Gi"
+    jira_min_heap            = "384m"
+    jira_max_heap            = "786m"
+    jira_reserved_code_cache = "512m"
+    ```
 
-`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
+    ### Database engine version
 
-```terraform
-bamboo_agent_helm_chart_version = "1.0.0"
-```
+    `jira_db_major_engine_version` sets the PostgeSQL engine version that will be used.
 
-### Bamboo instance resource configuration
+    ```terraform
+    jira_db_major_engine_version = "12" 
+    ```
 
-The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Bamboo instance. (Used default values as example.)
+    !!! info "Supported DB versions"
 
-```terraform
-bamboo_cpu = "1"
-bamboo_mem = "1Gi"
-bamboo_min_heap = "256m"
-bamboo_max_heap = "512m"
-```
+        Be sure to use a [DB engine version that is supported by Jira](https://confluence.atlassian.com/adminjiraserver/supported-platforms-938846830.html#Supportedplatforms-Databases){.external} 
 
-### Bamboo Agent instance resource configuration
+    ### Database Instance Class
 
-The following variables set number of CPU and amount of memory of Bamboo Agent instances. (Used default values as example.)
+    `jira_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
+    
+    ```terraform
+    jira_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+    ```
+    
+    ### Database Allocated Storage
+    
+    `jira_db_allocated_storage` sets the allocated storage for the database instance in GiB.
+    
+    ```terraform
+    jira_db_allocated_storage = 100 
+    ```
+    
+    !!! info "The allowed value range of allocated storage may vary based on instance class"
+    You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+    
+    ### Database IOPS
+    
+    `jira_db_iops` sets the requested number of I/O operations per second that the DB instance can support.
+    
+    ```terraform
+    jira_db_iops = 1000
+    ```
+    
+    !!! info "The allowed value range of IOPS may vary based on instance class"
+    You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
-```terraform
-bamboo_agent_cpu = "0.25"
-bamboo_agent_mem = "256m"
-```
-
-### Number of Bamboo agents
-
-`number_of_bamboo_agents` sets the number of remote agents to be launched. To disable agents, set this value to `0`.
-
-```terraform
-number_of_bamboo_agents = 5
-```
-
-!!! info "The number of agents is limited to the number of allowed agents in your license."
-    Any agents beyond the allowed number won't be able to join the cluster.
-
-!!! warning "A valid license is required to install bamboo agents"
-    Bamboo needs a valid license to install remote agents. Disable agents if you don't provide a license at installation time.
     
 ## Sensitive Data
 
