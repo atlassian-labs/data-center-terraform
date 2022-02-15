@@ -16,7 +16,6 @@ module "bamboo" {
   count      = local.install_bamboo ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name      = var.region
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
@@ -67,7 +66,6 @@ module "jira" {
   count      = local.install_jira ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name             = var.region
   environment_name        = var.environment_name
   namespace               = module.base-infrastructure.namespace
   vpc                     = module.base-infrastructure.vpc
@@ -95,7 +93,6 @@ module "confluence" {
   count      = local.install_confluence ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name      = var.region
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
@@ -130,7 +127,6 @@ module "bitbucket" {
   count      = local.install_bitbucket ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  #  region_name             = var.region
   environment_name        = var.environment_name
   namespace               = module.base-infrastructure.namespace
   vpc                     = module.base-infrastructure.vpc

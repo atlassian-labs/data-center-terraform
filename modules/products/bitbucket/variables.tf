@@ -1,8 +1,3 @@
-#variable "region_name" {
-#  description = "Name of the AWS region."
-#  type        = string
-#}
-#
 variable "environment_name" {
   description = "Name of the environment."
   type        = string
