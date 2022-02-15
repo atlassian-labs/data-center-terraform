@@ -27,11 +27,11 @@ variable "eks" {
   type        = any
 }
 
-#variable "ingress" {
-#  default = null
-#  type    = any
-#}
-#
+variable "ingress" {
+  default = null
+  type    = any
+}
+
 variable "db_major_engine_version" {
   description = "The database major version to use."
   type        = string

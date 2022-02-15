@@ -50,7 +50,7 @@ resource "helm_release" "bitbucket" {
       #        }
       #      }
     }),
-    #    local.ingress_settings,
+    local.ingress_settings,
   ]
 }
 

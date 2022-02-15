@@ -22,10 +22,10 @@
 #  description = "VPC public subnet CIDR blocks"
 #}
 #
-#output "product_domain_name" {
-#  value = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bitbucket.status[0].load_balancer[0].ingress[0].hostname}"
-#}
-#
+output "product_domain_name" {
+  value = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bitbucket.status[0].load_balancer[0].ingress[0].hostname}"
+}
+
 output "rds_instance_id" {
   value = module.database.rds_instance_id
 }
