@@ -98,7 +98,7 @@ func getLicense(productList []string, product string) string {
 			license = bambooLicense
 		}
 		if len(license) == 0 {
-			license = os.Getenv(fmt.Sprintf("TF_VAR_%s_license", product))
+			license = os.Getenv(strings.ToUpper(fmt.Sprintf("TF_VAR_%s_license", product)))
 		}
 	}
 	return license
