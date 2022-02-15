@@ -338,7 +338,15 @@ desired_capacity = <NUMBER OF NODES>  # between 1 and 10
     confluence_min_heap            = "256m"
     confluence_max_heap            = "512m"
     ```
+    
+    ### Collaborative editing
 
+    `confluence_enable_synchrony` enables [Collaborative editing](https://confluence.atlassian.com/doc/collaborative-editing-858771779.html). (default: `true`)
+
+    ```terraform
+    confluence_enable_synchrony = true
+    ```
+    
     ### Database engine version
 
     `confluence_db_major_engine_version` sets the PostgeSQL engine version that will be used.
