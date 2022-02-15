@@ -137,7 +137,7 @@ module "bitbucket" {
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
 
-  #  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version

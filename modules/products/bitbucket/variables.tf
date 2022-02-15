@@ -61,11 +61,11 @@ variable "bitbucket_configuration" {
   }
 }
 
-#variable "pvc_claim_name" {
-#  description = "Persistent volume claim name for shared home."
-#  type        = string
-#  validation {
-#    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-#    error_message = "Invalid claim name."
-#  }
-#}
+variable "pvc_claim_name" {
+  description = "Persistent volume claim name for shared home."
+  type        = string
+  validation {
+    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
+    error_message = "Invalid claim name."
+  }
+}

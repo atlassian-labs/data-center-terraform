@@ -34,21 +34,21 @@ resource "helm_release" "bitbucket" {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }
       }
-      #      volumes = {
-      #        localHome = {
-      #          persistentVolumeClaim = {
-      #            create = true
-      #          }
-      #        }
-      #        sharedHome = {
-      #          customVolume = {
-      #            persistentVolumeClaim = {
-      #              claimName = var.pvc_claim_name
-      #            }
-      #          }
-      #          subPath = local.product_name
-      #        }
-      #      }
+      volumes = {
+        localHome = {
+          persistentVolumeClaim = {
+            create = true
+          }
+        }
+        sharedHome = {
+          customVolume = {
+            persistentVolumeClaim = {
+              claimName = var.pvc_claim_name
+            }
+          }
+          subPath = local.product_name
+        }
+      }
     }),
     local.ingress_settings,
     local.license_settings,
