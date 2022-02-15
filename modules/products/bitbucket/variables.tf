@@ -8,7 +8,7 @@ variable "environment_name" {
 }
 
 variable "namespace" {
-  description = "The namespace where Bitbucket pod will be installed."
+  description = "The namespace where Bitbucket Helm chart will be installed."
   type        = string
 }
 
@@ -18,7 +18,7 @@ variable "vpc" {
 }
 
 variable "eks" {
-  description = "EKS module that hosts the product."
+  description = "EKS module that hosts the products."
   type        = any
 }
 

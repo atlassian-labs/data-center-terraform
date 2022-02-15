@@ -109,8 +109,8 @@ bitbucket_helm_chart_version = "1.2.0"
 # To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
 #
 # To avoid storing password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_`
-# (i.e. `TF_VAR_bitbucket_admin_password`) and keep `bamboo_admin_password` commented out
-# If storing password as plain-text is not a concern for this environment, feel free to uncomment `bamboo_admin_password` and supply system admin password here
+# (i.e. `TF_VAR_bitbucket_admin_password`) and keep `bitbucket_admin_password` commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment `bitbucket_admin_password` and supply system admin password here
 #
 #bitbucket_admin_username      = "<USERNAME>"
 #bitbucket_admin_password      = "<PASSWORD>"
