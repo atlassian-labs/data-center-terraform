@@ -25,22 +25,22 @@ func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 // Variables
 var BitbucketCorrectVariables = map[string]interface{}{
 	//"region_name":      "dummy_region_name",
-	//"environment_name": "dummy-environment",
-	"namespace": "dummy-namespace",
-	//"eks": map[string]interface{}{
-	//	"kubernetes_provider_config": map[string]interface{}{
-	//		"host":                   "dummy-host",
-	//		"token":                  "dummy-token",
-	//		"cluster_ca_certificate": "dummy-certificate",
-	//	},
-	//	"cluster_security_group": "dummy-sg",
-	//},
-	//"vpc":                     VpcDefaultModuleVariable,
+	"environment_name": "dummy-environment",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	//"pvc_claim_name":          "dummy_pvc_claimname",
-	//"db_major_engine_version": "13",
-	//"db_allocated_storage":    5,
-	//"db_instance_class":       "dummy_db_instance_class",
-	//"db_iops":                 1000,
+	"db_major_engine_version": "13",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
 	//"license":                 "dummy_license",
 	//"admin_username":          "dummy_admin_username",
 	//"admin_password":          "dummy_admin_password",
