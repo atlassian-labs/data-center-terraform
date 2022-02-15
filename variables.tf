@@ -216,7 +216,7 @@ variable "confluence_enable_synchrony" {
 }
 
 ################################################################################
-# Bitbucket Settings
+# Bitbucket Variables
 ################################################################################
 
 variable "bitbucket_license" {
