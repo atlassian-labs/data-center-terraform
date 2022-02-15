@@ -11,11 +11,11 @@
     Current project limitations listed below:
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only DC product supported by this project.
+    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
 
     Support for additional DC products will be made available in future.
     
-This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. It will also install Bamboo DC into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
+This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Atlassian DC. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
 ## Deployment overview
 

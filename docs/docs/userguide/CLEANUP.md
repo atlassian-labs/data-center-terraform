@@ -2,6 +2,9 @@
 
 This guide describes how to uninstall all Atlassian Data Center products and remove cloud environments 
 
+??? important "Do you want to install a DC product but still keep the common infrastructure and other installed products?"
+    To uninstall one or more products without destroying the infrastructure, remove the [product names](./CONFIGURATION.md#products) from environment's config file and re-run [**install**](./INSTALLATION.md) command.
+
 !!! warning "The uninstallation process is destructive"
     The uninstallation process will **permanently delete** the local volume, shared volume, and the database. Terraform state information can also optionally be removed.
 
