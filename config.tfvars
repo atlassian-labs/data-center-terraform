@@ -93,6 +93,35 @@ confluence_db_iops                 = 1000
 #confluence_enable_synchrony = true
 
 ################################################################################
+# Bitbucket Settings
+################################################################################
+
+# Helm chart version of Bitbucket
+bitbucket_helm_chart_version = "1.2.0"
+
+# Bitbucket license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
+#
+#bitbucket_license = "<LICENSE KEY>"
+
+# Bitbucket instance resource configuration
+bitbucket_cpu      = "1"
+bitbucket_mem      = "1Gi"
+bitbucket_min_heap = "256m"
+bitbucket_max_heap = "512m"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+bitbucket_db_major_engine_version = "13"
+bitbucket_db_instance_class       = "db.t3.micro"
+bitbucket_db_allocated_storage    = 100
+bitbucket_db_iops                 = 1000
+
+################################################################################
 # Bamboo Settings
 ################################################################################
 

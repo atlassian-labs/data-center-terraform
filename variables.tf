@@ -219,9 +219,16 @@ variable "confluence_enable_synchrony" {
 # Bitbucket Settings
 ################################################################################
 
+variable "bitbucket_license" {
+  description = "Bitbucket license."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 variable "bitbucket_db_major_engine_version" {
   description = "The database major version to use."
-  default     = "12"
+  default     = "13"
   type        = string
 }
 
@@ -244,37 +251,31 @@ variable "bitbucket_db_iops" {
 }
 
 variable "bitbucket_helm_chart_version" {
-  description = "Version of bitbucket Helm chart"
+  description = "Version of Bitbucket Helm chart"
   type        = string
-  default     = "1.1.0"
+  default     = "1.2.0"
 }
 
 variable "bitbucket_cpu" {
-  description = "Number of CPUs for bitbucket instance"
+  description = "Number of CPUs for Bitbucket instance"
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "bitbucket_mem" {
-  description = "Amount of memory for bitbucket instance"
+  description = "Amount of memory for Bitbucket instance"
   type        = string
-  default     = "2Gi"
+  default     = "1Gi"
 }
 
 variable "bitbucket_min_heap" {
-  description = "Minimum heap size for bitbucket instance"
+  description = "Minimum heap size for Bitbucket instance"
   type        = string
-  default     = "384m"
+  default     = "256m"
 }
 
 variable "bitbucket_max_heap" {
-  description = "Maximum heap size for bitbucket instance"
-  type        = string
-  default     = "768m"
-}
-
-variable "bitbucket_reserved_code_cache" {
-  description = "Reserved code cache for bitbucket instance"
+  description = "Maximum heap size for Bitbucket instance"
   type        = string
   default     = "512m"
 }
