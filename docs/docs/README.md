@@ -51,7 +51,7 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 ## Product support
 
-Atlassian Data Center products that can be provisioned with this tool:
+The minimum versions that we support for each product are:
 
 |  Bamboo DC                                                                                         | Confluence DC                                                                                          | Jira DC                                                                                                                  |
 |----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
