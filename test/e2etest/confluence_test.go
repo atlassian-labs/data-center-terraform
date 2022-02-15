@@ -8,14 +8,25 @@ import (
 
 func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 
-	// Test the RUNNING status
-	assertConfluenceStatusEndpoint(t, testConfig, "RUNNING")
+	// Test the Access Mode status
+	assertConfluenceAccessmodeStatus(t, testConfig, "READ_WRITE")
+
+	// Test the Access Mode status
+	assertConfluenceCurrentUser(t, testConfig, "anonymous")
 }
 
-func assertConfluenceStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
-	statusUrl := "rest/api/latest/status"
+func assertConfluenceAccessmodeStatus(t *testing.T, testConfig TestConfig, expectedStatus string) {
+	statusUrl := "/rest/api/accessmode"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), expectedStatus)
-	println("assert Confluence StatusEndpoint ..... PASSED")
+	println("assert Confluence AccessMode Status ..... PASSED")
+}
+
+func assertConfluenceCurrentUser(t *testing.T, testConfig TestConfig, expectedStatus string) {
+	statusUrl := "/rest/api/user/current"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+	content := getPageContent(t, url)
+	assert.Contains(t, string(content), expectedStatus)
+	println("assert Confluence Current User ......... PASSED")
 }
