@@ -15,7 +15,7 @@
 
     Support for additional DC products will be made available in future.
     
-This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Atlassian DC. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
+This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
 ## Deployment overview
 
