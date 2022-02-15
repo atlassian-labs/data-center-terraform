@@ -37,4 +37,13 @@ locals {
   })
 
   ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
+
+  # license settings
+  license_settings = var.bitbucket_configuration["license"] != null ? yamlencode({
+    bitbucket = {
+      license = {
+        secretName = kubernetes_secret.license_secret.metadata[0].name
+      }
+    }
+  }) : yamlencode({})
 }

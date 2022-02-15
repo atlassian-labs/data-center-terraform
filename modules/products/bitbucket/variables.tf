@@ -56,10 +56,10 @@ variable "bitbucket_configuration" {
   description = "Bitbucket resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.bitbucket_configuration) == 5 &&
+    condition = (length(var.bitbucket_configuration) == 6 &&
       alltrue([
         for o in keys(var.bitbucket_configuration) : contains([
-          "helm_version", "cpu", "mem", "min_heap", "max_heap"
+          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
         ], o)
     ]))
     error_message = "Bitbucket configuration is not valid."

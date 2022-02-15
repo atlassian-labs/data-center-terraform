@@ -12,3 +12,17 @@ resource "kubernetes_secret" "rds_secret" {
     password = module.database.rds_master_password
   }
 }
+
+################################################################################
+# Kubernetes secret to store license
+################################################################################
+resource "kubernetes_secret" "license_secret" {
+  metadata {
+    name      = "${local.product_name}-license"
+    namespace = var.namespace
+  }
+
+  data = {
+    license-key = var.bitbucket_configuration["license"]
+  }
+}

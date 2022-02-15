@@ -41,7 +41,6 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
-	//"license":                 "dummy_license",
 	//"admin_username":          "dummy_admin_username",
 	//"admin_password":          "dummy_admin_password",
 	//"admin_display_name":      "dummy_admin_display_name",
@@ -53,5 +52,6 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"mem":          "1Gi",
 		"min_heap":     "256m",
 		"max_heap":     "512m",
+		"license":      "dummy_license",
 	},
 }
