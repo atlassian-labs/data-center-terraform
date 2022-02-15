@@ -11,7 +11,7 @@ func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 	// Test the Access Mode status
 	assertConfluenceAccessmodeStatus(t, testConfig, "READ_WRITE")
 
-	// Test the Access Mode status
+	// Test the Current User
 	assertConfluenceCurrentUser(t, testConfig, "anonymous")
 }
 
