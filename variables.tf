@@ -216,6 +216,70 @@ variable "confluence_enable_synchrony" {
 }
 
 ################################################################################
+# Bitbucket Settings
+################################################################################
+
+variable "bitbucket_db_major_engine_version" {
+  description = "The database major version to use."
+  default     = "12"
+  type        = string
+}
+
+variable "bitbucket_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 100
+  type        = number
+}
+
+variable "bitbucket_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "bitbucket_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "bitbucket_helm_chart_version" {
+  description = "Version of bitbucket Helm chart"
+  type        = string
+  default     = "1.1.0"
+}
+
+variable "bitbucket_cpu" {
+  description = "Number of CPUs for bitbucket instance"
+  type        = string
+  default     = "2"
+}
+
+variable "bitbucket_mem" {
+  description = "Amount of memory for bitbucket instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "bitbucket_min_heap" {
+  description = "Minimum heap size for bitbucket instance"
+  type        = string
+  default     = "384m"
+}
+
+variable "bitbucket_max_heap" {
+  description = "Maximum heap size for bitbucket instance"
+  type        = string
+  default     = "768m"
+}
+
+variable "bitbucket_reserved_code_cache" {
+  description = "Reserved code cache for bitbucket instance"
+  type        = string
+  default     = "512m"
+}
+
+################################################################################
 # Bamboo Variables
 ################################################################################
 
@@ -339,66 +403,3 @@ variable "bamboo_dataset_url" {
   type        = string
 }
 
-################################################################################
-# Bitbucket Settings
-################################################################################
-
-variable "bitbucket_db_major_engine_version" {
-  description = "The database major version to use."
-  default     = "12"
-  type        = string
-}
-
-variable "bitbucket_db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  default     = 100
-  type        = number
-}
-
-variable "bitbucket_db_instance_class" {
-  description = "Instance class of the RDS instance."
-  default     = "db.t3.micro"
-  type        = string
-}
-
-variable "bitbucket_db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  default     = 1000
-  type        = number
-}
-
-variable "bitbucket_helm_chart_version" {
-  description = "Version of bitbucket Helm chart"
-  type        = string
-  default     = "1.1.0"
-}
-
-variable "bitbucket_cpu" {
-  description = "Number of CPUs for bitbucket instance"
-  type        = string
-  default     = "2"
-}
-
-variable "bitbucket_mem" {
-  description = "Amount of memory for bitbucket instance"
-  type        = string
-  default     = "2Gi"
-}
-
-variable "bitbucket_min_heap" {
-  description = "Minimum heap size for bitbucket instance"
-  type        = string
-  default     = "384m"
-}
-
-variable "bitbucket_max_heap" {
-  description = "Maximum heap size for bitbucket instance"
-  type        = string
-  default     = "768m"
-}
-
-variable "bitbucket_reserved_code_cache" {
-  description = "Reserved code cache for bitbucket instance"
-  type        = string
-  default     = "512m"
-}
