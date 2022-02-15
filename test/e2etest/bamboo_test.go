@@ -28,25 +28,25 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
+	println("asserting Bamboo Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
-	println("assert Bamboo StatusEndpoint ..... PASSED")
 }
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
 	content := getPageContent(t, url)
+	println("asserting Bamboo PlanListEndpoint...")
 	assert.Contains(t, string(content), "TestPlan")
-	println("assert Bamboo PlanListEndpoint ... PASSED")
 }
 
 func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 	projUrl := "allProjects.action"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
 	content := getPageContent(t, url)
+	println("asserting Bamboo BambooProjects...")
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
-	println("assert Bamboo BambooProjects ..... PASSED")
 }
 
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
@@ -55,8 +55,8 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	time.Sleep(15 * time.Second)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
+	println("asserting Bamboo RemoteAgentList...")
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
-	println("assert Bamboo RemoteAgentList .... PASSED")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {

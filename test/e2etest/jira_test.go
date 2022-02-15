@@ -14,6 +14,6 @@ func assertJiraStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatu
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
+	println("asserting Jira Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
-	println("assertJiraStatusEndpoint ..... PASSED")
 }
