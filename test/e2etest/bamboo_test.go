@@ -60,6 +60,9 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	content := getPageContent(t, url)
 	println("asserting Bamboo RemoteAgentList...")
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
+
+	// TODO: Remove the following line as this is just for test
+	time.Sleep(60 * 30 * time.Second)
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {
