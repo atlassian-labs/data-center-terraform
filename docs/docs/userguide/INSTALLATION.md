@@ -23,7 +23,7 @@ git clone -b 1.0.0 https://github.com/atlassian-labs/data-center-terraform.git &
 
 ## 3. Configure the infrastructure
 
-Details of the desired infrastructure to be provisioned can be defined in `config.tfvars` located in the root level of the cloned project. Additional details on how this file can/should be configured can be found in the [Configuration guide](CONFIGURATION.md).
+Details of the desired infrastructure to be provisioned can be defined in `config.tfvars` located in the root level of the cloned project. Additional details on how this file can/should be configured can be found in the [Configuration guide](configuration/CONFIGURATION.md).
 
 ??? info "Configuration file location?"
     By default, Terraform uses `config.tfvars` located in the root level of the project.
