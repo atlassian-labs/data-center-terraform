@@ -53,7 +53,7 @@ locals {
   confluence_ingress_url = local.use_domain ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.confluence.status[0].load_balancer[0].ingress[0].hostname}"
 
   # if domain is not provided, a new LB is created for Synchrony service
-  synchrony_ingress_url = local.use_domain ? "${local.confluence_ingress_url}/synchrony" : "Synchrony is not available"
+  synchrony_ingress_url = local.use_domain ? "${local.confluence_ingress_url}/synchrony" : "http://${data.kubernetes_service.confluence_synchrony.status[0].load_balancer[0].ingress[0].hostname}/synchrony"
 
   synchrony_settings_stanza = local.use_domain ? yamlencode({
     synchrony = {

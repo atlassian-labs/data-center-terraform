@@ -67,3 +67,14 @@ data "kubernetes_service" "confluence" {
     namespace = var.namespace
   }
 }
+
+################################################################################
+# Fetch Confluence Synchrony service details
+################################################################################
+data "kubernetes_service" "confluence_synchrony" {
+  depends_on = [helm_release.confluence]
+  metadata {
+    name      = "${local.product_name}-synchrony"
+    namespace = var.namespace
+  }
+}
