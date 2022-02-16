@@ -228,26 +228,22 @@ variable "bamboo_license" {
 variable "bamboo_admin_username" {
   description = "Bamboo system administrator username."
   type        = string
-  default     = ""
 }
 
 variable "bamboo_admin_password" {
   description = "Bamboo system administrator password."
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "bamboo_admin_display_name" {
   description = "Bamboo system administrator display name."
   type        = string
-  default     = ""
 }
 
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
-  default     = ""
 }
 
 variable "number_of_bamboo_agents" {
