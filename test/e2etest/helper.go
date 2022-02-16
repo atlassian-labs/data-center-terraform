@@ -114,17 +114,7 @@ func getLicense(productList []string, product string) string {
 func getPassword(productList []string, product string) string {
 	password := ""
 	if contains(productList, product) {
-		switch product {
-		case confluence:
-			password = confluenceLicense
-		case bitbucket:
-			password = bitbucketLicense
-		case bamboo:
-			password = bambooLicense
-		}
-		if len(password) == 0 {
-			password = os.Getenv(fmt.Sprintf("TF_VAR_%s_admin_password", product))
-		}
+		password = os.Getenv(fmt.Sprintf("TF_VAR_%s_admin_password", product))
 	}
 	return password
 }
