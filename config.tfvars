@@ -41,7 +41,7 @@ desired_capacity = 1
 ################################################################################
 
 # Helm chart version of Jira
-jira_helm_chart_version = "1.1.0"
+jira_helm_chart_version = "1.2.0"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
@@ -65,7 +65,7 @@ jira_db_iops                 = 1000
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.1.0"
+confluence_helm_chart_version = "1.2.0"
 
 # Confluence license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
@@ -138,8 +138,8 @@ bitbucket_db_iops                 = 1000
 ################################################################################
 
 # Helm chart version of Bamboo and Bamboo agent instances
-bamboo_helm_chart_version       = "1.0.0"
-bamboo_agent_helm_chart_version = "1.0.0"
+bamboo_helm_chart_version       = "1.2.0"
+bamboo_agent_helm_chart_version = "1.2.0"
 
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
