@@ -13,6 +13,12 @@ resource "aws_route53_record" "bitbucket" {
   }
 }
 
+module "nfs" {
+  source = "../../AWS/nfs"
+
+  namespace = var.namespace
+}
+
 module "database" {
   source = "../../AWS/rds"
 

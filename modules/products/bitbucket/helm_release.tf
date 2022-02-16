@@ -44,9 +44,14 @@ resource "helm_release" "bitbucket" {
           }
         }
         sharedHome = {
-          customVolume = {
+          persistentVolume = {
+            create = true
+            nfs = {
+              server = module.nfs.helm_release_nfs_service_ip
+              path = "/srv/nfs"
+            }
             persistentVolumeClaim = {
-              claimName = var.pvc_claim_name
+              create = true
             }
           }
           subPath = local.product_name
