@@ -37,10 +37,10 @@ resource "kubernetes_secret" "admin_secret" {
   }
 
   data = {
-    username     = var.admin_configuration["admin_username"]
-    password     = var.admin_configuration["admin_password"]
-    displayName  = var.admin_configuration["admin_display_name"]
-    emailAddress = var.admin_configuration["admin_email_address"]
+    username     = var.admin_username
+    password     = var.admin_password
+    displayName  = var.admin_display_name
+    emailAddress = var.admin_email_address
   }
 }
 

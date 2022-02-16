@@ -88,10 +88,6 @@ verify_configuration_file() {
   ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
   REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
-  # check license and admin password
-  export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
-  export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
-
   if [ "${#ENVIRONMENT_NAME}" -gt 24 ]; then
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
     log "Please make sure your environment name is less than 24 characters."
@@ -106,18 +102,24 @@ verify_configuration_file() {
     log "${INVALID_CONTENT}"
     HAS_VALIDATION_ERR=1
   fi
+  INSTALLED_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
+  if [ -n "${INSTALLED_BAMBOO}" ]; then
+    # check license and admin password
+    export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
+    export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
-  if [ -z "${POPULATED_LICENSE}" ];  then
-    if [ -z "${TF_VAR_bamboo_license}" ]; then
-      log "License is missing. Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
-      HAS_VALIDATION_ERR=1
+    if [ -z "${POPULATED_LICENSE}" ];  then
+      if [ -z "${TF_VAR_bamboo_license}" ]; then
+        log "License is missing. Please provide Bamboo license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
+        HAS_VALIDATION_ERR=1
+      fi
     fi
-  fi
 
-  if [ -z "${POPULATED_ADMIN_PWD}" ];  then
-    if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
-      log "Admin password is missing. Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
-      HAS_VALIDATION_ERR=1
+    if [ -z "${POPULATED_ADMIN_PWD}" ];  then
+      if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
+        log "Admin password is missing. Please provide Bamboo admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
+        HAS_VALIDATION_ERR=1
+      fi
     fi
   fi
 
@@ -209,7 +211,7 @@ resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
   # is matched with admin info stored in dataset you import. 
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
-  INSTALLED_BAMBOO=$(get_variable 'products' "${CONFIG_ABS_PATH}" | grep 'bamboo')
+  INSTALLED_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
   local SERVER_STATUS=
 
   # resume the server only if a dataset is imported
@@ -253,7 +255,7 @@ resume_bamboo_server() {
 
 set_synchrony_url() {
   DOMAIN=$(get_variable 'domain' "${CONFIG_ABS_PATH}")
-  INSTALLED_CONFLUENCE=$(get_variable 'products' "${CONFIG_ABS_PATH}" | grep 'confluence')
+  INSTALLED_CONFLUENCE=$(get_product "confluence" "${CONFIG_ABS_PATH}")
 
   if [ -z "${DOMAIN}" ] && [ -n "${INSTALLED_CONFLUENCE}" ]; then
     log "Configuring the Synchrony service."

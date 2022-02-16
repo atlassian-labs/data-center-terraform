@@ -57,16 +57,6 @@ variable "bamboo_agent_configuration" {
   }
 }
 
-variable "admin_configuration" {
-  description = "Bamboo admin configuration"
-  type        = map(any)
-  validation {
-    condition = (length(var.admin_configuration) == 4 &&
-    alltrue([for o in keys(var.admin_configuration) : contains(["admin_username", "admin_password", "admin_display_name", "admin_email_address"], o)]))
-    error_message = "Bamboo administrator configuration is not valid."
-  }
-}
-
 variable "db_configuration" {
   description = "Bamboo database spec"
   type        = map(any)
@@ -103,5 +93,30 @@ variable "pvc_claim_name" {
   validation {
     condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
     error_message = "Invalid claim name."
+  }
+}
+
+variable "admin_username" {
+  description = "Bamboo system administrator username."
+  type        = string
+}
+
+variable "admin_password" {
+  description = "Bamboo system administrator password."
+  type        = string
+  default     = null
+}
+
+variable "admin_display_name" {
+  description = "Bamboo system administrator display name."
+  type        = string
+}
+
+variable "admin_email_address" {
+  description = "Bamboo system administrator email address."
+  type        = string
+  validation {
+    condition     = can(regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", var.admin_email_address))
+    error_message = "Invalid email."
   }
 }
