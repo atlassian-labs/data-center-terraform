@@ -18,6 +18,7 @@ theme:
     - search.highlight
     - navigation.instant
     - navigation.tabs
+    - content.code.annotate
 repo_url: https://github.com/atlassian-labs/data-center-terraform
 repo_name: atlassian-labs/data-center-terraform
 edit_uri: edit/main/docs/docs/

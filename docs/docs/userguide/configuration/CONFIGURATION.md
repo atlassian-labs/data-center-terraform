@@ -58,20 +58,22 @@ environment_name = "<your-environment-name>" # e.g. "my-terraform-env"
 `region` defines the cloud provider region that the environment will be deployed to.
 
 ```terraform
-region = "<REGION>"  # e.g. "ap-northeast-2"
+region = "<REGION>"  # e.g. "ap-northeast-2" # (1)
 ```
 
-!!! info "Format"
+1. A valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external} must be used.
 
-    The value must be a valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external}.
 
 ### Products
 
 The `products` list can be configured with one or many products. This will result in these products being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
 
 ```terraform
-products = ["jira", "confluence"]
+products = ["jira", "confluence"] # (1)
 ```
+
+1. Valid values include; `jira`, `confluence`, `bitbucket` and `bamboo`
+
 
 !!! info "Product specific infrastructure"
 
@@ -125,14 +127,13 @@ resource_tags = {
 `instance_types` defines the instance type for the EKS cluster node group.
 
 ```terraform
-instance_types = ["m5.2xlarge"]
+instance_types = ["m5.2xlarge"] # (1)
 ```
 
+1. !!! warning "The instance type cannot be changed once the infrastructure has been provisioned."
+
 The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
-
-!!! warning "Instance type selection"
-
-    The instance type cannot be changed once the infrastructure has been provisioned.
+    
 
 ### EKS node count
 
@@ -142,10 +143,10 @@ The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2
 * Minimum is `1` and maximum is `10`.
 
 ```terraform
-desired_capacity = <NUMBER OF NODES>  # between 1 and 10
+desired_capacity = <NUMBER OF NODES>  # (1)
 ```
 
-!!! warning "You cannot change this value after the infrastructure is provisioned."
+1. !!! warning "The node count cannot be changed once the infrastructure has been provisioned."
 
 
 ## Product specific configuration
