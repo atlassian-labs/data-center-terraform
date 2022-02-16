@@ -54,7 +54,7 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	// Wait 15 seconds to allow remote agents get online
-	time.Sleep(15 * time.Second)
+	time.Sleep(20 * time.Second)
 	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)

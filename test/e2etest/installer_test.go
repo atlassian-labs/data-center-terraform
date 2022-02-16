@@ -18,6 +18,11 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
+	// Run Bamboo health tests
+	if contains(productList, bamboo) {
+		bambooHealthTests(t, testConfig)
+	}
+
 	// Run Jira health tests
 	if contains(productList, jira) {
 		jiraHealthTests(t, testConfig)
@@ -26,11 +31,6 @@ func TestInstaller(t *testing.T) {
 	// Run Confluence health tests
 	if contains(productList, confluence) {
 		confluenceHealthTests(t, testConfig)
-	}
-
-	// Run Bamboo health tests
-	if contains(productList, bamboo) {
-		bambooHealthTests(t, testConfig)
 	}
 }
 
