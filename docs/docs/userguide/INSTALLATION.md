@@ -5,9 +5,9 @@ This guide describes how to provision the cloud environment infrastructure and i
 !!! warning "Supported Products and Platforms"
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only supported DC product
+    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
 
-    Support for additional Cloud providers and DC products will be made available in future.
+    Support for additional DC products will be made available in future.
 
 ## 1. Set up AWS security credentials
 
@@ -23,13 +23,17 @@ git clone -b 1.0.0 https://github.com/atlassian-labs/data-center-terraform.git &
 
 ## 3. Configure the infrastructure
 
-Details of the desired infrastructure to be provisioned can be defined in `config.tfvars` located in the root level of the cloned project. Additional details on how this file can/should be configured can be found in the [Configuration guide](CONFIGURATION.md).
+Details of the desired infrastructure to be provisioned can be defined in `config.tfvars` located in the root level of the cloned project. Additional details on how this file can/should be configured can be found in the [Configuration guide](configuration/CONFIGURATION.md).
 
 ??? info "Configuration file location?"
     By default, Terraform uses `config.tfvars` located in the root level of the project.
        
 ??? tip "Can I use a custom configuration file?"
     You can use a custom configuration file, but it must follow the same format as the default configuration file. You can make a copy of `config.tfvars`, renaming the copy and using `config.tfvars` as a template to define your own infrastructure configuration.
+
+??? tip "How to install more than one DC product?"
+    More than one DC products can be provisioned to the same cluster. See the [Configuration guide](CONFIGURATION.md#products) for more details.
+    You can also install DC products to an existing environment by adding the [product](CONFIGURATION.md) in the environment's config file and re-run the [install](INSTALLATION.md) command.
 
 ??? Warning "Use the same configuration file for uninstallation and cleanup"  
     If you have more than one environment, make sure to manage the configuration file for each environment separately. When cleaning up your environment, use the same configuration file that was used to create it originally.
@@ -106,7 +110,7 @@ Running the installation script with no parameters will use the default configur
 
     To access the database username and password, run the following commands:
     ```
-    DB_SECRETS=$(kubectl get secret <product-name>-db-cred -n <product-name> -o jsonpath='{.data}')
+    DB_SECRETS=$(kubectl get secret <product-name>-db-cred -n atlassian -o jsonpath='{.data}')
     DB_USERNAME=$(echo $DB_SECRETS | jq -r '.username' | base64 --decode)
     DB_PASSWORD=$(echo $DB_SECRETS | jq -r '.password' | base64 --decode)
     ``` 

@@ -27,14 +27,14 @@ This guide contains general tips on how to investigate an application deployment
     ```
     **Solution**
 
-    If a bamboo pod termination stalls, it will block pvc and pv deletion. 
+    If a pod termination stalls, it will block pvc and pv deletion. 
     To fix this problem we need to terminate product pod first and run uninstall command again.
     ```shell
-    kubectl delete pod <bamboo-pod> -n bamboo --force
+    kubectl delete pod <stalled-pod> -n atlassian --force
     ```
-    To see the stalled Bamboo pod name you can run the following command:
+    To see the stalled pod name you can run the following command:
     ```shell
-    kubectl get pods -n bamboo 
+    kubectl get pods -n atlassian 
     ```
 
 ??? tip "How do I deal with suspended AWS Auto Scaling Groups during Terraform uninstallation?"
@@ -44,7 +44,7 @@ This guide contains general tips on how to investigate an application deployment
     If for any reason Auto Scaling Group gets suspended, AWS does not allow Terraform to delete the node group. In cases like this the uninstall process gets interrupted with the following error:
     
     ```shell
-    Error: error waiting for EKS Node Group (atlas-ng-second-test-cluster:appNode) to delete: unexpected state 'DELETE_FAILED', wanted target ''. last error: 2 errors occurred:
+    Error: error waiting for EKS Node Group (atlas-<environment_name>-cluster:appNode) to delete: unexpected state 'DELETE_FAILED', wanted target ''. last error: 2 errors occurred:
         * i-06a4b4afc9e7a76b0: NodeCreationFailure: Instances failed to join the kubernetes cluster
         * eks-appNode-3ebedddc-2d97-ff10-6c23-4900d1d79599: AutoScalingGroupInvalidConfiguration: Couldn't terminate instances in ASG as Terminate process is suspended
     ```

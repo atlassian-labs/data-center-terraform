@@ -208,12 +208,14 @@ set_current_context_k8s() {
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
   # is matched with admin info stored in dataset you import. 
-  log "Resuming Bamboo server."
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
+  INSTALLED_BAMBOO=$(get_variable 'products' "${CONFIG_ABS_PATH}" | grep 'bamboo')
   local SERVER_STATUS=
 
   # resume the server only if a dataset is imported
-  if [ -n "${BAMBOO_DATASET}" ]; then
+  if [ -n "${BAMBOO_DATASET}" ] && [ -n "${INSTALLED_BAMBOO}" ]; then
+    log "Resuming Bamboo server."
+
     ADMIN_USERNAME=$(get_variable 'bamboo_admin_username' "${CONFIG_ABS_PATH}")
     ADMIN_PASSWORD=$(get_variable 'bamboo_admin_password' "${CONFIG_ABS_PATH}")
     if [ -z "${ADMIN_USERNAME}" ]; then
@@ -249,6 +251,18 @@ resume_bamboo_server() {
   fi
 }
 
+set_synchrony_url() {
+  DOMAIN=$(get_variable 'domain' "${CONFIG_ABS_PATH}")
+  INSTALLED_CONFLUENCE=$(get_variable 'products' "${CONFIG_ABS_PATH}" | grep 'confluence')
+
+  if [ -z "${DOMAIN}" ] && [ -n "${INSTALLED_CONFLUENCE}" ]; then
+    log "Configuring the Synchrony service."
+    SYNCHRONY_FULL_URL=$(terraform output | grep '"synchrony" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
+    log "Synchrony URL is set to '${SYNCHRONY_FULL_URL}'."
+  fi
+}
+
 # Process the arguments
 process_arguments
 
@@ -269,6 +283,9 @@ add_tags_to_asg_resources
 
 # Resume bamboo server if the credential is provided
 resume_bamboo_server
+
+# Set the correct Synchrony URL
+set_synchrony_url
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s

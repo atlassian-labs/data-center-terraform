@@ -11,31 +11,51 @@
     Current project limitations listed below:
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} is the only DC product supported by this project.
+    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
 
     Support for additional DC products will be made available in future.
     
-This project can be used for bootstrapping Atlassian Bamboo DC in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure needed for running Bamboo DC. It will also install Bamboo DC into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
+This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
 ## Deployment overview
 
-The diagram below provides a high level overview of what a typical deployment will look like:
+The diagram below provides a high level overview of what a typical deployment will look like for each DC product:
 
-![architecture](assets/images/Terraform.png "Deployment")
+=== "Bamboo"
+
+    !!! info "Architectural overview for Bamboo"
+
+    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
+
+=== "Confluence"
+
+    !!! info "Architectural overview for Confluence"
+
+    ![architecture](assets/images/confluence/Terraform.png "Deployment")
+
+=== "Jira"
+
+    !!! info "Architectural overview for Jira"
+
+    ![architecture](assets/images/jira/Terraform.png "Deployment")
+
+!!! tip "Multiple deployments to a single cluster"
+
+    Multiple DC products can also be provisioned to the same cluster. See the [Configuration guide](./userguide/CONFIGURATION.md#products) for more details
 
 ## Deploying a Data Center product
 
 * [Prerequisites](userguide/PREREQUISITES.md) - steps for environment setup including installation of 3rd party tooling
-* [Configuration](userguide/CONFIGURATION.md) - steps for configuring deployment
+* [Configuration](userguide/configuration/CONFIGURATION.md) - steps for configuring deployment
 * [Installation](userguide/INSTALLATION.md) - steps for running a deployment
 
 ## Product support
 
-Atlassian Data Center products that can be provisioned with this tool:
+The minimum versions that we support for each product are:
 
-|  Bamboo DC                                                                                         |
-|----------------------------------------------------------------------------------------------------|
-| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}  |
+|  Bamboo DC                                                                                         | Confluence DC                                                                                          | Jira DC                                                                                                                  |
+|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}  | [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}      |  
 
 ## Feedback
 
