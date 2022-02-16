@@ -8,6 +8,7 @@ import (
 )
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig) {
+
 	// Test the PAUSE status
 	pauseBambooServer(t, testConfig)
 	assertStatusEndpoint(t, testConfig, "PAUSED")
@@ -34,6 +35,7 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
+	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, planUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo PlanListEndpoint...")
@@ -53,6 +55,7 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	// Wait 15 seconds to allow remote agents get online
 	time.Sleep(15 * time.Second)
+	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo RemoteAgentList...")
@@ -61,6 +64,7 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {
 	resumeUrl := "rest/api/latest/server/resume"
+	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, resumeUrl)
 
 	sendPostRequest(t, url, "application/json", nil)
@@ -68,6 +72,7 @@ func resumeBambooServer(t *testing.T, testConfig TestConfig) {
 
 func pauseBambooServer(t *testing.T, testConfig TestConfig) {
 	pauseUrl := "rest/api/latest/server/pause"
+	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, pauseUrl)
 
 	sendPostRequest(t, url, "application/json", nil)

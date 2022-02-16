@@ -20,9 +20,7 @@ import (
 
 const (
 	resourceOwner = "dc-deployment"
-	credential    = "admin:Atlassian21!" // Admin credential 'username:password'
-
-	domain = "deplops.com"
+	domain        = "deplops.com"
 
 	// List of supported products
 	jira       = "jira"
@@ -44,6 +42,8 @@ type TestConfig struct {
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
+	BambooPassword    string
+	BitbucketPassword string
 }
 
 func EnvironmentName() string {
@@ -111,6 +111,24 @@ func getLicense(productList []string, product string) string {
 	return license
 }
 
+func getPassword(productList []string, product string) string {
+	password := ""
+	if contains(productList, product) {
+		switch product {
+		case confluence:
+			password = confluenceLicense
+		case bitbucket:
+			password = bitbucketLicense
+		case bamboo:
+			password = bambooLicense
+		}
+		if len(password) == 0 {
+			password = os.Getenv(fmt.Sprintf("TF_VAR_%s_admin_password", product))
+		}
+	}
+	return password
+}
+
 func createConfig(t *testing.T, productList []string) TestConfig {
 
 	testConfig := TestConfig{
@@ -120,6 +138,8 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 		ConfluenceLicense: getLicense(productList, confluence),
 		BitbucketLicense:  getLicense(productList, bitbucket),
 		BambooLicense:     getLicense(productList, bamboo),
+		BambooPassword:    getPassword(productList, bamboo),
+		BitbucketPassword: getPassword(productList, bitbucket),
 	}
 
 	// Product list
@@ -137,6 +157,8 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	vars["confluence_license"] = testConfig.ConfluenceLicense
 	vars["bitbucket_license"] = testConfig.BitbucketLicense
 	vars["bamboo_license"] = testConfig.BambooLicense
+	vars["bamboo_password"] = testConfig.BambooPassword
+	vars["bitbucket_password"] = testConfig.BitbucketPassword
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")
