@@ -8,7 +8,7 @@ variable "environment_name" {
 }
 
 variable "namespace" {
-  description = "The namespace where Jira pod will be installed."
+  description = "The namespace where Bitbucket Helm chart will be installed."
   type        = string
 }
 
@@ -18,7 +18,7 @@ variable "vpc" {
 }
 
 variable "eks" {
-  description = "EKS module that hosts the product."
+  description = "EKS module that hosts the products."
   type        = any
 }
 
@@ -47,13 +47,17 @@ variable "db_iops" {
   type        = number
 }
 
-variable "jira_configuration" {
-  description = "Jira resource spec and chart version"
+variable "bitbucket_configuration" {
+  description = "Bitbucket resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.jira_configuration) == 6 &&
-    alltrue([for o in keys(var.jira_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "reserved_code_cache"], o)]))
-    error_message = "Jira configuration is not valid."
+    condition = (length(var.bitbucket_configuration) == 6 &&
+      alltrue([
+        for o in keys(var.bitbucket_configuration) : contains([
+          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
+        ], o)
+    ]))
+    error_message = "Bitbucket configuration is not valid."
   }
 }
 
@@ -63,5 +67,15 @@ variable "pvc_claim_name" {
   validation {
     condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
     error_message = "Invalid claim name."
+  }
+}
+
+variable "admin_configuration" {
+  description = "Bitbucket admin configuration"
+  type        = map(any)
+  validation {
+    condition = (length(var.admin_configuration) == 4 &&
+    alltrue([for o in keys(var.admin_configuration) : contains(["admin_username", "admin_password", "admin_display_name", "admin_email_address"], o)]))
+    error_message = "Bitbucket administrator configuration is not valid."
   }
 }

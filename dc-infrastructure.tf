@@ -16,7 +16,6 @@ module "bamboo" {
   count      = local.install_bamboo ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name      = var.region
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
@@ -67,7 +66,6 @@ module "jira" {
   count      = local.install_jira ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name             = var.region
   environment_name        = var.environment_name
   namespace               = module.base-infrastructure.namespace
   vpc                     = module.base-infrastructure.vpc
@@ -95,7 +93,6 @@ module "confluence" {
   count      = local.install_confluence ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  region_name      = var.region
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
@@ -123,4 +120,38 @@ module "confluence" {
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
+}
+
+module "bitbucket" {
+  source     = "./modules/products/bitbucket"
+  count      = local.install_bitbucket ? 1 : 0
+  depends_on = [module.base-infrastructure]
+
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.bitbucket_db_major_engine_version
+  db_allocated_storage    = var.bitbucket_db_allocated_storage
+  db_instance_class       = var.bitbucket_db_instance_class
+  db_iops                 = var.bitbucket_db_iops
+
+  pvc_claim_name = module.base-infrastructure.pvc_claim_name
+
+  bitbucket_configuration = {
+    helm_version = var.bitbucket_helm_chart_version
+    cpu          = var.bitbucket_cpu
+    mem          = var.bitbucket_mem
+    min_heap     = var.bitbucket_min_heap
+    max_heap     = var.bitbucket_max_heap
+    license      = var.bitbucket_license
+  }
+
+  admin_configuration = {
+    admin_username      = var.bitbucket_admin_username
+    admin_password      = var.bitbucket_admin_password
+    admin_display_name  = var.bitbucket_admin_display_name
+    admin_email_address = var.bitbucket_admin_email_address
+  }
 }

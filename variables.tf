@@ -216,6 +216,92 @@ variable "confluence_enable_synchrony" {
 }
 
 ################################################################################
+# Bitbucket Variables
+################################################################################
+
+variable "bitbucket_license" {
+  description = "Bitbucket license."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "bitbucket_admin_username" {
+  description = "Bitbucket system administrator username."
+  type        = string
+}
+
+variable "bitbucket_admin_password" {
+  description = "Bitbucket system administrator password."
+  type        = string
+  sensitive   = true
+}
+
+variable "bitbucket_admin_display_name" {
+  description = "Bitbucket system administrator display name."
+  type        = string
+}
+
+variable "bitbucket_admin_email_address" {
+  description = "Bitbucket system administrator email address."
+  type        = string
+}
+
+variable "bitbucket_db_major_engine_version" {
+  description = "The database major version to use."
+  default     = "13"
+  type        = string
+}
+
+variable "bitbucket_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 100
+  type        = number
+}
+
+variable "bitbucket_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "bitbucket_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "bitbucket_helm_chart_version" {
+  description = "Version of Bitbucket Helm chart"
+  type        = string
+  default     = "1.2.0"
+}
+
+variable "bitbucket_cpu" {
+  description = "Number of CPUs for Bitbucket instance"
+  type        = string
+  default     = "1"
+}
+
+variable "bitbucket_mem" {
+  description = "Amount of memory for Bitbucket instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bitbucket_min_heap" {
+  description = "Minimum heap size for Bitbucket instance"
+  type        = string
+  default     = "256m"
+}
+
+variable "bitbucket_max_heap" {
+  description = "Maximum heap size for Bitbucket instance"
+  type        = string
+  default     = "512m"
+}
+
+################################################################################
 # Bamboo Variables
 ################################################################################
 
@@ -338,3 +424,4 @@ variable "bamboo_dataset_url" {
   default     = null
   type        = string
 }
+

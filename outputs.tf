@@ -38,17 +38,6 @@ output "ingress" {
   }
 }
 
-output "bamboo_database" {
-  description = "Bamboo Database information"
-
-  value = local.install_bamboo && length(module.bamboo) == 1 ? {
-    rds_instance_id        = module.bamboo[0].rds_instance_id
-    db_name                = module.bamboo[0].db_name
-    kubernetes_secret_name = module.bamboo[0].kubernetes_rds_secret_name
-    jdbc_connection        = module.bamboo[0].rds_jdbc_connection
-  } : null
-}
-
 output "jira_database" {
   description = "Jira Database information"
 
@@ -71,12 +60,35 @@ output "confluence_database" {
   } : null
 }
 
+output "bitbucket_database" {
+  description = "Bitbucket database information"
+
+  value = local.install_bitbucket && length(module.bitbucket) == 1 ? {
+    rds_instance_id        = module.bitbucket[0].rds_instance_id
+    db_name                = module.bitbucket[0].db_name
+    kubernetes_secret_name = module.bitbucket[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.bitbucket[0].rds_jdbc_connection
+  } : null
+}
+
+output "bamboo_database" {
+  description = "Bamboo Database information"
+
+  value = local.install_bamboo && length(module.bamboo) == 1 ? {
+    rds_instance_id        = module.bamboo[0].rds_instance_id
+    db_name                = module.bamboo[0].db_name
+    kubernetes_secret_name = module.bamboo[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.bamboo[0].rds_jdbc_connection
+  } : null
+}
+
 output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
   value = {
-    bamboo     = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
     jira       = local.install_jira && length(module.jira) == 1 ? module.jira[0].product_domain_name : null
+    bitbucket  = local.install_bitbucket && length(module.bitbucket) == 1 ? module.bitbucket[0].product_domain_name : null
+    bamboo     = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
     confluence = local.install_confluence && length(module.confluence) == 1 ? module.confluence[0].product_domain_name : null
     synchrony  = var.confluence_enable_synchrony && length(module.confluence) == 1 ? module.confluence[0].synchrony_url : null
   }
