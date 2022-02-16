@@ -7,11 +7,11 @@ import (
 )
 
 func jiraHealthTests(t *testing.T, testConfig TestConfig) {
-	assertJiraStatusEndpoint(t, testConfig, "RUNNING")
+	assertJiraStatusEndpoint(t, testConfig, "FIRST_RUN")
 }
 
 func assertJiraStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
-	statusUrl := "rest/api/latest/status"
+	statusUrl := "status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", jira, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	println("asserting Jira Status Endpoint...")
