@@ -74,3 +74,11 @@ confluence_db_iops = 1000
 
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+
+### Collaborative editing
+
+`confluence_collaborative_editing_enabled` enables [Collaborative editing](https://confluence.atlassian.com/doc/collaborative-editing-858771779.html). (default: `true`)
+
+```terraform
+confluence_collaborative_editing_enabled = true
+```

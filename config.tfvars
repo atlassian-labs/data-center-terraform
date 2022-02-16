@@ -89,9 +89,8 @@ confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
 
-# Enable collaborator editing in Confluence
-# WARNING: Collaborative editing can be only enabled if the `domain` variable is set.
-#confluence_enable_synchrony = true
+# Enables Collaborative editing in Confluence
+#confluence_collaborative_editing_enabled = true
 
 ################################################################################
 # Bitbucket Settings
