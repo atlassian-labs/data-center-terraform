@@ -8,14 +8,14 @@ import (
 
 func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
 
-	// Test the RUNNING status
-	assertConfluenceStatusEndpoint(t, testConfig, "RUNNING")
+	// Test the status
+	assertConfluenceStatus(t, testConfig, "FIRST_RUN")
 }
 
-func assertConfluenceStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
-	statusUrl := "rest/api/latest/status"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+func assertConfluenceStatus(t *testing.T, testConfig TestConfig, expectedStatus string) {
+	statusUrl := "status"
+	url := fmt.Sprintf("https://%s.%s.%s/%s", confluence, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
+	println("asserting Confluence Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
-	println("assert Confluence StatusEndpoint ..... PASSED")
 }
