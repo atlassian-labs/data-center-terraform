@@ -16,6 +16,7 @@ resource "aws_route53_record" "bitbucket" {
 module "nfs" {
   source = "../../AWS/nfs"
 
+  product   = local.product_name
   namespace = var.namespace
 }
 
