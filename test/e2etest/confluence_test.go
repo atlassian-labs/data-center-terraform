@@ -16,6 +16,6 @@ func assertConfluenceStatus(t *testing.T, testConfig TestConfig, expectedStatus 
 	statusUrl := "status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", confluence, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
-	println("asserting Confluence Status...")
+	println("asserting Confluence Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
 }
