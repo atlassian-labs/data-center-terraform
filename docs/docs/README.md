@@ -46,7 +46,7 @@ The diagram below provides a high level overview of what a typical deployment wi
 ## Deploying a Data Center product
 
 * [Prerequisites](userguide/PREREQUISITES.md) - steps for environment setup including installation of 3rd party tooling
-* [Configuration](userguide/CONFIGURATION.md) - steps for configuring deployment
+* [Configuration](userguide/configuration/CONFIGURATION.md) - steps for configuring deployment
 * [Installation](userguide/INSTALLATION.md) - steps for running a deployment
 
 ## Product support

@@ -23,7 +23,7 @@ Amazon Web Services (AWS) is the only supported cloud platform.
 
 ### Database
 
-PostgreSQL is the defined database engine for the products and cannot be modified in the configuration. However, users can change the database [instance type](../userguide/CONFIGURATION.md#database-instance-class) and [storage size](../userguide/CONFIGURATION.md#database-allocated-storage).
+PostgreSQL is the defined database engine for the products and cannot be modified in the configuration. However, users can change the database [instance type](../userguide/configuration/CONFIGURATION.md#database-instance-class) and [storage size](../userguide/configuration/CONFIGURATION.md#database-allocated-storage).
 
 ### Scaling EKS
 

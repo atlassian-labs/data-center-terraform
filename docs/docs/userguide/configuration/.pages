@@ -1,0 +1,6 @@
+nav:
+    - CONFIGURATION.md
+    - BAMBOO_CONFIGURATION.md
+    - CONFLUENCE_CONFIGURATION.md
+    - JIRA_CONFIGURATION.md
+    - ...
