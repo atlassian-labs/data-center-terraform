@@ -24,7 +24,6 @@ func TestJiraVariablesPopulatedWithValidValues(t *testing.T) {
 // Variables
 
 var JiraCorrectVariables = map[string]interface{}{
-	"region_name":      "dummy_region_name",
 	"environment_name": "dummy-environment",
 	"namespace":        "dummy-namespace",
 	"eks": map[string]interface{}{

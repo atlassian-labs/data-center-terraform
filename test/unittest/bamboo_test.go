@@ -63,7 +63,6 @@ func TestBambooDatasetImport(t *testing.T) {
 var DatasetUrl = "https://s3.aws.com/bucket/dataset.zip"
 
 var BambooCorrectVariables = map[string]interface{}{
-	"region_name":      "dummy_region_name",
 	"environment_name": "dummy-environment",
 	"namespace":        "dummy-namespace",
 	"eks": map[string]interface{}{
