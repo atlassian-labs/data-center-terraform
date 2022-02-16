@@ -209,7 +209,7 @@ variable "confluence_db_iops" {
   type        = number
 }
 
-variable "confluence_enable_synchrony" {
+variable "confluence_collaborative_editing_enabled" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
   default     = true
