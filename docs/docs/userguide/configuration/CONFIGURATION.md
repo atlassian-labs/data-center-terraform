@@ -63,7 +63,6 @@ region = "<REGION>"  # e.g. "ap-northeast-2" # (1)
 
 1. A valid [AWS region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html){.external} must be used.
 
-
 ### Products
 
 The `products` list can be configured with one or many products. This will result in these products being deployed to the same K8s cluster. For example, if a Jira and Confluence deployment is required this property can be configured as follows:
@@ -133,7 +132,6 @@ instance_types = ["m5.2xlarge"] # (1)
 1. !!! warning "The instance type cannot be changed once the infrastructure has been provisioned."
 
 The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
-    
 
 ### EKS node count
 
@@ -147,7 +145,6 @@ desired_capacity = <NUMBER OF NODES>  # (1)
 ```
 
 1. !!! warning "The node count cannot be changed once the infrastructure has been provisioned."
-
 
 ## Product specific configuration
 
@@ -163,8 +160,6 @@ desired_capacity = <NUMBER OF NODES>  # (1)
 
     [Jira specific configuration](JIRA_CONFIGURATION.md)
 
-
-    
 ## Sensitive Data
 
 Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).
