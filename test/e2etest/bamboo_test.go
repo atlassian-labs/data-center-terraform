@@ -26,7 +26,7 @@ func bambooHealthTests(t *testing.T, testConfig TestConfig) {
 
 func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
 	statusUrl := "rest/api/latest/status"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, statusUrl)
+	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
@@ -34,7 +34,7 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 
 func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	planUrl := "rest/api/latest/plan"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, planUrl)
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, planUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo PlanListEndpoint...")
 	assert.Contains(t, string(content), "TestPlan")
@@ -42,7 +42,7 @@ func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 
 func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 	projUrl := "allProjects.action"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", product, testConfig.EnvironmentName, domain, projUrl)
+	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, projUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo BambooProjects...")
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
@@ -53,7 +53,7 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	// Wait 15 seconds to allow remote agents get online
 	time.Sleep(15 * time.Second)
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, agentUrl)
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
 	println("asserting Bamboo RemoteAgentList...")
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
@@ -61,14 +61,14 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig) {
 	resumeUrl := "rest/api/latest/server/resume"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, resumeUrl)
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, resumeUrl)
 
 	sendPostRequest(t, url, "application/json", nil)
 }
 
 func pauseBambooServer(t *testing.T, testConfig TestConfig) {
 	pauseUrl := "rest/api/latest/server/pause"
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, product, testConfig.EnvironmentName, domain, pauseUrl)
+	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, pauseUrl)
 
 	sendPostRequest(t, url, "application/json", nil)
 }

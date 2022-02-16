@@ -9,7 +9,7 @@ import (
 func TestInstaller(t *testing.T) {
 
 	// List of the products to test
-	productList := []string {"bamboo", "jira", "confluence"}
+	productList := []string{jira, confluence, bamboo}
 	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
@@ -18,19 +18,19 @@ func TestInstaller(t *testing.T) {
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
-	// Run Bamboo health tests
-	if contains(productList, "bamboo") {
-		bambooHealthTests(t, testConfig)
-	}
-
 	// Run Jira health tests
-	if contains(productList, "jira") {
+	if contains(productList, jira) {
 		jiraHealthTests(t, testConfig)
 	}
 
 	// Run Confluence health tests
-	if contains(productList, "confluence") {
+	if contains(productList, confluence) {
 		confluenceHealthTests(t, testConfig)
+	}
+
+	// Run Bamboo health tests
+	if contains(productList, bamboo) {
+		bambooHealthTests(t, testConfig)
 	}
 }
 

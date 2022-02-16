@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 	"testing"
 	"text/template"
@@ -20,10 +19,18 @@ import (
 )
 
 const (
-	resourceOwner     = "dc-deployment"
-	credential        = "admin:Atlassian21!" // Admin credential 'username:password'
-	product           = "bamboo"
-	domain            = "deplops.com"
+	resourceOwner = "dc-deployment"
+	credential    = "admin:Atlassian21!" // Admin credential 'username:password'
+
+	domain = "deplops.com"
+
+	// List of supported products
+	jira       = "jira"
+	confluence = "confluence"
+	bitbucket  = "bitbucket"
+	bamboo     = "bamboo"
+
+	// License for the products
 	confluenceLicense = ""
 	bitbucketLicense  = ""
 	bambooLicense     = ""
@@ -90,11 +97,11 @@ func getLicense(productList []string, product string) string {
 	license := ""
 	if contains(productList, product) {
 		switch product {
-		case "confluence":
+		case confluence:
 			license = confluenceLicense
-		case "bitbucket":
+		case bitbucket:
 			license = bitbucketLicense
-		case "bamboo":
+		case bamboo:
 			license = bambooLicense
 		}
 		if len(license) == 0 {
@@ -110,9 +117,9 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
 		ResourceOwner:     resourceOwner,
-		ConfluenceLicense: getLicense(productList, "confluence"),
-		BitbucketLicense:  getLicense(productList, "bitbucket"),
-		BambooLicense:     getLicense(productList, "bamboo"),
+		ConfluenceLicense: getLicense(productList, confluence),
+		BitbucketLicense:  getLicense(productList, bitbucket),
+		BambooLicense:     getLicense(productList, bamboo),
 	}
 
 	// Product list
@@ -148,7 +155,11 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	return testConfig
 }
 
-func contains(s []string, item string) bool {
-	i := sort.SearchStrings(s, item)
-	return i < len(s) && s[i] == item
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
