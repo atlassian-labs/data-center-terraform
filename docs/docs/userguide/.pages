@@ -1,5 +1,6 @@
 nav:
     - PREREQUISITES.md
     - INSTALLATION.md
-    - CLEANUP.md
+    - configuration
+    - Uninstallation: CLEANUP.md
     - ...

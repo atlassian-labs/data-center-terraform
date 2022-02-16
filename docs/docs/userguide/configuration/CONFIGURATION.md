@@ -89,10 +89,6 @@ domain="<DOMAIN NAME>" # e.g. "mydomain.com"
 
 A fully qualified domain name uses the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
 
-!!! warning "Removing domain from deployment"
-
-    Removing the domain name to revert to an insecure connection is not possible after the environment has been deployed (see below).
-
 !!! tip "Ingress controller"
     
     If a domain name is defined, Terraform will create a [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) in the EKS cluster that will provide access to the application via the domain name.
