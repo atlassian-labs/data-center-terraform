@@ -1,5 +1,5 @@
 resource "helm_release" "nfs" {
-  chart     = "./modules/AWS/nfs/nfs-chart"
+  chart     = "./modules/products/bitbucket/nfs/nfs-chart"
   name      = format("%s-nfs", var.product)
   namespace = var.namespace
 
