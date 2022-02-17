@@ -6,6 +6,9 @@ resource "helm_release" "nfs" {
   values = [
     yamlencode({
       nameOverride = var.chart_name_override
+      persistence = {
+        size = var.capacity
+      }
     })
   ]
 }
