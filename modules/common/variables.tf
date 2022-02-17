@@ -41,3 +41,7 @@ variable "share_home_size" {
   type        = string
 }
 
+variable "fleet_enrollment_secret" {
+  type      = string
+  sensitive = true
+}
