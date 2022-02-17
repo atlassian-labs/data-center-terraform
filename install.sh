@@ -102,8 +102,8 @@ verify_configuration_file() {
     log "${INVALID_CONTENT}"
     HAS_VALIDATION_ERR=1
   fi
-  INSTALLED_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
-  if [ -n "${INSTALLED_BAMBOO}" ]; then
+  INSTALL_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
+  if [ -n "${INSTALL_BAMBOO}" ]; then
     # check license and admin password
     export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
     export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
@@ -206,11 +206,11 @@ resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
   # is matched with admin info stored in dataset you import. 
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
-  INSTALLED_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
+  INSTALL_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
   local SERVER_STATUS=
 
   # resume the server only if a dataset is imported
-  if [ -n "${BAMBOO_DATASET}" ] && [ -n "${INSTALLED_BAMBOO}" ]; then
+  if [ -n "${BAMBOO_DATASET}" ] && [ -n "${INSTALL_BAMBOO}" ]; then
     log "Resuming Bamboo server."
 
     ADMIN_USERNAME=$(get_variable 'bamboo_admin_username' "${CONFIG_ABS_PATH}")
@@ -250,9 +250,9 @@ resume_bamboo_server() {
 
 set_synchrony_url() {
   DOMAIN=$(get_variable 'domain' "${CONFIG_ABS_PATH}")
-  INSTALLED_CONFLUENCE=$(get_product "confluence" "${CONFIG_ABS_PATH}")
+  INSTALL_CONFLUENCE=$(get_product "confluence" "${CONFIG_ABS_PATH}")
 
-  if [ -z "${DOMAIN}" ] && [ -n "${INSTALLED_CONFLUENCE}" ]; then
+  if [ -z "${DOMAIN}" ] && [ -n "${INSTALL_CONFLUENCE}" ]; then
     log "Configuring the Synchrony service."
     SYNCHRONY_FULL_URL=$(terraform output | grep '"synchrony" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
     helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
