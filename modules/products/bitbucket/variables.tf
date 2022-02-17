@@ -80,8 +80,29 @@ variable "admin_configuration" {
   }
 }
 
+# If an external elasticsearch is not provided, Bitbucket will provision an elasticsearch cluster in k8s
 variable "elasticsearch_endpoint" {
-  description = "The elasticsearch endpoint to be use in `bitbucket.elasticsearch-baseUrl`."
+  description = "The external elasticsearch endpoint to be use by Bitbucket."
   type        = string
   default     = null
+}
+
+variable "elasticsearch_cpu" {
+  description = "Number of CPUs for elasticsearch instance"
+  type        = string
+}
+
+variable "elasticsearch_mem" {
+  description = "Amount of memory for elasticsearch instance"
+  type        = string
+}
+
+variable "elasticsearch_storage" {
+  description = "Storage size for elasticsearch instance"
+  type        = string
+}
+
+variable "elasticsearch_replicas" {
+  description = "Number of nodes for elasticsearch instance"
+  type        = number
 }

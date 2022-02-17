@@ -154,4 +154,11 @@ module "bitbucket" {
     admin_display_name  = var.bitbucket_admin_display_name
     admin_email_address = var.bitbucket_admin_email_address
   }
+
+  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
+  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
+  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
+  # If you want to pass an external
+  elasticsearch_endpoint = var.bitbucket_elasticsearch_endpoint
 }

@@ -48,10 +48,10 @@ locals {
   }) : yamlencode({})
 
   # Elasticsearch
+  elasticsearch_name                  = "elasticsearch"
   elasticsearch_helm_chart_repository = "https://helm.elastic.co"
   elasticsearch_helm_chart_version    = "7.16.3"
+  elasticsearch_antiAffinity          = var.eks.cluster_size < 3 ? "soft" : "hard"
 
-  antiAffinity = var.eks.cluster_size < 3 ? "soft" : "hard"
-
-  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "elasticsearch-master:9200" : var.elasticsearch_endpoint
+  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "${local.elasticsearch_name}-master:9200" : var.elasticsearch_endpoint
 }

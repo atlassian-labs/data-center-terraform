@@ -133,6 +133,11 @@ bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 
+bitbucket_elasticsearch_cpu      = "1"
+bitbucket_elasticsearch_mem      = "1Gi"
+bitbucket_elasticsearch_storage  = "1Gi"
+bitbucket_elasticsearch_replicas = 3
+
 ################################################################################
 # Bamboo Settings
 ################################################################################

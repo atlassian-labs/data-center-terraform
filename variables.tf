@@ -301,6 +301,36 @@ variable "bitbucket_max_heap" {
   default     = "512m"
 }
 
+variable "bitbucket_elasticsearch_endpoint" {
+  description = "The external elasticsearch endpoint to be use by Bitbucket."
+  type        = string
+  default     = null
+}
+
+variable "bitbucket_elasticsearch_cpu" {
+  description = "Number of CPUs for Bitbucket elasticsearch instance"
+  type        = string
+  default     = "1"
+}
+
+variable "bitbucket_elasticsearch_mem" {
+  description = "Amount of memory for Bitbucket elasticsearch instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_storage" {
+  description = "Storage size for Bitbucket elasticsearch instance"
+  type        = string
+  default     = "5G"
+}
+
+variable "bitbucket_elasticsearch_replicas" {
+  description = "Number of nodes for elasticsearch instance"
+  type        = number
+  default     = 3
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################

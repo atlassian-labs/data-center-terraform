@@ -1,45 +1,31 @@
 # Create the elasticsearch based on Elasticsearch Helm charts (https://github.com/elastic/helm-charts/tree/main/elasticsearch)
 
 resource "helm_release" "elasticsearch" {
+  name       = "${local.elasticsearch_name}-${var.environment_name}"
   namespace  = var.namespace
   repository = local.elasticsearch_helm_chart_repository
   chart      = "elasticsearch"
   version    = local.elasticsearch_helm_chart_version
 
-  name = "elasticsearch-${var.environment_name}"
   values = [
     yamlencode({
-      name = "elasticsearch",
+      name     = local.elasticsearch_name,
+      imageTag = local.elasticsearch_helm_chart_version
 
-      antiAffinity = local.antiAffinity
-      replicas     = 3,
+      antiAffinity = local.elasticsearch_antiAffinity
+      replicas     = var.elasticsearch_replicas,
       resources = {
         requests = {
-          cpu    = "250m"
-          memory = "1Gi"
+          cpu    = var.elasticsearch_cpu
+          memory = var.elasticsearch_mem
         }
       },
       volumeClaimTemplate = {
         resources = {
           requests = {
-            storage = "1Gi"
+            storage = var.elasticsearch_storage
           }
         },
-        persistence = {
-          enabled = "true"
-        },
-        protocol      = "https"
-        httpPort      = "9200"
-        transportPort = "9300"
-
-        # This is the max unavailable setting for the pod disruption budget
-        # The default value of 1 will make sure that kubernetes won't allow more than 1
-        # of your pods to be unavailable during maintenance
-        maxUnavailable = 1
-
-        # How long to wait for elasticsearch to stop gracefully
-        terminationGracePeriod = 120
-
       }
     })
   ]
