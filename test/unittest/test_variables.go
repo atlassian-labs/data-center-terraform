@@ -99,6 +99,17 @@ var EfsInvalidVariable = map[string]interface{}{
 	"csi_controller_replica_count": 1,
 }
 
+// NFS
+const nfsVarProduct = "test-nfs-product"
+const nfsVarNamespace = "test-name-space"
+const nfsVarChartNameOverride = "test-nfs-override-name"
+
+var NfsValidVariable = map[string]interface{}{
+	"product":             nfsVarProduct,
+	"namespace":           nfsVarNamespace,
+	"chart_name_override": nfsVarChartNameOverride,
+}
+
 // DB
 const databaseModule = "AWS/rds"
 const inputVpcId = "dummy_vpc_id"
