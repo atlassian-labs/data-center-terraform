@@ -106,10 +106,10 @@ const nfsVarChartNameOverride = "test-nfs-override-name"
 const nfsVarCapacity = "10Gi"
 
 var NfsValidVariable = map[string]interface{}{
-	"product":             nfsVarProduct,
-	"namespace":           nfsVarNamespace,
-	"chart_name_override": nfsVarChartNameOverride,
-	"capacity":            nfsVarCapacity,
+	"product":    nfsVarProduct,
+	"namespace":  nfsVarNamespace,
+	"chart_name": nfsVarChartNameOverride,
+	"capacity":   nfsVarCapacity,
 }
 
 // DB
