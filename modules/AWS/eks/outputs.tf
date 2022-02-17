@@ -30,3 +30,7 @@ output "cluster_security_group" {
 output "cluster_asg_name" {
   value = local.cluster_asg_name
 }
+
+output "cluster_size" {
+  value = var.desired_capacity
+}

@@ -79,3 +79,9 @@ variable "admin_configuration" {
     error_message = "Bitbucket administrator configuration is not valid."
   }
 }
+
+variable "elasticsearch_endpoint" {
+  description = "The elasticsearch endpoint to be use in `bitbucket.elasticsearch-baseUrl`."
+  type        = string
+  default     = null
+}

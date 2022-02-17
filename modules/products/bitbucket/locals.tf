@@ -46,4 +46,12 @@ locals {
       }
     }
   }) : yamlencode({})
+
+  # Elasticsearch
+  elasticsearch_helm_chart_repository = "https://helm.elastic.co"
+  elasticsearch_helm_chart_version    = "7.16.3"
+
+  antiAffinity = var.eks.cluster_size < 3 ? "soft" : "hard"
+
+  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "elasticsearch-master:9200" : var.elasticsearch_endpoint
 }
