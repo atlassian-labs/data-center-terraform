@@ -34,7 +34,8 @@ func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
 	values := helmRelease.AttributeValues["values"].([]interface{})[0].(string)
 
 	expectedProduct := fmt.Sprintf("%s-nfs", nfsVarProduct)
-	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n", nfsVarChartNameOverride)
+	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n \"persistence\":\n \"size\": \"%s\"\n", nfsVarChartNameOverride, nfsVarCapacity)
+
 	expectedNamespace := nfsVarNamespace
 
 	assert.Equal(t, expectedProduct, helmRelease.AttributeValues["name"])

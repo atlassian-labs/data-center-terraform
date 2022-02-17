@@ -13,3 +13,10 @@ variable "chart_name_override" {
   type        = string
   default     = "server"
 }
+
+variable "capacity" {
+  description = "The storage capacity to allocate to the NFS"
+  type = string
+  default = "10Gi"
+}
+
