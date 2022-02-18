@@ -31,6 +31,7 @@ resource "kubernetes_secret" "license_secret" {
 # Kubernetes secret to store system admin credentials
 ################################################################################
 resource "kubernetes_secret" "admin_secret" {
+  count = var.admin_configuration["admin_username"] != null ? 1 : 0
   metadata {
     name      = "${local.product_name}-admin"
     namespace = var.namespace
