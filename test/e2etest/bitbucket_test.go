@@ -8,7 +8,7 @@ import (
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 	// Test status endpoint
-	assertBitbucketStatusEndpoint(t, testConfig, "FIRST_RUN")
+	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
 
 	// Test NFS
 	testNFS()
