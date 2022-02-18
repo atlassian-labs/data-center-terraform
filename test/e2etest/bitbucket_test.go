@@ -15,7 +15,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
-	statusUrl := "/status"
+	statusUrl := "status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bitbucket, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	assert.Contains(t, string(content), expectedStatus)
