@@ -306,9 +306,9 @@ variable "bitbucket_max_heap" {
 }
 
 variable "bitbucket_elasticsearch_option" {
-  description = "The architecture solution for elasticsearch that will  be used for bitbucket."
+  description = "The option for elasticsearch that will  be used for bitbucket."
   type        = string
-  default     = "internal"
+  default     = "EKS"
   validation {
     condition     = contains(["EKS", "AWS", "external_url"], var.bitbucket_elasticsearch_option)
     error_message = "Elasticsearch architecture is not valid. The valid value is 'EKS', 'AWS', or 'external_url'."
