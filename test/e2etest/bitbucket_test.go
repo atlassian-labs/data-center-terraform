@@ -18,10 +18,10 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 	statusUrl := "status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bitbucket, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
+	println("assert Bitbucket StatusEndpoint...")
 	assert.Contains(t, string(content), expectedStatus)
-	println("assert Bitbucket StatusEndpoint ..... PASSED")
 }
 
 func testNFS() {
-	fmt.Println("NFS test coming soon.")
+	fmt.Println("NFS test coming soon...")
 }
