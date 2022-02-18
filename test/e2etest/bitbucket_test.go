@@ -19,9 +19,9 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bitbucket, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	if assert.Contains(t, string(content), expectedStatus) {
-		println("assert Bitbucket StatusEndpoint ... OK")
+		println("Asserting Bitbucket Status Endpoint ... OK")
 	} else {
-		println("assert Bitbucket StatusEndpoint ... FAIL")
+		println("Asserting Bitbucket Status Endpoint ... FAIL")
 	}
 }
 
