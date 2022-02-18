@@ -99,3 +99,32 @@ jira_db_iops                 = 1000
 
 confluence_license                 = "{{.confluence_license}}"
 confluence_db_major_engine_version = 11
+
+################################################################################
+# Bitbucket Settings
+################################################################################
+
+# Helm chart version of Bitbucket
+#
+bitbucket_helm_chart_version = "1.1.0"
+
+bitbucket_admin_username      = "Adminik"
+bitbucket_admin_password      = "Atlassian21!"
+bitbucket_admin_display_name  = "Bitbucket"
+bitbucket_admin_email_address = "admin@adminson.com"
+
+# Bitbucket instance resource configuration
+bitbucket_cpu      = "1"
+bitbucket_mem      = "1Gi"
+bitbucket_min_heap = "256m"
+bitbucket_max_heap = "512m"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+bitbucket_db_major_engine_version = "13"
+bitbucket_db_instance_class       = "db.t3.micro"
+bitbucket_db_allocated_storage    = 100
+bitbucket_db_iops                 = 1000
