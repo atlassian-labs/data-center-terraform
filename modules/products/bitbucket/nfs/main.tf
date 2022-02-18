@@ -1,11 +1,11 @@
 resource "helm_release" "nfs" {
-  chart     = "./modules/AWS/nfs/nfs-chart"
+  chart     = "./modules/products/bitbucket/nfs/nfs-chart"
   name      = format("%s-nfs", var.product)
   namespace = var.namespace
 
   values = [
     yamlencode({
-      nameOverride = var.chart_name_override
+      nameOverride = var.chart_name
       persistence = {
         size = var.capacity
       }
@@ -16,7 +16,7 @@ resource "helm_release" "nfs" {
 data "kubernetes_service" "nfs" {
   depends_on = [helm_release.nfs]
   metadata {
-    name      = format("%s-%s", helm_release.nfs.name, var.chart_name_override)
+    name      = format("%s-%s", helm_release.nfs.name, var.chart_name)
     namespace = var.namespace
   }
 }

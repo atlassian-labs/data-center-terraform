@@ -107,19 +107,19 @@ verify_configuration_file() {
     HAS_VALIDATION_ERR=1
   fi
 
-#  if [ -z "${POPULATED_LICENSE}" ];  then
-#    if [ -z "${TF_VAR_bamboo_license}" ]; then
-#      log "License is missing. Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
-#      HAS_VALIDATION_ERR=1
-#    fi
-#  fi
+  if [ -z "${POPULATED_LICENSE}" ];  then
+    if [ -z "${TF_VAR_bamboo_license}" ]; then
+      log "License is missing. Please provide license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
 
-#  if [ -z "${POPULATED_ADMIN_PWD}" ];  then
-#    if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
-#      log "Admin password is missing. Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
-#      HAS_VALIDATION_ERR=1
-#    fi
-#  fi
+  if [ -z "${POPULATED_ADMIN_PWD}" ];  then
+    if [ -z "${TF_VAR_bamboo_admin_password}" ]; then
+      log "Admin password is missing. Please provide admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
+      HAS_VALIDATION_ERR=1
+    fi
+  fi
 
   if [ -n "${HAS_VALIDATION_ERR}" ]; then
     log "There was a problem with the configuration file. Execution is aborted." "ERROR"

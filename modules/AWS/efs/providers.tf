@@ -1,4 +1,4 @@
-  provider "helm" {
+provider "helm" {
   kubernetes {
     host                   = var.eks.kubernetes_provider_config.host
     token                  = var.eks.kubernetes_provider_config.token

@@ -8,8 +8,8 @@ variable "namespace" {
   type        = string
 }
 
-variable "chart_name_override" {
-  description = "Name to override the default chart name for NFS."
+variable "chart_name" {
+  description = "The chart name to use."
   type        = string
   default     = "server"
 }
