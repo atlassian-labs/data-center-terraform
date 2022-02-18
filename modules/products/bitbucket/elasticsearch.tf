@@ -14,8 +14,10 @@ resource "helm_release" "elasticsearch" {
       name     = local.elasticsearch_name,
       imageTag = local.elasticsearch_helm_chart_version
 
-      antiAffinity = local.elasticsearch_antiAffinity
-      replicas     = var.elasticsearch_replicas,
+      antiAffinity       = local.elasticsearch_antiAffinity
+      replicas           = var.elasticsearch_replicas,
+      minimumMasterNodes = local.minimumMasterNodes
+
       resources = {
         requests = {
           cpu    = var.elasticsearch_cpu
@@ -25,7 +27,7 @@ resource "helm_release" "elasticsearch" {
       volumeClaimTemplate = {
         resources = {
           requests = {
-            storage = var.elasticsearch_storage
+            storage = "${var.elasticsearch_storage}G"
           }
         },
       }

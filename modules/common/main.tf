@@ -36,6 +36,20 @@ module "ingress" {
   ingress_domain = local.ingress_domain
 }
 
+module "elasticsearch" {
+  count = var.create_elasticsearch ? 1 : 0
+
+  source     = "../AWS/elasticsearch"
+  depends_on = [module.vpc]
+
+  # inputs
+  environment_name = var.environment_name
+  vpc_id           = module.vpc.private_subnets
+  ebs_volume_size  = var.elasticsearch_storage_size
+  instance_count   = var.elasticsearch_instance_count
+}
+
+
 resource "kubernetes_namespace" "products" {
   metadata {
     name = var.namespace

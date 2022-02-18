@@ -1,5 +1,4 @@
 locals {
-  cluster_name          = "elasticsearch-cluster"
-  es_version            = "6.8.8"
-  master_eligible_nodes = 1
+  cluster_name = "elasticsearch-bitbucket"
+  es_version   = "7.10"
 }

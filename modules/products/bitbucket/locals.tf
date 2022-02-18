@@ -53,5 +53,13 @@ locals {
   elasticsearch_helm_chart_version    = "7.16.3"
   elasticsearch_antiAffinity          = var.eks.cluster_size < 3 ? "soft" : "hard"
 
-  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "${local.elasticsearch_name}-master:9200" : var.elasticsearch_endpoint
+  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "http://${local.elasticsearch_name}-master:9200" : var.elasticsearch_endpoint
+  minimumMasterNodes     = var.elasticsearch_replicas == 1 ? 1 : 2
+
+  single_mode_elasticsearch = var.elasticsearch_replicas > 1 ? yamlencode({}) : yamlencode({
+    extraEnvs = [
+      { name = "discovery.type", value = "single-node" },
+      { name = "cluster.initial_master_nodes", value = "" }
+    ]
+  })
 }

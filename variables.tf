@@ -301,34 +301,58 @@ variable "bitbucket_max_heap" {
   default     = "512m"
 }
 
-variable "bitbucket_elasticsearch_endpoint" {
+variable "bitbucket_elasticsearch_option" {
+  description = "The architecture solution for elasticsearch that will  be used for bitbucket."
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["EKS", "AWS", "external_url"], var.bitbucket_elasticsearch_option)
+    error_message = "Elasticsearch architecture is not valid. The valid value is 'EKS', 'AWS', or 'external_url'."
+  }
+}
+
+variable "bitbucket_external_elasticsearch_endpoint" {
   description = "The external elasticsearch endpoint to be use by Bitbucket."
   type        = string
   default     = null
+  validation {
+    condition     = var.bitbucket_external_elasticsearch_endpoint == null || can(regex("^http[s]?:(//)(\\w+.)+(:[1-9][0-9]?[0-9]?[0-9]?)$", var.bitbucket_external_elasticsearch_endpoint))
+    error_message = "Invalid endpoint. The endpoint should be a valid Url format: 'http(s)//<domain>:<port>' ."
+  }
 }
 
 variable "bitbucket_elasticsearch_cpu" {
-  description = "Number of CPUs for Bitbucket elasticsearch instance"
+  description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
   default     = "1"
 }
 
 variable "bitbucket_elasticsearch_mem" {
-  description = "Amount of memory for Bitbucket elasticsearch instance"
+  description = "Amount of memory for Bitbucket elasticsearch instance."
   type        = string
   default     = "1Gi"
 }
 
 variable "bitbucket_elasticsearch_storage" {
-  description = "Storage size for Bitbucket elasticsearch instance"
+  description = "Storage size for Bitbucket elasticsearch instance in GiB."
+  type        = number
+  default     = 10
+}
+
+variable "bitbucket_aws_elasticsearch_instance_type" {
+  description = "Instance type for Bitbucket AWS Elasticsearch."
   type        = string
-  default     = "5G"
+  default     = "r4.large.elasticsearch"
 }
 
 variable "bitbucket_elasticsearch_replicas" {
   description = "Number of nodes for elasticsearch instance"
   type        = number
-  default     = 3
+  default     = 2
+  validation {
+    condition     = var.bitbucket_elasticsearch_replicas > 1 && var.bitbucket_elasticsearch_replicas < 7
+    error_message = "Number of elasticsearch nodes must be between 2 and 6."
+  }
 }
 
 ################################################################################

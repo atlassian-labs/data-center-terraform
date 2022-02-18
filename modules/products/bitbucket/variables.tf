@@ -52,11 +52,7 @@ variable "bitbucket_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.bitbucket_configuration) == 6 &&
-      alltrue([
-        for o in keys(var.bitbucket_configuration) : contains([
-          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
-        ], o)
-    ]))
+    alltrue([for o in keys(var.bitbucket_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
     error_message = "Bitbucket configuration is not valid."
   }
 }
@@ -88,21 +84,21 @@ variable "elasticsearch_endpoint" {
 }
 
 variable "elasticsearch_cpu" {
-  description = "Number of CPUs for elasticsearch instance"
+  description = "Number of CPUs for elasticsearch instance."
   type        = string
 }
 
 variable "elasticsearch_mem" {
-  description = "Amount of memory for elasticsearch instance"
+  description = "Amount of memory for elasticsearch instance."
   type        = string
 }
 
 variable "elasticsearch_storage" {
-  description = "Storage size for elasticsearch instance"
-  type        = string
+  description = "Storage size for elasticsearch instance in Gib."
+  type        = number
 }
 
 variable "elasticsearch_replicas" {
-  description = "Number of nodes for elasticsearch instance"
+  description = "Number of nodes for elasticsearch instance."
   type        = number
 }

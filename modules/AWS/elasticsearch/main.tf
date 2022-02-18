@@ -2,50 +2,56 @@
 # Elasticsearch Instance
 ################################################################################
 
-# Create the elasticsearch based on Elasticsearch Helm charts (https://github.com/elastic/helm-charts/tree/main/elasticsearch)
+# Creating the Elasticsearch domain
 
-#resource "helm_release" "elasticsearch" {
-#  namespace  = var.namespace
-#  repository = local.elasticsearch_helm_chart_repository
-#  chart      = "elasticsearch"
-#  version    = local.elasticsearch_helm_chart_version
-#
-#  name = "elasticsearch-${var.environment_name}"
-#  values = [
-#    yamlencode({
-#      name = "elasticsearch",
-#
-#      antiAffinity = local.antiAffinity
-#
-#      replicas  = 3,
-#      resources = {
-#        requests = {
-#          cpu    = "250m"
-#          memory = "1Gi"
-#        }
-#      },
-#      volumeClaimTemplate = {
-#        resources = {
-#          requests = {
-#            storage = "1Gi"
-#          }
-#        },
-#        persistence = {
-#          enabled = "true"
-#        },
-#        protocol      = "https"
-#        httpPort      = 9200
-#        transportPort = 9300
-#
-#        # This is the max unavailable setting for the pod disruption budget
-#        # The default value of 1 will make sure that kubernetes won't allow more than 1
-#        # of your pods to be unavailable during maintenance
-#        maxUnavailable = 1
-#
-#        # How long to wait for elasticsearch to stop gracefully
-#        terminationGracePeriod = 120
-#
-#      }
-#    })
-#  ]
-#}
+resource "aws_elasticsearch_domain" "es" {
+  domain_name           = local.cluster_name
+  elasticsearch_version = local.es_version
+
+  cluster_config {
+    instance_type  = var.instance_type
+    instance_count = var.instance_count
+  }
+  snapshot_options {
+    automated_snapshot_start_hour = 23
+  }
+  vpc_options {
+    subnet_ids = data.aws_subnet_ids.private.ids
+  }
+  ebs_options {
+    ebs_enabled = var.ebs_volume_size > 0 ? true : false
+    volume_size = var.ebs_volume_size
+    volume_type = var.volume_type
+  }
+  tags = {
+    Domain = "Elasticsearch"
+  }
+}
+
+# Creating the AWS Elasticsearch domain policy
+
+resource "aws_elasticsearch_domain_policy" "main" {
+  domain_name     = aws_elasticsearch_domain.es.domain_name
+  access_policies = <<POLICIES
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "es:*",
+            "Principal": "*",
+            "Effect": "Allow",
+            "Resource": "${aws_elasticsearch_domain.es.arn}/*"
+        }
+    ]
+}
+POLICIES
+}
+
+// Get the list of private subnet ids
+data "aws_subnet_ids" "private" {
+  vpc_id = var.vpc_id
+
+  tags = {
+    Tier = "Private"
+  }
+}

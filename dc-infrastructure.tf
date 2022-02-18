@@ -9,6 +9,12 @@ module "base-infrastructure" {
   domain           = var.domain
   namespace        = local.namespace
   share_home_size  = "5Gi"
+
+  create_elasticsearch         = local.create_aws_elasticsearch
+  elasticsearch_instance_type  = var.bitbucket_aws_elasticsearch_instance_type
+  elasticsearch_storage_size   = var.bitbucket_elasticsearch_storage
+  elasticsearch_instance_count = var.bitbucket_elasticsearch_replicas
+
 }
 
 module "bamboo" {
@@ -160,5 +166,5 @@ module "bitbucket" {
   elasticsearch_storage  = var.bitbucket_elasticsearch_storage
   elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
   # If you want to pass an external
-  elasticsearch_endpoint = var.bitbucket_elasticsearch_endpoint
+  elasticsearch_endpoint = var.bitbucket_external_elasticsearch_endpoint
 }

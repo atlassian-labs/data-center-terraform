@@ -29,7 +29,7 @@ resource "helm_release" "bitbucket" {
         sysadminCredentials = {
           secretName = kubernetes_secret.admin_secret.metadata[0].name
         }
-        elasticsearch = {
+        elasticSearch = {
           baseUrl = local.elasticsearch_endpoint
         }
       }
