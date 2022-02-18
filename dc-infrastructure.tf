@@ -26,12 +26,12 @@ module "bamboo" {
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
-  admin_configuration = {
-    admin_username      = var.bamboo_admin_username
-    admin_password      = var.bamboo_admin_password
-    admin_display_name  = var.bamboo_admin_display_name
-    admin_email_address = var.bamboo_admin_email_address
-  }
+
+  admin_username      = var.bamboo_admin_username
+  admin_password      = var.bamboo_admin_password
+  admin_display_name  = var.bamboo_admin_display_name
+  admin_email_address = var.bamboo_admin_email_address
+
 
   db_major_engine_version = var.bamboo_db_major_engine_version
   db_configuration = {

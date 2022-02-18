@@ -91,12 +91,10 @@ var BambooCorrectVariables = map[string]interface{}{
 		"db_instance_class":    "dummy_db_instance_class",
 		"db_iops":              1000,
 	},
-	"admin_configuration": map[string]interface{}{
-		"admin_username":      "dummy_admin_username",
-		"admin_password":      "dummy_admin_password",
-		"admin_display_name":  "dummy_admin_display_name",
-		"admin_email_address": "dummy_admin_email_address",
-	},
+	"admin_username":      "dummy_admin_username",
+	"admin_password":      "dummy_admin_password",
+	"admin_display_name":  "dummy_admin_display_name",
+	"admin_email_address": "dummy_admin@email_address.com",
 	"bamboo_agent_configuration": map[string]interface{}{
 		"helm_version": "1.0.0",
 		"cpu":          "1",
