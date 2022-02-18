@@ -50,11 +50,11 @@ resource "helm_release" "bitbucket" {
               server = module.nfs.helm_release_nfs_service_ip
               path = "/srv/nfs"
             }
-            persistentVolumeClaim = {
-              create = true
-            }
           }
-          subPath = local.product_name
+          persistentVolumeClaim = {
+            create = true
+            storageClassName = ""
+          }
         }
       }
     }),
