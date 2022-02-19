@@ -56,14 +56,14 @@ func GetAvailableRegion(t *testing.T) string {
 	for {
 		awsRegion := aws.GetRandomStableRegion(t, nil, []string{
 			endpoints.UsEast1RegionID,
-			endpoints.UsEast2RegionID,
-			endpoints.UsWest1RegionID,
-			endpoints.UsWest2RegionID,
-			endpoints.AfSouth1RegionID,
-			endpoints.ApEast1RegionID,
-			endpoints.ApNortheast2RegionID,
-			endpoints.ApSoutheast2RegionID,
-			endpoints.ApNortheast3RegionID,
+			//endpoints.UsEast2RegionID,
+			//endpoints.UsWest1RegionID,
+			//endpoints.UsWest2RegionID,
+			//endpoints.AfSouth1RegionID,
+			//endpoints.ApEast1RegionID,
+			//endpoints.ApNortheast2RegionID,
+			//endpoints.ApSoutheast2RegionID,
+			//endpoints.ApNortheast3RegionID,
 		}) // Avoid busy/unavailable regions
 		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
 		require.NoError(t, err)
