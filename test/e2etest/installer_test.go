@@ -15,6 +15,8 @@ func TestInstaller(t *testing.T) {
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
 
+	println("################## AWS REGION " + testConfig.AwsRegion + "##################")
+
 	// Install the environment
 	runInstallScript(testConfig.ConfigPath)
 
