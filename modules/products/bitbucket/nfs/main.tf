@@ -1,5 +1,5 @@
 resource "helm_release" "nfs" {
-  chart     = "./modules/products/bitbucket/nfs/nfs-chart"
+  chart     = "https://raw.githubusercontent.com/atlassian/data-center-helm-charts/main/docs/docs/examples/storage/nfs/nfs-server-example.tgz"
   name      = format("%s-nfs", var.product)
   namespace = var.namespace
 
