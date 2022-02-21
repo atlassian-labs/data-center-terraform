@@ -168,17 +168,25 @@ This guide contains general tips on how to investigate an application deployment
     2. Go back to the root of the project and re-run the `uninstall.sh` script.
     
 
-??? tip "How do I deal when remote agents are offline after provisioning the Bamboo DC?"
+??? tip "How to deal with `getting credentials: exec: executable aws failed with exit code 2` error"
        
     **Symptom**
     
-    The remote agents are installed but remain offline after installation. 
+    After performing an `install.sh` the following error is encountered:
+
+    ```shell
+    Error: Post "https://0839E580E6ADB7B784AECE0E152D8AF2.gr7.eu-west-1.eks.amazonaws.com/api/v1/namespaces": getting credentials: exec: executable aws failed with exit code 2
+
+    with module.base-infrastructure.kubernetes_namespace.products,
+    on modules/common/main.tf line 39, in resource "kubernetes_namespace" "products":
+    39: resource "kubernetes_namespace" "products" {
+    ```
        
     **Solution**
     
-    1. Open the Bamboo application in the browser and log in as _Administrator_. 
-    2. Go to `Agents` page and select `Agent authentication` tab.
-    3. Select `All` and press `Approve access` button. 
-    4. Wait until all remote agents get online.
+    Ensure you are using a version of the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) that is at least >= `2` The version can be checked by running:
 
+    ```shell
+    aws --version
+    ```
 

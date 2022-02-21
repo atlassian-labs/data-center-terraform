@@ -46,7 +46,11 @@ Before using this project, make sure that Helm v3.3 or later is installed on you
 
 ### :material-aws: AWS CLI
 
-You need to have the AWS CLI tool installed on your local machine before creating the Kubernetes infrastructure. We recommend using AWS CLI version 2.
+You need to have the AWS CLI tool installed on your local machine before creating the Kubernetes infrastructure. 
+
+!!! warning "Version 2"
+
+      Version 2 of the AWS CLI is required. If not using version 2 your experience may vary. 
 
 1. Check if AWS CLI version 2 is already installed by running the following command:
     ```shell
