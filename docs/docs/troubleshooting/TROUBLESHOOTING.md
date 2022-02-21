@@ -168,7 +168,7 @@ This guide contains general tips on how to investigate an application deployment
     2. Go back to the root of the project and re-run the `uninstall.sh` script.
     
 
-??? tip "How to deal with `getting credentials: exec: executable aws failed with exit code 2` error"
+??? tip "How to deal with `getting credentials: exec: executable aws failed with exit code 2` error?"
        
     **Symptom**
     
