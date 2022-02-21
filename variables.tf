@@ -209,7 +209,7 @@ variable "confluence_db_iops" {
   type        = number
 }
 
-variable "confluence_enable_synchrony" {
+variable "confluence_collaborative_editing_enabled" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
   default     = true
@@ -229,22 +229,26 @@ variable "bitbucket_license" {
 variable "bitbucket_admin_username" {
   description = "Bitbucket system administrator username."
   type        = string
+  default     = null
 }
 
 variable "bitbucket_admin_password" {
   description = "Bitbucket system administrator password."
   type        = string
+  default     = null
   sensitive   = true
 }
 
 variable "bitbucket_admin_display_name" {
   description = "Bitbucket system administrator display name."
   type        = string
+  default     = null
 }
 
 variable "bitbucket_admin_email_address" {
   description = "Bitbucket system administrator email address."
   type        = string
+  default     = null
 }
 
 variable "bitbucket_db_major_engine_version" {
@@ -314,22 +318,26 @@ variable "bamboo_license" {
 variable "bamboo_admin_username" {
   description = "Bamboo system administrator username."
   type        = string
+  default     = null
 }
 
 variable "bamboo_admin_password" {
   description = "Bamboo system administrator password."
   type        = string
+  default     = null
   sensitive   = true
 }
 
 variable "bamboo_admin_display_name" {
   description = "Bamboo system administrator display name."
   type        = string
+  default     = null
 }
 
 variable "bamboo_admin_email_address" {
   description = "Bamboo system administrator email address."
   type        = string
+  default     = null
 }
 
 variable "number_of_bamboo_agents" {

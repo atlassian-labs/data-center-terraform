@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 	"testing"
 	"text/template"
@@ -20,10 +19,16 @@ import (
 )
 
 const (
-	resourceOwner     = "dc-deployment"
-	credential        = "admin:Atlassian21!" // Admin credential 'username:password'
-	product           = "bamboo"
-	domain            = "deplops.com"
+	resourceOwner = "dc-deployment"
+	domain        = "deplops.com"
+
+	// List of supported products
+	jira       = "jira"
+	confluence = "confluence"
+	bitbucket  = "bitbucket"
+	bamboo     = "bamboo"
+
+	// License for the products
 	confluenceLicense = ""
 	bitbucketLicense  = ""
 	bambooLicense     = ""
@@ -37,6 +42,8 @@ type TestConfig struct {
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
+	BambooPassword    string
+	BitbucketPassword string
 }
 
 func EnvironmentName() string {
@@ -90,11 +97,11 @@ func getLicense(productList []string, product string) string {
 	license := ""
 	if contains(productList, product) {
 		switch product {
-		case "confluence":
+		case confluence:
 			license = confluenceLicense
-		case "bitbucket":
+		case bitbucket:
 			license = bitbucketLicense
-		case "bamboo":
+		case bamboo:
 			license = bambooLicense
 		}
 		if len(license) == 0 {
@@ -104,15 +111,25 @@ func getLicense(productList []string, product string) string {
 	return license
 }
 
+func getPassword(productList []string, product string) string {
+	password := ""
+	if contains(productList, product) {
+		password = os.Getenv(fmt.Sprintf("TF_VAR_%s_admin_password", product))
+	}
+	return password
+}
+
 func createConfig(t *testing.T, productList []string) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
 		ResourceOwner:     resourceOwner,
-		ConfluenceLicense: getLicense(productList, "confluence"),
-		BitbucketLicense:  getLicense(productList, "bitbucket"),
-		BambooLicense:     getLicense(productList, "bamboo"),
+		ConfluenceLicense: getLicense(productList, confluence),
+		BitbucketLicense:  getLicense(productList, bitbucket),
+		BambooLicense:     getLicense(productList, bamboo),
+		BambooPassword:    getPassword(productList, bamboo),
+		BitbucketPassword: getPassword(productList, bitbucket),
 	}
 
 	// Product list
@@ -130,6 +147,8 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	vars["confluence_license"] = testConfig.ConfluenceLicense
 	vars["bitbucket_license"] = testConfig.BitbucketLicense
 	vars["bamboo_license"] = testConfig.BambooLicense
+	vars["bamboo_password"] = testConfig.BambooPassword
+	vars["bitbucket_password"] = testConfig.BitbucketPassword
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")
@@ -148,7 +167,11 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	return testConfig
 }
 
-func contains(s []string, item string) bool {
-	i := sort.SearchStrings(s, item)
-	return i < len(s) && s[i] == item
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
