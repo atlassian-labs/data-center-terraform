@@ -1,5 +1,5 @@
 variable "namespace" {
-  description = "Kubernetes namespace to install Bitbucket."
+  description = "Kubernetes namespace to install NFS server."
   type        = string
 }
 
