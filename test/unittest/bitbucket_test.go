@@ -33,6 +33,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 			"cluster_ca_certificate": "dummy-certificate",
 		},
 		"cluster_security_group": "dummy-sg",
+		"cluster_size":           2,
 	},
 	"vpc":                     VpcDefaultModuleVariable,
 	"pvc_claim_name":          "dummy_pvc_claimname",
@@ -55,4 +56,9 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license":      "dummy_license",
 	},
+	"elasticsearch_endpoint": "",
+	"elasticsearch_cpu":      "1",
+	"elasticsearch_mem":      "1Gi",
+	"elasticsearch_storage":  10,
+	"elasticsearch_replicas": 2,
 }
