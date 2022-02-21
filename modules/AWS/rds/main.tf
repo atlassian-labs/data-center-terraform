@@ -23,7 +23,7 @@ module "security_group" {
 
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "~> 3.5"
+  version = "~> 3.0"
 
   identifier = var.rds_instance_id
 

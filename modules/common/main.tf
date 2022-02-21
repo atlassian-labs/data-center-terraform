@@ -44,7 +44,7 @@ module "elasticsearch" {
 
   # inputs
   environment_name = var.environment_name
-  vpc_id           = module.vpc.private_subnets
+  vpc_subnet_ids   = [module.vpc.private_subnets[0]]
   ebs_volume_size  = var.elasticsearch_storage_size
   instance_count   = var.elasticsearch_instance_count
 }

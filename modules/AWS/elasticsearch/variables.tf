@@ -7,9 +7,9 @@ variable "environment_name" {
   }
 }
 
-variable "vpc_id" {
-  description = "VPC ID that hosts the elasticsearch."
-  type        = string
+variable "vpc_subnet_ids" {
+  description = "ID of the VPC subnets that hosts the elasticsearch instance."
+  type        = any
 }
 
 variable "instance_type" {
@@ -23,7 +23,7 @@ variable "instance_type" {
 }
 
 variable "instance_count" {
-  description = "Number of the elasticsearch instances."
+  description = "Number of elasticsearch instances."
   type        = number
 }
 

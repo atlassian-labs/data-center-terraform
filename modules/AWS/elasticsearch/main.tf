@@ -16,7 +16,7 @@ resource "aws_elasticsearch_domain" "es" {
     automated_snapshot_start_hour = 23
   }
   vpc_options {
-    subnet_ids = data.aws_subnet_ids.private.ids
+    subnet_ids = var.vpc_subnet_ids
   }
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
@@ -45,13 +45,4 @@ resource "aws_elasticsearch_domain_policy" "main" {
     ]
 }
 POLICIES
-}
-
-// Get the list of private subnet ids
-data "aws_subnet_ids" "private" {
-  vpc_id = var.vpc_id
-
-  tags = {
-    Tier = "Private"
-  }
 }

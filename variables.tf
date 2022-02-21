@@ -310,8 +310,8 @@ variable "bitbucket_elasticsearch_option" {
   type        = string
   default     = "EKS"
   validation {
-    condition     = contains(["EKS", "AWS", "external_url"], var.bitbucket_elasticsearch_option)
-    error_message = "Elasticsearch architecture is not valid. The valid value is 'EKS', 'AWS', or 'external_url'."
+    condition     = contains(["EKS", "AWS", "URL"], var.bitbucket_elasticsearch_option)
+    error_message = "Elasticsearch architecture is not valid. The valid value is 'EKS', 'AWS', or 'URL'."
   }
 }
 
