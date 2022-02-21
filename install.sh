@@ -254,7 +254,7 @@ set_synchrony_url() {
 
   if [ -z "${DOMAIN}" ] && [ -n "${INSTALL_CONFLUENCE}" ]; then
     log "Configuring the Synchrony service."
-    SYNCHRONY_FULL_URL=$(terraform output | grep '"synchrony" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    SYNCHRONY_FULL_URL=$(terraform output | sed "s/ //g" | grep "synchrony_url=" | sed -nE 's/^.*"(.*)".*$/\1/p')
     helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
     log "Synchrony URL is set to '${SYNCHRONY_FULL_URL}'."
   fi
