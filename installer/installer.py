@@ -1,6 +1,6 @@
 from typing import Optional
 from python_terraform import *
-from config import Config
+from .config import Config
 
 import typer
 
