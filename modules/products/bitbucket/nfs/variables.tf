@@ -1,8 +1,3 @@
-variable "product" {
-  description = "The product that NFS will be created for."
-  type        = string
-}
-
 variable "namespace" {
   description = "Kubernetes namespace to install Bitbucket."
   type        = string
