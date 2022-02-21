@@ -1,6 +1,6 @@
 resource "helm_release" "nfs" {
-  chart     = "https://raw.githubusercontent.com/atlassian/data-center-helm-charts/main/docs/docs/examples/storage/nfs/nfs-server-example.tgz"
-  name      = format("%s-nfs", var.product)
+  chart     = "https://raw.githubusercontent.com/atlassian/data-center-helm-charts/main/docs/docs/examples/storage/nfs/nfs-server-example-0.1.0.tgz"
+  name      = "bitbucket-nfs"
   namespace = var.namespace
 
   values = [
@@ -8,6 +8,16 @@ resource "helm_release" "nfs" {
       nameOverride = var.chart_name
       persistence = {
         size = var.capacity
+      }
+      resources = {
+        limits = {
+          cpu = var.limits_cpu
+          memory = var.limits_memory
+        }
+        requests = {
+          cpu = var.requests_cpu
+          memory = var.requests_memory
+        }
       }
     })
   ]

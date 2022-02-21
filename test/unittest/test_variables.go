@@ -100,16 +100,22 @@ var EfsInvalidVariable = map[string]interface{}{
 }
 
 // NFS
-const nfsVarProduct = "test-nfs-product"
 const nfsVarNamespace = "test-name-space"
 const nfsVarChartNameOverride = "test-nfs-override-name"
 const nfsVarCapacity = "10Gi"
+const nfsRequestsCpu = "0.25"
+const nfsRequestsMemory = "256Mi"
+const nfsLimitsCpu = "0.25"
+const nfsLimitsMemory = "256Mi"
 
 var NfsValidVariable = map[string]interface{}{
-	"product":    nfsVarProduct,
-	"namespace":  nfsVarNamespace,
-	"chart_name": nfsVarChartNameOverride,
-	"capacity":   nfsVarCapacity,
+	"namespace":       nfsVarNamespace,
+	"chart_name":      nfsVarChartNameOverride,
+	"capacity":        nfsVarCapacity,
+	"requests_cpu":    nfsRequestsCpu,
+	"requests_memory": nfsRequestsMemory,
+	"limits_cpu":      nfsLimitsCpu,
+	"limits_memory":   nfsLimitsMemory,
 }
 
 // DB
