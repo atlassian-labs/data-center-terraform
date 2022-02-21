@@ -37,9 +37,9 @@ locals {
     }
   })
 
-  tag_version = var.tag_version != null ? yamlencode({
+  version_tag = var.version_tag != null ? yamlencode({
     image = {
-      tag = var.tag_version
+      tag = var.version_tag
     }
   }) : yamlencode({})
 

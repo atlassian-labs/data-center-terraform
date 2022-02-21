@@ -53,7 +53,7 @@ resource "helm_release" "jira" {
       }
     }),
     local.ingress_settings,
-    local.tag_version,
+    local.version_tag,
   ]
 }
 

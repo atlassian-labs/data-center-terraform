@@ -85,7 +85,7 @@ variable "jira_helm_chart_version" {
   default     = "1.1.0"
 }
 
-variable "jira_tag_version" {
+variable "jira_version_tag" {
   description = "Version of Jira Software"
   type        = string
   default     = null

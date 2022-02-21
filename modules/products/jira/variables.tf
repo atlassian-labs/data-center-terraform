@@ -57,7 +57,7 @@ variable "jira_configuration" {
   }
 }
 
-variable "tag_version" {
+variable "version_tag" {
   description = "Version of Jira Software"
   type        = string
   default     = null
