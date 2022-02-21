@@ -42,6 +42,9 @@ desired_capacity = 1
 
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
+# The version of Jira software is defaulted in Helm chart. If you wish to install a different
+# version of Jira software you can uncomment the following line and define your desired version.
+#jira_software_version   = "8.20.5-jdk11"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"

@@ -37,5 +37,11 @@ locals {
     }
   })
 
+  tag_version = var.tag_version != null ? yamlencode({
+    image = {
+      tag = var.tag_version
+    }
+  }) : yamlencode({})
+
   ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
 }
