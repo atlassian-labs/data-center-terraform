@@ -50,6 +50,7 @@ kubeconfig_atlas*
 # IDEs
 **/.idea/*
 .DS_Store
+.vscode
 
 
 # Ignore test artifacts
