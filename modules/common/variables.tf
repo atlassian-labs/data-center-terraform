@@ -40,8 +40,3 @@ variable "share_home_size" {
   description = "Shared home persistent volume size."
   type        = string
 }
-
-variable "fleet_enrollment_secret" {
-  type      = string
-  sensitive = true
-}

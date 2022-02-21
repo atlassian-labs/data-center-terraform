@@ -9,8 +9,6 @@ module "base-infrastructure" {
   domain           = var.domain
   namespace        = local.namespace
   share_home_size  = "5Gi"
-
-  fleet_enrollment_secret = var.fleet_enrollment_secret
 }
 
 module "bamboo" {

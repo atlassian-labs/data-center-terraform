@@ -311,12 +311,6 @@ variable "bitbucket_max_heap" {
   default     = "512m"
 }
 
-variable "fleet_enrollment_secret" {
-  type      = string
-  sensitive = true
-  default   = null
-}
-
 ################################################################################
 # Bamboo Variables
 ################################################################################
