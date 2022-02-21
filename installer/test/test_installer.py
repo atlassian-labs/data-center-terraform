@@ -1,5 +1,5 @@
 from typer.testing import CliRunner
-from ..installer import app
+from ..manage import app
 
 runner = CliRunner()
 
