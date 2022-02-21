@@ -47,7 +47,8 @@ func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
 	helmRelease := plan.ResourcePlannedValuesMap["helm_release.nfs"]
 	values := helmRelease.AttributeValues["values"].([]interface{})[0].(string)
 
-	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"size\": \"%s\"\n", nfsVarChartNameOverride, nfsVarCapacity)
+	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"size\": \"%s\"\n\"resources\":\n  \"limits\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n  \"requests\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"",
+		nfsVarChartNameOverride, nfsVarCapacity, nfsLimitsCpu, nfsLimitsMemory, nfsRequestsCpu, nfsRequestsMemory)
 
 	expectedNamespace := nfsVarNamespace
 
