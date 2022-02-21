@@ -100,13 +100,11 @@ var EfsInvalidVariable = map[string]interface{}{
 }
 
 // NFS
-const nfsVarProduct = "test-nfs-product"
 const nfsVarNamespace = "test-name-space"
 const nfsVarChartNameOverride = "test-nfs-override-name"
 const nfsVarCapacity = "10Gi"
 
 var NfsValidVariable = map[string]interface{}{
-	"product":    nfsVarProduct,
 	"namespace":  nfsVarNamespace,
 	"chart_name": nfsVarChartNameOverride,
 	"capacity":   nfsVarCapacity,
