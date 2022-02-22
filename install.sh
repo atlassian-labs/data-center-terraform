@@ -254,7 +254,7 @@ set_synchrony_url() {
 
   if [ -z "${DOMAIN}" ] && [ -n "${INSTALL_CONFLUENCE}" ]; then
     log "Configuring the Synchrony service."
-    SYNCHRONY_FULL_URL=$(terraform output | grep '"synchrony" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    SYNCHRONY_FULL_URL=$(terraform output | sed "s/ //g" | grep "synchrony_url=" | sed -nE 's/^.*"(.*)".*$/\1/p')
     helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
     log "Synchrony URL is set to '${SYNCHRONY_FULL_URL}'."
   fi
@@ -281,8 +281,12 @@ add_tags_to_asg_resources
 # Resume bamboo server if the credential is provided
 resume_bamboo_server
 
+# Print information about manually adding the new k8s context
+set_current_context_k8s
+
 # Set the correct Synchrony URL
 set_synchrony_url
 
-# Print information about manually adding the new k8s context
-set_current_context_k8s
+# Show the list of installed Helm charts
+helm list --namespace atlassian
+
