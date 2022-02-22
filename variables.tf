@@ -346,17 +346,13 @@ variable "bitbucket_elasticsearch_storage" {
 variable "bitbucket_aws_elasticsearch_instance_type" {
   description = "Instance type for Bitbucket AWS Elasticsearch."
   type        = string
-  default     = "r4.large.elasticsearch"
+  default     = "t3.small.elasticsearch"
 }
 
 variable "bitbucket_elasticsearch_replicas" {
   description = "Number of nodes for elasticsearch instance"
   type        = number
   default     = 2
-  validation {
-    condition     = var.bitbucket_elasticsearch_replicas > 1 && var.bitbucket_elasticsearch_replicas < 7
-    error_message = "Number of elasticsearch nodes must be between 2 and 6."
-  }
 }
 
 ################################################################################

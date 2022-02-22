@@ -101,4 +101,8 @@ variable "elasticsearch_storage" {
 variable "elasticsearch_replicas" {
   description = "Number of nodes for elasticsearch instance."
   type        = number
+  validation {
+    condition     = can(regex("^[2-6]$", var.elasticsearch_replicas))
+    error_message = "Invalid elasticsearch replicas. Valid replicas is a positive integer in range of [2,6]."
+  }
 }
