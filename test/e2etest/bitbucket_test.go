@@ -44,5 +44,5 @@ func testNFS(t *testing.T, testConfig TestConfig) {
 		"-c", "cat /var/atlassian/application-data/shared-home/nfs-file-share-test.txt")
 
 	assert.Nil(t, kubectlError)
-	assert.Contains(t, "Greetings from an NFS", fileContents)
+	assert.Equal(t, "Greetings from an NFS", fileContents)
 }
