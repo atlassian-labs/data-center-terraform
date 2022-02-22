@@ -11,6 +11,9 @@ module "eks" {
   vpc_id  = var.vpc_id
   subnets = var.subnets
 
+  kubeconfig_aws_authenticator_command = "aws"
+  kubeconfig_aws_authenticator_command_args = ["eks", "get-token", "--cluster-name", var.cluster_name]
+
   # Managed Node Groups
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
