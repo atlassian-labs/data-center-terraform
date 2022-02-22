@@ -8,11 +8,7 @@ import (
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
-	// Test status endpoint
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
-
-	// Test NFS connectivity
-	testNFS(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
@@ -20,7 +16,9 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bitbucket, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	println("Asserting Bitbucket Status Endpoint ...")
-	assert.Contains(t, string(content), expectedStatus)
+	if assert.Contains(t, string(content), expectedStatus) {
+		testNFS(t, testConfig)
+	}
 }
 
 func testNFS(t *testing.T, testConfig TestConfig) {
