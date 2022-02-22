@@ -47,7 +47,7 @@ func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
 	helmRelease := plan.ResourcePlannedValuesMap["helm_release.nfs"]
 	values := helmRelease.AttributeValues["values"].([]interface{})[0].(string)
 
-	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"size\": \"%s\"\n\"resources\":\n  \"limits\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n  \"requests\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"",
+	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"size\": \"%s\"\n\"resources\":\n  \"limits\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n  \"requests\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n",
 		nfsVarChartNameOverride, nfsVarCapacity, nfsLimitsCpu, nfsLimitsMemory, nfsRequestsCpu, nfsRequestsMemory)
 
 	expectedNamespace := nfsVarNamespace
@@ -90,4 +90,8 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license":      "dummy_license",
 	},
+	"nfs_requests_cpu":    "0.25",
+	"nfs_requests_memory": "256Mi",
+	"nfs_limits_cpu":      "0.25",
+	"nfs_limits_memory":   "256Mi",
 }

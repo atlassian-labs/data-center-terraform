@@ -79,3 +79,27 @@ variable "admin_configuration" {
     error_message = "Bitbucket administrator configuration is not valid."
   }
 }
+
+variable "nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}

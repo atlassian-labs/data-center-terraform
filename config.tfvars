@@ -133,6 +133,12 @@ bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 
+# Bitbucket NFS instance resource configuration
+#bitbucket_nfs_requests_cpu    = "<REQUESTS CPU>"
+#bitbucket_nfs_requests_memory = "<REQUESTS MEMORY>"
+#bitbucket_nfs_limits_cpu      = "<LIMITS CPU>"
+#bitbucket_nfs_limits_memory   = "<LIMITS MEMORY>"
+
 ################################################################################
 # Bamboo Settings
 ################################################################################

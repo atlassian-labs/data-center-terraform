@@ -16,7 +16,11 @@ resource "aws_route53_record" "bitbucket" {
 module "nfs" {
   source = "./nfs"
 
-  namespace = var.namespace
+  namespace       = var.namespace
+  requests_cpu    = var.nfs_requests_cpu
+  requests_memory = var.nfs_requests_memory
+  limits_cpu      = var.nfs_limits_cpu
+  limits_memory   = var.nfs_limits_memory
 }
 
 module "database" {
