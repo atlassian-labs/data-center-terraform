@@ -149,11 +149,12 @@ bitbucket_db_iops                 = 1000
 # Helm chart version of Bamboo and Bamboo agent instances
 bamboo_helm_chart_version       = "1.2.0"
 bamboo_agent_helm_chart_version = "1.2.0"
+
 # By default, Bamboo and Bamboo Agent will use the version defined in the helm charts. If you wish to override the version, uncomment
 # the following lines and set the confluence_software_version to any of the versions available on
 # https://hub.docker.com/r/atlassian/bamboo/tags and https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
-#bamboo_version         = "<BAMBOO_VERSION_TAG>"
-#bamboo_agent_version   = "<BAMBOO_AGENT_VERSION_TAG>"
+#bamboo_version_tag       = "<BAMBOO_VERSION_TAG>"
+#bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
 
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
