@@ -85,6 +85,12 @@ variable "jira_helm_chart_version" {
   default     = "1.1.0"
 }
 
+variable "jira_version_tag" {
+  description = "Version of Jira Software"
+  type        = string
+  default     = null
+}
+
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string

@@ -40,4 +40,3 @@ variable "share_home_size" {
   description = "Shared home persistent volume size."
   type        = string
 }
-

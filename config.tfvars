@@ -42,6 +42,9 @@ desired_capacity = 1
 
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
+# By default, Jira Software will use the version defined in the helm chart. If you wish to override the version, uncomment
+# the following line and set the jira_software_version to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
+#jira_software_version   = "<JIRA_VERSION_TAG>"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
