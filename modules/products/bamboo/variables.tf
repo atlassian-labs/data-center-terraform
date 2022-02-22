@@ -57,6 +57,18 @@ variable "bamboo_agent_configuration" {
   }
 }
 
+variable "version_tag" {
+  description = "Version tag for Bamboo"
+  type        = string
+  default     = null
+}
+
+variable "agent_version_tag" {
+  description = "Version tag for Bamboo Agent"
+  type        = string
+  default     = null
+}
+
 variable "db_configuration" {
   description = "Bamboo database spec"
   type        = map(any)
