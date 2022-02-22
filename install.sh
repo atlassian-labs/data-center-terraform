@@ -258,7 +258,6 @@ set_synchrony_url() {
     helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
     log "Synchrony URL is set to '${SYNCHRONY_FULL_URL}'."
   fi
-  helm list --namespace atlassian
 }
 
 # Process the arguments
@@ -287,4 +286,7 @@ set_current_context_k8s
 
 # Set the correct Synchrony URL
 set_synchrony_url
+
+# Show the list of installed Helm charts
+helm list --namespace atlassian
 
