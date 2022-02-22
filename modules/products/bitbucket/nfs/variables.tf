@@ -11,8 +11,8 @@ variable "chart_name" {
 
 variable "capacity" {
   description = "The storage capacity to allocate to the NFS"
-  type = string
-  default = "10Gi"
+  type        = string
+  default     = "10Gi"
 }
 
 variable "requests_cpu" {
@@ -26,7 +26,6 @@ variable "requests_memory" {
   type        = string
   default     = "256Mi"
 }
-
 
 variable "limits_cpu" {
   description = "The maximum CPU compute to allocate to the NFS instance"
