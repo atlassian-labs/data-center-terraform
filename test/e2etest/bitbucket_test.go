@@ -34,7 +34,7 @@ func testNFS(t *testing.T, testConfig TestConfig) {
 		"-c", "echo \"Greetings from an NFS\" >> /srv/nfs/nfs-file-share-test.txt; echo $?")
 
 	assert.Nil(t, kubectlError)
-	assert.Equal(t, 0, returnCode)
+	assert.Equal(t, "0", returnCode)
 
 	// Read the file from the Bitbucket pod
 	fileContents, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
