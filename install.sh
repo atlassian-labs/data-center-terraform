@@ -281,8 +281,12 @@ add_tags_to_asg_resources
 # Resume bamboo server if the credential is provided
 resume_bamboo_server
 
+# Print information about manually adding the new k8s context
+set_current_context_k8s
+
 # Set the correct Synchrony URL
 set_synchrony_url
 
-# Print information about manually adding the new k8s context
-set_current_context_k8s
+# Show the list of installed Helm charts
+helm list --namespace atlassian
+
