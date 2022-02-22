@@ -22,8 +22,8 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 }
 
 func testNFS(t *testing.T, testConfig TestConfig) {
-	contextName := fmt.Sprintf("eks_atlassian-%s-cluster", testConfig.EnvironmentName)
-	kubeConfigPath := fmt.Sprintf("/home/runner/work/data-center-terraform/data-center-terraform/kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
+	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
+	kubeConfigPath := fmt.Sprintf("/home/run	ner/work/data-center-terraform/data-center-terraform/kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
 
 	// Write a file to the NFS server
