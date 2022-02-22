@@ -69,6 +69,9 @@ jira_db_iops                 = 1000
 
 # Helm chart version of Confluence
 confluence_helm_chart_version = "1.2.0"
+# By default, Confluence will use the version defined in the helm chart. If you wish to override the version, uncomment
+# the following line and set the confluence_software_version to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
+#confluence_software_version   = "<CONFLUENCE_VERSION_TAG>"
 
 # Confluence license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out

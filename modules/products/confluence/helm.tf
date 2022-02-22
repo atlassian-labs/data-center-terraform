@@ -54,6 +54,7 @@ resource "helm_release" "confluence" {
     local.ingress_settings,
     local.license_settings,
     local.synchrony_settings_stanza,
+    local.version_tag,
   ]
 }
 
