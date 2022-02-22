@@ -57,6 +57,12 @@ variable "jira_configuration" {
   }
 }
 
+variable "version_tag" {
+  description = "Version of Jira Software"
+  type        = string
+  default     = null
+}
+
 variable "pvc_claim_name" {
   description = "Persistent volume claim name for shared home."
   type        = string

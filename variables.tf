@@ -85,6 +85,12 @@ variable "jira_helm_chart_version" {
   default     = "1.1.0"
 }
 
+variable "jira_version_tag" {
+  description = "Version of Jira Software"
+  type        = string
+  default     = null
+}
+
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
@@ -311,6 +317,30 @@ variable "bitbucket_max_heap" {
   default     = "512m"
 }
 
+variable "bitbucket_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "bitbucket_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "bitbucket_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "bitbucket_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################
@@ -438,4 +468,3 @@ variable "bamboo_dataset_url" {
   default     = null
   type        = string
 }
-

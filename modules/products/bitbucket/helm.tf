@@ -41,12 +41,17 @@ resource "helm_release" "bitbucket" {
           }
         }
         sharedHome = {
-          customVolume = {
-            persistentVolumeClaim = {
-              claimName = var.pvc_claim_name
+          persistentVolume = {
+            create = true
+            nfs = {
+              server = module.nfs.helm_release_nfs_service_ip
+              path = "/srv/nfs"
             }
           }
-          subPath = local.product_name
+          persistentVolumeClaim = {
+            create = true
+            storageClassName = ""
+          }
         }
       }
     }),
