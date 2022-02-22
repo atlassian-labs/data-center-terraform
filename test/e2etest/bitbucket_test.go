@@ -17,11 +17,11 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 	content := getPageContent(t, url)
 	println("Asserting Bitbucket Status Endpoint ...")
 	if assert.Contains(t, string(content), expectedStatus) {
-		testNFS(t, testConfig)
+		assertNfsConnectivity(t, testConfig)
 	}
 }
 
-func testNFS(t *testing.T, testConfig TestConfig) {
+func assertNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
