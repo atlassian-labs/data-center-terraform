@@ -29,7 +29,7 @@ func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus st
 	statusUrl := "rest/api/latest/status"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
-	println("asserting Bamboo Status Endpoint...")
+	println("Asserting Bamboo Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
 }
 
@@ -38,7 +38,7 @@ func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
 	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, planUrl)
 	content := getPageContent(t, url)
-	println("asserting Bamboo PlanListEndpoint...")
+	println("Asserting Bamboo PlanListEndpoint...")
 	assert.Contains(t, string(content), "TestPlan")
 }
 
@@ -46,7 +46,7 @@ func assertBambooProjects(t *testing.T, testConfig TestConfig) {
 	projUrl := "allProjects.action"
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, projUrl)
 	content := getPageContent(t, url)
-	println("asserting Bamboo BambooProjects...")
+	println("Asserting Bamboo BambooProjects...")
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
 }
@@ -58,7 +58,7 @@ func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
 	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
 	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, agentUrl)
 	content := getPageContent(t, url)
-	println("asserting Bamboo RemoteAgentList...")
+	println("Asserting Bamboo RemoteAgentList...")
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
 }
 
