@@ -54,4 +54,11 @@ locals {
       }
     }
   }) : yamlencode({})
+
+  # bitbucket version tag
+  version_tag = var.version_tag != null ? yamlencode({
+    image = {
+      tag = var.version_tag
+    }
+  }) : yamlencode({})
 }
