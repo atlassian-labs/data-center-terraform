@@ -308,7 +308,7 @@ variable "bitbucket_max_heap" {
 variable "bitbucket_elasticsearch_cpu" {
   description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
-  default     = "1"
+  default     = "0.25"
 }
 
 variable "bitbucket_elasticsearch_mem" {
@@ -318,13 +318,13 @@ variable "bitbucket_elasticsearch_mem" {
 }
 
 variable "bitbucket_elasticsearch_storage" {
-  description = "Storage size for Bitbucket elasticsearch instance in GiB."
+  description = "Storage size for Bitbucket elasticsearch in GiB."
   type        = number
   default     = 10
 }
 
 variable "bitbucket_elasticsearch_replicas" {
-  description = "Number of nodes for elasticsearch instance"
+  description = "Number of nodes in Elasticsearch cluster"
   type        = number
   default     = 2
 }

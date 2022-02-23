@@ -134,7 +134,7 @@ bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 
 # Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_cpu      = "500m"
+bitbucket_elasticsearch_cpu      = "0.25"
 bitbucket_elasticsearch_mem      = "1Gi"
 bitbucket_elasticsearch_storage  = 10
 bitbucket_elasticsearch_replicas = 2
