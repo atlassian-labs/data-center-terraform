@@ -293,6 +293,12 @@ variable "bitbucket_helm_chart_version" {
   default     = "1.2.0"
 }
 
+variable "bitbucket_version_tag" {
+  description = "Version tag for Bitbucket"
+  type        = string
+  default     = null
+}
+
 variable "bitbucket_cpu" {
   description = "Number of CPUs for Bitbucket instance"
   type        = string

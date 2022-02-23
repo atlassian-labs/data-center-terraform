@@ -55,6 +55,13 @@ locals {
     }
   }) : yamlencode({})
 
+  # bitbucket version tag
+  version_tag = var.version_tag != null ? yamlencode({
+    image = {
+      tag = var.version_tag
+    }
+  }) : yamlencode({})
+
   # Elasticsearch
   elasticsearch_name                  = "elasticsearch"
   elasticsearch_helm_chart_repository = "https://helm.elastic.co"

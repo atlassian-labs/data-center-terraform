@@ -107,6 +107,11 @@ confluence_db_iops                 = 1000
 # Helm chart version of Bitbucket
 bitbucket_helm_chart_version = "1.2.0"
 
+# By default, Bitbucket will use the version defined in the Bitbucket Helm chart: 
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bitbucket/Chart.yaml 
+# If you wish to override the version, uncomment the following line and set the bitbucket_version_tag to any of the versions published for Bitbucket on Docker Hub: https://hub.docker.com/r/atlassian/bitbucket/tags
+#bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
+
 # Bitbucket license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
