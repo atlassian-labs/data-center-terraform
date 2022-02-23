@@ -56,7 +56,6 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license":      "dummy_license",
 	},
-	"elasticsearch_endpoint": "",
 	"elasticsearch_cpu":      "1",
 	"elasticsearch_mem":      "1Gi",
 	"elasticsearch_storage":  10,

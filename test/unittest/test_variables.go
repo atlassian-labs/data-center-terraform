@@ -152,32 +152,3 @@ var DbInvalidVariable = map[string]interface{}{
 		"private_subnets": inputSubnets,
 	},
 }
-
-// Elasticsearch (ES)
-const elasticsearchModule = "AWS/elasticsearch"
-const inputEnvironment = "dummy-env-id"
-
-var inputSubnetId = []interface{}{"subnet1"}
-
-const inputInstanceType = "r4.xlarge.elasticsearch"
-const inputInstanceCount = "3"
-const inputVolumeType = "gp2"
-const inputVolumeSize = "10"
-
-var ElasticsearchValidVariable = map[string]interface{}{
-	"environment_name": inputEnvironment,
-	"vpc_subnet_ids":   inputSubnetId,
-	"instance_type":    inputInstanceType,
-	"instance_count":   inputInstanceCount,
-	"volume_type":      inputVolumeType,
-	"ebs_volume_size":  inputVolumeSize,
-}
-
-var ElasticsearchInvalidVariable = map[string]interface{}{
-	"environment_name": inputEnvironment,
-	"vpc_subnet_ids":   inputSubnetId,
-	"instance_type":    "dummy_instance_type",
-	"instance_count":   inputInstanceCount,
-	"volume_type":      inputVolumeType,
-	"ebs_volume_size":  inputVolumeSize,
-}
