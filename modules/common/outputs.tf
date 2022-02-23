@@ -38,8 +38,3 @@ output "namespace" {
   value       = kubernetes_namespace.products.metadata[0].name
   description = "Namespace name for all products"
 }
-
-output "elasticsearch_endpoint" {
-  value       = var.create_elasticsearch ? module.elasticsearch[0].endpoint : null
-  description = "AWS elasticsearch EndPoint."
-}

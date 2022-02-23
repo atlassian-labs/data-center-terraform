@@ -305,26 +305,6 @@ variable "bitbucket_max_heap" {
   default     = "512m"
 }
 
-variable "bitbucket_elasticsearch_option" {
-  description = "The option for elasticsearch that will  be used for bitbucket."
-  type        = string
-  default     = "EKS"
-  validation {
-    condition     = contains(["EKS", "AWS", "URL"], var.bitbucket_elasticsearch_option)
-    error_message = "Elasticsearch architecture is not valid. The valid value is 'EKS', 'AWS', or 'URL'."
-  }
-}
-
-variable "bitbucket_external_elasticsearch_endpoint" {
-  description = "The external elasticsearch endpoint to be use by Bitbucket."
-  type        = string
-  default     = null
-  validation {
-    condition     = var.bitbucket_external_elasticsearch_endpoint == null || can(regex("^http[s]?:(//)(\\w+.)+(:[1-9][0-9]?[0-9]?[0-9]?)$", var.bitbucket_external_elasticsearch_endpoint))
-    error_message = "Invalid endpoint. The endpoint should be a valid Url format: 'http(s)//<domain>:<port>' ."
-  }
-}
-
 variable "bitbucket_elasticsearch_cpu" {
   description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
@@ -341,12 +321,6 @@ variable "bitbucket_elasticsearch_storage" {
   description = "Storage size for Bitbucket elasticsearch instance in GiB."
   type        = number
   default     = 10
-}
-
-variable "bitbucket_aws_elasticsearch_instance_type" {
-  description = "Instance type for Bitbucket AWS Elasticsearch."
-  type        = string
-  default     = "t3.small.elasticsearch"
 }
 
 variable "bitbucket_elasticsearch_replicas" {

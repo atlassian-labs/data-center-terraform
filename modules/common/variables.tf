@@ -40,24 +40,3 @@ variable "share_home_size" {
   description = "Shared home persistent volume size."
   type        = string
 }
-
-variable "create_elasticsearch" {
-  description = "Provision an AWS Elasticsearch to be used by bitbucket."
-  type        = bool
-  default     = false
-}
-
-variable "elasticsearch_instance_type" {
-  description = "Instance type for Bitbucket AWS Elasticsearch."
-  type        = string
-}
-
-variable "elasticsearch_storage_size" {
-  description = "Storage size for Bitbucket elasticsearch instance."
-  type        = number
-}
-
-variable "elasticsearch_instance_count" {
-  description = "Number of nodes for elasticsearch instance"
-  type        = number
-}

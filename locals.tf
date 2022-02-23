@@ -10,8 +10,4 @@ locals {
   local_confluence_chart_path = var.local_helm_charts_path != "" && var.confluence_install_local_chart ? "${var.local_helm_charts_path}/confluence" : ""
   local_bamboo_chart_path     = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo" : ""
   local_agent_chart_path      = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo-agent" : ""
-
-  create_aws_elasticsearch = var.bitbucket_elasticsearch_option == "AWS" && local.install_bitbucket
-  elasticsearch_endpoint   = local.create_aws_elasticsearch ? module.base-infrastructure.elasticsearch_endpoint : var.bitbucket_external_elasticsearch_endpoint
-
 }
