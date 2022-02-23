@@ -5,7 +5,17 @@
 `jira_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Jira instance.
 
 ```terraform
-jira_helm_chart_version = "1.1.0"
+jira_helm_chart_version = "1.2.0"
+```
+
+### Jira version tag
+
+Jira Software will be installed with the default version defined in Hem chart. If you want to install a specific version of Jira software, you can set the `jira_version_tag` to the version you want to install.
+
+For more information, see [Jira Version Tags](https://hub.docker.com/r/atlassian/jira-software/tags){.external}.
+
+```terraform
+jira_version_tag = "<JIRA_VERSION_TAG>"
 ```
 
 ### Instance resource configuration
@@ -13,7 +23,7 @@ jira_helm_chart_version = "1.1.0"
 The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
 
 ```terraform
-jira_cpu                 = "2"
+jira_cpu                 = "1"
 jira_mem                 = "2Gi"
 jira_min_heap            = "384m"
 jira_max_heap            = "786m"

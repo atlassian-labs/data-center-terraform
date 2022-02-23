@@ -5,7 +5,17 @@
 `confluence_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Confluence instance.
 
 ```terraform
-confluence_helm_chart_version = "1.1.0"
+confluence_helm_chart_version = "1.2.0"
+```
+
+### Confluence version tag
+
+Confluence will be installed with the default version defined in Hem chart. If you want to install a specific version of Bamboo, you can set the `confluence_version_tag` to the version you want to install.
+
+For more information, see [Confluence Version Tags](https://hub.docker.com/r/atlassian/confluence/tags){.external}.
+
+```terraform
+confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 ```
 
 ### License
@@ -24,7 +34,7 @@ confluence_license = "<LICENSE KEY>"
 
 ### Instance resource configuration
 
-The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
+The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Confluence instance. (Used default values as example.)
 
 ```terraform
 confluence_cpu                 = "2"

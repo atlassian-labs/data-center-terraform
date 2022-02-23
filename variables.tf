@@ -82,7 +82,7 @@ variable "local_helm_charts_path" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.1.0"
+  default     = "1.2.0"
 }
 
 variable "jira_version_tag" {
@@ -94,7 +94,7 @@ variable "jira_version_tag" {
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "jira_mem" {
@@ -159,7 +159,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.1.0"
+  default     = "1.2.0"
 }
 
 variable "confluence_install_local_chart" {
