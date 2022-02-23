@@ -86,6 +86,7 @@ module "jira" {
     "max_heap"            = var.jira_max_heap
     "reserved_code_cache" = var.jira_reserved_code_cache
   }
+  version_tag = var.jira_version_tag
 }
 
 module "confluence" {
@@ -115,7 +116,7 @@ module "confluence" {
     max_heap     = var.confluence_max_heap
     license      = var.confluence_license
   }
-
+  version_tag      = var.confluence_version_tag
   enable_synchrony = var.confluence_collaborative_editing_enabled
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
@@ -160,4 +161,9 @@ module "bitbucket" {
   nfs_requests_memory = var.bitbucket_nfs_requests_memory
   nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
   nfs_limits_memory   = var.bitbucket_nfs_limits_memory
+
+  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
+  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
+  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
 }

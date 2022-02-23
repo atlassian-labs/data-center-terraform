@@ -26,6 +26,9 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
+        elasticSearch = {
+          baseUrl = local.elasticsearch_endpoint
+        }
       }
       database = {
         url    = module.database.rds_jdbc_connection
@@ -45,11 +48,11 @@ resource "helm_release" "bitbucket" {
             create = true
             nfs = {
               server = module.nfs.helm_release_nfs_service_ip
-              path = "/srv/nfs"
+              path   = "/srv/nfs"
             }
           }
           persistentVolumeClaim = {
-            create = true
+            create           = true
             storageClassName = ""
           }
         }

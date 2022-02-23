@@ -42,9 +42,10 @@ desired_capacity = 1
 
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
-# By default, Jira Software will use the version defined in the helm chart. If you wish to override the version, uncomment
-# the following line and set the jira_software_version to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
-#jira_software_version   = "<JIRA_VERSION_TAG>"
+
+# By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
+# the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
+#jira_version_tag = "<JIRA_VERSION_TAG>"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
@@ -69,6 +70,10 @@ jira_db_iops                 = 1000
 
 # Helm chart version of Confluence
 confluence_helm_chart_version = "1.2.0"
+
+# By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
+# the following line and set the confluence_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
+#confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 
 # Confluence license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
@@ -146,6 +151,12 @@ bitbucket_db_iops                 = 1000
 #bitbucket_nfs_requests_memory = "<REQUESTS MEMORY>"
 #bitbucket_nfs_limits_cpu      = "<LIMITS CPU>"
 #bitbucket_nfs_limits_memory   = "<LIMITS MEMORY>"
+
+# Elasticsearch resource configuration for Bitbucket
+#bitbucket_elasticsearch_cpu      = "<REQUESTS CPU>"
+#bitbucket_elasticsearch_mem      = "<REQUESTS MEMORY>"
+#bitbucket_elasticsearch_storage  = "<REQUESTS STORAGE>"
+#bitbucket_elasticsearch_replicas = "<NUMBER OF NODES>"
 
 ################################################################################
 # Bamboo Settings
