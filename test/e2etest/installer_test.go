@@ -22,22 +22,25 @@ func TestInstaller(t *testing.T) {
 	runInstallScript(testConfig.ConfigPath)
 
 	// Run Bamboo health tests
+	println(fmt.Sprintf("################## Bamboo Tests ##################"))
 	if contains(productList, bamboo) {
 		bambooHealthTests(t, testConfig)
 	}
 
 	// Run Jira health tests
+	println(fmt.Sprintf("################## Jira Tests ##################"))
 	if contains(productList, jira) {
 		jiraHealthTests(t, testConfig)
 	}
 
 	// Run Confluence health tests
-	println(fmt.Sprintf("################## Confluence Tests ##################")
+	println(fmt.Sprintf("################## Confluence Tests ##################"))
 	if contains(productList, confluence) {
 		confluenceHealthTests(t, testConfig)
 	}
 
 	// Run Bitbucket health tests
+	println(fmt.Sprintf("################## Bitbucket Tests ##################"))
 	if contains(productList, bitbucket) {
 		bitbucketHealthTests(t, testConfig)
 	}
