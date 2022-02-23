@@ -44,7 +44,7 @@ resource "helm_release" "bamboo" {
               claimName = var.pvc_claim_name
             }
           }
-          subPath = local.product_name
+          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
@@ -93,4 +93,10 @@ resource "helm_release" "bamboo_agent" {
       }
     }),
   ]
+}
+
+resource "random_string" "random" {
+  length  = 10
+  special = false
+  number  = true
 }
