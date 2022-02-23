@@ -1,6 +1,7 @@
 package e2etest
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"testing"
