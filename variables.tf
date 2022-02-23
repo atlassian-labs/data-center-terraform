@@ -162,6 +162,12 @@ variable "confluence_helm_chart_version" {
   default     = "1.1.0"
 }
 
+variable "confluence_version_tag" {
+  description = "Version tag for Confluence"
+  type        = string
+  default     = null
+}
+
 variable "confluence_install_local_chart" {
   description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
   default     = false
