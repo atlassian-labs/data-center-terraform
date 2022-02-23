@@ -11,6 +11,9 @@ module "eks" {
   vpc_id  = var.vpc_id
   subnets = var.subnets
 
+  # These 2 properties below will be deprecated in v18 of the AWS EKS module:
+  # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/UPGRADE-18.0.md
+  # If upgrading this module to v18 be sure that this deprecation is taken into account.
   kubeconfig_aws_authenticator_command = "aws"
   kubeconfig_aws_authenticator_command_args = ["eks", "get-token", "--cluster-name", var.cluster_name]
 
