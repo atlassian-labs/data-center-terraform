@@ -42,6 +42,9 @@ desired_capacity = 1
 
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
+# By default, Jira Software will use the version defined in the helm chart. If you wish to override the version, uncomment
+# the following line and set the jira_software_version to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
+#jira_software_version   = "<JIRA_VERSION_TAG>"
 
 # Jira instance resource configuration
 jira_cpu                 = "2"
@@ -133,11 +136,17 @@ bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 
+# Bitbucket NFS instance resource configuration
+#bitbucket_nfs_requests_cpu    = "<REQUESTS CPU>"
+#bitbucket_nfs_requests_memory = "<REQUESTS MEMORY>"
+#bitbucket_nfs_limits_cpu      = "<LIMITS CPU>"
+#bitbucket_nfs_limits_memory   = "<LIMITS MEMORY>"
+
 # Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_cpu      = "0.25"
-bitbucket_elasticsearch_mem      = "1Gi"
-bitbucket_elasticsearch_storage  = 10
-bitbucket_elasticsearch_replicas = 2
+#bitbucket_elasticsearch_cpu      = "<REQUESTS CPU>"
+#bitbucket_elasticsearch_mem      = "<REQUESTS MEMORY>"
+#bitbucket_elasticsearch_storage  = "<REQUESTS STORAGE>"
+#bitbucket_elasticsearch_replicas = "<NUMBER OF NODES>"
 
 ################################################################################
 # Bamboo Settings

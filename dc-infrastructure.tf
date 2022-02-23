@@ -155,6 +155,11 @@ module "bitbucket" {
     admin_email_address = var.bitbucket_admin_email_address
   }
 
+  nfs_requests_cpu    = var.bitbucket_nfs_requests_cpu
+  nfs_requests_memory = var.bitbucket_nfs_requests_memory
+  nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
+  nfs_limits_memory   = var.bitbucket_nfs_limits_memory
+
   elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
   elasticsearch_mem      = var.bitbucket_elasticsearch_mem
   elasticsearch_storage  = var.bitbucket_elasticsearch_storage
