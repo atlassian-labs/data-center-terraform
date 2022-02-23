@@ -9,6 +9,7 @@ import (
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
+	assertBitbucketNfsConnectivity(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
@@ -16,12 +17,10 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expected
 	url := fmt.Sprintf("https://%s.%s.%s/%s", bitbucket, testConfig.EnvironmentName, domain, statusUrl)
 	content := getPageContent(t, url)
 	println("Asserting Bitbucket Status Endpoint ...")
-	if assert.Contains(t, string(content), expectedStatus) {
-		assertNfsConnectivity(t, testConfig)
-	}
+	assert.Contains(t, string(content), expectedStatus)
 }
 
-func assertNfsConnectivity(t *testing.T, testConfig TestConfig) {
+func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
