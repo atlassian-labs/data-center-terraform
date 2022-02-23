@@ -43,8 +43,8 @@ desired_capacity = 1
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
 
-# By default, Jira Software will use the version defined in the helm chart. If you wish to override the version, uncomment
-# the following line and set the jira_software_version to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
+# By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
+# the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
 #jira_version_tag = "<JIRA_VERSION_TAG>"
 
 # Jira instance resource configuration
@@ -71,8 +71,8 @@ jira_db_iops                 = 1000
 # Helm chart version of Confluence
 confluence_helm_chart_version = "1.2.0"
 
-# By default, Confluence will use the version defined in the helm chart. If you wish to override the version, uncomment
-# the following line and set the confluence_software_version to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
+# By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
+# the following line and set the confluence_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
 #confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 
 # Confluence license
