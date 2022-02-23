@@ -55,6 +55,7 @@ resource "helm_release" "bitbucket" {
             create           = true
             storageClassName = ""
           }
+          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
@@ -71,4 +72,10 @@ data "kubernetes_service" "bitbucket" {
     name      = local.product_name
     namespace = var.namespace
   }
+}
+
+resource "random_string" "random" {
+  length  = 10
+  special = false
+  number  = true
 }
