@@ -159,4 +159,9 @@ module "bitbucket" {
   nfs_requests_memory = var.bitbucket_nfs_requests_memory
   nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
   nfs_limits_memory   = var.bitbucket_nfs_limits_memory
+
+  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
+  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
+  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
 }

@@ -335,6 +335,30 @@ variable "bitbucket_nfs_limits_memory" {
   default     = "256Mi"
 }
 
+variable "bitbucket_elasticsearch_cpu" {
+  description = "Number of CPUs for Bitbucket elasticsearch instance."
+  type        = string
+  default     = "0.25"
+}
+
+variable "bitbucket_elasticsearch_mem" {
+  description = "Amount of memory for Bitbucket elasticsearch instance."
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_storage" {
+  description = "Storage size for Bitbucket elasticsearch in GiB."
+  type        = number
+  default     = 10
+}
+
+variable "bitbucket_elasticsearch_replicas" {
+  description = "Number of nodes in Elasticsearch cluster"
+  type        = number
+  default     = 2
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################

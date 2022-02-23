@@ -142,6 +142,12 @@ bitbucket_db_iops                 = 1000
 #bitbucket_nfs_limits_cpu      = "<LIMITS CPU>"
 #bitbucket_nfs_limits_memory   = "<LIMITS MEMORY>"
 
+# Elasticsearch resource configuration for Bitbucket
+#bitbucket_elasticsearch_cpu      = "<REQUESTS CPU>"
+#bitbucket_elasticsearch_mem      = "<REQUESTS MEMORY>"
+#bitbucket_elasticsearch_storage  = "<REQUESTS STORAGE>"
+#bitbucket_elasticsearch_replicas = "<NUMBER OF NODES>"
+
 ################################################################################
 # Bamboo Settings
 ################################################################################

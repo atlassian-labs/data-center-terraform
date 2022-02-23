@@ -52,11 +52,7 @@ variable "bitbucket_configuration" {
   type        = map(any)
   validation {
     condition = (length(var.bitbucket_configuration) == 6 &&
-      alltrue([
-        for o in keys(var.bitbucket_configuration) : contains([
-          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
-        ], o)
-    ]))
+    alltrue([for o in keys(var.bitbucket_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
     error_message = "Bitbucket configuration is not valid."
   }
 }
@@ -103,3 +99,35 @@ variable "nfs_limits_memory" {
   type        = string
   default     = "256Mi"
 }
+
+# If an external elasticsearch is not provided, Bitbucket will provision an elasticsearch cluster in k8s
+variable "elasticsearch_endpoint" {
+  description = "The external elasticsearch endpoint to be use by Bitbucket."
+  type        = string
+  default     = null
+}
+
+variable "elasticsearch_cpu" {
+  description = "Number of CPUs for elasticsearch instance."
+  type        = string
+}
+
+variable "elasticsearch_mem" {
+  description = "Amount of memory for elasticsearch instance."
+  type        = string
+}
+
+variable "elasticsearch_storage" {
+  description = "Storage size for elasticsearch instance in Gib."
+  type        = number
+}
+
+variable "elasticsearch_replicas" {
+  description = "Number of nodes for elasticsearch instance."
+  type        = number
+  validation {
+    condition     = can(regex("^[2-8]$", var.elasticsearch_replicas))
+    error_message = "Invalid elasticsearch replicas. Valid replicas is a positive integer in range of [2,8]."
+  }
+}
+
