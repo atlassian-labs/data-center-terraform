@@ -55,6 +55,8 @@ module "bamboo" {
     mem          = var.bamboo_agent_mem
     agent_count  = var.number_of_bamboo_agents
   }
+  version_tag       = var.bamboo_version_tag
+  agent_version_tag = var.bamboo_agent_version_tag
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bamboo_chart_path = local.local_bamboo_chart_path

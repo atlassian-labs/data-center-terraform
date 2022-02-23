@@ -418,14 +418,26 @@ variable "number_of_bamboo_agents" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  default     = "1.0.0"
+  default     = "1.2.0"
   type        = string
 }
 
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
   type        = string
-  default     = "1.0.0"
+  default     = "1.2.0"
+}
+
+variable "bamboo_version_tag" {
+  description = "Version tag for Bamboo"
+  type        = string
+  default     = null
+}
+
+variable "bamboo_agent_version_tag" {
+  description = "Version tag for Bamboo Agent"
+  type        = string
+  default     = null
 }
 
 variable "bamboo_cpu" {

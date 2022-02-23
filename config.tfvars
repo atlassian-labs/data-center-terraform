@@ -166,6 +166,15 @@ bitbucket_db_iops                 = 1000
 bamboo_helm_chart_version       = "1.2.0"
 bamboo_agent_helm_chart_version = "1.2.0"
 
+# By default, Bamboo and the Bamboo Agent will use the versions defined in their respective Helm charts:
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo/Chart.yaml
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo-agent/Chart.yaml
+# If you wish to override these versions, uncomment the following lines and set the bamboo_version_tag and bamboo_agent_version_tag to any of the versions published on Docker Hub:
+# https://hub.docker.com/r/atlassian/bamboo/tags 
+# https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
+#bamboo_version_tag       = "<BAMBOO_VERSION_TAG>"
+#bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
+
 # Bamboo license
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
