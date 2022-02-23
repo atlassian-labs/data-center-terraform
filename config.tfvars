@@ -102,8 +102,9 @@ confluence_db_iops                 = 1000
 # Helm chart version of Bitbucket
 bitbucket_helm_chart_version = "1.2.0"
 
-# By default, Bitbucket will use the version defined in the Helm chart. If you wish to override the version, uncomment
-# the following line and set the bitbucket_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/bitbucket/tags
+# By default, Bitbucket will use the version defined in the Bitbucket Helm chart: 
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bitbucket/Chart.yaml 
+# If you wish to override the version, uncomment the following line and set the bitbucket_version_tag to any of the versions published for Bitbucket on Docker Hub: https://hub.docker.com/r/atlassian/bitbucket/tags
 #bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
 
 # Bitbucket license
