@@ -150,9 +150,12 @@ bitbucket_db_iops                 = 1000
 bamboo_helm_chart_version       = "1.2.0"
 bamboo_agent_helm_chart_version = "1.2.0"
 
-# By default, Bamboo and Bamboo Agent will use the version defined in the Helm charts. If you wish to override the version, uncomment
-# the following lines and set the bamboo_version_tag and bamboo_agent_version_tag to any of the versions available on
-# https://hub.docker.com/r/atlassian/bamboo/tags and https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
+# By default, Bamboo and the Bamboo Agent will use the versions defined in their respective Helm charts:
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo/Chart.yaml
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo-agent/Chart.yaml
+# If you wish to override these versions, uncomment the following lines and set the bamboo_version_tag and bamboo_agent_version_tag to any of the versions published on Docker Hub:
+# https://hub.docker.com/r/atlassian/bamboo/tags 
+# https://hub.docker.com/r/atlassian/bamboo-agent-base/tags
 #bamboo_version_tag       = "<BAMBOO_VERSION_TAG>"
 #bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
 
