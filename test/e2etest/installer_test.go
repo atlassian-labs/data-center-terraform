@@ -32,6 +32,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	// Run Confluence health tests
+	println(fmt.Sprintf("################## Confluence Tests ##################")
 	if contains(productList, confluence) {
 		confluenceHealthTests(t, testConfig)
 	}
