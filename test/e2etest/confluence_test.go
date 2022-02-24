@@ -7,6 +7,7 @@ import (
 )
 
 func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
+	printTestBanner(confluence, "Tests")
 
 	// Test the status
 	assertConfluenceStatus(t, testConfig, "FIRST_RUN")

@@ -7,6 +7,7 @@ import (
 )
 
 func jiraHealthTests(t *testing.T, testConfig TestConfig) {
+	printTestBanner(jira, "Tests")
 	assertJiraStatusEndpoint(t, testConfig, "FIRST_RUN")
 }
 

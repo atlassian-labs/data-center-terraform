@@ -8,6 +8,7 @@ import (
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
+	printTestBanner(bitbucket, "Tests")
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
 	assertBitbucketNfsConnectivity(t, testConfig)
 }

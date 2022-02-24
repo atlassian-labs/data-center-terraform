@@ -8,6 +8,7 @@ import (
 )
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig) {
+	printTestBanner(bamboo, "Tests")
 
 	// Test the PAUSE status
 	pauseBambooServer(t, testConfig)
