@@ -8,29 +8,30 @@ import (
 
 func TestInstaller(t *testing.T) {
 
-	// List of the products to test
-	productList := []string{jira, confluence, bamboo}
+	productList := []string{jira, confluence, bamboo, bitbucket}
 	testConfig := createConfig(t, productList)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
 
-	// Install the environment
+	printTestBanner("AWS test region -", testConfig.AwsRegion)
+
 	runInstallScript(testConfig.ConfigPath)
 
-	// Run Bamboo health tests
 	if contains(productList, bamboo) {
 		bambooHealthTests(t, testConfig)
 	}
 
-	// Run Jira health tests
 	if contains(productList, jira) {
 		jiraHealthTests(t, testConfig)
 	}
 
-	// Run Confluence health tests
 	if contains(productList, confluence) {
 		confluenceHealthTests(t, testConfig)
+	}
+
+	if contains(productList, bitbucket) {
+		bitbucketHealthTests(t, testConfig)
 	}
 }
 

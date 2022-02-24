@@ -14,7 +14,7 @@ region = "{{.region}}"
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
-products = ["jira", "confluence", "bamboo"]
+products = ["jira", "confluence", "bamboo", "bitbucket"]
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
@@ -77,7 +77,7 @@ jira_helm_chart_version = "1.1.0"
 
 # Jira instance resource configuration
 #
-jira_cpu                 = "2"
+jira_cpu                 = "1"
 jira_mem                 = "2Gi"
 jira_min_heap            = "384m"
 jira_max_heap            = "786m"

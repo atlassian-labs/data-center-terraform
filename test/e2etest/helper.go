@@ -175,3 +175,7 @@ func contains(s []string, e string) bool {
 	}
 	return false
 }
+
+func printTestBanner(text1 string, text2 string) {
+	println(fmt.Sprintf("################## %s %s ##################", text1, text2))
+}
