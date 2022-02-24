@@ -47,13 +47,14 @@ resource "helm_release" "confluence" {
               claimName = var.pvc_claim_name
             }
           }
-          subPath = local.product_name
+          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
     local.ingress_settings,
     local.license_settings,
     local.synchrony_settings_stanza,
+    local.version_tag,
   ]
 }
 
@@ -77,4 +78,10 @@ data "kubernetes_service" "confluence_synchrony" {
     name      = "${local.product_name}-synchrony"
     namespace = var.namespace
   }
+}
+
+resource "random_string" "random" {
+  length  = 10
+  special = false
+  number  = true
 }

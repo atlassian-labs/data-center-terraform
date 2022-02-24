@@ -54,6 +54,7 @@ resource "helm_release" "bamboo" {
     local.unattended_setup_setting,
     local.security_token_setting,
     local.dataset_settings,
+    local.version_tag,
   ]
 }
 
@@ -92,5 +93,7 @@ resource "helm_release" "bamboo_agent" {
         }
       }
     }),
+    local.agent_version_tag,
   ]
 }
+
