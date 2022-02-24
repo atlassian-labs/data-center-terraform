@@ -103,6 +103,32 @@ This guide contains general tips on how to investigate an application deployment
     
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
+??? tip "How do I deal with state data in S3 does not have the expected content?"
+
+    If Terraform state is locked and user forcebly unlock it using `terraform force-unlock <id>`, it may DynamoDB cannot get a chance to update the Digest value. This prevents Terraform from reading the state data.
+       
+    **Symptom**
+    
+    The following error is thrown:
+    
+    ```shell
+    Error refreshing state: state data in S3 does not have the expected content.
+
+    This may be caused by unusually long delays in S3 processing a previous state
+    update.  Please wait for a minute or two and try again. If this problem
+    persists, and neither S3 nor DynamoDB are experiencing an outage, you may need
+    to manually verify the remote state and update the Digest value stored in the
+    DynamoDB table to the following value: 531ca9bce76bbe0262f610cfc27bbf0b
+    ```
+    
+    **Solution**
+    
+    1. Open DynamoDB page in AWS console and find the table called `atlassian_data_center_<region>_<aws_account_id>_tf_lock` in the same region as the cluster.
+    
+    2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`. 
+     
+    3. Click on the item and replace the `Digest` value with the given value in error message.
+
 ??? tip "How do I deal with Pre-existing state in multiple environment?"
 
     If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
