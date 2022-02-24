@@ -30,36 +30,7 @@ func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bambooAgent.AttributeValues["repository"])
 }
 
-func TestBambooDatasetImport(t *testing.T) {
-	t.Parallel()
-
-	datasetVars := BambooCorrectVariables
-	datasetVars["dataset_url"] = DatasetUrl
-	tfOptions := GenerateTFOptions(datasetVars, t, "products/bamboo")
-	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
-
-	// verify Dataset import job
-	jobKey := "kubernetes_job.import_dataset[0]"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, jobKey)
-	job := plan.ResourcePlannedValuesMap[jobKey]
-	assert.Equal(t, "kubernetes_job", job.Type)
-
-	spec := job.AttributeValues["spec"].([]interface{})[0]
-	template := spec.(map[string]interface{})["template"].([]interface{})[0]
-	jobSpec := template.(map[string]interface{})["spec"].([]interface{})[0]
-	container := jobSpec.(map[string]interface{})["container"].([]interface{})[0]
-	commands := container.(map[string]interface{})["command"].([]interface{})
-
-	// verify the dataset
-	assert.Contains(t, commands[0], "/bin/sh")
-	assert.Contains(t, commands[1], "-c")
-	assert.Contains(t, commands[2], "apk update && apk add wget && wget")
-	assert.Contains(t, commands[2], DatasetUrl)
-}
-
 // Variables
-
-var DatasetUrl = "https://s3.aws.com/bucket/dataset.zip"
 
 var BambooCorrectVariables = map[string]interface{}{
 	"environment_name": "dummy-environment",
