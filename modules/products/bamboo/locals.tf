@@ -107,4 +107,5 @@ locals {
   }) : yamlencode({})
 
   dataset_filename = "bamboo_dataset_to_import.zip"
+  sub_path         = "${local.product_name}-${random_string.random.result}"
 }

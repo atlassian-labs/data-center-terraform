@@ -44,7 +44,7 @@ resource "helm_release" "bamboo" {
               claimName = var.pvc_claim_name
             }
           }
-          subPath = "${local.product_name}-${random_string.random.result}"
+          subPath = local.sub_path
         }
       }
     }),
