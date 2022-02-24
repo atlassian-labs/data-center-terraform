@@ -1,7 +1,6 @@
 package unittest
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -52,10 +51,10 @@ func TestBambooDatasetImport(t *testing.T) {
 	commands := container.(map[string]interface{})["command"].([]interface{})
 
 	// verify the dataset
-	expectedCommand := fmt.Sprintf("mkdir /shared-home/bamboo && apk update && apk add wget && wget %s -O %s",
-		DatasetUrl,
-		"/shared-home/bamboo/bamboo_dataset_to_import.zip")
-	assert.Contains(t, commands, expectedCommand)
+	assert.Contains(t, commands[0], "/bin/sh")
+	assert.Contains(t, commands[1], "-c")
+	assert.Contains(t, commands[2], "apk update && apk add wget && wget")
+	assert.Contains(t, commands[2], DatasetUrl)
 }
 
 // Variables
