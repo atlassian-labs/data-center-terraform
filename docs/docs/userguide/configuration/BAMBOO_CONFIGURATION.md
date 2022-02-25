@@ -24,7 +24,7 @@ bamboo_version_tag = "<BAMBOO_VERSION_TAG>"
 `bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
 
 ```terraform
-bamboo_agent_helm_chart_version = "1.0.0"
+bamboo_agent_helm_chart_version = "1.2.0"
 ```
 
 ### Agent version tag

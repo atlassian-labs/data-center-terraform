@@ -201,6 +201,7 @@ variable "confluence_max_heap" {
 variable "confluence_db_major_engine_version" {
   description = "The database major version to use for Confluence."
   type        = string
+  default     = "11"
 }
 
 variable "confluence_db_allocated_storage" {
@@ -485,6 +486,7 @@ variable "bamboo_install_local_chart" {
 variable "bamboo_db_major_engine_version" {
   description = "The database major version to use for Bamboo."
   type        = string
+  default     = "13"
 }
 
 variable "bamboo_db_allocated_storage" {
