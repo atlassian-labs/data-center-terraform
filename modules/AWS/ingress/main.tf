@@ -71,6 +71,9 @@ resource "helm_release" "ingress" {
           }
         }
       }
+      tcp = {
+        7999: "atlassian/bitbucket:ssh"
+      }
     })
   ]
 }
