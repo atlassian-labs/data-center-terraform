@@ -123,7 +123,7 @@ This guide contains general tips on how to investigate an application deployment
     
     **Solution**
     
-    1. Open DynamoDB page in AWS console and find the table called `atlassian_data_center_<region>_<aws_account_id>_tf_lock` in the same region as the cluster.
+    1. Open DynamoDB page in AWS console and find the table named `atlassian_data_center_<region>_<aws_account_id>_tf_lock` in the same region as the cluster.
     
     2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`. 
      
