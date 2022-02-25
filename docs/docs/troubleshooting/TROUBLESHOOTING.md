@@ -103,10 +103,10 @@ This guide contains general tips on how to investigate an application deployment
     
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
-??? tip "How do I deal with state data in S3 does not have the expected content?"
+??? tip "How do I deal with state data in S3 that does not have the expected content?"
 
-    If Terraform state is locked and user forcebly unlock it using `terraform force-unlock <id>`, it may DynamoDB cannot get a chance to update the Digest value. This prevents Terraform from reading the state data.
-       
+    If Terraform state is locked and users forcefully unlock it using `terraform force-unlock <id>`, it may not get a chance to update the Digest value in DynamoDB. This prevents Terraform from reading the state data.       
+    
     **Symptom**
     
     The following error is thrown:
@@ -127,7 +127,7 @@ This guide contains general tips on how to investigate an application deployment
     
     2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`. 
      
-    3. Click on the item and replace the `Digest` value with the given value in error message.
+    3. Click on the item and replace the `Digest` value with the given value in the error message.
 
 ??? tip "How do I deal with Pre-existing state in multiple environment?"
 
