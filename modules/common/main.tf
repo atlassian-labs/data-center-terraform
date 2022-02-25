@@ -18,6 +18,7 @@ module "eks" {
 
 module "efs" {
   source = "../AWS/efs"
+  count  = local.create_share_home ? 1 : 0
 
   efs_name                     = local.efs_name
   region_name                  = var.region_name
@@ -43,6 +44,7 @@ resource "kubernetes_namespace" "products" {
 }
 
 resource "kubernetes_persistent_volume" "atlassian-dc-share-home-pv" {
+  count = local.create_share_home ? 1 : 0
   metadata {
     name = "atlassian-dc-share-home-pv"
   }
@@ -57,13 +59,14 @@ resource "kubernetes_persistent_volume" "atlassian-dc-share-home-pv" {
     persistent_volume_source {
       csi {
         driver        = "efs.csi.aws.com"
-        volume_handle = module.efs.efs_id
+        volume_handle = module.efs[0].efs_id
       }
     }
   }
 }
 
 resource "kubernetes_persistent_volume_claim" "atlassian-dc-share-home-pvc" {
+  count = local.create_share_home ? 1 : 0
   metadata {
     name      = "atlassian-dc-share-home-pvc"
     namespace = kubernetes_namespace.products.metadata[0].name
@@ -75,7 +78,7 @@ resource "kubernetes_persistent_volume_claim" "atlassian-dc-share-home-pvc" {
         storage = var.share_home_size
       }
     }
-    volume_name        = kubernetes_persistent_volume.atlassian-dc-share-home-pv.metadata[0].name
+    volume_name        = kubernetes_persistent_volume.atlassian-dc-share-home-pv[0].metadata[0].name
     storage_class_name = local.storage_class_name
   }
 }
