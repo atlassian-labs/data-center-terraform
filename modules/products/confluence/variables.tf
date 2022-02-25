@@ -60,6 +60,12 @@ variable "confluence_configuration" {
   }
 }
 
+variable "version_tag" {
+  description = "Version tag for Confluence"
+  type        = string
+  default     = null
+}
+
 variable "local_confluence_chart_path" {
   description = "Path to local Helm charts to install local confluence software"
   type        = string

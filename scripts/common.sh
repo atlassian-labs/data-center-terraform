@@ -22,7 +22,7 @@ get_variable(){
       log "File ${config_file} does not exist." "ERROR"
       return 1
     fi
-    local VALUE=$(grep -o '^[^#]*' "${config_file}" | grep "${variable_name}" | sed 's/ //g' | grep "${variable_name}=" | sed -nE 's/^.*"(.*)".*$/\1/p')
+    local VALUE=$(grep -o '^[^#]*' "${config_file}" | grep "${variable_name}" | sed 's/ //g' | grep "${variable_name}=\"" | sed -nE 's/^.*"(.*)".*$/\1/p')
     if [ ! $(echo "${VALUE}" | wc -l) -eq 1 ];then
       log "ERROR - '${variable_name}' is re-defined in '${config_file}'" "ERROR";
       return 1;

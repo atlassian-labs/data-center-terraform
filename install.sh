@@ -108,11 +108,11 @@ verify_configuration_file() {
     export POPULATED_LICENSE=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_license')
     export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
-    if [ -z "${POPULATED_LICENSE}" && -z "${TF_VAR_bamboo_license}" ]; then
+    if [ -z "${POPULATED_LICENSE}" ] && [ -z "${TF_VAR_bamboo_license}" ]; then
       log "License is missing. Please provide Bamboo license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
       HAS_VALIDATION_ERR=1
     fi
-    if [ -z "${POPULATED_ADMIN_PWD}" && -z "${TF_VAR_bamboo_admin_password}" ]; then
+    if [ -z "${POPULATED_ADMIN_PWD}" ] && [ -z "${TF_VAR_bamboo_admin_password}" ]; then
       log "Admin password is missing. Please provide Bamboo admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
       HAS_VALIDATION_ERR=1
     fi

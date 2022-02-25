@@ -44,7 +44,7 @@ resource "helm_release" "bamboo" {
               claimName = var.pvc_claim_name
             }
           }
-          subPath = local.product_name
+          subPath = local.sub_path
         }
       }
     }),
@@ -54,6 +54,7 @@ resource "helm_release" "bamboo" {
     local.unattended_setup_setting,
     local.security_token_setting,
     local.dataset_settings,
+    local.version_tag,
   ]
 }
 
@@ -92,5 +93,12 @@ resource "helm_release" "bamboo_agent" {
         }
       }
     }),
+    local.agent_version_tag,
   ]
+}
+
+resource "random_string" "random" {
+  length  = 10
+  special = false
+  number  = true
 }

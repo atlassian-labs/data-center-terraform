@@ -92,5 +92,20 @@ locals {
     }
   }) : yamlencode({})
 
+  # Bamboo version tag
+  version_tag = var.version_tag != null ? yamlencode({
+    image = {
+      tag = var.version_tag
+    }
+  }) : yamlencode({})
+
+  # Bamboo agent version tag
+  agent_version_tag = var.agent_version_tag != null ? yamlencode({
+    image = {
+      tag = var.agent_version_tag
+    }
+  }) : yamlencode({})
+
   dataset_filename = "bamboo_dataset_to_import.zip"
+  sub_path         = "${local.product_name}-${random_string.random.result}"
 }

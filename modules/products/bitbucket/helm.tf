@@ -26,6 +26,9 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
+        elasticSearch = {
+          baseUrl = local.elasticsearch_endpoint
+        }
       }
       database = {
         url    = module.database.rds_jdbc_connection
@@ -45,19 +48,21 @@ resource "helm_release" "bitbucket" {
             create = true
             nfs = {
               server = module.nfs.helm_release_nfs_service_ip
-              path = "/srv/nfs"
+              path   = "/srv/nfs"
             }
           }
           persistentVolumeClaim = {
-            create = true
+            create           = true
             storageClassName = ""
           }
+          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
     local.ingress_settings,
     local.license_settings,
     local.admin_settings,
+    local.version_tag,
   ]
 }
 
@@ -67,4 +72,10 @@ data "kubernetes_service" "bitbucket" {
     name      = local.product_name
     namespace = var.namespace
   }
+}
+
+resource "random_string" "random" {
+  length  = 10
+  special = false
+  number  = true
 }

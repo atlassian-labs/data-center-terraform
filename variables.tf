@@ -162,6 +162,12 @@ variable "confluence_helm_chart_version" {
   default     = "1.2.0"
 }
 
+variable "confluence_version_tag" {
+  description = "Version tag for Confluence"
+  type        = string
+  default     = null
+}
+
 variable "confluence_install_local_chart" {
   description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
   default     = false
@@ -287,6 +293,12 @@ variable "bitbucket_helm_chart_version" {
   default     = "1.2.0"
 }
 
+variable "bitbucket_version_tag" {
+  description = "Version tag for Bitbucket"
+  type        = string
+  default     = null
+}
+
 variable "bitbucket_cpu" {
   description = "Number of CPUs for Bitbucket instance"
   type        = string
@@ -333,6 +345,30 @@ variable "bitbucket_nfs_limits_memory" {
   description = "The maximum amount of memory to allocate to the NFS instance"
   type        = string
   default     = "256Mi"
+}
+
+variable "bitbucket_elasticsearch_cpu" {
+  description = "Number of CPUs for Bitbucket elasticsearch instance."
+  type        = string
+  default     = "0.25"
+}
+
+variable "bitbucket_elasticsearch_mem" {
+  description = "Amount of memory for Bitbucket elasticsearch instance."
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_storage" {
+  description = "Storage size for Bitbucket elasticsearch in GiB."
+  type        = number
+  default     = 10
+}
+
+variable "bitbucket_elasticsearch_replicas" {
+  description = "Number of nodes in Elasticsearch cluster"
+  type        = number
+  default     = 2
 }
 
 ################################################################################
@@ -382,14 +418,26 @@ variable "number_of_bamboo_agents" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  default     = "1.0.0"
+  default     = "1.2.0"
   type        = string
 }
 
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
   type        = string
-  default     = "1.0.0"
+  default     = "1.2.0"
+}
+
+variable "bamboo_version_tag" {
+  description = "Version tag for Bamboo"
+  type        = string
+  default     = null
+}
+
+variable "bamboo_agent_version_tag" {
+  description = "Version tag for Bamboo Agent"
+  type        = string
+  default     = null
 }
 
 variable "bamboo_cpu" {
