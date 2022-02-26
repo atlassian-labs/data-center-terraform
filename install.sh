@@ -279,10 +279,10 @@ enable_tcp_protocol() {
     # Print the current listener config to stdout
     aws elb describe-load-balancers --load-balancer-name "$LOAD_BALANCER_NAME" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "$REGION" | grep 7999 -B 2 -A 3
 
-    # delete the current listener
+    # delete the current listener for port 7999
     if aws elb delete-load-balancer-listeners --load-balancer-name "$LOAD_BALANCER_NAME" --load-balancer-ports 7999 --region "$REGION"; then
 
-      # re-create the listener but using the TCP protocol instead
+      # re-create the listener for port 7999 but using the TCP protocol instead
       if aws elb create-load-balancer-listeners --load-balancer-name "$LOAD_BALANCER_NAME" --listeners "Protocol=TCP,LoadBalancerPort=7999,InstanceProtocol=TCP,InstancePort=$ORIGINAL_INSTANCE_PORT" --region "$REGION"; then
         log "Load balancer listener protocol updated for $LOAD_BALANCER_DNS."
 
