@@ -59,3 +59,7 @@ get_product(){
   echo "Usage: get_products <expected product> <config file>"
   return 1
 }
+
+describe_lb_listener() {
+  aws elb describe-load-balancers --load-balancer-name "$1" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "$2" | grep 7999 -B 2 -A 3
+}
