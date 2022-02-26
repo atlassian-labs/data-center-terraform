@@ -53,7 +53,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	sshEndpoint := fmt.Sprintf("ssh://%s.%s.%s:7999", bitbucket, testConfig.EnvironmentName, domain)
 	returnCode, sshError := exec.Command(
 		"ssh", "-q", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", "ConnectTimeout=5", sshEndpoint).Output()
-	printTestBanner("RETURN CODE FOR SSH CHECK", string(returnCode))
+	printTestBanner("RETURN CODE FOR SSH CHECK", string(returnCode[:]))
 	assert.Nil(t, sshError)
 	assert.Equal(t, "0", returnCode)
 }
