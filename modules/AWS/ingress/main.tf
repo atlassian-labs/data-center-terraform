@@ -71,6 +71,7 @@ resource "helm_release" "ingress" {
           }
         }
       }
+      # Expose TCP services: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
       tcp = {
         7999: "atlassian/bitbucket:ssh"
       }

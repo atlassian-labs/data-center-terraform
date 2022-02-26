@@ -260,6 +260,39 @@ set_synchrony_url() {
   fi
 }
 
+enable_tcp_protocol() {
+  local INSTALL_BITBUCKET
+  local REGION
+  local LOAD_BALANCER_DNS
+  local LOAD_BALANCER_NAME
+  local ORIGINAL_INSTANCE_PORT
+
+  INSTALL_BITBUCKET=$(get_product "bitbucket" "${CONFIG_ABS_PATH}")
+
+  if [ -n "${INSTALL_BITBUCKET}" ]; then
+    log "Enabling SSH connectivity for Bitbucket. Updating load Balancer [$LOAD_BALANCER_DNS] protocol for listener on port 7999..."
+    REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+    LOAD_BALANCER_DNS=$(terraform output | grep '"load_balancer_hostname" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    LOAD_BALANCER_NAME=$(echo "$LOAD_BALANCER_DNS" | cut -d '-' -f 1)
+    ORIGINAL_INSTANCE_PORT=$(aws elb describe-load-balancers --load-balancer-name "$LOAD_BALANCER_NAME" --query 'LoadBalancerDescriptions[*].ListenerDescriptions[*].Listener[]' --region "$REGION" | jq '.[] | select(.LoadBalancerPort==7999) | .InstancePort')
+
+    # Print the current listener config to stdout
+    aws elb describe-load-balancers --load-balancer-name "$LOAD_BALANCER_NAME" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "$REGION" | grep 7999 -B 2 -A 3
+
+    # delete the current listener
+    if aws elb delete-load-balancer-listeners --load-balancer-name "$LOAD_BALANCER_NAME" --load-balancer-ports 7999 --region "$REGION"; then
+
+      # re-create the listener but using the TCP protocol instead
+      if aws elb create-load-balancer-listeners --load-balancer-name "$LOAD_BALANCER_NAME" --listeners "Protocol=TCP,LoadBalancerPort=7999,InstanceProtocol=TCP,InstancePort=$ORIGINAL_INSTANCE_PORT" --region "$REGION"; then
+        log "Load balancer listener protocol updated for $LOAD_BALANCER_DNS."
+
+        # print the new listener config to stdout
+        aws elb describe-load-balancers --load-balancer-name "$LOAD_BALANCER_NAME" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "$REGION" | grep 7999 -B 2 -A 3
+      fi
+    fi
+  fi
+}
+
 # Process the arguments
 process_arguments
 
@@ -286,6 +319,9 @@ set_current_context_k8s
 
 # Set the correct Synchrony URL
 set_synchrony_url
+
+# To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
+enable_tcp_protocol
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian
