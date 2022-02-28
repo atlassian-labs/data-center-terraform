@@ -71,8 +71,17 @@ resource "helm_release" "ingress" {
           }
         }
       }
-      # Expose TCP services: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
-      # Adding this property will effectively perform steps 1,2 and 3 as described here:
+      # Ingress resources do not support TCP or UDP services. Support is therefore supplied by the Ingress NGINX
+      # controller through the --tcp-services-configmap and --udp-services-configmap flags which point to an existing
+      # config map where the key is the external port to use and the value indicates the service to expose. For more
+      # detail see Exposing TCP and UDP services:
+      # https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
+      #
+      # On deployment of the Ingress NGINX Helm chart the tcp stanza below will result in the creation of a config map,
+      # as describe above, including the addition of the --tcp-services-configmap flag to the controllers deployment.
+      # A port definition for 7999 will also be added to the controllers service.
+      #
+      # These 3 steps are effectively what is documented here:
       # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
       tcp = {
         7999: "atlassian/bitbucket:ssh"
