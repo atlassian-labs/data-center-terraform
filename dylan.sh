@@ -53,19 +53,6 @@ EOF
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
 
-# Check for prerequisite tooling
-# https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/
-check_for_prerequisites() {
-  declare -a tools=("aws" "helm" "terraform" "jq")
-  for tool in "${tools[@]}"
-  do :
-    if ! command -v "$tool" &>/dev/null; then
-      echo "The required dependency [$tool] could not be found. Please make sure that it is installed before continuing."
-      exit 1
-    fi
-  done
-}
-
 # Validate the arguments.
 process_arguments() {
   # set the default value for config file if is not provided
@@ -300,9 +287,6 @@ enable_tcp_protocol() {
     fi
   fi
 }
-
-# Check for prerequisite tooling
-check_for_prerequisites
 
 # Process the arguments
 process_arguments
