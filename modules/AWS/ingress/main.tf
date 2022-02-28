@@ -77,10 +77,10 @@ resource "helm_release" "ingress" {
       # https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
       #
       # The inclusion of the tcp stanza below will result in the following when the ingress-nginx helm chart is deployed:
-      # 1. Create of a config map, as described above, describing where inbound TCP traffic, on port 7999, should be routed
+      # 1. Creation of a config map, as described above, defining how inbound TCP traffic, on port 7999, should be routed,
       #    and to which backend service
       # 2. Update the controllers deployment, to include the "--tcp-services-configmap" flag pointing to this config map
-      # 3. Add a port definition for 7999 to the controllers service
+      # 3. Addition of a port definition for 7999 on the controllers service
       #
       # These 3 steps are effectively what is documented here:
       # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
