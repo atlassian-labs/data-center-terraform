@@ -72,6 +72,8 @@ resource "helm_release" "ingress" {
         }
       }
       # Expose TCP services: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
+      # Adding this property will effectively perform steps 1,2 and 3 as described here:
+      # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
       tcp = {
         7999: "atlassian/bitbucket:ssh"
       }
