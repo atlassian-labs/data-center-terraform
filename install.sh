@@ -275,7 +275,7 @@ enable_tcp_protocol() {
     LOAD_BALANCER_NAME=$(echo "$LOAD_BALANCER_DNS" | cut -d '-' -f 1)
     ORIGINAL_INSTANCE_PORT=$(aws elb describe-load-balancers --load-balancer-name "$LOAD_BALANCER_NAME" --query 'LoadBalancerDescriptions[*].ListenerDescriptions[*].Listener[]' --region "$REGION" | jq '.[] | select(.LoadBalancerPort==7999) | .InstancePort')
 
-    log "Enabling SSH connectivity for Bitbucket. Updating load Balancer [$LOAD_BALANCER_DNS] protocol for listener on port 7999..."
+    log "Enabling SSH connectivity for Bitbucket. Updating load Balancer [$LOAD_BALANCER_DNS] listener protocol from HTTP to TCP on port 7999..."
 
     # Print the current listener config to stdout
     describe_lb_listener "$LOAD_BALANCER_NAME" "$REGION"
@@ -288,7 +288,7 @@ enable_tcp_protocol() {
         log "Load balancer listener protocol updated for $LOAD_BALANCER_DNS."
 
         # print the new listener config to stdout
-        describe_lb_listener "$LOAD_BALANCER_NAME" "$REGION"
+        describe_lb_listener "$LOAD_BALANCER_NAME"
       fi
     fi
   fi
