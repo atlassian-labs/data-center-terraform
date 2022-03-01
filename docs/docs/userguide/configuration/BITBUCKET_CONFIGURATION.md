@@ -38,10 +38,10 @@ bitbucket_license = "<LICENSE KEY>"
 Four values are optional to configure Bitbucket system admin credentials. If those values are not provided, then Bitbucket will start in setup page to complete the system admin configuration.
 
 ```terraform
-bamboo_admin_username = "<USERNAME>"
-bamboo_admin_password = "<PASSWORD>"
-bamboo_admin_display_name = "<DISPLAY NAME>"
-bamboo_admin_email_address = "<EMAIL ADDRESS>"
+bitbucket_admin_username = "<USERNAME>"
+bitbucket_admin_password = "<PASSWORD>"
+bitbucket_admin_display_name = "<DISPLAY NAME>"
+bitbucket_admin_email_address = "<EMAIL ADDRESS>"
 ```
 
 !!!warning "Sensitive data"
