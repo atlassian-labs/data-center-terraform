@@ -9,6 +9,8 @@ module "base-infrastructure" {
   domain           = var.domain
   namespace        = local.namespace
   share_home_size  = "5Gi"
+
+  enable_tcp = local.install_bitbucket
 }
 
 module "bamboo" {
