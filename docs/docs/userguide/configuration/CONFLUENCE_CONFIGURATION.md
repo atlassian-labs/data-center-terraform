@@ -10,7 +10,7 @@ confluence_helm_chart_version = "1.2.0"
 
 ### Confluence version tag
 
-Confluence will be installed with the default version defined in Hem chart. If you want to install a specific version of Bamboo, you can set the `confluence_version_tag` to the version you want to install.
+Confluence will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/confluence/Chart.yaml#L6). If you want to install a specific version of Bamboo, you can set the `confluence_version_tag` to the version you want to install.
 
 For more information, see [Confluence Version Tags](https://hub.docker.com/r/atlassian/confluence/tags){.external}.
 
