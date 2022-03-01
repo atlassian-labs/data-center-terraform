@@ -108,7 +108,6 @@ You may want to adjust these values according to your needs. For more informatio
 The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
 
 
-The following variables set the request and limit for number of CPU, amount of memory of NFS instance. (Used default values as example.)
 
 ```terraform
 # Bitbucket NFS instance resource configuration
