@@ -10,7 +10,7 @@ jira_helm_chart_version = "1.2.0"
 
 ### Jira version tag
 
-Jira Software will be installed with the default version defined in Hem chart. If you want to install a specific version of Jira software, you can set the `jira_version_tag` to the version you want to install.
+Jira Software will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/jira/Chart.yaml#L6). If you want to install a specific version of Jira software, you can set the `jira_version_tag` to the version you want to install.
 
 For more information, see [Jira Version Tags](https://hub.docker.com/r/atlassian/jira-software/tags){.external}.
 
