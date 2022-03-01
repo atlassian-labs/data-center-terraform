@@ -60,7 +60,8 @@ resource "helm_release" "ingress" {
           externalTrafficPolicy = "Local"
           targetPorts = {
             # Set the HTTPS listener to accept HTTP connections only, as the AWS load balancer is terminating TLS
-          https = "http" }
+            https = "http"
+          }
           annotations = {
             "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : module.ingress_certificate.this_acm_certificate_arn
             "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
