@@ -50,11 +50,13 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 }
 
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
-	sshEndpoint := fmt.Sprintf("ssh://%s.%s.%s:7999", bitbucket, testConfig.EnvironmentName, domain)
 	println("Asserting Bitbucket SSH connectivity ...")
-	returnCode, sshError := exec.Command(
-		"ssh", "-q", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", "ConnectTimeout=5", sshEndpoint).Output()
-	printTestBanner("RETURN CODE FOR SSH CHECK", string(returnCode[:]))
+	sshEndpoint := fmt.Sprintf("ssh://%s.%s.%s:7999", bitbucket, testConfig.EnvironmentName, domain)
+	response, sshError := exec.Command(
+		"ssh", "-vvv", sshEndpoint).Output()
+	printTestBanner("Response from ssh connectivity check", string(response[:]))
 	assert.Nil(t, sshError)
-	assert.Equal(t, "0", returnCode)
+	assert.Contains(t, fmt.Sprintf("Connecting to %s port 7999", sshEndpoint), response)
+	assert.Contains(t, "Connection established", response)
+	assert.Contains(t, "Connection closed by remote host", response)
 }
