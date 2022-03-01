@@ -10,7 +10,7 @@ Bitbucket_helm_chart_version = "1.2.0"
 
 ### Bitbucket version tag
 
-Bitbucket will be installed with the default version defined in Hem chart. If you want to install a specific version of Bitbucket, you can set the `bitbucket_version_tag` to the version you want to install.
+Bitbucket will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/bamboo/Chart.yaml#L6). If you want to install a specific version of Bitbucket, you can set the `bitbucket_version_tag` to the version you want to install.
 
 For more information, see [Bitbucket Version Tags](https://hub.docker.com/r/atlassian/bitbucket/tags){.external}.
 
