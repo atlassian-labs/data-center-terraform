@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
-	"os/exec"
 	"testing"
 )
 
@@ -12,7 +11,6 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 	printTestBanner(bitbucket, "Tests")
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
 	assertBitbucketNfsConnectivity(t, testConfig)
-	assertBitbucketSshConnectivity(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
@@ -47,16 +45,4 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 
 	assert.Nil(t, kubectlError)
 	assert.Equal(t, "Greetings from an NFS", fileContents)
-}
-
-func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
-	println("Asserting Bitbucket SSH connectivity ...")
-	sshEndpoint := fmt.Sprintf("ssh://%s.%s.%s:7999", bitbucket, testConfig.EnvironmentName, domain)
-	response, sshError := exec.Command(
-		"ssh", "-vvv", sshEndpoint).Output()
-	printTestBanner("Response from ssh connectivity check", string(response[:]))
-	assert.Nil(t, sshError)
-	assert.Contains(t, fmt.Sprintf("Connecting to %s port 7999", sshEndpoint), response)
-	assert.Contains(t, "Connection established", response)
-	assert.Contains(t, "Connection closed by remote host", response)
 }
