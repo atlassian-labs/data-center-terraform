@@ -65,6 +65,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	output, _ := cmd.CombinedOutput()
 
 	stdout := string(output)
+	println(stdout)
 	assert.Contains(t, stdout, "Connection established")
 
 	addNewSshKey(t, testConfig)
@@ -73,7 +74,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 
 	url := "git@bitbucket.yzhangssh.deplops.com:7999/bbssh/bitbucket-ssh-test-repo.git"
 	var publicKey *ssh.PublicKeys
-	sshPath := os.Getenv("HOME") + "/.ssh/id_rsa"
+	sshPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
 	sshKey, _ := ioutil.ReadFile(sshPath)
 	publicKey, keyError := ssh.NewPublicKeys("git", []byte(sshKey), "")
 	if keyError != nil {
