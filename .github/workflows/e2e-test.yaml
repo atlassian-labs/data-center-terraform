@@ -42,6 +42,13 @@ jobs:
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
+      - name: Add SSH key for Bitbucket tests
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.BITBUCKET_E2E_TEST_SSH_KEY }}
+          name: id_rsa # optional
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
       - name: E2E test
         id: e2e-test
         working-directory: test/
