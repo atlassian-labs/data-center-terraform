@@ -134,7 +134,7 @@ func AddNewRepo(t *testing.T, testConfig TestConfig) {
 
 	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewRepository))
 	content := getPageContent(t, restEndpoint)
-	sshCloneUrl := "ssh://git@bitbucket.dylan-bb-ssh004.deplops.com:7999/bbssh/bitbucket-ssh-test-repo.git"
+	sshCloneUrl := fmt.Sprintf("ssh://git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	assert.Contains(t, string(content), sshCloneUrl)
 }
 
