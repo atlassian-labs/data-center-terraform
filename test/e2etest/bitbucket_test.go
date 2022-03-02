@@ -80,7 +80,7 @@ func portConnectivityCheck(t *testing.T, testConfig TestConfig) {
 	assert.Contains(t, stdout, "Connection established")
 }
 
-func TestDylan(t *testing.T) {
+func TestSshPush(t *testing.T) {
 	println("Push public key to Bitbucket server ...")
 	pkPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e.pub"
 	pk, err := ioutil.ReadFile(pkPath)
