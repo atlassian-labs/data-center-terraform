@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"testing"
 )
 
@@ -17,7 +18,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 	printTestBanner(bitbucket, "Tests")
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
 	assertBitbucketNfsConnectivity(t, testConfig)
-	//assertBitbucketSshConnectivity(t, testConfig)
+	assertBitbucketSshConnectivity(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
@@ -54,23 +55,21 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	assert.Equal(t, "Greetings from an NFS", fileContents)
 }
 
-func TestDylan(t *testing.T) {
+func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	println("Asserting Bitbucket SSH connectivity ...")
 
 	// DO the SSH check to automatically add the target host to known hosts.
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	sshEndpoint := fmt.Sprintf("ssh://%s:7999", host)
+	cmd := exec.Command("ssh", "-v", "-o", "StrictHostKeyChecking=no", sshEndpoint)
+	output, _ := cmd.CombinedOutput()
 
-	//host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
-	//sshEndpoint := fmt.Sprintf("ssh://%s:7999", host)
-	//cmd := exec.Command("ssh", "-v", "-o", "StrictHostKeyChecking=no", sshEndpoint)
-	//output, _ := cmd.CombinedOutput()
-	//
-	//stdout := string(output)
-	//assert.Contains(t, stdout, fmt.Sprintf("Connecting to %s", host))
-	//assert.Contains(t, stdout, "Connection established")
-	//assert.Contains(t, stdout, "Permission denied (publickey)")
+	stdout := string(output)
+	assert.Contains(t, stdout, "Connection established")
 
-	addNewProject(t)
-	addNewProjectRepo(t)
+	addNewSshKey(t, testConfig)
+	addNewProject(t, testConfig)
+	addNewProjectRepo(t, testConfig)
 
 	url := "git@bitbucket.yzhangssh.deplops.com:7999/bbssh/bitbucket-ssh-test-repo.git"
 	var publicKey *ssh.PublicKeys
@@ -90,9 +89,11 @@ func TestDylan(t *testing.T) {
 	}
 }
 
-func addNewProjectRepo(t *testing.T) {
-	credential := fmt.Sprintf("sshadmin:%s", "admin!ssh")
-	url := fmt.Sprintf("https://%s@bitbucket.yzhangssh.deplops.com/rest/api/latest/projects/BBSSH/repos", credential)
+func addNewProjectRepo(t *testing.T, testConfig TestConfig) {
+	println("Create new repo ...")
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects/BBSSH/repos", credential, host)
 
 	addNewRepository, _ := json.Marshal(map[string]string{
 		"name":          "Bitbucket SSH test repo",
@@ -100,12 +101,14 @@ func addNewProjectRepo(t *testing.T) {
 		"defaultBranch": "main",
 	})
 
-	sendPostRequest(t, url, "application/json", bytes.NewBuffer(addNewRepository))
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewRepository))
 }
 
-func addNewProject(t *testing.T) {
-	credential := fmt.Sprintf("sshadmin:%s", "admin!ssh")
-	url := fmt.Sprintf("https://%s@bitbucket.yzhangssh.deplops.com/rest/api/latest/projects", credential)
+func addNewProject(t *testing.T, testConfig TestConfig) {
+	println("Create new project ...")
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects", credential, host)
 
 	addNewProject, _ := json.Marshal(map[string]string{
 		"key":         "BBSSH",
@@ -113,17 +116,24 @@ func addNewProject(t *testing.T) {
 		"description": "A project for testing the Bitbucket SSH test",
 	})
 
-	sendPostRequest(t, url, "application/json", bytes.NewBuffer(addNewProject))
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewProject))
 }
 
-func addNewSshKey(t *testing.T) {
+func addNewSshKey(t *testing.T, testConfig TestConfig) {
+	println("Push public key to Bitbucket server ...")
+	pkPath := os.Getenv("HOME") + "/.ssh/id_rsa.pub"
+	pk, err := ioutil.ReadFile(pkPath)
+	if err != nil {
+		fmt.Print(err)
+	}
 
-	credential := fmt.Sprintf("admin:%s", "Atlassian2019")
-	url := fmt.Sprintf("https://%s@bitbucket.dylan-bb-ssh004.deplops.com/rest/ssh/latest/keys", credential)
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/ssh/latest/keys", credential, host)
 
 	addSshKeyJsonPayload, _ := json.Marshal(map[string]string{
-		"text": publicKey,
+		"text": string(pk),
 	})
 
-	sendPostRequest(t, url, "application/json", bytes.NewBuffer(addSshKeyJsonPayload))
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addSshKeyJsonPayload))
 }
