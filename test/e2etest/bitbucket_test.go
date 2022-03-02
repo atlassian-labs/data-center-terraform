@@ -85,7 +85,7 @@ func addNewSshKey(t *testing.T, testConfig TestConfig) {
 	pkPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e.pub"
 	pk, err := ioutil.ReadFile(pkPath)
 	if err != nil {
-		fmt.Print(err)
+		println(fmt.Print(err.Error()))
 	}
 
 	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
@@ -110,7 +110,7 @@ func cloneRepo(testConfig TestConfig) {
 	if keyError != nil {
 		fmt.Println(keyError)
 	}
-	_, err := git.PlainClone("/tmp/foo", false, &git.CloneOptions{
+	_, err := git.PlainClone("/tmp/cloned", false, &git.CloneOptions{
 		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
