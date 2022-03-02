@@ -7,6 +7,7 @@ on:
       - 'docs/**'
       - '.atlassian/**'
       - 'test/unittest**'
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -27,8 +28,24 @@ jobs:
 
       - name: Add public SSH key for Bitbucket tests
         run: |
-            echo $PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
+          echo $PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
 
       - name: List contents of .ssh folder
         run: |
-            ls -lrtra /home/runner/.ssh
+          ls -lrtra /home/runner/.ssh
+
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.1.4
+        with:
+          # The Go version to download (if necessary) and use. Supports semver spec and ranges.
+          go-version: 1.17
+      - name: Setup dependencies
+        working-directory: test/
+        run: go get -v -t -d ./... && go mod tidy
+
+      - name: Test key push
+        id: key-push
+        working-directory: test/
+        run: go test ./e2etest -run TestSshPush -v
