@@ -12,7 +12,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
 	printTestBanner(bitbucket, "Tests")
 	assertBitbucketStatusEndpoint(t, testConfig, "RUNNING")
 	assertBitbucketNfsConnectivity(t, testConfig)
-	assertBitbucketSshConnectivity(t)
+	assertBitbucketSshConnectivity(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
@@ -51,6 +51,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	println("Asserting Bitbucket SSH connectivity ...")
+
 	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
 	sshEndpoint := fmt.Sprintf("ssh://%s:7999", host)
 	cmd := exec.Command("ssh", "-v", "-o", "StrictHostKeyChecking=no", sshEndpoint)
