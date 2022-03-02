@@ -58,7 +58,18 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	println("Asserting Bitbucket SSH connectivity ...")
 
-	// DO the SSH check to automatically add the target host to known hosts.
+	// Check connections over ssh to port 7999 are working
+	portConnectivityCheck(t, testConfig)
+
+	// Now let's do some real work..
+	addNewSshKey(t, testConfig)
+	addNewProject(t, testConfig)
+	addNewProjectRepo(t, testConfig)
+	cloneRepo(testConfig)
+}
+
+func portConnectivityCheck(t *testing.T, testConfig TestConfig) {
+	println("SSH connectivity check ...")
 	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
 	sshEndpoint := fmt.Sprintf("ssh://%s:7999", host)
 	cmd := exec.Command("ssh", "-v", "-o", "StrictHostKeyChecking=no", sshEndpoint)
@@ -67,12 +78,31 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	stdout := string(output)
 	println(stdout)
 	assert.Contains(t, stdout, "Connection established")
+}
 
-	addNewSshKey(t, testConfig)
-	addNewProject(t, testConfig)
-	addNewProjectRepo(t, testConfig)
+func addNewSshKey(t *testing.T, testConfig TestConfig) {
+	println("Push public key to Bitbucket server ...")
+	pkPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e.pub"
+	pk, err := ioutil.ReadFile(pkPath)
+	if err != nil {
+		fmt.Print(err)
+	}
 
-	url := "git@bitbucket.yzhangssh.deplops.com:7999/bbssh/bitbucket-ssh-test-repo.git"
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/ssh/latest/keys", credential, host)
+
+	addSshKeyJsonPayload, _ := json.Marshal(map[string]string{
+		"text": string(pk),
+	})
+
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addSshKeyJsonPayload))
+}
+
+func cloneRepo(testConfig TestConfig) {
+	println("Clone repo ...")
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	var publicKey *ssh.PublicKeys
 	sshPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
 	sshKey, _ := ioutil.ReadFile(sshPath)
@@ -81,7 +111,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 		fmt.Println(keyError)
 	}
 	_, err := git.PlainClone("/tmp/foo", false, &git.CloneOptions{
-		URL:      url,
+		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
 	})
@@ -89,7 +119,6 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 		println(err.Error())
 	}
 }
-
 func addNewProjectRepo(t *testing.T, testConfig TestConfig) {
 	println("Create new repo ...")
 	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
@@ -118,23 +147,4 @@ func addNewProject(t *testing.T, testConfig TestConfig) {
 	})
 
 	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewProject))
-}
-
-func addNewSshKey(t *testing.T, testConfig TestConfig) {
-	println("Push public key to Bitbucket server ...")
-	pkPath := os.Getenv("HOME") + "/.ssh/id_rsa.pub"
-	pk, err := ioutil.ReadFile(pkPath)
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
-	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
-	restEndpoint := fmt.Sprintf("https://%s@%s/rest/ssh/latest/keys", credential, host)
-
-	addSshKeyJsonPayload, _ := json.Marshal(map[string]string{
-		"text": string(pk),
-	})
-
-	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addSshKeyJsonPayload))
 }
