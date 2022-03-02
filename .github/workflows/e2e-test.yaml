@@ -46,7 +46,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.BITBUCKET_E2E_TEST_SSH_KEY }}
-          name: id_rsa # optional
+          name: bitbucket-e2e # optional
           known_hosts: ${{ secrets.BITBUCKET_E2E_TEST_KNOWN_HOSTS }}
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
