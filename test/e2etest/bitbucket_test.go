@@ -64,7 +64,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	// Now let's do some real work..
 	addNewSshKey(t, testConfig)
 	addNewProject(t, testConfig)
-	addNewProjectRepo(t, testConfig)
+	AddNewRepo(t, testConfig)
 	cloneRepo(testConfig)
 }
 
@@ -97,6 +97,45 @@ func addNewSshKey(t *testing.T, testConfig TestConfig) {
 	})
 
 	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addSshKeyJsonPayload))
+	content := getPageContent(t, restEndpoint)
+	publicKey := "AAAAB3NzaC1yc2EAAAADAQABAAACAQDjfTvP42K+jhLm729U896GDAy16XlGc2OxRLjKf3eBquiVM4iZ+GOGWTxsjmyP7TEfBXGAjTde/0xv2HzBzRUlx6c1XvqQ8pNNpXdO0QDZTj0DOAxaRsfKSOzw9LAR9dcf5u2tkXfRDjWvfl/9i8+gn4Vz9WBkTo7+RzpDEHebj/1chKSDzeyMJuuTQeukxtsEWTbYjWIYKkckbWxhN8jpN2FAAqaV8c3wrfvBlFPJ02t+solxlUpx/Qo7NgQIJyRfVoGtyhHmB4OAwl6pbDZAXb0iK5Im3oP5pAL8Wsx5RjEI7Zt/7PBhbBPskEHjAZBdyBDh0mk5FzziMbKXNcPJq10lISMsDNh1cHLjJoEWPPoXsDGFjxAy+cdv/V+8zImHQA8frPZGx8tXGV7twP+6o57TEVf3uQeUcfSE6l1CKauVAL+MrxRbQBaUit7+w8uazoE4AHrRydraD0/aTAGaUMN9BicMdy5j5Utl5zwjrG/XxW8eljspJA1I7Py1FbaRoGmNyV3aRfh9Cq5Bet8XFE8n383nPYejzIwYz8OSJaj8xoPpOuoDQlEaj3pPV5OOUDVHq6ehjH8ClbSGM02TB4OAQYeHa3PdcJd39H3vPdKfG1DNQAIpqPj25aLnE7zuT68p0JXsMGreCLRooJsTEfjHPXDqldk1NpqjRYyryw=="
+	assert.Contains(t, string(content), publicKey)
+}
+
+func addNewProject(t *testing.T, testConfig TestConfig) {
+	println("Create new project ...")
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects", credential, host)
+
+	addNewProject, _ := json.Marshal(map[string]string{
+		"key":         "BBSSH",
+		"name":        "Bitbucket SSH test",
+		"description": "A project for testing the Bitbucket SSH test",
+	})
+
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewProject))
+	content := getPageContent(t, restEndpoint)
+	projectDescription := "A project for testing the Bitbucket SSH test"
+	assert.Contains(t, string(content), projectDescription)
+}
+
+func AddNewRepo(t *testing.T, testConfig TestConfig) {
+	println("Create new repo ...")
+	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
+	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
+	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects/BBSSH/repos", credential, host)
+
+	addNewRepository, _ := json.Marshal(map[string]string{
+		"name":          "Bitbucket SSH test repo",
+		"scmId":         "git",
+		"defaultBranch": "main",
+	})
+
+	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewRepository))
+	content := getPageContent(t, restEndpoint)
+	sshCloneUrl := "ssh://git@bitbucket.dylan-bb-ssh004.deplops.com:7999/bbssh/bitbucket-ssh-test-repo.git"
+	assert.Contains(t, string(content), sshCloneUrl)
 }
 
 func cloneRepo(testConfig TestConfig) {
@@ -118,33 +157,4 @@ func cloneRepo(testConfig TestConfig) {
 	if err != nil {
 		println(err.Error())
 	}
-}
-func addNewProjectRepo(t *testing.T, testConfig TestConfig) {
-	println("Create new repo ...")
-	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
-	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
-	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects/BBSSH/repos", credential, host)
-
-	addNewRepository, _ := json.Marshal(map[string]string{
-		"name":          "Bitbucket SSH test repo",
-		"scmId":         "git",
-		"defaultBranch": "main",
-	})
-
-	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewRepository))
-}
-
-func addNewProject(t *testing.T, testConfig TestConfig) {
-	println("Create new project ...")
-	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
-	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
-	restEndpoint := fmt.Sprintf("https://%s@%s/rest/api/latest/projects", credential, host)
-
-	addNewProject, _ := json.Marshal(map[string]string{
-		"key":         "BBSSH",
-		"name":        "Bitbucket SSH test",
-		"description": "A project for testing the Bitbucket SSH test",
-	})
-
-	sendPostRequest(t, restEndpoint, "application/json", bytes.NewBuffer(addNewProject))
 }

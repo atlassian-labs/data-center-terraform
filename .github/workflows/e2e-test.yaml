@@ -47,7 +47,7 @@ jobs:
         with:
           key: ${{ secrets.BITBUCKET_E2E_TEST_SSH_KEY }}
           name: bitbucket-e2e # optional
-          known_hosts: ${{ secrets.BITBUCKET_E2E_TEST_KNOWN_HOSTS }}
+          known_hosts: "not-needed"
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
       - name: E2E test
