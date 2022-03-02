@@ -59,4 +59,5 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	stdout := string(output)
 	assert.Contains(t, stdout, fmt.Sprintf("Connecting to %s port 7999", host))
 	assert.Contains(t, stdout, "Connection established")
+	assert.Contains(t, stdout, "Connection closed by remote host")
 }
