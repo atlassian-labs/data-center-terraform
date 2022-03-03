@@ -62,7 +62,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
 
 	// Check connections over ssh to port 7999 are working
-	portConnectivityCheck(t, host)
+	addTestHostToKnownHosts(t, host)
 
 	// Now let's do some real work..
 	addNewSshKey(t, host, credential)
@@ -71,10 +71,9 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	cloneRepo(t, host)
 }
 
-func portConnectivityCheck(t *testing.T, host string) {
-	println("SSH connectivity check ...")
-	sshEndpoint := fmt.Sprintf("ssh://%s:7999", host)
-	cmd := exec.Command("ssh", "-v", "-o", "StrictHostKeyChecking=no", sshEndpoint)
+func addTestHostToKnownHosts(t *testing.T, host string) {
+	println(fmt.Sprintf("Adding %s to known_hosts ...", host))
+	cmd := exec.Command("ssh-keyscan", "-p", "7999", host, "/home/runner/.ssh/known_hosts")
 	output, _ := cmd.CombinedOutput()
 
 	stdout := string(output)
@@ -138,7 +137,7 @@ func cloneRepo(t *testing.T, host string) {
 	println("Clone repo ...")
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	var publicKey *ssh.PublicKeys
-	sshPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
+	sshPath := os.Getenv("HOME") + "/.ssh/id_rsa"
 	sshKey, _ := ioutil.ReadFile(sshPath)
 	publicKey, keyError := ssh.NewPublicKeys("git", []byte(sshKey), "")
 	if keyError != nil {
@@ -154,9 +153,6 @@ func cloneRepo(t *testing.T, host string) {
 }
 
 func TestSsh(t *testing.T) {
+	addTestHostToKnownHosts(t, "bitbucket.yzhangssh.deplops.com")
 	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
-}
-
-func TestPort(t *testing.T) {
-	portConnectivityCheck(t, "bitbucket.yzhangssh.deplops.com")
 }
