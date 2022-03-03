@@ -79,6 +79,12 @@ func addTestHostToKnownHosts(t *testing.T, host string) {
 	stdout := string(output)
 	println(stdout)
 	assert.Contains(t, stdout, fmt.Sprintf("%s:7999", host))
+
+	cmd2 := exec.Command("cat", "/home/runner/.ssh/known_hosts")
+	output2, _ := cmd2.CombinedOutput()
+	stdout2 := string(output2)
+	println("CATTING KNOWN_HOSTS.....")
+	println(stdout2)
 }
 
 func addNewSshKey(t *testing.T, host string, credential string) {
