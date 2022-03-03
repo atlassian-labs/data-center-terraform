@@ -137,7 +137,7 @@ func cloneRepo(t *testing.T, host string) {
 	println("Clone repo ...")
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	var publicKey *ssh.PublicKeys
-	sshPath := os.Getenv("HOME") + "/.ssh/id_rsa"
+	sshPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
 	sshKey, _ := ioutil.ReadFile(sshPath)
 	publicKey, keyError := ssh.NewPublicKeys("git", []byte(sshKey), "")
 	if keyError != nil {
