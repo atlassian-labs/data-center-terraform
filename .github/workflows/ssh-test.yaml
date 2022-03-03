@@ -53,3 +53,8 @@ jobs:
         id: ssh-test
         working-directory: test/
         run: go test ./e2etest -run TestSsh -v
+
+      - name: Print known_hosts
+        run: |
+          cat /home/runner/.ssh/known_hosts
+
