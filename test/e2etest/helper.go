@@ -14,7 +14,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/require"
 )
 
@@ -47,7 +46,8 @@ type TestConfig struct {
 }
 
 func EnvironmentName() string {
-	testId := strings.ToLower(random.UniqueId())
+	randomString := os.Getenv("RANDOM_STRING")
+	testId := strings.ToLower(randomString)
 	environmentName := "e2etest-" + testId
 	return environmentName
 }
