@@ -49,7 +49,16 @@ jobs:
         run: |
           cat /home/runner/.ssh/known_hosts
 
+      - name: Port test
+        id: port-test
+        working-directory: test/
+        run: go test ./e2etest -run TestPort -v
+        
+      - name: Print known_hosts
+        run: |
+          cat /home/runner/.ssh/known_hosts
+
       - name: SSH test
         id: ssh-test
         working-directory: test/
-        run: go test ./e2etest -run TestDylan -v
+        run: go test ./e2etest -run TestSsh -v

@@ -153,6 +153,10 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Equal(t, "remote repository is empty", err.Error())
 }
 
-func TestDylan(t *testing.T) {
+func TestSsh(t *testing.T) {
 	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
+}
+
+func TestPort(t *testing.T) {
+	portConnectivityCheck(t, "bitbucket.yzhangssh.deplops.com")
 }
