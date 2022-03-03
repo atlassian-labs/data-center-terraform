@@ -153,6 +153,6 @@ func cloneRepo(t *testing.T, host string) {
 }
 
 func TestSsh(t *testing.T) {
-	addTestHostToKnownHosts(t, "bitbucket.yzhangssh.deplops.com")
-	//cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
+	//addTestHostToKnownHosts(t, "bitbucket.yzhangssh.deplops.com")
+	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
 }

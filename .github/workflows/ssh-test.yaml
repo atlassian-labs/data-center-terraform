@@ -45,9 +45,15 @@ jobs:
         run: |
           echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
 
-#      - name: Remove dummy entry from known_hosts
-#        run: |
-#          echo "$(tail -n +2 /home/runner/.ssh/known_hosts)" > /home/runner/.ssh/known_hosts
+      - name: Generate random string
+        run: |
+#          export RANDOM_STRING=$(uuidgen  | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
+          export RANDOM_STRING="yzhangssh"
+          echo $RANDOM_STRING
+
+      - name: Adding Bitbucket e2e server to known Hosts
+        run: |
+          ssh-keyscan -p 7999 bitbucket."${RANDOM_STRING}".deplops.com >> /home/runner/.ssh/known_hosts
 
       - name: SSH test
         id: ssh-test
