@@ -19,21 +19,21 @@ jobs:
       RANDOM_STRING: ""
 
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#
-#      - name: Setup Go environment
-#        uses: actions/setup-go@v2.1.4
-#        with:
-#          go-version: 1.17
-#
-#      - name: Setup dependencies
-#        id: setup-dependencies
-#        working-directory: test/
-#        run: |
-#          go get -v -t -d ./... && go mod tidy
-#          echo ::set-output name=exit_code::$?
-#
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.1.4
+        with:
+          go-version: 1.17
+
+      - name: Setup dependencies
+        id: setup-dependencies
+        working-directory: test/
+        run: |
+          go get -v -t -d ./... && go mod tidy
+          echo ::set-output name=exit_code::$?
+
       - name: Add private SSH key for Bitbucket tests
         uses: shimataro/ssh-key-action@v2
         with:
