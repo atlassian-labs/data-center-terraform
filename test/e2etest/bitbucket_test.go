@@ -78,7 +78,7 @@ func addTestHostToKnownHosts(t *testing.T, host string) {
 
 	stdout := string(output)
 	println(stdout)
-	assert.Contains(t, stdout, "Connection established")
+	assert.Contains(t, stdout, fmt.Sprintf("%s:7999", host))
 }
 
 func addNewSshKey(t *testing.T, host string, credential string) {
