@@ -17,7 +17,7 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      BITBUCKET_E2E_PUBLIC_KEY: ${{secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY}}
+      RANDOM_STRING: ""
       TF_VAR_bamboo_license: ${{ secrets.TF_VAR_BAMBOO_LICENSE }}
       TF_VAR_confluence_license: ${{ secrets.TF_VAR_CONFLUENCE_LICENSE }}
       TF_VAR_bitbucket_license: ${{ secrets.TF_VAR_BITBUCKET_LICENSE }}
@@ -53,7 +53,16 @@ jobs:
 
       - name: Add public SSH key for Bitbucket tests
         run: |
-          echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
+          echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} >> /home/runner/.ssh/bitbucket-e2e.pub
+
+      - name: Generate random string for environment name
+        run: |
+          RANDOM_STRING=$(uuidgen | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
+          echo $RANDOM_STRING
+          
+      - name: Adding Bitbucket server to known Hosts
+        run: |
+          ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
 
       - name: E2E test
         id: e2e-test

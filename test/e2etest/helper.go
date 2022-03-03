@@ -46,6 +46,7 @@ type TestConfig struct {
 }
 
 func EnvironmentName() string {
+	// NEED A COMMENT HERE?
 	randomString := os.Getenv("RANDOM_STRING")
 	testId := strings.ToLower(randomString)
 	environmentName := "e2etest-" + testId
