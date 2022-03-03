@@ -61,6 +61,7 @@ jobs:
           
       - name: Adding Bitbucket server to known Hosts
         run: |
+          echo "THIS IS THE VALUE $RANDOM_STRING"
           ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
 
       - name: E2E test
