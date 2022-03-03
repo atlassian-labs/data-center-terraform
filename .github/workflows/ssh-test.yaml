@@ -49,11 +49,10 @@ jobs:
         run: |
           cat /home/runner/.ssh/known_hosts
 
-      - name: Port test
-        id: port-test
-        working-directory: test/
-        run: go test ./e2etest -run TestPort -v
-        
+      - name: Adding Known Hosts
+        run: |
+          ssh-keyscan -p 7999 bitbucket.yzhangssh.deplops.com >> /home/runner/.ssh/known_hosts
+
       - name: Print known_hosts
         run: |
           cat /home/runner/.ssh/known_hosts
