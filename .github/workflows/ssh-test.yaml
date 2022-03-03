@@ -52,7 +52,11 @@ jobs:
       - name: SSH test
         id: ssh-test
         working-directory: test/
-        run: go test ./e2etest -run TestSsh -v
+        run: go test ./e2etest/bitbucket_test.go -v
+
+      - name: List
+        run: |
+          ls -ltra /home/runner/.ssh
 
       - name: Print known_hosts
         run: |
