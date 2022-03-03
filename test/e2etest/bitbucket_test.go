@@ -150,5 +150,9 @@ func cloneRepo(t *testing.T, host string) {
 		Auth:     publicKey,
 	})
 	assert.Error(t, err)
-	assert.Equal(t, err.Error(), "remote repository is empty")
+	assert.Equal(t, "remote repository is empty", err.Error())
+}
+
+func TestDylan(t *testing.T) {
+	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
 }
