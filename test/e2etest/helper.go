@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"fmt"
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"log"
@@ -46,9 +47,7 @@ type TestConfig struct {
 }
 
 func EnvironmentName() string {
-	// NEED A COMMENT HERE?
-	randomString := os.Getenv("RANDOM_STRING")
-	testId := strings.ToLower(randomString)
+	testId := strings.ToLower(random.UniqueId())
 	environmentName := "e2etest-" + testId
 	return environmentName
 }

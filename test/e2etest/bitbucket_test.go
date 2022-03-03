@@ -152,7 +152,8 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Equal(t, "remote repository is empty", err.Error())
 }
 
-//func TestSsh(t *testing.T) {
-//	addNewSshKey(t, "bitbucket.yzhangssh.deplops.com", "sshadmin:admin!ssh")
-//	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
-//}
+func TestSsh(t *testing.T) {
+	addTestHostToKnownHosts(t, "bitbucket.yzhangssh.deplops.com")
+	addNewSshKey(t, "bitbucket.yzhangssh.deplops.com", "sshadmin:admin!ssh")
+	cloneRepo(t, "bitbucket.yzhangssh.deplops.com")
+}
