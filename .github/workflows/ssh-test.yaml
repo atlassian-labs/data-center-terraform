@@ -52,7 +52,7 @@ jobs:
       - name: SSH test
         id: ssh-test
         working-directory: test/
-        run: go test ./e2etest/bitbucket_test.go -v
+        run: go test ./e2etest -run TestSsh -v
 
       - name: List
         run: |
