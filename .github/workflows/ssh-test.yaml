@@ -1,0 +1,51 @@
+name: SSH Test
+on:
+  push:
+    branches:
+      - main
+    paths-ignore: # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-ignoring-paths
+      - 'docs/**'
+      - '.atlassian/**'
+      - 'test/unittest**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: SSH Testing
+    runs-on: ubuntu-latest
+    env:
+      BITBUCKET_E2E_PUBLIC_KEY: ${{secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.1.4
+        with:
+          go-version: 1.17
+
+      - name: Setup dependencies
+        id: setup-dependencies
+        working-directory: test/
+        run: |
+          go get -v -t -d ./... && go mod tidy
+          echo ::set-output name=exit_code::$?
+
+      - name: Add private SSH key for Bitbucket tests
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
+          name: bitbucket-e2e # optional
+          known_hosts: "not-needed"
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
+      - name: Add public SSH key for Bitbucket tests
+        run: |
+          echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
+
+      - name: SSH test
+        id: ssh-test
+        working-directory: test/
+        run: go test ./e2etest -run TestDylan -v
