@@ -47,22 +47,12 @@ jobs:
         with:
           key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
           name: bitbucket-e2e # optional
-          known_hosts: "not-needed"
+          known_hosts: dummy-entry
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
 
       - name: Add public SSH key for Bitbucket tests
         run: |
           echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} >> /home/runner/.ssh/bitbucket-e2e.pub
-
-      - name: Generate random string for environment name
-        run: |
-          export RANDOM_STRING=$(uuidgen | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
-          echo $RANDOM_STRING
-          
-      - name: Adding Bitbucket server to known Hosts
-        run: |
-          echo "THIS IS THE VALUE $RANDOM_STRING"
-          ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
 
       - name: E2E test
         id: e2e-test
