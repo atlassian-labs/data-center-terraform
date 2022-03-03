@@ -82,7 +82,7 @@ variable "local_helm_charts_path" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.1.0"
+  default     = "1.2.0"
 }
 
 variable "jira_version_tag" {
@@ -94,7 +94,7 @@ variable "jira_version_tag" {
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "jira_mem" {
@@ -159,7 +159,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.1.0"
+  default     = "1.2.0"
 }
 
 variable "confluence_version_tag" {
@@ -201,6 +201,7 @@ variable "confluence_max_heap" {
 variable "confluence_db_major_engine_version" {
   description = "The database major version to use for Confluence."
   type        = string
+  default     = "11"
 }
 
 variable "confluence_db_allocated_storage" {
@@ -485,6 +486,7 @@ variable "bamboo_install_local_chart" {
 variable "bamboo_db_major_engine_version" {
   description = "The database major version to use for Bamboo."
   type        = string
+  default     = "13"
 }
 
 variable "bamboo_db_allocated_storage" {
