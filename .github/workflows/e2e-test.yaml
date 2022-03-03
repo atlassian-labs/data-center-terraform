@@ -57,7 +57,7 @@ jobs:
 
       - name: Generate random string for environment name
         run: |
-          RANDOM_STRING=$(uuidgen | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
+          export RANDOM_STRING=$(uuidgen | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
           echo $RANDOM_STRING
           
       - name: Adding Bitbucket server to known Hosts
