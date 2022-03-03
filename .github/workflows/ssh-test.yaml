@@ -47,7 +47,6 @@ jobs:
 
       - name: Generate random string
         run: |
-#          export RANDOM_STRING=$(uuidgen  | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
           export RANDOM_STRING="yzhangssh"
           echo $RANDOM_STRING
 
