@@ -47,7 +47,7 @@ jobs:
 
       - name: Remove dummy entry from known_hosts
         run: |
-          echo "$(tail -n +2 /home/runner/.ssh/.ssh/known_hosts)" > /home/runner/.ssh/.ssh/known_hosts
+          echo "$(tail -n +2 /home/runner/.ssh/known_hosts)" > /home/runner/.ssh/known_hosts
 
       - name: SSH test
         id: ssh-test
