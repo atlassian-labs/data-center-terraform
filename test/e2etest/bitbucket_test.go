@@ -64,8 +64,8 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 	// Now let's do some real work..
 	addNewSshKey(t, testConfig)
 	addNewProject(t, testConfig)
-	AddNewRepo(t, testConfig)
-	cloneRepo(testConfig)
+	addNewRepo(t, testConfig)
+	cloneRepo(t, testConfig)
 }
 
 func portConnectivityCheck(t *testing.T, testConfig TestConfig) {
@@ -120,7 +120,7 @@ func addNewProject(t *testing.T, testConfig TestConfig) {
 	assert.Contains(t, string(content), projectDescription)
 }
 
-func AddNewRepo(t *testing.T, testConfig TestConfig) {
+func addNewRepo(t *testing.T, testConfig TestConfig) {
 	println("Create new repo ...")
 	credential := fmt.Sprintf("admin:%s", testConfig.BitbucketPassword)
 	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
@@ -138,7 +138,7 @@ func AddNewRepo(t *testing.T, testConfig TestConfig) {
 	assert.Contains(t, string(content), sshCloneUrl)
 }
 
-func cloneRepo(testConfig TestConfig) {
+func cloneRepo(t *testing.T, testConfig TestConfig) {
 	println("Clone repo ...")
 	host := fmt.Sprintf("%s.%s.%s", bitbucket, testConfig.EnvironmentName, domain)
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
@@ -154,7 +154,6 @@ func cloneRepo(testConfig TestConfig) {
 		Progress: os.Stdout,
 		Auth:     publicKey,
 	})
-	if err != nil {
-		println(err.Error())
-	}
+	assert.Error(t, err)
+	assert.Equal(t, err.Error(), "remote repository is empty")
 }
