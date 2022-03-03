@@ -46,10 +46,10 @@ jobs:
         run: |
           echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} >> /home/runner/.ssh/bitbucket-e2e.pub
 
-      - name: Add r+w permissions to known_hosts
-        run: |
-          chmod ugo+r+w /home/runner/.ssh/known_hosts
-          ls -ltra /home/runner/.ssh/
+#      - name: Add r+w permissions to known_hosts
+#        run: |
+#          chmod ugo+r+w /home/runner/.ssh/known_hosts
+#          ls -ltra /home/runner/.ssh/
 
 #      - name: Generate random string
 #        run: |
@@ -60,12 +60,14 @@ jobs:
 #        run: |
 #          ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
 #
-#      - name: Print known_hosts
-#        run: |
-#          cat /home/runner/.ssh/known_hosts
+
 #
       - name: SSH test
         id: ssh-test
         working-directory: test/
         run: go test ./e2etest -run TestSsh -v
+
+      - name: Print known_hosts
+        run: |
+          cat /home/runner/.ssh/known_hosts
 
