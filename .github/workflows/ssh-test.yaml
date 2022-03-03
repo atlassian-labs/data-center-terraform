@@ -45,6 +45,10 @@ jobs:
         run: |
           echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
 
+      - name: Print known_hosts
+        run: |
+          cat /home/runner/.ssh/known_hosts
+
       - name: SSH test
         id: ssh-test
         working-directory: test/
