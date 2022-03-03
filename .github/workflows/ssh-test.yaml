@@ -16,12 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BITBUCKET_E2E_PUBLIC_KEY: ${{secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY}}
-      RANDOM_STRING: $(uuidgen  | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
+      RANDOM_STRING: ""
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
 #      - name: Setup Go environment
 #        uses: actions/setup-go@v2.1.4
 #        with:
@@ -33,7 +33,7 @@ jobs:
 #        run: |
 #          go get -v -t -d ./... && go mod tidy
 #          echo ::set-output name=exit_code::$?
-
+#
 #      - name: Add private SSH key for Bitbucket tests
 #        uses: shimataro/ssh-key-action@v2
 #        with:
@@ -48,6 +48,7 @@ jobs:
 
       - name: Generate random string
         run: |
+          RANDOM_STRING=$(uuidgen | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
           echo $RANDOM_STRING
 
 #      - name: Adding Bitbucket e2e server to known Hosts
@@ -57,7 +58,7 @@ jobs:
 #      - name: Print known_hosts
 #        run: |
 #          cat /home/runner/.ssh/known_hosts
-
+#
 #      - name: SSH test
 #        id: ssh-test
 #        working-directory: test/
