@@ -73,7 +73,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig) {
 
 func addTestHostToKnownHosts(t *testing.T, host string) {
 	println(fmt.Sprintf("Adding %s to known_hosts ...", host))
-	cmd := exec.Command("ssh-keyscan", "-p", "7999", host, "/home/runner/.ssh/known_hosts")
+	cmd := exec.Command("ssh-keyscan", "-p", "7999", host, ">>", "/home/runner/.ssh/known_hosts")
 	output, _ := cmd.CombinedOutput()
 
 	stdout := string(output)
