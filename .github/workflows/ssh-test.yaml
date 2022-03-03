@@ -16,51 +16,50 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BITBUCKET_E2E_PUBLIC_KEY: ${{secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY}}
-      RANDOM_STRING: yzhangssh
+      RANDOM_STRING: $(uuidgen  | cut -d'-' -f 1 | tr '[:upper:]' '[:lower:]')
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Go environment
-        uses: actions/setup-go@v2.1.4
-        with:
-          go-version: 1.17
-
-      - name: Setup dependencies
-        id: setup-dependencies
-        working-directory: test/
-        run: |
-          go get -v -t -d ./... && go mod tidy
-          echo ::set-output name=exit_code::$?
-
-      - name: Add private SSH key for Bitbucket tests
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
-          name: bitbucket-e2e # optional
-          known_hosts: dummy-entry
-          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-
-      - name: Add public SSH key for Bitbucket tests
-        run: |
-          echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
-
-#      - name: Generate random string
+#      - name: Setup Go environment
+#        uses: actions/setup-go@v2.1.4
+#        with:
+#          go-version: 1.17
+#
+#      - name: Setup dependencies
+#        id: setup-dependencies
+#        working-directory: test/
 #        run: |
-#          export RANDOM_STRING="yzhangssh"
-#          echo $RANDOM_STRING
+#          go get -v -t -d ./... && go mod tidy
+#          echo ::set-output name=exit_code::$?
 
-      - name: Adding Bitbucket e2e server to known Hosts
+#      - name: Add private SSH key for Bitbucket tests
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
+#          name: bitbucket-e2e # optional
+#          known_hosts: dummy-entry
+#          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+#
+#      - name: Add public SSH key for Bitbucket tests
+#        run: |
+#          echo $BITBUCKET_E2E_PUBLIC_KEY >> /home/runner/.ssh/bitbucket-e2e.pub
+
+      - name: Generate random string
         run: |
-          ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
+          echo $RANDOM_STRING
 
-      - name: Print known_hosts
-        run: |
-          cat /home/runner/.ssh/known_hosts
+#      - name: Adding Bitbucket e2e server to known Hosts
+#        run: |
+#          ssh-keyscan -p 7999 bitbucket."$RANDOM_STRING".deplops.com > /home/runner/.ssh/known_hosts
+#
+#      - name: Print known_hosts
+#        run: |
+#          cat /home/runner/.ssh/known_hosts
 
-      - name: SSH test
-        id: ssh-test
-        working-directory: test/
-        run: go test ./e2etest -run TestSsh -v
+#      - name: SSH test
+#        id: ssh-test
+#        working-directory: test/
+#        run: go test ./e2etest -run TestSsh -v
 
