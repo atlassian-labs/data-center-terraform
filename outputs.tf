@@ -22,7 +22,7 @@ output "efs" {
   description = "EFS shared storage"
 
   value = {
-    efs = module.base-infrastructure.efs == null ? null : module.base-infrastructure.efs[0].efs_id
+    efs = module.base-infrastructure.efs == null ? "EFS is not provisioned" : module.base-infrastructure.efs[0].efs_id
   }
 }
 
