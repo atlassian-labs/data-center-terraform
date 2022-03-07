@@ -33,7 +33,11 @@ resource_tags = {
 # Instance types that is preferred for EKS node group.
 instance_types = ["m5.2xlarge"]
 
-# Desired number of nodes that the node group should launch with initially.
+# Desired number of nodes that the node group should launch with initially. This value cannot be changed later.
+# There is an cluster-autoscaler installed on the EKS cluster that will manage the requested capacity
+# and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
+# and removes the need to change this value.
+# https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v17.24.0/docs/faq.md#why-does-changing-the-node-or-worker-groups-desired-count-not-do-anything
 desired_capacity = 1
 
 ################################################################################
