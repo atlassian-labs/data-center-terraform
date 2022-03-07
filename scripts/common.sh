@@ -62,9 +62,9 @@ get_product(){
 
 delete_lb_listener() {
   if [ "$#" -eq 2 ]; then
-    local load_balancer_name=${1}
-    local region=${2}
-    aws elb delete-load-balancer-listeners --load-balancer-name "$load_balancer_name" --load-balancer-ports 7999 --region "$region"
+    local load_balancer_name="${1}"
+    local region="${2}"
+    aws elb delete-load-balancer-listeners --load-balancer-name "${load_balancer_name}" --load-balancer-ports 7999 --region "${region}"
   else
     echo "Usage: delete_lb_listener function expects 2 params <load_balancer_name> <region>"
   fi
