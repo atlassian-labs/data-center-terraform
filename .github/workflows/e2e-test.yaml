@@ -52,7 +52,7 @@ jobs:
 
       - name: Add public SSH key for Bitbucket tests
         run: |
-          echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} >> /home/runner/.ssh/bitbucket-e2e.pub
+          echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} > /home/runner/.ssh/bitbucket-e2e.pub
 
       - name: E2E test
         id: e2e-test
