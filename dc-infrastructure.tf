@@ -8,7 +8,7 @@ module "base-infrastructure" {
   desired_capacity = var.desired_capacity
   domain           = var.domain
   namespace        = local.namespace
-  share_home_size  = local.share_home_size
+  shared_home_size = local.shared_home_size
 }
 
 module "bamboo" {
