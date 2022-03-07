@@ -44,3 +44,9 @@ variable "shared_home_size" {
     error_message = "Invalid shared home persistent volume size. Should be a number followed by 'm' or 'g'."
   }
 }
+
+variable "enable_ssh_tcp" {
+  description = "If true, TCP will be enabled at ingress controller level."
+  type        = bool
+  default     = false
+}
