@@ -88,10 +88,10 @@ resource "helm_release" "ingress" {
     # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
     #
     # Note: Although the port definition defined in step 3 is done so using the TCP protocol, this protocol is not
-    # reflected in the associated ELB Load Balancer. As such, the method "enable_tcp_protocol_on_lb_listener" (install.sh)
+    # reflected in the associated ELB Load Balancer. As such, the method "enable_ssh_tcp_protocol_on_lb_listener" (install.sh)
     # is executed, post deployment, to update the protocol on the load balancer from HTTP to TCP.
     #
-    local.tcp_setting,
+    local.ssh_tcp_setting,
   ]
 }
 

@@ -6,7 +6,7 @@ locals {
   ingress_dns_domain = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
   ingress_version    = "4.0.6"
 
-  tcp_setting = var.enable_tcp ? yamlencode({
+  ssh_tcp_setting = var.enable_ssh_tcp ? yamlencode({
     tcp = {
       7999 : "atlassian/bitbucket:ssh"
     }
