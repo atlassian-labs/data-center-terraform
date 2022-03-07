@@ -274,7 +274,7 @@ set_synchrony_url() {
 }
 
 # Update the current load balancer listener on port 7999 to use the TCP protocol
-enable_tcp_protocol_on_lb_listener() {
+enable_ssh_tcp_protocol_on_lb_listener() {
   local install_bitbucket
   local region
   local load_balancer_dns
@@ -333,7 +333,7 @@ set_current_context_k8s
 set_synchrony_url
 
 # To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
-enable_tcp_protocol_on_lb_listener
+enable_ssh_tcp_protocol_on_lb_listener
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian

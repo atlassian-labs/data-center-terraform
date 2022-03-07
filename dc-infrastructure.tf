@@ -10,7 +10,7 @@ module "base-infrastructure" {
   namespace        = local.namespace
   share_home_size  = "5Gi"
 
-  enable_tcp = local.install_bitbucket
+  enable_ssh_tcp = local.install_bitbucket
 }
 
 module "bamboo" {
