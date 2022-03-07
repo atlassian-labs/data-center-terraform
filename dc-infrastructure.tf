@@ -48,8 +48,9 @@ module "bamboo" {
     mem          = var.bamboo_mem
     min_heap     = var.bamboo_min_heap
     max_heap     = var.bamboo_max_heap
-    license      = var.bamboo_license
   }
+
+  license = var.bamboo_license
 
   bamboo_agent_configuration = {
     helm_version = var.bamboo_agent_helm_chart_version

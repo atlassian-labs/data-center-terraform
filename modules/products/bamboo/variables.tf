@@ -41,9 +41,19 @@ variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.bamboo_configuration) == 6 &&
-    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
+    condition = (length(var.bamboo_configuration) == 5 &&
+    alltrue([for o in keys(var.bamboo_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
     error_message = "Bamboo configuration is not valid."
+  }
+}
+
+variable "license" {
+  description = "License to use for Bamboo"
+  type        = string
+  sensitive   = true
+  validation {
+    condition     = var.license != null
+    error_message = "License is not valid."
   }
 }
 
