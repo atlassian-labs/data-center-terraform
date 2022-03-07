@@ -83,9 +83,9 @@ create_lb_listener() {
 
 describe_lb_listener() {
   if [ "$#" -eq 2 ]; then
-    local load_balancer_name=${1}
-    local region=${2}
-    aws elb describe-load-balancers --load-balancer-name "$load_balancer_name" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "$region" | grep 7999 -B 2 -A 3
+    local load_balancer_name="${1}"
+    local region="${2}"
+    aws elb describe-load-balancers --load-balancer-name "${load_balancer_name}" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "${region}" | grep 7999 -B 2 -A 3
   else
     echo "Usage: describe_lb_listener function expects 2 params <load_balancer_name> <region>"
   fi
