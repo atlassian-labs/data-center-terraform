@@ -9,9 +9,8 @@ Its advised that the tooling below is installed to your development environment.
 1. [Terraform](#terraform) 
 2. [Helm v3.3 or later](#helm)
 3. [AWS CLI](#aws-cli)
-4. [jq ](#jq)
-5. [Kubectl](#kubectl) (optional)
-6. [Kubernetes cluster monitoring tools](#kubernetes-cluster-monitoring-tools) (optional)
+4. [Kubectl](#kubectl) (optional)
+5. [Kubernetes cluster monitoring tools](#kubernetes-cluster-monitoring-tools) (optional)
 
 ### :material-terraform: Terraform
 
@@ -58,17 +57,6 @@ You need to have the AWS CLI tool installed on your local machine before creatin
     aws --version
     ```
 2. If the AWS CLI is not installed or you're running version 1, install AWS CLI version 2 by following the [official instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external}.
-
-### :material-code-json: jq
-
-The installer scripts depend on [jq](https://stedolan.github.io/jq/){.external} to function correctly.
-
-1. Check that it is installed by running:
-   ```shell
-   jq --version
-   ```
-   
-2. If not installed follow the [download instructions](https://stedolan.github.io/jq/download/){.external} for details on how to obtain it.
 
 ### :material-tools: Kubectl
 

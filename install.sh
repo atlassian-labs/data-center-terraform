@@ -56,7 +56,7 @@ EOF
 # Check for prerequisite tooling
 # https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/
 check_for_prerequisites() {
-  declare -a tools=("aws" "helm" "terraform" "jq")
+  declare -a tools=("aws" "helm" "terraform")
   for tool in "${tools[@]}"
   do :
     if ! command -v "${tool}" &>/dev/null; then
@@ -287,7 +287,7 @@ enable_tcp_protocol_on_lb_listener() {
     region=$(get_variable 'region' "${CONFIG_ABS_PATH}")
     load_balancer_dns=$(terraform output | grep '"load_balancer_hostname" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
     load_balancer_name=$(echo "${load_balancer_dns}" | cut -d '-' -f 1)
-    original_instance_port=$(aws elb describe-load-balancers --load-balancer-name "${load_balancer_name}" --query 'LoadBalancerDescriptions[*].ListenerDescriptions[*].Listener[]' --region "${region}" | jq '.[] | select(.LoadBalancerPort==7999) | .InstancePort')
+    original_instance_port=$(aws elb describe-load-balancers --load-balancer-name af4905e438c1d4ba2ada43c9eda1b879 --query 'LoadBalancerDescriptions[*].ListenerDescriptions[?Listener.LoadBalancerPort==`7999`].Listener[].InstancePort | [0]' --region "${region}")
 
     log "Enabling SSH connectivity for Bitbucket. Updating load balancer [${load_balancer_dns}] listener protocol from HTTP to TCP on port 7999..."
     describe_lb_listener "${load_balancer_name}" "${region}"
