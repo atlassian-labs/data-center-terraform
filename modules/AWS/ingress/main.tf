@@ -59,7 +59,7 @@ resource "helm_release" "ingress" {
           ## Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
           externalTrafficPolicy = "Local"
           targetPorts = {
-            # Set the HTTPS listener to accept HTTP connections only, as the AWS loadbalancer is terminating TLS
+            # Set the HTTPS listener to accept HTTP connections only, as the AWS load balancer is terminating TLS
             https = "http"
           }
           annotations = {
@@ -71,7 +71,27 @@ resource "helm_release" "ingress" {
           }
         }
       }
-    })
+    }),
+    # Ingress resources do not support TCP or UDP services. Support is therefore supplied by the Ingress NGINX
+    # controller through the --tcp-services-configmap and --udp-services-configmap flags. These flags point to
+    # an existing config map where; the key is the external port to use, and the value indicates the service to
+    # expose. For more detail see, exposing TCP and UDP services:
+    # https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
+    #
+    # The inclusion of the tcp stanza below will result in the following when the ingress-nginx helm chart is deployed:
+    # 1. Creation of a config map, as described above, defining how inbound TCP traffic, on port 7999, should be routed,
+    #    and to which backend service
+    # 2. Update the controllers deployment, to include the "--tcp-services-configmap" flag pointing to this config map
+    # 3. Addition of a port definition for 7999 on the controllers service
+    #
+    # These 3 steps are effectively what is documented here:
+    # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
+    #
+    # Note: Although the port definition defined in step 3 is done so using the TCP protocol, this protocol is not
+    # reflected in the associated ELB Load Balancer. As such, the method "enable_ssh_tcp_protocol_on_lb_listener" (install.sh)
+    # is executed, post deployment, to update the protocol on the load balancer from HTTP to TCP.
+    #
+    local.ssh_tcp_setting,
   ]
 }
 

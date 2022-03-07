@@ -59,3 +59,43 @@ get_product(){
   echo "Usage: get_products <expected product> <config file>"
   return 1
 }
+
+# Delete the load balancer listener on port 7999
+# for the supplied load balancer name and region
+# params: $1 - load balancer name , $2 - region
+delete_lb_listener() {
+  if [ "$#" -eq 2 ]; then
+    local load_balancer_name="${1}"
+    local region="${2}"
+    aws elb delete-load-balancer-listeners --load-balancer-name "${load_balancer_name}" --load-balancer-ports 7999 --region "${region}"
+  else
+    echo "Usage: delete_lb_listener function expects 2 params <load_balancer_name> <region>"
+  fi
+}
+
+# Create the load balancer listener on port 7999
+# for the supplied load balancer name, instance port and region
+# params: $1 - load balancer name , $2 - instance port, $3 - region
+create_lb_listener() {
+  if [ "$#" -eq 3 ]; then
+    local load_balancer_name="${1}"
+    local instance_port="${2}"
+    local region="${3}"
+    aws elb create-load-balancer-listeners --load-balancer-name "${load_balancer_name}" --listeners "Protocol=TCP,LoadBalancerPort=7999,InstanceProtocol=TCP,InstancePort=${instance_port}" --region "${region}"
+  else
+    echo "Usage: create_lb_listener function expects 3 params <load_balancer_name> <instance_port> <region>"
+  fi
+}
+
+# Describe the load balancer listener on port 7999
+# for the supplied load balancer name and region
+# params: $1 - load balancer name , $2 - region
+describe_lb_listener() {
+  if [ "$#" -eq 2 ]; then
+    local load_balancer_name="${1}"
+    local region="${2}"
+    aws elb describe-load-balancers --load-balancer-name "${load_balancer_name}" --query 'LoadBalancerDescriptions[*].ListenerDescriptions' --region "${region}" | grep 7999 -B 2 -A 3
+  else
+    echo "Usage: describe_lb_listener function expects 2 params <load_balancer_name> <region>"
+  fi
+}

@@ -53,6 +53,19 @@ EOF
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
 
+# Check for prerequisite tooling
+# https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/
+check_for_prerequisites() {
+  declare -a tools=("aws" "helm" "terraform")
+  for tool in "${tools[@]}"
+  do :
+    if ! command -v "${tool}" &>/dev/null; then
+      log "The required dependency [${tool}] could not be found. Please make sure that it is installed before continuing." "ERROR"
+      exit 1
+    fi
+  done
+}
+
 # Validate the arguments.
 process_arguments() {
   # set the default value for config file if is not provided
@@ -260,6 +273,39 @@ set_synchrony_url() {
   fi
 }
 
+# Update the current load balancer listener on port 7999 to use the TCP protocol
+enable_ssh_tcp_protocol_on_lb_listener() {
+  readonly SSH_TCP_PORT="7999"
+  local install_bitbucket
+  local region
+  local load_balancer_dns
+  local load_balancer_name
+  local original_instance_port
+
+  install_bitbucket=$(get_product "bitbucket" "${CONFIG_ABS_PATH}")
+
+  if [ -n "${install_bitbucket}" ]; then
+    region=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+    load_balancer_dns=$(terraform output | grep '"load_balancer_hostname" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+    load_balancer_name=$(echo "${load_balancer_dns}" | cut -d '-' -f 1)
+    original_instance_port=$(aws elb describe-load-balancers --load-balancer-name ${load_balancer_name} --query 'LoadBalancerDescriptions[*].ListenerDescriptions[?Listener.LoadBalancerPort==`'"${SSH_TCP_PORT}"'`].Listener[].InstancePort | [0]' --region "${region}")
+
+    log "Enabling SSH connectivity for Bitbucket. Updating load balancer [${load_balancer_dns}] listener protocol from HTTP to TCP on port ${SSH_TCP_PORT}..."
+    describe_lb_listener "${load_balancer_name}" "${region}"
+
+    # delete the current listener for port 7999 and re-create but using the TCP protocol instead
+    if delete_lb_listener "${load_balancer_name}" "${region}" && create_lb_listener "${load_balancer_name}" "${original_instance_port}" "${region}"; then
+      log "Load balancer listener protocol updated for ${load_balancer_dns}."
+      describe_lb_listener "${load_balancer_name}" "${region}"
+    else
+      log "ERROR! There was an issue updating the load balancer [${load_balancer_dns}] listener protocol from HTTP to TCP on port ${SSH_TCP_PORT}. You may want to do this manually via the AWS Console."
+    fi
+  fi
+}
+
+# Check for prerequisite tooling
+check_for_prerequisites
+
 # Process the arguments
 process_arguments
 
@@ -286,6 +332,9 @@ set_current_context_k8s
 
 # Set the correct Synchrony URL
 set_synchrony_url
+
+# To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
+enable_ssh_tcp_protocol_on_lb_listener
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian

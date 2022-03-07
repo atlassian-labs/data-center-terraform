@@ -34,6 +34,7 @@ module "ingress" {
 
   # inputs
   ingress_domain = local.ingress_domain
+  enable_ssh_tcp = var.enable_ssh_tcp
 }
 
 resource "kubernetes_namespace" "products" {
