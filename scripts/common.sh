@@ -75,7 +75,7 @@ create_lb_listener() {
     local load_balancer_name="${1}"
     local original_instance_port="${2}"
     local region="${3}"
-    aws elb create-load-balancer-listeners --load-balancer-name "${load_balancer_name"} --listeners "Protocol=TCP,LoadBalancerPort=7999,InstanceProtocol=TCP,InstancePort=${original_instance_port}" --region "${region}"
+    aws elb create-load-balancer-listeners --load-balancer-name "${load_balancer_name}" --listeners "Protocol=TCP,LoadBalancerPort=7999,InstanceProtocol=TCP,InstancePort=${original_instance_port}" --region "${region}"
   else
     echo "Usage: create_lb_listener function expects 3 params <load_balancer_name> <original_instance_port> <region>"
   fi
