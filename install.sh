@@ -60,7 +60,7 @@ check_for_prerequisites() {
   for tool in "${tools[@]}"
   do :
     if ! command -v "${tool}" &>/dev/null; then
-      echo "The required dependency [${tool}] could not be found. Please make sure that it is installed before continuing."
+      log "The required dependency [${tool}] could not be found. Please make sure that it is installed before continuing." "ERROR"
       exit 1
     fi
   done
