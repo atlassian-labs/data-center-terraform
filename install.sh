@@ -59,8 +59,8 @@ check_for_prerequisites() {
   declare -a tools=("aws" "helm" "terraform" "jq")
   for tool in "${tools[@]}"
   do :
-    if ! command -v "$tool" &>/dev/null; then
-      echo "The required dependency [$tool] could not be found. Please make sure that it is installed before continuing."
+    if ! command -v "${tool}" &>/dev/null; then
+      echo "The required dependency [${tool}] could not be found. Please make sure that it is installed before continuing."
       exit 1
     fi
   done
@@ -286,18 +286,18 @@ enable_tcp_protocol_on_lb_listener() {
   if [ -n "${install_bitbucket}" ]; then
     region=$(get_variable 'region' "${CONFIG_ABS_PATH}")
     load_balancer_dns=$(terraform output | grep '"load_balancer_hostname" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
-    load_balancer_name=$(echo "$load_balancer_dns" | cut -d '-' -f 1)
-    original_instance_port=$(aws elb describe-load-balancers --load-balancer-name "$load_balancer_name" --query 'LoadBalancerDescriptions[*].ListenerDescriptions[*].Listener[]' --region "$region" | jq '.[] | select(.LoadBalancerPort==7999) | .InstancePort')
+    load_balancer_name=$(echo "${load_balancer_dns}" | cut -d '-' -f 1)
+    original_instance_port=$(aws elb describe-load-balancers --load-balancer-name "${load_balancer_name}" --query 'LoadBalancerDescriptions[*].ListenerDescriptions[*].Listener[]' --region "${region}" | jq '.[] | select(.LoadBalancerPort==7999) | .InstancePort')
 
-    log "Enabling SSH connectivity for Bitbucket. Updating load balancer [$load_balancer_dns] listener protocol from HTTP to TCP on port 7999..."
-    describe_lb_listener "$load_balancer_name" "$region"
+    log "Enabling SSH connectivity for Bitbucket. Updating load balancer [${load_balancer_dns}] listener protocol from HTTP to TCP on port 7999..."
+    describe_lb_listener "${load_balancer_name}" "${region}"
 
     # delete the current listener for port 7999 and re-create but using the TCP protocol instead
-    if delete_lb_listener "$load_balancer_name" "$region" && create_lb_listener "$load_balancer_name" "$original_instance_port" "$region"; then
-      log "Load balancer listener protocol updated for $load_balancer_dns."
-      describe_lb_listener "$load_balancer_name" "$region"
+    if delete_lb_listener "${load_balancer_name}" "${region}" && create_lb_listener "${load_balancer_name}" "${original_instance_port}" "${region}"; then
+      log "Load balancer listener protocol updated for ${load_balancer_dns}."
+      describe_lb_listener "${load_balancer_name}" "${region}"
     else
-      log "ERROR! There was an issue updating the load balancer [$load_balancer_dns] listener protocol from HTTP to TCP on port 7999. You may want to do this manually via the AWS Console."
+      log "ERROR! There was an issue updating the load balancer [${load_balancer_dns}] listener protocol from HTTP to TCP on port 7999. You may want to do this manually via the AWS Console."
     fi
   fi
 }
