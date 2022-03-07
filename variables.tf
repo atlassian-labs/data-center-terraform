@@ -380,6 +380,7 @@ variable "bamboo_license" {
   description = "Bamboo license."
   type        = string
   sensitive   = true
+  default     = null
 }
 
 variable "bamboo_admin_username" {
