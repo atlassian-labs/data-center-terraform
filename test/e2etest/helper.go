@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"fmt"
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"log"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/require"
 )
 
