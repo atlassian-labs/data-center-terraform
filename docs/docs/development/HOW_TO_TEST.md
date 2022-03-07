@@ -33,8 +33,8 @@ See the [How to start development guide](HOW_TO_START.md) for details on how you
     To run unit tests, use the following commands:
     
     ```shell
-    cd test && go get -v -t -d ./... && go mod tidy
-    go test ./unittest/... -v
+    go get -v -t -d ./... && go mod tidy
+    go test ./test/unittest/... -v
     ```
     
     You can use `regex` keywords to run specific groups of test cases. For example, you can run only `VPC` module-related tests with `go test ./unittest/... -v -run TestVpc`.
@@ -45,9 +45,9 @@ See the [How to start development guide](HOW_TO_START.md) for details on how you
     
     ```shell
     export TF_VAR_bamboo_license='<bamboo-license>'
-    cd test && mkdir ./e2etest/artifacts
+    mkdir -p ./test/e2etest/artifacts
     go get -v -t -d ./... && go mod tidy
-    go test ./e2etest -v -timeout 60m -run Installer | tee ./e2etest/artifacts/e2etest.log
+    go test ./test/e2etest -v -timeout 60m -run Installer | tee ./test/e2etest/artifacts/e2etest.log
     ```
 ## GitHub Actions
 

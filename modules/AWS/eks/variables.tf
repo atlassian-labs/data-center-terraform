@@ -7,6 +7,11 @@ variable "cluster_name" {
   }
 }
 
+variable "region" {
+  description = "Region of the EKS cluster."
+  type        = string
+}
+
 variable "vpc_id" {
   description = "VPC where the cluster and workers will be deployed."
   type        = string

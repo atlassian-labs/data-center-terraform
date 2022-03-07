@@ -38,6 +38,7 @@ var EksWithValidValues = map[string]interface{}{
 	"cluster_name": "dummy-cluster-name",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
 
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 1,
@@ -47,6 +48,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"cluster_name": "cluster name with invalid spaces",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
 
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 1,
@@ -56,6 +58,7 @@ var EksWithDesiredCapacityOverLimit = map[string]interface{}{
 	"cluster_name": "dummy-cluster-name",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
 
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 11,
@@ -65,6 +68,7 @@ var EksDesiredCapacityUnderLimit = map[string]interface{}{
 	"cluster_name": "dummy-cluster-name",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
 
 	"instance_types":   []string{"instance_type1", "instance_type2"},
 	"desired_capacity": 0,
