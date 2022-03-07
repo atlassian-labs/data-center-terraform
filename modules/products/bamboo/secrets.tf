@@ -23,7 +23,7 @@ resource "kubernetes_secret" "license_secret" {
   }
 
   data = {
-    license = var.bamboo_configuration["license"]
+    license = var.license
   }
 }
 
