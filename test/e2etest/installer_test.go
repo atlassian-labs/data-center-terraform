@@ -18,6 +18,8 @@ func TestInstaller(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
+	clusterHealthTests(t, testConfig)
+
 	if contains(productList, bamboo) {
 		bambooHealthTests(t, testConfig)
 	}

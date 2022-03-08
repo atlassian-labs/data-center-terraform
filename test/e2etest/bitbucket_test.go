@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
-	"github.com/gruntwork-io/terratest/modules/k8s"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"testing"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/stretchr/testify/assert"
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig) {
@@ -32,9 +33,7 @@ func assertBitbucketStatusEndpoint(t *testing.T, testConfig TestConfig) {
 func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	println("Asserting Bitbucket NFS connectivity ...")
 
-	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
-	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
-	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
+	kubectlOptions := getKubectlOptions(testConfig)
 
 	// Write a file to the NFS server
 	returnCode, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
