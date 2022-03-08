@@ -130,6 +130,9 @@ bitbucket_helm_chart_version = "1.2.0"
 #bitbucket_admin_display_name  = "<DISPLAY NAME>"
 #bitbucket_admin_email_address = "<EMAIL ADDRESS>"
 
+# The display name of Bitbucket instance
+#bitbucket_display_name = "<DISPLAY NAME>"
+
 # Bitbucket instance resource configuration
 bitbucket_cpu      = "1"
 bitbucket_mem      = "1Gi"
