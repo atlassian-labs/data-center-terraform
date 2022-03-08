@@ -91,6 +91,12 @@ variable "jira_version_tag" {
   default     = null
 }
 
+variable "jira_replica_count" {
+  description = "Number of Jira application nodes"
+  type        = number
+  default     = 1
+}
+
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
@@ -168,6 +174,12 @@ variable "confluence_version_tag" {
   default     = null
 }
 
+variable "confluence_replica_count" {
+  description = "Number of Confluence application nodes"
+  type        = number
+  default     = 1
+}
+
 variable "confluence_install_local_chart" {
   description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
   default     = false
@@ -232,6 +244,24 @@ variable "confluence_collaborative_editing_enabled" {
 # Bitbucket Variables
 ################################################################################
 
+variable "bitbucket_helm_chart_version" {
+  description = "Version of Bitbucket Helm chart"
+  type        = string
+  default     = "1.2.0"
+}
+
+variable "bitbucket_version_tag" {
+  description = "Version tag for Bitbucket"
+  type        = string
+  default     = null
+}
+
+variable "bitbucket_replica_count" {
+  description = "Number of Bitbucket application nodes"
+  type        = number
+  default     = 1
+}
+
 variable "bitbucket_license" {
   description = "Bitbucket license."
   type        = string
@@ -286,18 +316,6 @@ variable "bitbucket_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
-}
-
-variable "bitbucket_helm_chart_version" {
-  description = "Version of Bitbucket Helm chart"
-  type        = string
-  default     = "1.2.0"
-}
-
-variable "bitbucket_version_tag" {
-  description = "Version tag for Bitbucket"
-  type        = string
-  default     = null
 }
 
 variable "bitbucket_cpu" {

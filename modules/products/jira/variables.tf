@@ -47,6 +47,11 @@ variable "db_iops" {
   type        = number
 }
 
+variable "replica_count" {
+  description = "Number of Jira application nodes"
+  type        = number
+}
+
 variable "jira_configuration" {
   description = "Jira resource spec and chart version"
   type        = map(any)
