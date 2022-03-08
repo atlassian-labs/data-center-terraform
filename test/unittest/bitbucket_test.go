@@ -81,7 +81,8 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
-	"ingress": map[string]interface{}{},
+	"display_name": "dummy_display_name",
+	"ingress":      map[string]interface{}{},
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",
