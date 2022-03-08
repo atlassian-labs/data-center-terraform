@@ -18,7 +18,6 @@ For more information, see [Bitbucket Version Tags](https://hub.docker.com/r/atla
 bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
 ```
 
-
 ### License
 
 `bitbucket_license` takes the license key of Bitbucket product. Make sure that there is no new lines or spaces in license key.
@@ -49,6 +48,13 @@ bitbucket_admin_email_address = "<EMAIL ADDRESS>"
     `bitbucket_admin_password` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended.
 
     Please refer to [Sensitive Data](#sensitive-data) section.
+
+### Display Name
+Set the display name of the Bitbucket instance. Note that this value is only used during installation and changing the value during an upgrade has no effect.
+
+```terraform
+bitbucket_display_name = "<DISPLAY NAME>"
+```
 
 ### Instance resource configuration
 
