@@ -47,6 +47,9 @@ desired_capacity = 1
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
 
+# Number of Jira application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
+# installed and configured.
 jira_replica_count = 1
 
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
@@ -77,6 +80,9 @@ jira_db_iops                 = 1000
 # Helm chart version of Confluence
 confluence_helm_chart_version = "1.2.0"
 
+# Number of Confluence application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
+# installed and configured.
 confluence_replica_count = 1
 
 # By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
@@ -115,6 +121,7 @@ confluence_db_iops                 = 1000
 # Helm chart version of Bitbucket
 bitbucket_helm_chart_version = "1.2.0"
 
+# Number of Bitbucket application nodes
 bitbucket_replica_count = 1
 
 # By default, Bitbucket will use the version defined in the Bitbucket Helm chart: 
