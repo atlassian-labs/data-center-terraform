@@ -23,7 +23,7 @@ confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 `confluence_license` takes the license key of Confluence product. Make sure that there is no new lines or spaces in license key.
 
 ```terraform
-confluence_license = "<LICENSE KEY>"
+confluence_license = "<LICENSE_KEY>"
 ```
 
 !!!warning "Sensitive data"
@@ -60,7 +60,7 @@ confluence_db_major_engine_version = "11"
 `confluence_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
 
 ```terraform
-confluence_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+confluence_db_instance_class = "<INSTANCE_CLASS>"  # e.g. "db.t3.micro"
 ```
 
 ### Database Allocated Storage

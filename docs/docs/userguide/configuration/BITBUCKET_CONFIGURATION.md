@@ -23,7 +23,7 @@ bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
 `bitbucket_license` takes the license key of Bitbucket product. Make sure that there is no new lines or spaces in license key.
 
 ```terraform
-bitbucket_license = "<LICENSE KEY>"
+bitbucket_license = "<LICENSE_KEY>"
 ```
 
 !!!warning "Sensitive data"
@@ -39,8 +39,8 @@ Four values are optional to configure Bitbucket system admin credentials. If tho
 ```terraform
 bitbucket_admin_username = "<USERNAME>"
 bitbucket_admin_password = "<PASSWORD>"
-bitbucket_admin_display_name = "<DISPLAY NAME>"
-bitbucket_admin_email_address = "<EMAIL ADDRESS>"
+bitbucket_admin_display_name = "<DISPLAY_NAME>"
+bitbucket_admin_email_address = "<EMAIL_ADDRESS>"
 ```
 
 !!!warning "Sensitive data"
@@ -53,7 +53,7 @@ bitbucket_admin_email_address = "<EMAIL ADDRESS>"
 Set the display name of the Bitbucket instance. Note that this value is only used during installation and changing the value during an upgrade has no effect.
 
 ```terraform
-bitbucket_display_name = "<DISPLAY NAME>"
+bitbucket_display_name = "<DISPLAY_NAME>"
 ```
 
 ### Instance resource configuration
@@ -84,7 +84,7 @@ bitbucket_db_major_engine_version = "13"
 `bitbucket_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
 
 ```terraform
-bitbucket_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+bitbucket_db_instance_class = "<INSTANCE_CLASS>"  # e.g. "db.t3.micro"
 ```
 
 ### Database Allocated Storage
