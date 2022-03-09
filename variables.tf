@@ -95,6 +95,10 @@ variable "jira_replica_count" {
   description = "Number of Jira application nodes"
   type        = number
   default     = 1
+  validation {
+    condition     = var.jira_replica_count >= 0
+    error_message = "Number of nodes must be greater than or equal to 0."
+  }
 }
 
 variable "jira_cpu" {
@@ -178,6 +182,10 @@ variable "confluence_replica_count" {
   description = "Number of Confluence application nodes"
   type        = number
   default     = 1
+  validation {
+    condition     = var.confluence_replica_count >= 0
+    error_message = "Number of nodes must be greater than or equal to 0."
+  }
 }
 
 variable "confluence_install_local_chart" {
@@ -260,6 +268,10 @@ variable "bitbucket_replica_count" {
   description = "Number of Bitbucket application nodes"
   type        = number
   default     = 1
+  validation {
+    condition     = var.bitbucket_replica_count >= 0
+    error_message = "Number of nodes must be greater than or equal to 0."
+  }
 }
 
 variable "bitbucket_license" {
