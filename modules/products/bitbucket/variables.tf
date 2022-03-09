@@ -128,3 +128,8 @@ variable "elasticsearch_replicas" {
   }
 }
 
+variable "display_name" {
+  description = "The display name of Bitbucket instance."
+  type        = string
+  default     = null
+}
