@@ -40,7 +40,15 @@ var JiraCorrectVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
-	"ingress":                 map[string]interface{}{},
+	"ingress": map[string]interface{}{
+		"ingress": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",

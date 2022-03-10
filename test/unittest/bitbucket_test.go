@@ -82,7 +82,15 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"admin_email_address": "dummy_admin_email_address",
 	},
 	"display_name": "dummy_display_name",
-	"ingress":      map[string]interface{}{},
+	"ingress": map[string]interface{}{
+		"ingress": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",
