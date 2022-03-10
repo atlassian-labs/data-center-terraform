@@ -1,8 +1,8 @@
 locals {
-  ingress_name             = "ingress-nginx"
-  ingress_namespace        = "ingress-nginx"
+  ingress_name      = "ingress-nginx"
+  ingress_namespace = "ingress-nginx"
   # This is only used if the DNS is a subdomain
-  ingress_version    = "4.0.6"
+  ingress_version = "4.0.6"
 
   ssh_tcp_setting = var.enable_ssh_tcp ? yamlencode({
     tcp = {

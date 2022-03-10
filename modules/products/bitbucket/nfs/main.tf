@@ -11,11 +11,11 @@ resource "helm_release" "nfs" {
       }
       resources = {
         limits = {
-          cpu = var.limits_cpu
+          cpu    = var.limits_cpu
           memory = var.limits_memory
         }
         requests = {
-          cpu = var.requests_cpu
+          cpu    = var.requests_cpu
           memory = var.requests_memory
         }
       }

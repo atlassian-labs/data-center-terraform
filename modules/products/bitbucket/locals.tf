@@ -21,7 +21,7 @@ locals {
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
-  domain_supplied = var.ingress.ingress.domain != null ? true : false
+  domain_supplied     = var.ingress.ingress.domain != null ? true : false
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : null
 
   # ingress settings for bitbucket service

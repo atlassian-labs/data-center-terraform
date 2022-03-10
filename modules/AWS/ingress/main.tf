@@ -3,7 +3,7 @@
 
 resource "aws_route53_zone" "ingress" {
   count = var.ingress_domain != null ? 1 : 0
-  name = var.ingress_domain
+  name  = var.ingress_domain
 }
 
 # Create NS record for the "ingress" zone in the parent zone
