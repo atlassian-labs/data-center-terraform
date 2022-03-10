@@ -38,7 +38,7 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 	"vpc":            VpcDefaultModuleVariable,
 	"pvc_claim_name": "dummy_pvc_claimname",
 	"ingress": map[string]interface{}{
-		"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
 			"domain":          "dummy.domain.com",
 			"certificate_arn": "dummy_arn",

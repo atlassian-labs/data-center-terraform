@@ -83,7 +83,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	},
 	"display_name": "dummy_display_name",
 	"ingress": map[string]interface{}{
-		"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
 			"domain":          "dummy.domain.com",
 			"certificate_arn": "dummy_arn",

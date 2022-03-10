@@ -47,7 +47,7 @@ var BambooCorrectVariables = map[string]interface{}{
 	"pvc_claim_name":          "dummy_pvc_claimname",
 	"db_major_engine_version": "13",
 	"ingress": map[string]interface{}{
-		"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
 			"domain":          "dummy.domain.com",
 			"certificate_arn": "dummy_arn",
