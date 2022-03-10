@@ -41,6 +41,7 @@ var JiraCorrectVariables = map[string]interface{}{
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
 	"ingress":                 map[string]interface{}{},
+	"replica_count":           1,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",

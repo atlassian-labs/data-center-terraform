@@ -11,6 +11,7 @@ resource "helm_release" "confluence" {
 
   values = [
     yamlencode({
+      replicaCount = var.replica_count,
       confluence = {
         clustering = {
           enabled = true

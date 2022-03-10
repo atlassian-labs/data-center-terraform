@@ -46,6 +46,11 @@ variable "db_configuration" {
   }
 }
 
+variable "replica_count" {
+  description = "Number of Confluence application nodes"
+  type        = number
+}
+
 variable "confluence_configuration" {
   description = "Confluence resource spec and chart version"
   type        = map(any)

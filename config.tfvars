@@ -47,6 +47,11 @@ desired_capacity = 1
 # Helm chart version of Jira
 jira_helm_chart_version = "1.2.0"
 
+# Number of Jira application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
+# installed and configured.
+jira_replica_count = 1
+
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
 #jira_version_tag = "<JIRA_VERSION_TAG>"
@@ -74,6 +79,11 @@ jira_db_iops                 = 1000
 
 # Helm chart version of Confluence
 confluence_helm_chart_version = "1.2.0"
+
+# Number of Confluence application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
+# installed and configured.
+confluence_replica_count = 1
 
 # By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the confluence_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
@@ -111,7 +121,10 @@ confluence_db_iops                 = 1000
 # Helm chart version of Bitbucket
 bitbucket_helm_chart_version = "1.2.0"
 
-# By default, Bitbucket will use the version defined in the Bitbucket Helm chart: 
+# Number of Bitbucket application nodes
+bitbucket_replica_count = 1
+
+# By default, Bitbucket will use the version defined in the Bitbucket Helm chart:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bitbucket/Chart.yaml 
 # If you wish to override the version, uncomment the following line and set the bitbucket_version_tag to any of the versions published for Bitbucket on Docker Hub: https://hub.docker.com/r/atlassian/bitbucket/tags
 #bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"

@@ -10,7 +10,7 @@ resource "helm_release" "bitbucket" {
 
   values = [
     yamlencode({
-      replicaCount = 1,
+      replicaCount = var.replica_count,
       bitbucket = {
         clustering = {
           enabled = true
