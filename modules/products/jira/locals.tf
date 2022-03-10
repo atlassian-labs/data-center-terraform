@@ -27,13 +27,13 @@ locals {
     }
   })
 
-  context_path_settings = local.domain_supplied == null ? yamlencode({
+  context_path_settings = !local.domain_supplied ? yamlencode({
     jira = {
       service = {
         contextPath = "/jira"
       }
     }
-  }) : yamldecode({})
+  }) : yamlencode({})
 
   version_tag = var.version_tag != null ? yamlencode({
     image = {

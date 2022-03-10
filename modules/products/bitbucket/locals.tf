@@ -34,13 +34,13 @@ locals {
     }
   })
 
-  context_path_settings = local.domain_supplied == null ? yamlencode({
+  context_path_settings = !local.domain_supplied ? yamlencode({
     bitbucket = {
       service = {
         contextPath = "/bitbucket"
       }
     }
-  }) : yamldecode({})
+  }) : yamlencode({})
 
   # license settings
   license_settings = var.bitbucket_configuration["license"] != null ? yamlencode({
