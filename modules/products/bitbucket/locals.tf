@@ -29,7 +29,7 @@ locals {
     ingress = {
       create = "true"
       host   = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : var.ingress.ingress.lb_hostname
-      https  = local.domain_supplied ? "true" : "false"
+      https  = local.domain_supplied ? true : false
     }
   })
 

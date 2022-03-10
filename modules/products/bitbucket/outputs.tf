@@ -1,5 +1,5 @@
 output "product_domain_name" {
-  value = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${data.kubernetes_service.bitbucket.status[0].load_balancer[0].ingress[0].hostname}"
+  value = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.ingress.lb_hostname}"
 }
 
 output "rds_instance_id" {
