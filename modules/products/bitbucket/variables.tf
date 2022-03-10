@@ -133,7 +133,7 @@ variable "display_name" {
   type        = string
   default     = null
   validation {
-    condition     = var.display_name == null || can(length(var.display_name) > 0 && length(var.display_name) < 255)
+    condition     = tobool(length(var.display_name) > 0 && length(var.display_name) < 255) || var.display_name == null
     error_message = "Bitbucket display name must be a non-empty value less than 255 characters."
   }
 }
