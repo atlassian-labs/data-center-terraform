@@ -2,20 +2,20 @@
 # Does NOT register a domain or create a hosted zone if the DNS name is a subdomain.
 
 resource "aws_route53_zone" "ingress" {
-  count = var.ingress_domain != null ? 1 : 0
+  count = local.domain_supplied ? 1 : 0
   name  = var.ingress_domain
 }
 
 # Create NS record for the "ingress" zone in the parent zone
 # The parent zone is not managed by terraform
 data "aws_route53_zone" "parent" {
-  count = var.ingress_domain != null ? 1 : 0
+  count = local.domain_supplied ? 1 : 0
   name  = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
 }
 
 resource "aws_route53_record" "parent_ns_records" {
   # Only create parent NS records if the DNS name is a subdomain
-  count = var.ingress_domain != null ? 1 : 0
+  count = local.domain_supplied ? 1 : 0
 
   allow_overwrite = true
   name            = var.ingress_domain
@@ -26,7 +26,7 @@ resource "aws_route53_record" "parent_ns_records" {
 }
 
 module "ingress_certificate" {
-  count = var.ingress_domain != null ? 1 : 0
+  count = local.domain_supplied ? 1 : 0
 
   source  = "terraform-aws-modules/acm/aws"
   version = "~> v2.0"
