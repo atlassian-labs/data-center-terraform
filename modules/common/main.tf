@@ -28,8 +28,6 @@ module "efs" {
 }
 
 module "ingress" {
-  count = local.ingress_domain != null ? 1 : 0
-
   source     = "../AWS/ingress"
   depends_on = [module.eks]
 

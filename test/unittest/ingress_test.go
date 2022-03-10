@@ -30,14 +30,14 @@ func TestIngressIsCreated(t *testing.T) {
 	assert.Equal(t, "https://kubernetes.github.io/ingress-nginx", ingress.AttributeValues["repository"])
 
 	// verify certificate
-	certificateKey := "module.ingress_certificate.aws_acm_certificate.this[0]"
+	certificateKey := "module.ingress_certificate[0].aws_acm_certificate.this[0]"
 	certificate := plan.ResourcePlannedValuesMap[certificateKey]
 	assert.Equal(t, "*.test.deplops.com", certificate.AttributeValues["domain_name"])
 	assert.Contains(t, certificate.AttributeValues["subject_alternative_names"], "test.deplops.com")
 	assert.Equal(t, "DNS", certificate.AttributeValues["validation_method"])
 
 	// verify DNS records
-	route53Key := "aws_route53_zone.ingress"
+	route53Key := "aws_route53_zone.ingress[0]"
 	route53 := plan.ResourcePlannedValuesMap[route53Key]
 	assert.Equal(t, "test.deplops.com", route53.AttributeValues["name"])
 }

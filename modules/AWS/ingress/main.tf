@@ -2,34 +2,37 @@
 # Does NOT register a domain or create a hosted zone if the DNS name is a subdomain.
 
 resource "aws_route53_zone" "ingress" {
+  count = var.ingress_domain != null ? 1 : 0
   name = var.ingress_domain
 }
 
 # Create NS record for the "ingress" zone in the parent zone
 # The parent zone is not managed by terraform
 data "aws_route53_zone" "parent" {
-  count = local.ingress_dns_is_subdomain ? 1 : 0
-  name  = local.ingress_dns_domain
+  count = var.ingress_domain != null ? 1 : 0
+  name  = replace(var.ingress_domain, "/^[\\w-]+\\./", "")
 }
 
 resource "aws_route53_record" "parent_ns_records" {
   # Only create parent NS records if the DNS name is a subdomain
-  count = local.ingress_dns_is_subdomain ? 1 : 0
+  count = var.ingress_domain != null ? 1 : 0
 
   allow_overwrite = true
   name            = var.ingress_domain
-  records         = aws_route53_zone.ingress.name_servers
+  records         = aws_route53_zone.ingress[0].name_servers
   ttl             = 60
   type            = "NS"
   zone_id         = data.aws_route53_zone.parent[0].zone_id
 }
 
 module "ingress_certificate" {
+  count = var.ingress_domain != null ? 1 : 0
+
   source  = "terraform-aws-modules/acm/aws"
   version = "~> v2.0"
 
   domain_name = "*.${var.ingress_domain}"
-  zone_id     = aws_route53_zone.ingress.id
+  zone_id     = aws_route53_zone.ingress[0].id
 
   subject_alternative_names = [
     var.ingress_domain,
@@ -52,26 +55,39 @@ resource "helm_release" "ingress" {
     yamlencode({
       controller = {
         config = {
+          # If true, NGINX passes the incoming "X-Forwarded-*" headers to upstreams.
+          # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-forwarded-headers
+          # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
           "use-forwarded-headers" : "true"
         }
         service = {
-          ## Set external traffic policy to: "Local" to preserve source IP on providers supporting it.
-          ## Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
+          # The value "Local" preserves the client source IP.
+          # https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
           externalTrafficPolicy = "Local"
+
           targetPorts = {
-            # Set the HTTPS listener to accept HTTP connections only, as the AWS load balancer is terminating TLS
+            # Set the HTTPS listener to accept HTTP connections only, as the AWS load
+            # balancer is terminating TLS.
             https = "http"
           }
           annotations = {
-            "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : module.ingress_certificate.this_acm_certificate_arn
+            # Whether the LB will be internet-facing or internal.
+            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#lb-internal
             "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
+
+            # Specifies the IP address type, in this case "dualstack" will allow clients
+            # can access the load balancer using either IPv4 or IPv6.
+            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/service/annotations/#ip-address-type
             "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
-            "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" : "443"
+
+            # The protocol to use for backend traffic between the load balancer and the k8s pods.
+            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#backend-protocol
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
           }
         }
       }
     }),
+
     # Ingress resources do not support TCP or UDP services. Support is therefore supplied by the Ingress NGINX
     # controller through the --tcp-services-configmap and --udp-services-configmap flags. These flags point to
     # an existing config map where; the key is the external port to use, and the value indicates the service to
@@ -91,6 +107,8 @@ resource "helm_release" "ingress" {
     # reflected in the associated ELB Load Balancer. As such, the method "enable_ssh_tcp_protocol_on_lb_listener" (install.sh)
     # is executed, post deployment, to update the protocol on the load balancer from HTTP to TCP.
     #
+    local.aws_load_balancer_ssl_cert,
+    local.aws_load_balancer_ssl_ports,
     local.ssh_tcp_setting,
   ]
 }
