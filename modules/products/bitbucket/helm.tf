@@ -63,6 +63,7 @@ resource "helm_release" "bitbucket" {
     local.license_settings,
     local.admin_settings,
     local.version_tag,
+    local.display_name,
   ]
 }
 

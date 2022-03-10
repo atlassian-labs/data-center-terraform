@@ -84,7 +84,7 @@ We recommend using a domain name to access the application via `HTTPS`. You will
 When the domain is provided, Terraform will create a [Route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) hosted zone based on the `environment` name.
 
 ```terraform
-domain="<DOMAIN NAME>" # e.g. "mydomain.com"
+domain="<DOMAIN_NAME>" # e.g. "mydomain.com"
 ```
 
 A fully qualified domain name uses the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
@@ -142,7 +142,7 @@ The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2
 * Minimum is `1` and maximum is `10`.
 
 ```terraform
-desired_capacity = <NUMBER OF NODES>  # between 1 and 10
+desired_capacity = <NUMBER_OF_NODES>  # between 1 and 10
 ```
 
 !!! warning "You cannot change this value after the infrastructure is provisioned."

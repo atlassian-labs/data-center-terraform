@@ -79,7 +79,7 @@ confluence_helm_chart_version = "1.2.0"
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_confluence_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #
-#confluence_license = "<LICENSE KEY>"
+#confluence_license = "<LICENSE_KEY>"
 
 # Confluence instance resource configuration
 confluence_cpu      = "1"
@@ -116,7 +116,7 @@ bitbucket_helm_chart_version = "1.2.0"
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bitbucket_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #
-#bitbucket_license = "<LICENSE KEY>"
+#bitbucket_license = "<LICENSE_KEY>"
 
 # Bitbucket system admin credentials
 # To pre-seed Bitbucket with the system admin information, uncomment the following settings and supply the system admin information:
@@ -127,8 +127,11 @@ bitbucket_helm_chart_version = "1.2.0"
 #
 #bitbucket_admin_username      = "<USERNAME>"
 #bitbucket_admin_password      = "<PASSWORD>"
-#bitbucket_admin_display_name  = "<DISPLAY NAME>"
-#bitbucket_admin_email_address = "<EMAIL ADDRESS>"
+#bitbucket_admin_display_name  = "<DISPLAY_NAME>"
+#bitbucket_admin_email_address = "<EMAIL_ADDRESS>"
+
+# The display name of Bitbucket instance
+#bitbucket_display_name = "<DISPLAY_NAME>"
 
 # Bitbucket instance resource configuration
 bitbucket_cpu      = "1"
@@ -147,16 +150,16 @@ bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
 
 # Bitbucket NFS instance resource configuration
-#bitbucket_nfs_requests_cpu    = "<REQUESTS CPU>"
-#bitbucket_nfs_requests_memory = "<REQUESTS MEMORY>"
-#bitbucket_nfs_limits_cpu      = "<LIMITS CPU>"
-#bitbucket_nfs_limits_memory   = "<LIMITS MEMORY>"
+#bitbucket_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#bitbucket_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#bitbucket_nfs_limits_cpu      = "<LIMITS_CPU>"
+#bitbucket_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Elasticsearch resource configuration for Bitbucket
-#bitbucket_elasticsearch_cpu      = "<REQUESTS CPU>"
-#bitbucket_elasticsearch_mem      = "<REQUESTS MEMORY>"
-#bitbucket_elasticsearch_storage  = "<REQUESTS STORAGE>"
-#bitbucket_elasticsearch_replicas = "<NUMBER OF NODES>"
+#bitbucket_elasticsearch_cpu      = "<REQUESTS_CPU>"
+#bitbucket_elasticsearch_mem      = "<REQUESTS_MEMORY>"
+#bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
+#bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
 
 ################################################################################
 # Bamboo Settings
@@ -179,7 +182,7 @@ bamboo_agent_helm_chart_version = "1.2.0"
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #
-#bamboo_license = "<LICENSE KEY>"
+#bamboo_license = "<LICENSE_KEY>"
 
 # Bamboo system admin credentials
 # To pre-seed Bamboo with the system admin information, uncomment the following settings and supply the system admin information:
@@ -193,8 +196,8 @@ bamboo_agent_helm_chart_version = "1.2.0"
 #
 #bamboo_admin_username      = "<USERNAME>"
 #bamboo_admin_password      = "<PASSWORD>"
-#bamboo_admin_display_name  = "<DISPLAY NAME>"
-#bamboo_admin_email_address = "<EMAIL ADDRESS>"
+#bamboo_admin_display_name  = "<DISPLAY_NAME>"
+#bamboo_admin_email_address = "<EMAIL_ADDRESS>"
 
 # Bamboo instance resource configuration
 bamboo_cpu      = "1"

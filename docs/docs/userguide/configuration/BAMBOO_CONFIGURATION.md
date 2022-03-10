@@ -42,7 +42,7 @@ bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
 `bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.
 
 ```terraform
-bamboo_license = "<LICENSE KEY>"
+bamboo_license = "<LICENSE_KEY>"
 ```
 
 !!!warning "Sensitive data"
@@ -58,8 +58,8 @@ Four values are required to configure Bamboo system admin credentials.
 ```terraform
 bamboo_admin_username = "<USERNAME>"
 bamboo_admin_password = "<PASSWORD>"
-bamboo_admin_display_name = "<DISPLAY NAME>"
-bamboo_admin_email_address = "<EMAIL ADDRESS>"
+bamboo_admin_display_name = "<DISPLAY_NAME>"
+bamboo_admin_email_address = "<EMAIL_ADDRESS>"
 ```
 
 !!!warning "Sensitive data"
@@ -127,7 +127,7 @@ bamboo_db_major_engine_version = "13"
 `bamboo_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
 
 ```terraform
-bamboo_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+bamboo_db_instance_class = "<INSTANCE_CLASS>"  # e.g. "db.t3.micro"
 ```
 
 ### Database Allocated Storage
