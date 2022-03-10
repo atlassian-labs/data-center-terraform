@@ -330,6 +330,12 @@ variable "bitbucket_db_iops" {
   type        = number
 }
 
+variable "bitbucket_display_name" {
+  description = "The display name of Bitbucket instance"
+  type        = string
+  default     = null
+}
+
 variable "bitbucket_cpu" {
   description = "Number of CPUs for Bitbucket instance"
   type        = string

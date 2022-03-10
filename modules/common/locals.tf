@@ -5,4 +5,5 @@ locals {
   ingress_domain = var.domain != null ? "${var.environment_name}.${var.domain}" : null
 
   storage_class_name = "efs-cs"
+  create_shared_home = var.shared_home_size != null
 }

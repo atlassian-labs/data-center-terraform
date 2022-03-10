@@ -47,7 +47,7 @@ jira_db_major_engine_version = "12"
 `jira_db_instance_class` sets the DB instance type that allocates the computational, network, and memory capacity required by the planned workload of the DB instance. For more information about available instance classes, see [DB instance classes — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html){.external}.
 
 ```terraform
-jira_db_instance_class = "<INSTANCE CLASS>"  # e.g. "db.t3.micro"
+jira_db_instance_class = "<INSTANCE_CLASS>"  # e.g. "db.t3.micro"
 ```
 
 ### Database Allocated Storage

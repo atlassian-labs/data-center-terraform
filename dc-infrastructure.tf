@@ -8,7 +8,7 @@ module "base-infrastructure" {
   desired_capacity = var.desired_capacity
   domain           = var.domain
   namespace        = local.namespace
-  share_home_size  = "5Gi"
+  shared_home_size = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
@@ -28,12 +28,10 @@ module "bamboo" {
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
-
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
   admin_display_name  = var.bamboo_admin_display_name
   admin_email_address = var.bamboo_admin_email_address
-
 
   db_major_engine_version = var.bamboo_db_major_engine_version
   db_configuration = {
@@ -147,8 +145,7 @@ module "bitbucket" {
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
 
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
-  replica_count  = var.bitbucket_replica_count
+  replica_count = var.bitbucket_replica_count
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version
@@ -158,6 +155,8 @@ module "bitbucket" {
     max_heap     = var.bitbucket_max_heap
     license      = var.bitbucket_license
   }
+
+  display_name = var.bitbucket_display_name
 
   admin_configuration = {
     admin_username      = var.bitbucket_admin_username

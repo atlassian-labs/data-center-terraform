@@ -7,6 +7,8 @@ module "eks" {
   cluster_name                 = var.cluster_name
   manage_cluster_iam_resources = true
 
+  # Enables IAM roles for service accounts - required for autoscaler
+  # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa = true
 
   # Networking

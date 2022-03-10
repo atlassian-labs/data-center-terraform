@@ -1,5 +1,13 @@
 # This file deals with where Terraform is keeping its state in AWS.
 # Please note that this file will run by `install.sh' and no need to run manually.
+terraform {
+  required_providers {
+    aws = {
+      version = "~> 3.74"
+    }
+  }
+}
+
 provider "aws" {
   region = var.region
 }

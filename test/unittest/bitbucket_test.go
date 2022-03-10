@@ -71,7 +71,6 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"cluster_size":           2,
 	},
 	"vpc":                     VpcDefaultModuleVariable,
-	"pvc_claim_name":          "dummy_pvc_claimname",
 	"db_major_engine_version": "13",
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
@@ -82,6 +81,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
+	"display_name":  "dummy_display_name",
 	"ingress":       map[string]interface{}{},
 	"replica_count": 1,
 	"bitbucket_configuration": map[string]interface{}{
