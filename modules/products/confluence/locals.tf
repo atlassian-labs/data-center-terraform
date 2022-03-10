@@ -30,6 +30,14 @@ locals {
     }
   })
 
+  context_path_settings = local.domain_supplied == null ? yamlencode({
+    confluence = {
+      service = {
+        contextPath = "/confluence"
+      }
+    }
+  }) : yamldecode({})
+
   license_settings = var.confluence_configuration["license"] != null ? yamlencode({
     confluence = {
       license = {

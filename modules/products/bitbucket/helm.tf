@@ -60,6 +60,7 @@ resource "helm_release" "bitbucket" {
       }
     }),
     local.ingress_settings,
+    local.context_path_settings,
     local.license_settings,
     local.admin_settings,
     local.version_tag,

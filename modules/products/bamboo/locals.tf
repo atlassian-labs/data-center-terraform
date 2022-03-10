@@ -41,6 +41,14 @@ locals {
     }
   })
 
+  context_path_settings = local.domain_supplied == null ? yamlencode({
+    bamboo = {
+      service = {
+        contextPath = "/bamboo"
+      }
+    }
+  }) : yamldecode({})
+
   license_settings = yamlencode({
     bamboo = {
       license = {
