@@ -304,6 +304,10 @@ variable "bitbucket_display_name" {
   description = "The display name of Bitbucket instance"
   type        = string
   default     = null
+  validation {
+    condition     = length(var.bitbucket_display_name) > 0 && length(var.bitbucket_display_name) < 255
+    error_message = "Bitbucket display name must be a non-empty value less than 255 characters."
+  }
 }
 
 variable "bitbucket_cpu" {
