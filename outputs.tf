@@ -30,10 +30,10 @@ output "ingress" {
   description = "Ingress controller deployed to access the products from outside of the cluster (ingress is provisioned only when the domain is configured)"
 
   value = var.domain != null ? {
-    load_balancer_hostname = module.base-infrastructure.ingress[0].ingress.lb_hostname
-    certificate            = module.base-infrastructure.ingress[0].ingress.certificate_arn
+    load_balancer_hostname = module.base-infrastructure.ingress.ingress.lb_hostname
+    certificate            = module.base-infrastructure.ingress.ingress.certificate_arn
     } : {
-    load_balancer_hostname = null
+    load_balancer_hostname = module.base-infrastructure.ingress.ingress.lb_hostname
     certificate            = null
   }
 }
