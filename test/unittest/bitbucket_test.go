@@ -8,10 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const bitbucketModule = "products/bitbucket"
+
 func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(BitbucketCorrectVariables, t, "products/bitbucket")
+	tfOptions := GenerateTFOptions(BitbucketCorrectVariables, t, bitbucketModule)
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
 	// verify Bitbucket
@@ -21,6 +23,21 @@ func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "deployed", bitbucket.AttributeValues["status"])
 	assert.Equal(t, "bitbucket", bitbucket.AttributeValues["chart"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bitbucket.AttributeValues["repository"])
+}
+
+func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(BitbucketInvalidVariables, t, bitbucketModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid value for variable")
+	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
+	assert.Contains(t, err.Error(), "Bitbucket configuration is not valid.")
+	assert.Contains(t, err.Error(), "Bitbucket administrator configuration is not valid.")
+	assert.Contains(t, err.Error(), "Invalid elasticsearch replicas. Valid replicas is a positive integer in")
+	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
 }
 
 const nfsModule = "products/bitbucket/nfs"
