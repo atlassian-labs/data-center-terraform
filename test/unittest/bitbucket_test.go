@@ -40,6 +40,31 @@ func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
 }
 
+func TestBitbucketVariablesNotProvided(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(nil, t, bitbucketModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "No value for required variable")
+	assert.Contains(t, err.Error(), "\"environment_name\" is not set")
+	assert.Contains(t, err.Error(), "\"namespace\" is not set")
+	assert.Contains(t, err.Error(), "\"vpc\" is not set")
+	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	assert.Contains(t, err.Error(), "\"db_major_engine_version\" is not set")
+	assert.Contains(t, err.Error(), "\"db_allocated_storage\" is not set")
+	assert.Contains(t, err.Error(), "\"db_instance_class\" is not set")
+	assert.Contains(t, err.Error(), "\"db_iops\" is not set")
+	assert.Contains(t, err.Error(), "\"bitbucket_configuration\" is not set")
+	assert.Contains(t, err.Error(), "\"admin_configuration\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_mem\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_storage\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_replicas\" is not set")
+}
+
 const nfsModule = "products/bitbucket/nfs"
 
 func TestNfsVariablesNotProvided(t *testing.T) {
