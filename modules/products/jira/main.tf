@@ -2,14 +2,14 @@
 resource "aws_route53_record" "jira" {
   count = local.domain_supplied ? 1 : 0
 
-  zone_id = var.ingress.ingress.r53_zone
+  zone_id = var.ingress.outputs.r53_zone
   name    = local.product_domain_name
   type    = "A"
 
   alias {
     evaluate_target_health = false
-    name                   = var.ingress.ingress.lb_hostname
-    zone_id                = var.ingress.ingress.lb_zone_id
+    name                   = var.ingress.outputs.lb_hostname
+    zone_id                = var.ingress.outputs.lb_zone_id
   }
 }
 

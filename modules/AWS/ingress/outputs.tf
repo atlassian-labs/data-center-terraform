@@ -1,4 +1,4 @@
-output "ingress" {
+output "outputs" {
   value = {
     r53_zone        = var.ingress_domain != null ? aws_route53_zone.ingress[0].id : null
     domain          = var.ingress_domain

@@ -17,14 +17,14 @@ locals {
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
-  domain_supplied     = var.ingress.ingress.domain != null ? true : false
-  product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : null
+  domain_supplied     = var.ingress.outputs.domain != null ? true : false
+  product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
 
   # ingress settings for confluence service
   ingress_settings = yamlencode({
     ingress = {
       create = "true"
-      host   = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : var.ingress.ingress.lb_hostname
+      host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
       https  = local.domain_supplied ? true : false
       path   = local.domain_supplied ? null : "/confluence"
     }
@@ -47,10 +47,10 @@ locals {
   }) : yamlencode({})
 
   # if domain is not provided, a new LB is created for Confluence service
-  confluence_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.ingress.lb_hostname}/confluence"
+  confluence_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/confluence"
 
   # if domain is not provided, a new LB is created for Synchrony service
-  synchrony_ingress_url = local.domain_supplied ? "${local.confluence_ingress_url}/synchrony" : "http://${var.ingress.ingress.lb_hostname}/synchrony"
+  synchrony_ingress_url = local.domain_supplied ? "${local.confluence_ingress_url}/synchrony" : "http://${var.ingress.outputs.lb_hostname}/synchrony"
 
   synchrony_settings_stanza = local.domain_supplied ? yamlencode({
     synchrony = {

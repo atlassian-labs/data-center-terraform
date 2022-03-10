@@ -14,14 +14,14 @@ locals {
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
-  domain_supplied     = var.ingress.ingress.domain != null ? true : false
-  product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : null
+  domain_supplied     = var.ingress.outputs.domain != null ? true : false
+  product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
 
   # ingress settings for Jira service
   ingress_settings = yamlencode({
     ingress = {
       create = "true"
-      host   = local.domain_supplied ? "${local.product_name}.${var.ingress.ingress.domain}" : var.ingress.ingress.lb_hostname
+      host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
       https  = local.domain_supplied ? true : false
       path   = local.domain_supplied ? null : "/jira"
     }
