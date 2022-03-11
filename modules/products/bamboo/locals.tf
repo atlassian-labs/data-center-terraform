@@ -41,6 +41,8 @@ locals {
     }
   })
 
+  # TODO: Once TFKUBE-384 has been merged and released this variable can be
+  # removed.
   additional_environment_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
       additionalEnvironmentVariables = [
