@@ -261,18 +261,6 @@ resume_bamboo_server() {
   fi
 }
 
-set_synchrony_url() {
-  DOMAIN=$(get_variable 'domain' "${CONFIG_ABS_PATH}")
-  INSTALL_CONFLUENCE=$(get_product "confluence" "${CONFIG_ABS_PATH}")
-
-  if [ -z "${DOMAIN}" ] && [ -n "${INSTALL_CONFLUENCE}" ]; then
-    log "Configuring the Synchrony service."
-    SYNCHRONY_FULL_URL=$(terraform output | sed "s/ //g" | grep "synchrony_url=" | sed -nE 's/^.*"(.*)".*$/\1/p')
-    helm upgrade confluence atlassian-data-center/confluence -n atlassian --reuse-values --set synchrony.ingressUrl="${SYNCHRONY_FULL_URL}" > /dev/null
-    log "Synchrony URL is set to '${SYNCHRONY_FULL_URL}'."
-  fi
-}
-
 # Update the current load balancer listener on port 7999 to use the TCP protocol
 enable_ssh_tcp_protocol_on_lb_listener() {
   readonly SSH_TCP_PORT="7999"
@@ -329,9 +317,6 @@ resume_bamboo_server
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s
-
-# Set the correct Synchrony URL
-set_synchrony_url
 
 # To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
 enable_ssh_tcp_protocol_on_lb_listener
