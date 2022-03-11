@@ -63,6 +63,7 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"elasticsearch_mem\" is not set")
 	assert.Contains(t, err.Error(), "\"elasticsearch_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"elasticsearch_replicas\" is not set")
+	assert.NotContains(t, err.Error(), "display_name")
 }
 
 const nfsModule = "products/bitbucket/nfs"

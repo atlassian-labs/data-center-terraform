@@ -156,7 +156,7 @@ module "bitbucket" {
     license      = var.bitbucket_license
   }
 
-  display_name = var.bitbucket_display_name != null ? var.bitbucket_display_name : ""
+  display_name = var.bitbucket_display_name
 
   admin_configuration = {
     admin_username      = var.bitbucket_admin_username
