@@ -81,6 +81,8 @@ module "jira" {
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
+  replica_count = var.jira_replica_count
+
   jira_configuration = {
     "helm_version"        = var.jira_helm_chart_version
     "cpu"                 = var.jira_cpu
@@ -111,6 +113,8 @@ module "confluence" {
     db_iops              = var.confluence_db_iops
   }
 
+  replica_count = var.confluence_replica_count
+
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
     cpu          = var.confluence_cpu
@@ -140,6 +144,8 @@ module "bitbucket" {
   db_allocated_storage    = var.bitbucket_db_allocated_storage
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
+
+  replica_count = var.bitbucket_replica_count
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version

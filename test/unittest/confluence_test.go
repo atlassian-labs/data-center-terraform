@@ -44,6 +44,7 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"db_instance_class":    "dummy_db_instance_class",
 		"db_iops":              1000,
 	},
+	"replica_count": 1,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",

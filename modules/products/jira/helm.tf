@@ -6,10 +6,11 @@ resource "helm_release" "jira" {
   repository = local.helm_chart_repository
   chart      = local.product_name
   version    = local.jira_helm_chart_version
+  timeout    = 10 * 60 # autoscaler potentially needs to scale up the cluster
 
   values = [
     yamlencode({
-      replicaCount = 1,
+      replicaCount = var.replica_count,
       jira = {
         clustering = {
           enabled = true

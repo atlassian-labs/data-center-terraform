@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "this" {
 
 module "efs_iam_role" {
   source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version      = "3.6.0"
+  version      = "4.13.2"
   create_role  = true
   role_name    = "${var.eks.cluster_name}-${local.efs_csi_name}"
   provider_url = replace(var.eks.cluster_oidc_issuer_url, "https://", "")
@@ -87,7 +87,7 @@ resource "helm_release" "efs_csi" {
       serviceAccount = {
         name = local.efs_csi_serviceAccount_name
         annotations = {
-          "eks.amazonaws.com/role-arn" : module.efs_iam_role.this_iam_role_arn
+          "eks.amazonaws.com/role-arn" : module.efs_iam_role.iam_role_arn
         }
       }
     }
@@ -136,7 +136,6 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
 
 resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name

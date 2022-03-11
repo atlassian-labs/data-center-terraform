@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      version = "~> 3.74"
+    }
+    kubernetes = {
+      version = "~> 2.7"
+    }
+    helm = {
+      version = "~> 2.4"
+    }
+  }
+}
+
 provider "aws" {
   region = var.region
   // This will allow an AWS provider to add the resource tags to every AWS resources except ASG resources (See https://learn.hashicorp.com/tutorials/terraform/aws-default-tags?in=terraform/aws)

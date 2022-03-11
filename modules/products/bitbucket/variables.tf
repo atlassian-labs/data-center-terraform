@@ -47,6 +47,11 @@ variable "db_iops" {
   type        = number
 }
 
+variable "replica_count" {
+  description = "Number of Bitbucket application nodes"
+  type        = number
+}
+
 variable "bitbucket_configuration" {
   description = "Bitbucket resource spec and chart version"
   type        = map(any)
