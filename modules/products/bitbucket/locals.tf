@@ -79,7 +79,7 @@ locals {
   })
 
   # Bitbucket display name
-  display_name = var.display_name != null ? yamlencode({
+  display_name = var.display_name != "" ? yamlencode({
     bitbucket = {
       displayName = var.display_name
     }

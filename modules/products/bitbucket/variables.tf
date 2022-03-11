@@ -131,9 +131,9 @@ variable "elasticsearch_replicas" {
 variable "display_name" {
   description = "The display name of Bitbucket instance."
   type        = string
-  default     = null
+  default     = ""
   validation {
-    condition     = tobool(length(var.display_name) > 0 && length(var.display_name) < 255) || var.display_name == null
+    condition     = length(var.display_name) >= 0 && length(var.display_name) < 255
     error_message = "Bitbucket display name must be a non-empty value less than 255 characters."
   }
 }
