@@ -41,16 +41,16 @@ locals {
     }
   })
 
-  additional_environment_settings = yamlencode({
+  additional_environment_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
       additionalEnvironmentVariables = [
         {
           name  = "ATL_BASE_URL"
-          value = "${var.ingress.outputs.lb_hostname}/bamboo"
+          value = "http://${var.ingress.outputs.lb_hostname}/bamboo"
         }
       ]
     }
-  })
+  }) : yamlencode({})
 
   context_path_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
