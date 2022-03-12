@@ -2,8 +2,6 @@ package e2etest
 
 import (
 	"fmt"
-	"github.com/gruntwork-io/terratest/modules/random"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"log"
 	"net/http"
@@ -15,6 +13,9 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/gruntwork-io/terratest/modules/random"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -32,6 +33,9 @@ const (
 	confluenceLicense = ""
 	bitbucketLicense  = ""
 	bambooLicense     = ""
+
+	// If there is a change in the computational requests, this value should be updated
+	expectedNumberOfNodes = 3
 )
 
 type TestConfig struct {
@@ -165,6 +169,13 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 
 	testConfig.ConfigPath = filePath
 	return testConfig
+}
+
+func getKubectlOptions(testConfig TestConfig) *k8s.KubectlOptions {
+	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
+	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
+	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
+	return kubectlOptions
 }
 
 func contains(s []string, e string) bool {

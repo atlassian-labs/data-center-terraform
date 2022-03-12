@@ -49,6 +49,7 @@ var JiraCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
+	"replica_count":           1,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",

@@ -1,11 +1,15 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "17.23.0"
+  version = "17.24.0"
 
   # Configure cluster
   cluster_version              = "1.21"
   cluster_name                 = var.cluster_name
   manage_cluster_iam_resources = true
+
+  # Enables IAM roles for service accounts - required for autoscaler
+  # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
+  enable_irsa = true
 
   # Networking
   vpc_id  = var.vpc_id
@@ -25,11 +29,12 @@ module "eks" {
 
   node_groups = {
     appNodes = {
-      name             = "appNode"
+      name             = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
       desired_capacity = var.desired_capacity
       max_capacity     = 10
       min_capacity     = 1
 
+      subnets        = slice(var.subnets, 0, 1)
       instance_types = var.instance_types
       capacity_type  = "ON_DEMAND"
     }

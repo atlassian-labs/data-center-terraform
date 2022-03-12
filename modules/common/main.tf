@@ -7,6 +7,8 @@ module "vpc" {
 module "eks" {
   source = "../AWS/eks"
 
+  region = var.region_name
+
   cluster_name = local.cluster_name
 
   vpc_id  = module.vpc.vpc_id
@@ -20,11 +22,13 @@ module "efs" {
   source = "../AWS/efs"
   count  = local.create_shared_home ? 1 : 0
 
-  efs_name                     = local.efs_name
-  region_name                  = var.region_name
-  vpc                          = module.vpc
-  eks                          = module.eks
-  csi_controller_replica_count = var.desired_capacity
+  efs_name    = local.efs_name
+  region_name = var.region_name
+  vpc         = module.vpc
+  eks         = module.eks
+
+  // Having up to two replicas for the EFS controller should be enough
+  csi_controller_replica_count = var.desired_capacity >= 2 ? 2 : 1
 }
 
 module "ingress" {
