@@ -175,3 +175,50 @@ var DbInvalidVariable = map[string]interface{}{
 		"private_subnets": inputSubnets,
 	},
 }
+
+var BitbucketInvalidVariables = map[string]interface{}{
+	"environment_name": "1-is-an-invalid-environment-name",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+		"cluster_size":           2,
+	},
+	"vpc":                     VpcDefaultModuleVariable,
+	"db_major_engine_version": "13",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"admin_configuration": map[string]interface{}{
+		"invalid":             "dummy_admin_username",
+		"admin_password":      "dummy_admin_password",
+		"admin_display_name":  "dummy_admin_display_name",
+		"admin_email_address": "dummy_admin_email_address",
+	},
+	"display_name":  superLongStr,
+	"ingress":       map[string]interface{}{},
+	"replica_count": 1,
+	"bitbucket_configuration": map[string]interface{}{
+		"helm_version": "1.2.0",
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "256m",
+		"max_heap":     "512m",
+		"license":      "dummy_license",
+		"invalid":      "bitbucket-configuration",
+	},
+	"nfs_requests_cpu":       "0.25",
+	"nfs_requests_memory":    "256Mi",
+	"nfs_limits_cpu":         "0.25",
+	"nfs_limits_memory":      "256Mi",
+	"elasticsearch_cpu":      "1",
+	"elasticsearch_mem":      "1Gi",
+	"elasticsearch_storage":  10,
+	"elasticsearch_replicas": 9, // invalid, should be [2,8]
+}
+
+var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci mauris, cursus sit amet tortor sit amet, aliquam dapibus magna. In sodales felis in ipsum euismod tempor. Phasellus mattis, justo id auctor lacinia, ipsum nulla sodales massa, ac porttitor arcu sem et quam."

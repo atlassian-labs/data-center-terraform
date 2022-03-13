@@ -8,10 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const bitbucketModule = "products/bitbucket"
+
 func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(BitbucketCorrectVariables, t, "products/bitbucket")
+	tfOptions := GenerateTFOptions(BitbucketCorrectVariables, t, bitbucketModule)
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
 	// verify Bitbucket
@@ -21,6 +23,47 @@ func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "deployed", bitbucket.AttributeValues["status"])
 	assert.Equal(t, "bitbucket", bitbucket.AttributeValues["chart"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bitbucket.AttributeValues["repository"])
+}
+
+func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(BitbucketInvalidVariables, t, bitbucketModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid value for variable")
+	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
+	assert.Contains(t, err.Error(), "Bitbucket configuration is not valid.")
+	assert.Contains(t, err.Error(), "Bitbucket administrator configuration is not valid.")
+	assert.Contains(t, err.Error(), "Invalid elasticsearch replicas. Valid replicas is a positive integer in")
+	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
+}
+
+func TestBitbucketVariablesNotProvided(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(nil, t, bitbucketModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "No value for required variable")
+	assert.Contains(t, err.Error(), "\"environment_name\" is not set")
+	assert.Contains(t, err.Error(), "\"namespace\" is not set")
+	assert.Contains(t, err.Error(), "\"vpc\" is not set")
+	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	assert.Contains(t, err.Error(), "\"db_major_engine_version\" is not set")
+	assert.Contains(t, err.Error(), "\"db_allocated_storage\" is not set")
+	assert.Contains(t, err.Error(), "\"db_instance_class\" is not set")
+	assert.Contains(t, err.Error(), "\"db_iops\" is not set")
+	assert.Contains(t, err.Error(), "\"bitbucket_configuration\" is not set")
+	assert.Contains(t, err.Error(), "\"admin_configuration\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_mem\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_storage\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_replicas\" is not set")
+	assert.NotContains(t, err.Error(), "display_name")
 }
 
 const nfsModule = "products/bitbucket/nfs"
