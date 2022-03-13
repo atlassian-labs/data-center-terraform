@@ -37,7 +37,7 @@ locals {
       create = "true"
       host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
       https  = local.domain_supplied ? true : false
-      path   = local.domain_supplied ? null : "/bamboo"
+      path   = local.domain_supplied ? null : "/${local.product_name}"
     }
   })
 
@@ -47,7 +47,7 @@ locals {
       additionalEnvironmentVariables = [
         {
           name  = "ATL_BASE_URL"
-          value = "http://${var.ingress.outputs.lb_hostname}/bamboo"
+          value = "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
         }
       ]
     }
@@ -56,7 +56,7 @@ locals {
   context_path_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
       service = {
-        contextPath = "/bamboo"
+        contextPath = "/${local.product_name}"
       }
     }
   }) : yamlencode({})

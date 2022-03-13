@@ -23,14 +23,14 @@ locals {
       create = "true"
       host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
       https  = local.domain_supplied ? true : false
-      path   = local.domain_supplied ? null : "/jira"
+      path   = local.domain_supplied ? null : "/${local.product_name}"
     }
   })
 
   context_path_settings = !local.domain_supplied ? yamlencode({
     jira = {
       service = {
-        contextPath = "/jira"
+        contextPath = "/${local.product_name}"
       }
     }
   }) : yamlencode({})
