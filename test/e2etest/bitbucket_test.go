@@ -66,7 +66,7 @@ func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig, product
 	addServerToKnownHosts(t, host)
 	addPublicKeyToServer(t, testConfig.BitbucketPassword, productUrl)
 	createNewProject(t, testConfig.BitbucketPassword, productUrl)
-	createNewRepo(t, testConfig.BitbucketPassword, productUrl)
+	createNewRepo(t, testConfig.BitbucketPassword, productUrl, host)
 	cloneRepo(t, host)
 }
 
@@ -106,7 +106,7 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 	})
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addSshKeyJsonPayload))
-	content := getPageContent(t, restEndpoint)
+	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
 	const expectedPublicKey = "AAAAB3NzaC1yc2EAAAADAQABAAACAQDjfTvP42K+jhLm729U896GDAy16XlGc2OxRLjKf3eBquiVM4iZ+GOGWTxsjmyP7TEfBXGAjTde/0xv2HzBzRUlx6c1XvqQ8pNNpXdO0QDZTj0DOAxaRsfKSOzw9LAR9dcf5u2tkXfRDjWvfl/9i8+gn4Vz9WBkTo7+RzpDEHebj/1chKSDzeyMJuuTQeukxtsEWTbYjWIYKkckbWxhN8jpN2FAAqaV8c3wrfvBlFPJ02t+solxlUpx/Qo7NgQIJyRfVoGtyhHmB4OAwl6pbDZAXb0iK5Im3oP5pAL8Wsx5RjEI7Zt/7PBhbBPskEHjAZBdyBDh0mk5FzziMbKXNcPJq10lISMsDNh1cHLjJoEWPPoXsDGFjxAy+cdv/V+8zImHQA8frPZGx8tXGV7twP+6o57TEVf3uQeUcfSE6l1CKauVAL+MrxRbQBaUit7+w8uazoE4AHrRydraD0/aTAGaUMN9BicMdy5j5Utl5zwjrG/XxW8eljspJA1I7Py1FbaRoGmNyV3aRfh9Cq5Bet8XFE8n383nPYejzIwYz8OSJaj8xoPpOuoDQlEaj3pPV5OOUDVHq6ehjH8ClbSGM02TB4OAQYeHa3PdcJd39H3vPdKfG1DNQAIpqPj25aLnE7zuT68p0JXsMGreCLRooJsTEfjHPXDqldk1NpqjRYyryw=="
 	assert.Contains(t, string(content), expectedPublicKey)
 }
@@ -122,11 +122,11 @@ func createNewProject(t *testing.T, password string, productUrl string) {
 	})
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addNewProject))
-	content := getPageContent(t, restEndpoint)
+	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
 	assert.Contains(t, string(content), "A project for testing the Bitbucket SSH test")
 }
 
-func createNewRepo(t *testing.T, password string, productUrl string) {
+func createNewRepo(t *testing.T, password string, productUrl string, host string) {
 	println("Create new repo ...")
 
 	restEndpoint := fmt.Sprintf("%s/rest/api/latest/projects/BBSSH/repos", productUrl)
@@ -137,8 +137,8 @@ func createNewRepo(t *testing.T, password string, productUrl string) {
 	})
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addNewRepository))
-	content := getPageContent(t, restEndpoint)
-	sshCloneUrl := fmt.Sprintf("ssh://git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", productUrl)
+	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
+	sshCloneUrl := fmt.Sprintf("ssh://git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	assert.Contains(t, string(content), sshCloneUrl)
 }
 

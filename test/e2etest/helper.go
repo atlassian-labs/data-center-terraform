@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"text/template"
@@ -117,10 +118,11 @@ func sendPostRequest(t *testing.T, url string, contentType string, username stri
 	require.NoError(t, err, "Error creating POST request")
 
 	request.Header.Add("Content-Type", contentType)
-
 	request.SetBasicAuth(username, password)
 
 	resp, err := client.Do(request)
+	assert.Regexp(t, "20[01]", strconv.Itoa(resp.StatusCode))
+
 	require.NoError(t, err, "Error accessing url: %s", url)
 	defer resp.Body.Close()
 }
