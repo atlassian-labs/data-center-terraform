@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/gruntwork-io/terratest/modules/terraform"
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 
 	"github.com/go-git/go-git/v5"
@@ -58,8 +58,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 }
 
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig, productUrl string) {
-
-	host := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "ingress")["load_balancer_hostname"]
+	host := getHostFrom(productUrl)
 
 	println("Asserting Bitbucket SSH connectivity ...")
 
@@ -166,4 +165,8 @@ func cloneRepo(t *testing.T, host string) {
 	})
 	assert.Error(t, err)
 	assert.Equal(t, "remote repository is empty", err.Error())
+}
+
+func getHostFrom(productUrl string) string {
+	return strings.Split(productUrl, "/")[2]
 }
