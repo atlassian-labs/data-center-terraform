@@ -182,7 +182,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	vars["bamboo_password"] = testConfig.BambooPassword
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
 	if useDomain {
-		vars["domain_settings"] = fmt.Sprintf("domain = '%s'", domain)
+		vars["domain_settings"] = fmt.Sprintf("domain = \"%s\"", domain)
 	}
 
 	// parse the template
