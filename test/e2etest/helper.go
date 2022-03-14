@@ -79,6 +79,25 @@ func GetAvailableRegion(t *testing.T) string {
 	}
 }
 
+func getPageContentWithBasicAuth(t *testing.T, url string, username string, password string) []byte {
+	client := &http.Client{}
+
+	request, err := http.NewRequest(http.MethodGet, url, nil)
+	require.NoError(t, err, "Error creating GET request")
+
+	request.SetBasicAuth(username, password)
+
+	get, err := client.Do(request)
+	require.NoError(t, err, "Error accessing url: %s", url)
+	defer get.Body.Close()
+
+	assert.Equal(t, 200, get.StatusCode)
+	content, err := io.ReadAll(get.Body)
+
+	assert.NoError(t, err, "Error reading response body")
+	return content
+}
+
 func getPageContent(t *testing.T, url string) []byte {
 	get, err := http.Get(url)
 	require.NoError(t, err, "Error accessing url: %s", url)
@@ -91,8 +110,17 @@ func getPageContent(t *testing.T, url string) []byte {
 	return content
 }
 
-func sendPostRequest(t *testing.T, url string, contentType string, body io.Reader) {
-	resp, err := http.Post(url, contentType, body)
+func sendPostRequest(t *testing.T, url string, contentType string, username string, password string, body io.Reader) {
+	client := &http.Client{}
+
+	request, err := http.NewRequest(http.MethodPost, url, body)
+	require.NoError(t, err, "Error creating POST request")
+
+	request.Header.Add("Content-Type", contentType)
+
+	request.SetBasicAuth(username, password)
+
+	resp, err := client.Do(request)
 	require.NoError(t, err, "Error accessing url: %s", url)
 	defer resp.Body.Close()
 }
@@ -123,7 +151,7 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
@@ -153,6 +181,9 @@ func createConfig(t *testing.T, productList []string) TestConfig {
 	vars["bamboo_license"] = testConfig.BambooLicense
 	vars["bamboo_password"] = testConfig.BambooPassword
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
+	if useDomain {
+		vars["domain_settings"] = fmt.Sprintf("domain = '%s'", domain)
+	}
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")

@@ -6,16 +6,16 @@ import (
 	"testing"
 )
 
-func confluenceHealthTests(t *testing.T, testConfig TestConfig) {
+func confluenceHealthTests(t *testing.T, productUrl string) {
 	printTestBanner(confluence, "Tests")
 
 	// Test the status
-	assertConfluenceStatus(t, testConfig, "FIRST_RUN")
+	assertConfluenceStatus(t, productUrl, "FIRST_RUN")
 }
 
-func assertConfluenceStatus(t *testing.T, testConfig TestConfig, expectedStatus string) {
+func assertConfluenceStatus(t *testing.T, productUrl string, expectedStatus string) {
 	statusUrl := "status"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", confluence, testConfig.EnvironmentName, domain, statusUrl)
+	url := fmt.Sprintf("%s/%s", productUrl, statusUrl)
 	content := getPageContent(t, url)
 	println("Asserting Confluence Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
