@@ -32,7 +32,7 @@ instance_types = ["m5.xlarge"]
 desired_capacity = 1
 
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
-{{if .domain}}domain = {{.domain}}{{end}}
+{{if .domain}}domain = "{{.domain}}"{{end}}
 
 ################################################################################
 # Bamboo Settings
