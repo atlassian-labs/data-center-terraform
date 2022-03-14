@@ -23,22 +23,22 @@ func TestInstaller(t *testing.T) {
 
 	clusterHealthTests(t, testConfig)
 
-	product_urls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
+	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 
 	if contains(productList, bamboo) {
-		bambooHealthTests(t, testConfig, product_urls[bamboo])
+		bambooHealthTests(t, testConfig, productUrls[bamboo])
 	}
 
 	if contains(productList, jira) {
-		jiraHealthTests(t, product_urls[jira])
+		jiraHealthTests(t, productUrls[jira])
 	}
 
 	if contains(productList, confluence) {
-		confluenceHealthTests(t, product_urls[confluence])
+		confluenceHealthTests(t, productUrls[confluence])
 	}
 
 	if contains(productList, bitbucket) {
-		bitbucketHealthTests(t, testConfig, product_urls[bitbucket])
+		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
 	}
 }
 
