@@ -18,6 +18,24 @@ For more information, see [Confluence Version Tags](https://hub.docker.com/r/atl
 confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 ```
 
+### Number of Confluence application nodes
+
+The initial Confluence installation require to be started only with a single application node. After all the setup steps
+are finished, it is possible to update the `confluence_replica_count` with a number higher than one and run `install.sh` to update
+the application node count.
+
+```terraform
+# Number of Confluence application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
+# installed and configured.
+confluence_replica_count = 1
+```
+
+!!! tip "Cluster size"
+
+    [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) installed in the 
+    cluster will monitor the amount of required resources and adjust the cluster size to accomodate the requested cpu and memory.
+
 ### License
 
 `confluence_license` takes the license key of Confluence product. Make sure that there is no new lines or spaces in license key.

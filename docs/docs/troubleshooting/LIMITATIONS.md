@@ -24,11 +24,3 @@ Amazon Web Services (AWS) is the only supported cloud platform.
 ### Database
 
 PostgreSQL is the defined database engine for the products and cannot be modified in the configuration. However, users can change the database [instance type](../userguide/configuration/CONFIGURATION.md#database-instance-class) and [storage size](../userguide/configuration/CONFIGURATION.md#database-allocated-storage).
-
-### Scaling EKS
-
-You cannot change the number of the EKS cluster nodes (`desired_capacity`) and node type (`instance_types`) after provisioning the environment.
-
-### Scaling DC product
-
-Follow the official documentation on [Product Scaling](https://atlassian.github.io/data-center-helm-charts/userguide/resource_management/RESOURCE_SCALING/#product-scaling) for more details.

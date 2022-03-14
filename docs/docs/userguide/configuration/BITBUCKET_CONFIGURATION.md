@@ -18,6 +18,19 @@ For more information, see [Bitbucket Version Tags](https://hub.docker.com/r/atla
 bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
 ```
 
+### Number of Bitbucket application nodes
+
+`bitbucket_replica_count` defines the desired number of application nodes.
+
+```terraform
+bitbucket_replica_count = 1
+```
+
+!!! tip "Cluster size"
+
+    [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) installed in the 
+    cluster will monitor the amount of required resources and adjust the cluster size to accomodate the requested cpu and memory.
+
 ### License
 
 `bitbucket_license` takes the license key of Bitbucket product. Make sure that there is no new lines or spaces in license key.

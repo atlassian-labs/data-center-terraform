@@ -39,6 +39,15 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/jira/Terraform.png "Deployment")
 
+!!! tip "Cluster size and cost"
+
+    In the installation process, [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
+    is installed in the Kubernetes cluster.
+
+    You can define the [initial cluster size](./userguide/CONFIGURATION.md#), i.e. the number of EC2 instances providing 
+    resources to the EKS cluster. This size is only initial and will be automatically adjusted depending on the workload
+    resource requirements.
+
 !!! tip "Multiple deployments to a single cluster"
 
     Multiple DC products can also be provisioned to the same cluster. See the [Configuration guide](./userguide/CONFIGURATION.md#products) for more details

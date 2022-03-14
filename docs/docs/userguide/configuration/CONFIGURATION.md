@@ -134,9 +134,9 @@ The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2
 
     The instance type cannot be changed once the infrastructure has been provisioned.
 
-### EKS node count
+### Initial EKS node count
 
-`desired_capacity` provides the desired number of nodes that the EKS node group should launch with initially.
+`desired_capacity` defines the desired number of nodes that the EKS node group should launch with initially.
 
 * The default value for the number of nodes in Kubernetes node groups is `1`.
 * Minimum is `1` and maximum is `10`.
@@ -145,8 +145,14 @@ The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2
 desired_capacity = <NUMBER_OF_NODES>  # between 1 and 10
 ```
 
-!!! warning "You cannot change this value after the infrastructure is provisioned."
+!!! tip "Cluster size and cost"
 
+    In the installation process, [cluster-autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
+    is installed in the Kubernetes cluster.
+
+    You can define the [initial cluster size](./userguide/CONFIGURATION.md#), i.e. the number of EC2 instances providing 
+    resources to the EKS cluster. This size is only initial and will be automatically adjusted depending on the workload
+    resource requirements.
 
 ## Product specific configuration
 

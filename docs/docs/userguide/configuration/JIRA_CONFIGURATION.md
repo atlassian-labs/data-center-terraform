@@ -18,6 +18,24 @@ For more information, see [Jira Version Tags](https://hub.docker.com/r/atlassian
 jira_version_tag = "<JIRA_VERSION_TAG>"
 ```
 
+### Number of Jira application nodes
+
+The initial Jira installation require to be started only with a single application node. After all the setup steps
+are finished, it is possible to update the `jira_replica_count` with a number higher than one and run `install.sh` to update
+the application node count.
+
+```terraform
+# Number of Jira application nodes
+# Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
+# installed and configured.
+jira_replica_count = 1
+```
+
+!!! tip "Cluster size"
+
+    [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) installed in the 
+    cluster will monitor the amount of required resources and adjust the cluster size to accomodate the requested cpu and memory.
+
 ### Instance resource configuration
 
 The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Jira instance. (Used default values as example.)
