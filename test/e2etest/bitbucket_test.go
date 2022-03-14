@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -16,6 +17,7 @@ import (
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
+
 	printTestBanner(bitbucket, "Tests")
 	assertBitbucketStatusEndpoint(t, productUrl)
 	assertBitbucketNfsConnectivity(t, testConfig)
@@ -56,24 +58,28 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 }
 
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig, productUrl string) {
+
+	host := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "ingress")["load_balancer_hostname"]
+
 	println("Asserting Bitbucket SSH connectivity ...")
 
-	addServerToKnownHosts(t, productUrl)
+	addServerToKnownHosts(t, host)
 	addPublicKeyToServer(t, testConfig.BitbucketPassword, productUrl)
 	createNewProject(t, testConfig.BitbucketPassword, productUrl)
 	createNewRepo(t, testConfig.BitbucketPassword, productUrl)
-	cloneRepo(t, productUrl)
+	cloneRepo(t, host)
 }
 
-func addServerToKnownHosts(t *testing.T, productUrl string) {
-	println(fmt.Sprintf("Adding %s to known_hosts ...", productUrl))
+func addServerToKnownHosts(t *testing.T, host string) {
 
-	cmd := exec.Command("ssh-keyscan", "-t", "rsa", "-p 7999", productUrl)
+	println(fmt.Sprintf("Adding %s to known_hosts ...", host))
+
+	cmd := exec.Command("ssh-keyscan", "-t", "rsa", "-p 7999", host)
 	output, _ := cmd.CombinedOutput()
 
 	stdout := string(output)
 	println(fmt.Sprintf("Keyscan found this public key: %s", stdout))
-	assert.Contains(t, stdout, fmt.Sprintf("%s:7999", productUrl))
+	assert.Contains(t, stdout, fmt.Sprintf("%s:7999", host))
 
 	err := ioutil.WriteFile(os.Getenv("HOME")+"/.ssh/known_hosts", []byte(stdout), 0644)
 	assert.Nil(t, err)
@@ -136,7 +142,7 @@ func createNewRepo(t *testing.T, password string, productUrl string) {
 	assert.Contains(t, string(content), sshCloneUrl)
 }
 
-func cloneRepo(t *testing.T, productUrl string) {
+func cloneRepo(t *testing.T, host string) {
 	println("Clone repo ...")
 
 	/* When these tests are executed via Github actions the RSA key
@@ -151,7 +157,7 @@ func cloneRepo(t *testing.T, productUrl string) {
 	sshKey, _ := ioutil.ReadFile(sshKeyPath)
 	publicKey, keyError := ssh.NewPublicKeys("git", sshKey, "")
 	assert.Nil(t, keyError)
-	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", productUrl)
+	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 
 	_, err := git.PlainClone("/tmp/cloned", false, &git.CloneOptions{
 		URL:      cloneUrl,
