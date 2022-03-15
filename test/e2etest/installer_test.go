@@ -1,15 +1,18 @@
 package e2etest
 
 import (
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"os/exec"
+	"strconv"
 	"testing"
 )
 
 func TestInstaller(t *testing.T) {
 
 	productList := []string{jira, confluence, bamboo, bitbucket}
-	testConfig := createConfig(t, productList)
+	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
+	testConfig := createConfig(t, productList, useDomain)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
@@ -20,20 +23,22 @@ func TestInstaller(t *testing.T) {
 
 	clusterHealthTests(t, testConfig)
 
+	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
+
 	if contains(productList, bamboo) {
-		bambooHealthTests(t, testConfig)
+		bambooHealthTests(t, testConfig, productUrls[bamboo])
 	}
 
 	if contains(productList, jira) {
-		jiraHealthTests(t, testConfig)
+		jiraHealthTests(t, productUrls[jira])
 	}
 
 	if contains(productList, confluence) {
-		confluenceHealthTests(t, testConfig)
+		confluenceHealthTests(t, productUrls[confluence])
 	}
 
 	if contains(productList, bitbucket) {
-		bitbucketHealthTests(t, testConfig)
+		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
 	}
 }
 

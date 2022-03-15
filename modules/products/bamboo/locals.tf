@@ -28,29 +28,38 @@ locals {
 
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
-  # if the domain wasn't provided we will start Bamboo with LoadBalancer service without ingress configuration
-  use_domain          = length(var.ingress) == 1
-  product_domain_name = local.use_domain ? "${local.product_name}.${var.ingress[0].ingress.domain}" : null
+  domain_supplied     = var.ingress.outputs.domain != null ? true : false
+  product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
+
   # ingress settings for Bamboo service
-  ingress_with_domain = yamlencode({
+  ingress_settings = yamlencode({
     ingress = {
       create = "true"
-      host   = local.product_domain_name
+      host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
+      https  = local.domain_supplied ? true : false
+      path   = local.domain_supplied ? null : "/${local.product_name}"
     }
   })
 
-  service_as_loadbalancer = yamlencode({
+  # TODO: Once TFKUBE-384 has been merged and released this variable can be removed.
+  additional_environment_settings = !local.domain_supplied ? yamlencode({
+    bamboo = {
+      additionalEnvironmentVariables = [
+        {
+          name  = "ATL_BASE_URL"
+          value = "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
+        }
+      ]
+    }
+  }) : yamlencode({})
+
+  context_path_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
       service = {
-        type = "LoadBalancer"
+        contextPath = "/${local.product_name}"
       }
     }
-    ingress = {
-      https = false
-    }
-  })
-
-  ingress_settings = local.use_domain ? local.ingress_with_domain : local.service_as_loadbalancer
+  }) : yamlencode({})
 
   license_settings = yamlencode({
     bamboo = {
