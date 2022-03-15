@@ -7,8 +7,7 @@ on:
       - 'docs/**'
       - '.atlassian/**'
       - 'test/unittest**'
-  #workflow_dispatch:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
