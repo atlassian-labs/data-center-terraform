@@ -112,7 +112,7 @@ confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
 
 # Enables Collaborative editing in Confluence
-#confluence_collaborative_editing_enabled = true
+confluence_collaborative_editing_enabled = true
 
 ################################################################################
 # Bitbucket Settings
