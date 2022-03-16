@@ -50,7 +50,7 @@ locals {
   confluence_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
 
   # if domain is not provided, a new LB is created for Synchrony service
-  synchrony_ingress_url = local.domain_supplied ? "${local.confluence_ingress_url}/synchrony" : "http://${var.ingress.outputs.lb_hostname}/synchrony"
+  synchrony_ingress_url = local.domain_supplied ? "${local.confluence_ingress_url}/synchrony" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}/synchrony"
 
   synchrony_settings_stanza = yamlencode({
     synchrony = {
