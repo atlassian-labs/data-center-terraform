@@ -96,10 +96,10 @@ confluence_replica_count = 1
 #confluence_license = "<LICENSE_KEY>"
 
 # Confluence instance resource configuration
-confluence_cpu      = "1"
-confluence_mem      = "1Gi"
-confluence_min_heap = "256m"
-confluence_max_heap = "512m"
+confluence_cpu      = "2"
+confluence_mem      = "2Gi"
+confluence_min_heap = "1024m"
+confluence_max_heap = "2048m"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
