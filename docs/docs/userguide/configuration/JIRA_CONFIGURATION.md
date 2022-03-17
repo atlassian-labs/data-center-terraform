@@ -20,7 +20,7 @@ jira_version_tag = "<JIRA_VERSION_TAG>"
 
 ### Number of Jira application nodes
 
-The initial Jira installation need's to be started with a single application node. After all the setup steps
+The initial Jira installation needs to be started with a single application node. After all the setup steps
 are finished, it is possible to update the `jira_replica_count` with a number higher than one and run `install.sh` to update
 the application node count.
 

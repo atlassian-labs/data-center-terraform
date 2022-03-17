@@ -48,7 +48,7 @@ variable "min_cluster_capacity" {
   default     = 1
   type        = number
   validation {
-    condition     = var.min_cluster_capacity > 0 && var.min_cluster_capacity <= 20
+    condition     = var.min_cluster_capacity >= 1 && var.min_cluster_capacity <= 20
     error_message = "Minimum cluster capacity must be between 1 and 20, inclusive."
   }
 }
