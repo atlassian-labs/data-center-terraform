@@ -21,6 +21,7 @@ module "nfs" {
   requests_memory = var.nfs_requests_memory
   limits_cpu      = var.nfs_limits_cpu
   limits_memory   = var.nfs_limits_memory
+  capacity        = var.shared_home_size
 }
 
 module "database" {

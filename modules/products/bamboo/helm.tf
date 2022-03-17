@@ -36,6 +36,11 @@ resource "helm_release" "bamboo" {
         localHome = {
           persistentVolumeClaim = {
             create = true
+            resources = {
+              requests = {
+                storage = var.local_home_size
+              }
+            }
           }
         }
         sharedHome = {

@@ -20,7 +20,7 @@ confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
 
 ### Number of Confluence application nodes
 
-The initial Confluence installation require to be started only with a single application node. After all the setup steps
+The initial Confluence installation need's to be started with a single application node.. After all the setup steps
 are finished, it is possible to update the `confluence_replica_count` with a number higher than one and run `install.sh` to update
 the application node count.
 

@@ -66,7 +66,7 @@ locals {
   elasticsearch_name                  = "elasticsearch"
   elasticsearch_helm_chart_repository = "https://helm.elastic.co"
   elasticsearch_helm_chart_version    = "7.16.3"
-  elasticsearch_antiAffinity          = var.eks.cluster_size < 3 ? "soft" : "hard"
+  elasticsearch_antiAffinity          = "soft"
 
   elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "http://${local.elasticsearch_name}-master:9200" : var.elasticsearch_endpoint
   minimumMasterNodes     = var.elasticsearch_replicas == 1 ? 1 : 2

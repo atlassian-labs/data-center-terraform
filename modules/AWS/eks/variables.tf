@@ -27,12 +27,28 @@ variable "instance_types" {
   type        = list(string)
 }
 
-variable "desired_capacity" {
-  description = "Desired number of nodes that the node group should launch with initially."
+variable "instance_disk_size" {
+  description = "Size of the disk attached to the cluster instance."
+  default     = 50
+  type        = number
+}
+
+variable "max_cluster_capacity" {
+  description = "Maximum number of EC2 nodes that cluster can scale up to."
   type        = number
 
   validation {
-    condition     = (var.desired_capacity >= 1 && var.desired_capacity <= 10)
-    error_message = "Desired capacity must be between 1 and 10, inclusive."
+    condition     = (var.max_cluster_capacity >= 1 && var.max_cluster_capacity <= 20)
+    error_message = "Maximum cluster capacity must be between 1 and 20, inclusive."
+  }
+}
+
+variable "min_cluster_capacity" {
+  description = "Minimum number of EC2 nodes for the EKS cluster."
+  default     = 1
+  type        = number
+  validation {
+    condition     = var.min_cluster_capacity > 0 && var.min_cluster_capacity <= 20
+    error_message = "Minimum cluster capacity must be between 1 and 20, inclusive."
   }
 }

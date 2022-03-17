@@ -4,11 +4,13 @@ module "base-infrastructure" {
   region_name      = var.region
   environment_name = var.environment_name
 
-  instance_types   = var.instance_types
-  desired_capacity = var.desired_capacity
-  domain           = var.domain
-  namespace        = local.namespace
-  shared_home_size = local.shared_home_size
+  instance_types       = var.instance_types
+  instance_disk_size   = var.instance_disk_size
+  max_cluster_capacity = var.max_cluster_capacity
+  min_cluster_capacity = var.min_cluster_capacity
+  domain               = var.domain
+  namespace            = local.namespace
+  shared_home_size     = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
@@ -144,6 +146,9 @@ module "bitbucket" {
   db_allocated_storage    = var.bitbucket_db_allocated_storage
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
+
+  local_home_size  = var.bitbucket_local_home_size
+  shared_home_size = var.bitbucket_shared_home_size
 
   replica_count = var.bitbucket_replica_count
 

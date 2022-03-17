@@ -42,6 +42,11 @@ resource "helm_release" "jira" {
           persistentVolumeClaim = {
             create = true
           }
+          resources = {
+            requests = {
+              storage = var.local_home_size
+            }
+          }
         }
         sharedHome = {
           customVolume = {

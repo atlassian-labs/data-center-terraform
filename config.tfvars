@@ -31,14 +31,15 @@ resource_tags = {
 }
 
 # Instance types that is preferred for EKS node group.
-instance_types = ["m5.2xlarge"]
+instance_types     = ["m5.2xlarge"]
+instance_disk_size = 50
 
-# Desired number of nodes that the node group should launch with initially. This value cannot be changed later.
-# There is a cluster-autoscaler installed on the EKS cluster that will manage the requested capacity
+# Minimum and maximum size of the EKS cluster.
+# Cluster-autoscaler is installed in the EKS cluster that will manage the requested capacity
 # and increase/decrease the number of nodes accordingly. This ensures there is always enough resources for the workloads
 # and removes the need to change this value.
-# https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v17.24.0/docs/faq.md#why-does-changing-the-node-or-worker-groups-desired-count-not-do-anything
-desired_capacity = 1
+min_cluster_capacity = 1
+max_cluster_capacity = 5
 
 ################################################################################
 # Jira Settings
@@ -62,6 +63,9 @@ jira_mem                 = "2Gi"
 jira_min_heap            = "384m"
 jira_max_heap            = "786m"
 jira_reserved_code_cache = "512m"
+
+# Storage
+jira_local_home_size = "10Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -100,6 +104,9 @@ confluence_cpu      = "1"
 confluence_mem      = "1Gi"
 confluence_min_heap = "256m"
 confluence_max_heap = "512m"
+
+# Storage
+confluence_local_home_size = "10Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -155,6 +162,10 @@ bitbucket_cpu      = "1"
 bitbucket_mem      = "1Gi"
 bitbucket_min_heap = "256m"
 bitbucket_max_heap = "512m"
+
+# Storage
+bitbucket_local_home_size  = "10Gi"
+bitbucket_shared_home_size = "10Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -225,6 +236,9 @@ bamboo_max_heap = "512m"
 # Bamboo Agent instance resource configuration
 bamboo_agent_cpu = "0.25"
 bamboo_agent_mem = "256m"
+
+# Storage
+bamboo_local_home_size = "10Gi"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.

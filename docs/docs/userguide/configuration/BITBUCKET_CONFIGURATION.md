@@ -20,7 +20,9 @@ bitbucket_version_tag = "<BITBUCKET_VERSION_TAG>"
 
 ### Number of Bitbucket application nodes
 
-`bitbucket_replica_count` defines the desired number of application nodes.
+`bitbucket_replica_count` defines the desired number of application nodes. If you desire to set this number to higher
+than 1 even for the first installation, it is necessary add all the **System Admin Credentials** and **License**
+properties listed below. This ensures Bitbucket is using fully automated setup.
 
 ```terraform
 bitbucket_replica_count = 1

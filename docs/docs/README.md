@@ -41,12 +41,10 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 !!! tip "Cluster size and cost"
 
-    In the installation process, [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
-    is installed in the Kubernetes cluster.
+    [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) is provisioned as part of the deployment.
 
-    You can define the [initial cluster size](./userguide/CONFIGURATION.md#), i.e. the number of EC2 instances providing 
-    resources to the EKS cluster. This size is only initial and will be automatically adjusted depending on the workload
-    resource requirements.
+    You can define the minimum and maximum size of the cluster. The number of nodes will be automatically adjusted 
+    depending on the workload resource requirements.
 
 !!! tip "Multiple deployments to a single cluster"
 
