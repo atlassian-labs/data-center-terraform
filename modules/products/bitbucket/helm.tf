@@ -42,10 +42,10 @@ resource "helm_release" "bitbucket" {
         localHome = {
           persistentVolumeClaim = {
             create = true
-          }
-          resources = {
-            requests = {
-              storage = var.local_home_size
+            resources = {
+              requests = {
+                storage = var.local_home_size
+              }
             }
           }
         }
