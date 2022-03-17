@@ -53,7 +53,9 @@ resource "helm_release" "bamboo" {
         }
       }
     }),
+    local.additional_environment_settings,
     local.ingress_settings,
+    local.context_path_settings,
     local.license_settings,
     local.admin_settings,
     local.unattended_setup_setting,
@@ -87,7 +89,7 @@ resource "helm_release" "bamboo_agent" {
         securityToken = {
           secretName = kubernetes_secret.security_token_secret.metadata[0].name
         }
-        server = "${helm_release.bamboo.metadata[0].name}.${var.namespace}.svc.cluster.local"
+        server = local.domain_supplied ? "${helm_release.bamboo.metadata[0].name}.${var.namespace}.svc.cluster.local" : "${helm_release.bamboo.metadata[0].name}.${var.namespace}.svc.cluster.local/bamboo"
         resources = {
           container = {
             requests = {

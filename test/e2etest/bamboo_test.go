@@ -7,74 +7,71 @@ import (
 	"time"
 )
 
-func bambooHealthTests(t *testing.T, testConfig TestConfig) {
+func bambooHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
+
 	printTestBanner(bamboo, "Tests")
 
 	// Test the PAUSE status
-	pauseBambooServer(t, testConfig)
-	assertStatusEndpoint(t, testConfig, "PAUSED")
+	pauseBambooServer(t, testConfig, productUrl)
+	assertStatusEndpoint(t, productUrl, "PAUSED")
 
 	// Test the RUNNING status
-	resumeBambooServer(t, testConfig)
-	assertStatusEndpoint(t, testConfig, "RUNNING")
+	resumeBambooServer(t, testConfig, productUrl)
+	assertStatusEndpoint(t, productUrl, "RUNNING")
 
 	// Test Restored Dataset
-	assertPlanListEndpoint(t, testConfig)
-	assertBambooProjects(t, testConfig)
+	assertPlanListEndpoint(t, testConfig, productUrl)
+	assertBambooProjects(t, productUrl)
 
 	// Test online remote agents
-	assertRemoteAgentList(t, testConfig)
+	assertRemoteAgentList(t, testConfig, productUrl)
 }
 
-func assertStatusEndpoint(t *testing.T, testConfig TestConfig, expectedStatus string) {
+func assertStatusEndpoint(t *testing.T, productUrl string, expectedStatus string) {
 	statusUrl := "rest/api/latest/status"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, statusUrl)
+	url := fmt.Sprintf("%s/%s", productUrl, statusUrl)
 	content := getPageContent(t, url)
 	println("Asserting Bamboo Status Endpoint...")
 	assert.Contains(t, string(content), expectedStatus)
 }
 
-func assertPlanListEndpoint(t *testing.T, testConfig TestConfig) {
+func assertPlanListEndpoint(t *testing.T, testConfig TestConfig, productUrl string) {
 	planUrl := "rest/api/latest/plan"
-	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, planUrl)
-	content := getPageContent(t, url)
+	url := fmt.Sprintf("%s/%s", productUrl, planUrl)
+	content := getPageContentWithBasicAuth(t, url, "admin", testConfig.BambooPassword)
 	println("Asserting Bamboo PlanListEndpoint...")
 	assert.Contains(t, string(content), "TestPlan")
 }
 
-func assertBambooProjects(t *testing.T, testConfig TestConfig) {
+func assertBambooProjects(t *testing.T, productUrl string) {
 	projUrl := "allProjects.action"
-	url := fmt.Sprintf("https://%s.%s.%s/%s", bamboo, testConfig.EnvironmentName, domain, projUrl)
+	url := fmt.Sprintf("%s/%s", productUrl, projUrl)
 	content := getPageContent(t, url)
 	println("Asserting Bamboo BambooProjects...")
 	assert.Contains(t, string(content), "<title>All projects - Atlassian Bamboo</title>")
 	assert.Contains(t, string(content), "totalRecords: 1")
 }
 
-func assertRemoteAgentList(t *testing.T, testConfig TestConfig) {
+func assertRemoteAgentList(t *testing.T, testConfig TestConfig, productUrl string) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	// Wait 15 seconds to allow remote agents get online
 	time.Sleep(20 * time.Second)
-	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, agentUrl)
-	content := getPageContent(t, url)
+	url := fmt.Sprintf("%s/%s", productUrl, agentUrl)
+	content := getPageContentWithBasicAuth(t, url, "admin", testConfig.BambooPassword)
 	println("Asserting Bamboo RemoteAgentList...")
 	assert.Contains(t, string(content), "There are currently 3 remote agents online")
 }
 
-func resumeBambooServer(t *testing.T, testConfig TestConfig) {
+func resumeBambooServer(t *testing.T, testConfig TestConfig, productUrl string) {
 	resumeUrl := "rest/api/latest/server/resume"
-	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, resumeUrl)
+	url := fmt.Sprintf("%s/%s", productUrl, resumeUrl)
 
-	sendPostRequest(t, url, "application/json", nil)
+	sendPostRequest(t, url, "application/json", "admin", testConfig.BambooPassword, nil)
 }
 
-func pauseBambooServer(t *testing.T, testConfig TestConfig) {
+func pauseBambooServer(t *testing.T, testConfig TestConfig, productUrl string) {
 	pauseUrl := "rest/api/latest/server/pause"
-	credential := fmt.Sprintf("admin:%s", testConfig.BambooPassword)
-	url := fmt.Sprintf("https://%s@%s.%s.%s/%s", credential, bamboo, testConfig.EnvironmentName, domain, pauseUrl)
+	url := fmt.Sprintf("%s/%s", productUrl, pauseUrl)
 
-	sendPostRequest(t, url, "application/json", nil)
+	sendPostRequest(t, url, "application/json", "admin", testConfig.BambooPassword, nil)
 }
