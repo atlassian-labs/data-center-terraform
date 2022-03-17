@@ -22,7 +22,8 @@ func TestEksVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"vpc_id\" is not set")
 	assert.Contains(t, err.Error(), "\"subnets\" is not set")
 	assert.Contains(t, err.Error(), "\"instance_types\" is not set")
-	assert.Contains(t, err.Error(), "\"desired_capacity\" is not set")
+	assert.Contains(t, err.Error(), "\"min_cluster_capacity\" is not set")
+	assert.Contains(t, err.Error(), "\"max_cluster_capacity\" is not set")
 }
 
 func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
@@ -36,13 +37,15 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	vpcId := plan.RawPlan.Variables["vpc_id"].Value
 	subnets := plan.RawPlan.Variables["subnets"].Value
 	instanceTypes := plan.RawPlan.Variables["instance_types"].Value
-	desiredCapacity := plan.RawPlan.Variables["desired_capacity"].Value
+	minClusterCapacity := plan.RawPlan.Variables["min_cluster_capacity"].Value
+	maxClusterCapacity := plan.RawPlan.Variables["max_cluster_capacity"].Value
 
 	assert.Equal(t, "dummy-cluster-name", clusterName)
 	assert.Equal(t, "dummy_vpc_id", vpcId)
 	assert.Equal(t, []interface{}{"subnet1", "subnet2"}, subnets)
 	assert.Equal(t, []interface{}{"instance_type1", "instance_type2"}, instanceTypes)
-	assert.Equal(t, "1", desiredCapacity)
+	assert.Equal(t, "1", minClusterCapacity)
+	assert.Equal(t, "10", maxClusterCapacity)
 }
 
 func TestEksClusterNameInvalid(t *testing.T) {
@@ -56,26 +59,48 @@ func TestEksClusterNameInvalid(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid EKS cluster name.")
 }
 
-func TestEksDesiredCapacityOverLimit(t *testing.T) {
+func TestEksMinCapacityOverLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksWithDesiredCapacityOverLimit, t, eksModule)
+	tfOptions := GenerateTFOptions(EksWithMinCapacityOverLimit, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Desired capacity must be between 1 and 10, inclusive.")
+	assert.Contains(t, err.Error(), "Minimum cluster capacity must be between 1 and 20, inclusive.")
 }
 
-func TestEksDesiredCapacityUnderLimit(t *testing.T) {
+func TestEksMinCapacityUnderLimit(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(EksDesiredCapacityUnderLimit, t, eksModule)
+	tfOptions := GenerateTFOptions(EksWithMinCapacityUnderLimit, t, eksModule)
 
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Desired capacity must be between 1 and 10, inclusive.")
+	assert.Contains(t, err.Error(), "Minimum cluster capacity must be between 1 and 20, inclusive.")
+}
+
+func TestEksMaxCapacityOverLimit(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(EksWithMaxCapacityOverLimit, t, eksModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Maximum cluster capacity must be between 1 and 20, inclusive.")
+}
+
+func TestEksMaxCapacityUnderLimit(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(EksWithMaxCapacityUnderLimit, t, eksModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Maximum cluster capacity must be between 1 and 20, inclusive.")
 }
 
 func TestAutoscalerHelmRelease(t *testing.T) {

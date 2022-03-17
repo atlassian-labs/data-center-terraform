@@ -45,7 +45,6 @@ variable "max_cluster_capacity" {
 
 variable "min_cluster_capacity" {
   description = "Minimum number of EC2 nodes for the EKS cluster."
-  default     = 1
   type        = number
   validation {
     condition     = var.min_cluster_capacity >= 1 && var.min_cluster_capacity <= 20
