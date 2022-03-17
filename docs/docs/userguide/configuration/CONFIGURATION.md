@@ -120,7 +120,7 @@ resource_tags = {
 
     To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
 
-### EKS instance type
+### EKS instance type and storage size
 
 `instance_types` defines the instance type for the EKS cluster node group.
 
@@ -130,9 +130,15 @@ instance_types = ["m5.2xlarge"]
 
 The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
 
-!!! warning "Instance type selection"
+`instance_disk_size` defines the size of default storage attached to an instance.
 
-    The instance type cannot be changed once the infrastructure has been provisioned.
+```terraform
+instance_disk_size = 50
+```
+
+!!! warning "Instance type and disk size selection"
+
+    Both properties cannot be changed once the infrastructure has been provisioned.
 
 ### Cluster size
 
