@@ -32,8 +32,16 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled                                = true
     id                                     = "atlassian-policy-incomplete-mpu"
   }
-  logging {
-    target_bucket = "atl-default-s3-logging-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
-    target_prefix = "${var.bucket_name}/"
-  }
+}
+
+resource "aws_s3_bucket" "log_bucket" {
+  bucket = "atl-default-s3-logging-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+}
+
+
+resource "aws_s3_bucket_logging" "logging" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "${var.bucket_name}/"
 }

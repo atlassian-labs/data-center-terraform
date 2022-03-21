@@ -156,22 +156,14 @@ create_tfstate_resources() {
   fi
   touch "${LOG_FILE}"
   local STATE_FOLDER="${ROOT_PATH}/modules/tfstate"
-  set +e
-  aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
-  S3_BUCKET_EXISTS=$?
-  set -e
-  if [ ${S3_BUCKET_EXISTS} -eq 0 ]
-  then
-    log "S3 bucket '${S3_BUCKET}' already exists."
-  else
-    # create s3 bucket to be used for keep state of the terraform project
-    log "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
-    if ! test -d "${STATE_FOLDER}/.terraform" ; then
-      terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
-    fi
-    terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
-    sleep 5
+  # create s3 bucket to be used for keep state of the terraform project
+  log "Verfying '${S3_BUCKET}' bucket for storing the terraform state..."
+  if ! test -d "${STATE_FOLDER}/.terraform" ; then
+    terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
   fi
+  terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  sleep 5
+
 }
 
 # Deploy the infrastructure if is not created yet otherwise apply the changes to existing infrastructure
