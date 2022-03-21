@@ -34,7 +34,7 @@ variable "instance_disk_size" {
 }
 
 variable "max_cluster_capacity" {
-  description = "Maximum number of EC2 nodes that cluster can scale up to."
+  description = "Maximum number of EC2 instances that cluster can scale up to."
   type        = number
 
   validation {
@@ -44,7 +44,7 @@ variable "max_cluster_capacity" {
 }
 
 variable "min_cluster_capacity" {
-  description = "Minimum number of EC2 nodes for the EKS cluster."
+  description = "Minimum number of EC2 instances for the EKS cluster."
   type        = number
   validation {
     condition     = var.min_cluster_capacity >= 1 && var.min_cluster_capacity <= 20

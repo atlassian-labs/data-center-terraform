@@ -24,7 +24,7 @@ variable "instance_types" {
 }
 
 variable "min_cluster_capacity" {
-  description = "Minimum number of EC2 nodes."
+  description = "Minimum number of EC2 instances."
   type        = number
 }
 

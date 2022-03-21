@@ -142,8 +142,8 @@ instance_disk_size = 50
 
 ### Cluster size
 
-EKS cluster creates an Autoscaling Group (ASG) that has defined minimum and maximum capacity. You are able to set these
-values in the config file:
+EKS cluster creates an [Autoscaling Group (ASG)](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html) 
+that has defined minimum and maximum capacity. You are able to set these values in the config file:
 
 * Minimum values are `1` and maximum is `20`.
 
