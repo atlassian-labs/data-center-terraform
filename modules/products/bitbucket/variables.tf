@@ -102,6 +102,18 @@ variable "nfs_limits_memory" {
   default     = "256Mi"
 }
 
+variable "local_home_size" {
+  description = "The storage capacity to allocate to local home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to the NFS"
+  type        = string
+  default     = "10Gi"
+}
+
 # If an external elasticsearch is not provided, Bitbucket will provision an elasticsearch cluster in k8s
 variable "elasticsearch_endpoint" {
   description = "The external elasticsearch endpoint to be use by Bitbucket."

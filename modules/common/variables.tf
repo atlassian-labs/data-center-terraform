@@ -12,13 +12,24 @@ variable "environment_name" {
   }
 }
 
+variable "instance_disk_size" {
+  description = "Size of the disk attached to the cluster instance."
+  default     = 50
+  type        = number
+}
+
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
 }
 
-variable "desired_capacity" {
-  description = "Desired number of nodes that the node group should launch with initially."
+variable "min_cluster_capacity" {
+  description = "Minimum number of EC2 instances."
+  type        = number
+}
+
+variable "max_cluster_capacity" {
+  description = "Maximum number of EC2 nodes that cluster can scale up to."
   type        = number
 }
 

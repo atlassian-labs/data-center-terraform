@@ -39,6 +39,13 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/jira/Terraform.png "Deployment")
 
+!!! tip "Cluster size and cost"
+
+    [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) is provisioned as part of the deployment.
+
+    You can define the minimum and maximum size of the cluster. The number of nodes will be automatically adjusted 
+    depending on the workload resource requirements.
+
 !!! tip "Multiple deployments to a single cluster"
 
     Multiple DC products can also be provisioned to the same cluster. See the [Configuration guide](./userguide/CONFIGURATION.md#products) for more details
