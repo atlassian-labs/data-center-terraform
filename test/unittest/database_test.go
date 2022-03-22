@@ -1,6 +1,9 @@
 package unittest
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -59,6 +62,22 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, inputInstanceClass, planInstanceClass)
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
+}
+
+func TestDbPostgresVersionMap(t *testing.T) {
+	t.Parallel()
+
+	DbValidVariable["major_engine_version"] = dbVersion
+
+	DbValidVariableWithDBVersion := DbValidVariable
+
+	tfOptions := GenerateTFOptions(DbValidVariableWithDBVersion, t, databaseModule)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	planDbVersion := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine_version"]
+
+	assert.True(t, strings.Contains(fmt.Sprintf("%v", planDbVersion), strconv.Itoa(dbVersion)))
+
 }
 
 func TestDbRdsInstanceIdInvalid(t *testing.T) {
