@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.2
+
+**Release date:** 2022-03-22
+
+* Fixed provider versions
+
+
 ## 1.0.1
 
 **Release date:** 2022-02-07
