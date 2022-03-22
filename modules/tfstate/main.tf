@@ -1,7 +1,7 @@
 # This file deals with where Terraform is keeping its state in AWS.
 # Please note that this file will run by `install.sh' and no need to run manually.
 terraform {
-  required_version = "~> 1.0.11"
+  required_version = "~> 1.1.6"
 
   required_providers {
     aws = {
