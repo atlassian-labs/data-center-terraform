@@ -158,6 +158,15 @@ max_cluster_capacity = 5  # between 1 and 20
     is installed in the Kubernetes cluster. The number of nodes will be automatically adjusted depending on the workload
     resource requirements.
 
+### Major RDS version upgrade
+
+The `major_rds_version_upgrade` property can be set to `true` to enable major RDS version upgrades. 
+To upgrade the RDS you need to define the major version for the specific product in the product configuration section as well.  
+
+```terraform
+major_rds_version_upgrade = true  # default is false
+```
+
 ## Product specific configuration
 
 === "Bamboo"

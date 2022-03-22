@@ -32,6 +32,11 @@ variable "db_major_engine_version" {
   type        = string
 }
 
+variable "allow_major_version_upgrade" {
+  description = "Allow major version upgrade for RDS instances"
+  type        = bool
+}
+
 variable "dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   type        = string

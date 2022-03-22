@@ -16,12 +16,14 @@ resource "aws_route53_record" "bamboo" {
 module "database" {
   source = "../../AWS/rds"
 
-  product              = local.product_name
-  major_engine_version = var.db_major_engine_version
-  rds_instance_id      = local.rds_instance_name
-  allocated_storage    = var.db_configuration["db_allocated_storage"]
-  eks                  = var.eks
-  instance_class       = var.db_configuration["db_instance_class"]
-  iops                 = var.db_configuration["db_iops"]
-  vpc                  = var.vpc
+  product           = local.product_name
+  rds_instance_id   = local.rds_instance_name
+  allocated_storage = var.db_configuration["db_allocated_storage"]
+  eks               = var.eks
+  instance_class    = var.db_configuration["db_instance_class"]
+  iops              = var.db_configuration["db_iops"]
+  vpc               = var.vpc
+
+  major_engine_version        = var.db_major_engine_version
+  allow_major_version_upgrade = var.allow_major_version_upgrade
 }

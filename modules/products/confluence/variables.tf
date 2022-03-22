@@ -32,6 +32,11 @@ variable "db_major_engine_version" {
   type        = string
 }
 
+variable "allow_major_version_upgrade" {
+  description = "Allow major version upgrade for RDS instances"
+  type        = bool
+}
+
 variable "db_configuration" {
   description = "Confluence database spec"
   type        = map(any)

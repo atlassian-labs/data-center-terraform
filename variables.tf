@@ -91,6 +91,12 @@ variable "local_helm_charts_path" {
   }
 }
 
+variable "allow_major_version_upgrade" {
+  description = "Allow major version upgrade for RDS instances"
+  default     = false
+  type        = bool
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################

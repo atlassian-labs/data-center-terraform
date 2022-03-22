@@ -37,6 +37,8 @@ module "db" {
   major_engine_version = var.major_engine_version # DB option group
   instance_class       = var.instance_class
 
+  allow_major_version_upgrade = var.allow_major_version_upgrade
+
   allocated_storage = var.allocated_storage
   iops              = var.iops
 

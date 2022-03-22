@@ -41,6 +41,7 @@ module "bamboo" {
     db_instance_class    = var.bamboo_db_instance_class
     db_iops              = var.bamboo_db_iops
   }
+  allow_major_version_upgrade = var.allow_major_version_upgrade
 
   bamboo_configuration = {
     helm_version = var.bamboo_helm_chart_version
@@ -84,6 +85,8 @@ module "jira" {
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
 
+  allow_major_version_upgrade = var.allow_major_version_upgrade
+
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
   replica_count = var.jira_replica_count
@@ -114,7 +117,8 @@ module "confluence" {
   ingress          = module.base-infrastructure.ingress
   pvc_claim_name   = module.base-infrastructure.pvc_claim_name
 
-  db_major_engine_version = var.confluence_db_major_engine_version
+  db_major_engine_version     = var.confluence_db_major_engine_version
+  allow_major_version_upgrade = var.allow_major_version_upgrade
   db_configuration = {
     db_allocated_storage = var.confluence_db_allocated_storage
     db_instance_class    = var.confluence_db_instance_class
@@ -154,6 +158,8 @@ module "bitbucket" {
   db_allocated_storage    = var.bitbucket_db_allocated_storage
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
+
+  allow_major_version_upgrade = var.allow_major_version_upgrade
 
   replica_count = var.bitbucket_replica_count
 
