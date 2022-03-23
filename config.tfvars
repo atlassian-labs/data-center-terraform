@@ -100,10 +100,10 @@ confluence_replica_count = 1
 #confluence_license = "<LICENSE_KEY>"
 
 # Confluence instance resource configuration
-confluence_cpu      = "1"
-confluence_mem      = "1Gi"
-confluence_min_heap = "256m"
-confluence_max_heap = "512m"
+confluence_cpu      = "2"
+confluence_mem      = "2Gi"
+confluence_min_heap = "1024m"
+confluence_max_heap = "2048m"
 
 # Storage
 confluence_local_home_size = "10Gi"
@@ -119,7 +119,7 @@ confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
 
 # Enables Collaborative editing in Confluence
-#confluence_collaborative_editing_enabled = true
+confluence_collaborative_editing_enabled = true
 
 ################################################################################
 # Bitbucket Settings

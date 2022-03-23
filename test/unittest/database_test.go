@@ -52,6 +52,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planInstanceClass := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["instance_class"]
 	planAllocatedStorage := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["allocated_storage"]
 	planIops := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["iops"]
+	planApplyImmediately := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["apply_immediately"]
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
 	assert.Equal(t, inputProduct+"user", planUserName)
 	assert.Equal(t, "postgres", planEngine)
@@ -59,6 +60,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, inputInstanceClass, planInstanceClass)
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
+	assert.EqualValues(t, true, planApplyImmediately)
 }
 
 func TestDbRdsInstanceIdInvalid(t *testing.T) {
