@@ -147,6 +147,13 @@ desired_capacity = <NUMBER_OF_NODES>  # between 1 and 10
 
 !!! warning "You cannot change this value after the infrastructure is provisioned."
 
+### Logging S3 bucket name
+
+This optional property defines the name of the S3 bucket that will be used to store the logs for the terraform activities.
+
+```terraform
+logging_bucket = <LOGGING_S3_BUCKET_NAME>  # default is null
+```
 
 ## Product specific configuration
 
