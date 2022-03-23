@@ -9,7 +9,7 @@ locals {
       "10" = "10.19",
       "11" = "11.14",
       "12" = "12.9",
-      "13" = "13.5",
+      "13" = "13.5"
   }, var.major_engine_version, "11.14")
 
   family = lookup(
@@ -17,6 +17,6 @@ locals {
       "10" = "postgres10",
       "11" = "postgres11",
       "12" = "postgres12",
-      "13" = "postgres13",
+      "13" = "postgres13"
   }, var.major_engine_version, "postgres11")
 }
