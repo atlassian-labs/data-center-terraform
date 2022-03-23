@@ -32,16 +32,8 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled                                = true
     id                                     = "atlassian-policy-incomplete-mpu"
   }
-}
-
-resource "aws_s3_bucket" "log_bucket" {
-  bucket = local.log_bucket_name
-}
-
-
-resource "aws_s3_bucket_logging" "logging" {
-  bucket = var.bucket_name
-
-  target_bucket = local.log_bucket_name
-  target_prefix = "${var.bucket_name}/"
+  logging {
+    target_bucket = local.log_bucket_name
+    target_prefix = "${var.bucket_name}/"
+  }
 }
