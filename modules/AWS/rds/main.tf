@@ -38,8 +38,8 @@ module "db" {
   instance_class       = var.instance_class
 
   allow_major_version_upgrade = true
-  allocated_storage = var.allocated_storage
-  iops              = var.iops
+  allocated_storage           = var.allocated_storage
+  iops                        = var.iops
 
   name                   = var.product
   username               = local.db_master_usr

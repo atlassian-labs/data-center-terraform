@@ -35,13 +35,13 @@ resource "aws_s3_bucket" "terraform_state" {
 }
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "atl-default-s3-logging-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  bucket = local.log_bucket_name
 }
 
 
 resource "aws_s3_bucket_logging" "logging" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = var.bucket_name
 
-  target_bucket = aws_s3_bucket.log_bucket.id
+  target_bucket = local.log_bucket_name
   target_prefix = "${var.bucket_name}/"
 }
