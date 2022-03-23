@@ -75,6 +75,16 @@ variable "local_helm_charts_path" {
   }
 }
 
+variable "logging_bucket" {
+  description = "S3 bucket to store logs."
+  default     = null
+  type        = string
+  validation {
+    condition     = var.logging_bucket == null || can(regex("^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$", var.logging_bucket))
+    error_message = "Invalid logging bucket name. Valid name is up to 63 characters starting with alphabet and followed by alphanumerics. '-' is allowed as well."
+  }
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################

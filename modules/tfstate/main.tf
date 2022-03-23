@@ -6,9 +6,10 @@ provider "aws" {
 }
 
 module "tfstate-bucket" {
-  source        = "../AWS/s3"
-  required_tags = var.resource_tags
-  bucket_name   = local.bucket_name
+  source         = "../AWS/s3"
+  required_tags  = var.resource_tags
+  bucket_name    = local.bucket_name
+  logging_bucket = var.logging_bucket
 }
 
 module "tfstate-table" {
