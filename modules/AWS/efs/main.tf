@@ -78,43 +78,45 @@ resource "helm_release" "efs_csi" {
 
   version = local.efs_csi_version
 
-  values = [yamlencode({
-    replicaCount = var.csi_controller_replica_count
-    image = {
-      repository = local.efs_csi_image_repository
-    }
-    controller = {
-      serviceAccount = {
-        name = local.efs_csi_serviceAccount_name
-        annotations = {
-          "eks.amazonaws.com/role-arn" : module.efs_iam_role.iam_role_arn
+  values = [
+    yamlencode({
+      replicaCount = var.csi_controller_replica_count
+      image = {
+        repository = local.efs_csi_image_repository
+      }
+      controller = {
+        serviceAccount = {
+          name = local.efs_csi_serviceAccount_name
+          annotations = {
+            "eks.amazonaws.com/role-arn" : module.efs_iam_role.iam_role_arn
+          }
         }
       }
-    }
-    node = {
-      # This setting is required for the nodes to be able to resolve the EFS DNS name. Without this, DNS name resolution
-      # will fail and volumes will not mount. See https://github.com/kubernetes-sigs/aws-efs-csi-driver/issues/285#issuecomment-855633486
-      dnsPolicy = "None"
-      dnsConfig = {
-        nameservers = ["169.254.169.253"]
-      }
-    }
-    storageClasses = [
-      {
-        name         = "efs-sc"
-        mountOptions = ["tls"]
-        parameters = {
-          provisioningMode = "efs-ap"
-          fileSystemId     = aws_efs_file_system.this.id
-          directoryPerms   = "700"
-          gidRangeStart    = "1000"
-          gidRangeEnd      = "2000"
+      node = {
+        # This setting is required for the nodes to be able to resolve the EFS DNS name. Without this, DNS name resolution
+        # will fail and volumes will not mount. See https://github.com/kubernetes-sigs/aws-efs-csi-driver/issues/285#issuecomment-855633486
+        dnsPolicy = "None"
+        dnsConfig = {
+          nameservers = ["169.254.169.253"]
         }
-        reclaimPolicy     = "Delete"
-        volumeBindingMode = "Immediate"
       }
-    ]
-  })]
+      storageClasses = [
+        {
+          name         = "efs-sc"
+          mountOptions = ["tls"]
+          parameters = {
+            provisioningMode = "efs-ap"
+            fileSystemId     = aws_efs_file_system.this.id
+            directoryPerms   = "700"
+            gidRangeStart    = "1000"
+            gidRangeEnd      = "2000"
+          }
+          reclaimPolicy     = "Delete"
+          volumeBindingMode = "Immediate"
+        }
+      ]
+    })
+  ]
 }
 
 # This is to allow access to the EFS filesystem from worker nodes
@@ -139,6 +141,7 @@ resource "aws_security_group" "this" {
 
 resource "aws_efs_file_system" "this" {
   creation_token = var.eks.cluster_name
+  encrypted      = true
 
   tags = { Name : var.efs_name }
 }

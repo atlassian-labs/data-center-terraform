@@ -4,11 +4,13 @@ module "base-infrastructure" {
   region_name      = var.region
   environment_name = var.environment_name
 
-  instance_types   = var.instance_types
-  desired_capacity = var.desired_capacity
-  domain           = var.domain
-  namespace        = local.namespace
-  shared_home_size = local.shared_home_size
+  instance_types       = var.instance_types
+  instance_disk_size   = var.instance_disk_size
+  max_cluster_capacity = var.max_cluster_capacity
+  min_cluster_capacity = var.min_cluster_capacity
+  domain               = var.domain
+  namespace            = local.namespace
+  shared_home_size     = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
@@ -56,6 +58,9 @@ module "bamboo" {
     mem          = var.bamboo_agent_mem
     agent_count  = var.number_of_bamboo_agents
   }
+
+  local_home_size = var.bamboo_local_home_size
+
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
 
@@ -91,6 +96,9 @@ module "jira" {
     "max_heap"            = var.jira_max_heap
     "reserved_code_cache" = var.jira_reserved_code_cache
   }
+
+  local_home_size = var.jira_local_home_size
+
   version_tag = var.jira_version_tag
 }
 
@@ -123,6 +131,8 @@ module "confluence" {
     max_heap     = var.confluence_max_heap
     license      = var.confluence_license
   }
+
+  local_home_size  = var.confluence_local_home_size
   version_tag      = var.confluence_version_tag
   enable_synchrony = var.confluence_collaborative_editing_enabled
 
@@ -155,6 +165,9 @@ module "bitbucket" {
     max_heap     = var.bitbucket_max_heap
     license      = var.bitbucket_license
   }
+
+  local_home_size  = var.bitbucket_local_home_size
+  shared_home_size = var.bitbucket_shared_home_size
 
   display_name = var.bitbucket_display_name
 

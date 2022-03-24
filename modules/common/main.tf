@@ -14,8 +14,10 @@ module "eks" {
   vpc_id  = module.vpc.vpc_id
   subnets = module.vpc.private_subnets
 
-  instance_types   = var.instance_types
-  desired_capacity = var.desired_capacity
+  instance_types       = var.instance_types
+  instance_disk_size   = var.instance_disk_size
+  max_cluster_capacity = var.max_cluster_capacity
+  min_cluster_capacity = var.min_cluster_capacity
 }
 
 module "efs" {
@@ -27,8 +29,7 @@ module "efs" {
   vpc         = module.vpc
   eks         = module.eks
 
-  // Having up to two replicas for the EFS controller should be enough
-  csi_controller_replica_count = var.desired_capacity >= 2 ? 2 : 1
+  csi_controller_replica_count = 1
 }
 
 module "ingress" {

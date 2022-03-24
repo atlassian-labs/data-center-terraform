@@ -31,6 +31,10 @@ output "cluster_asg_name" {
   value = local.cluster_asg_name
 }
 
-output "cluster_size" {
-  value = var.desired_capacity
+output "max_cluster_size" {
+  value = module.eks.node_groups["appNodes"]["scaling_config"][0]["max_size"]
+}
+
+output "min_cluster_size" {
+  value = module.eks.node_groups["appNodes"]["scaling_config"][0]["min_size"]
 }

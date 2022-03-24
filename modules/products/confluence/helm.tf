@@ -40,6 +40,11 @@ resource "helm_release" "confluence" {
         localHome = {
           persistentVolumeClaim = {
             create = true
+            resources = {
+              requests = {
+                storage = var.local_home_size
+              }
+            }
           }
         }
         sharedHome = {

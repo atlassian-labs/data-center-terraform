@@ -62,6 +62,12 @@ variable "jira_configuration" {
   }
 }
 
+variable "local_home_size" {
+  description = "The storage capacity to allocate to local home"
+  type        = string
+  default     = "10Gi"
+}
+
 variable "version_tag" {
   description = "Version of Jira Software"
   type        = string

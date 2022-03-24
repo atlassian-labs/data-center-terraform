@@ -120,7 +120,7 @@ resource_tags = {
 
     To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
 
-### EKS instance type
+### EKS instance type and storage size
 
 `instance_types` defines the instance type for the EKS cluster node group.
 
@@ -130,22 +130,33 @@ instance_types = ["m5.2xlarge"]
 
 The instance type must be a valid [AWS instance type](https://aws.amazon.com/ec2/instance-types/){.external}.
 
-!!! warning "Instance type selection"
-
-    The instance type cannot be changed once the infrastructure has been provisioned.
-
-### EKS node count
-
-`desired_capacity` provides the desired number of nodes that the EKS node group should launch with initially.
-
-* The default value for the number of nodes in Kubernetes node groups is `1`.
-* Minimum is `1` and maximum is `10`.
+`instance_disk_size` defines the size of default storage attached to an instance.
 
 ```terraform
-desired_capacity = <NUMBER_OF_NODES>  # between 1 and 10
+instance_disk_size = 50
 ```
 
-!!! warning "You cannot change this value after the infrastructure is provisioned."
+!!! warning "Instance type and disk size selection"
+
+    Both properties cannot be changed once the infrastructure has been provisioned.
+
+### Cluster size
+
+EKS cluster creates an [Autoscaling Group (ASG)](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html) 
+that has defined minimum and maximum capacity. You are able to set these values in the config file:
+
+* Minimum values are `1` and maximum is `20`.
+
+```terraform
+min_cluster_capacity = 1  # between 1 and 20
+max_cluster_capacity = 5  # between 1 and 20
+```
+
+!!! tip "Cluster size and cost"
+
+    In the installation process, [cluster-autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
+    is installed in the Kubernetes cluster. The number of nodes will be automatically adjusted depending on the workload
+    resource requirements.
 
 ### Logging S3 bucket name
 

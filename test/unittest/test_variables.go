@@ -40,8 +40,9 @@ var EksWithValidValues = map[string]interface{}{
 	"subnets":      []string{"subnet1", "subnet2"},
 	"region":       "us-east-1",
 
-	"instance_types":   []string{"instance_type1", "instance_type2"},
-	"desired_capacity": 1,
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 1,
+	"max_cluster_capacity": 10,
 }
 
 var EksWithInvalidClusterName = map[string]interface{}{
@@ -50,28 +51,53 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"subnets":      []string{"subnet1", "subnet2"},
 	"region":       "us-east-1",
 
-	"instance_types":   []string{"instance_type1", "instance_type2"},
-	"desired_capacity": 1,
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 1,
+	"max_cluster_capacity": 10,
 }
 
-var EksWithDesiredCapacityOverLimit = map[string]interface{}{
+var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"cluster_name": "dummy-cluster-name",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
 	"region":       "us-east-1",
 
-	"instance_types":   []string{"instance_type1", "instance_type2"},
-	"desired_capacity": 11,
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 1,
+	"max_cluster_capacity": 21,
 }
 
-var EksDesiredCapacityUnderLimit = map[string]interface{}{
+var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"cluster_name": "dummy-cluster-name",
 	"vpc_id":       "dummy_vpc_id",
 	"subnets":      []string{"subnet1", "subnet2"},
 	"region":       "us-east-1",
 
-	"instance_types":   []string{"instance_type1", "instance_type2"},
-	"desired_capacity": 0,
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 1,
+	"max_cluster_capacity": 0,
+}
+
+var EksWithMinCapacityUnderLimit = map[string]interface{}{
+	"cluster_name": "dummy-cluster-name",
+	"vpc_id":       "dummy_vpc_id",
+	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
+
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 0,
+	"max_cluster_capacity": 10,
+}
+
+var EksWithMinCapacityOverLimit = map[string]interface{}{
+	"cluster_name": "dummy-cluster-name",
+	"vpc_id":       "dummy_vpc_id",
+	"subnets":      []string{"subnet1", "subnet2"},
+	"region":       "us-east-1",
+
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 21,
+	"max_cluster_capacity": 10,
 }
 
 var EksDefaultModuleVariable = map[string]interface{}{

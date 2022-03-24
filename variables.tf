@@ -45,13 +45,29 @@ variable "instance_types" {
   type        = list(string)
 }
 
-variable "desired_capacity" {
-  description = "Desired number of nodes that the node group should launch with initially."
+variable "instance_disk_size" {
+  description = "Size of the disk attached to the cluster instance."
+  default     = 50
+  type        = number
+}
+
+variable "min_cluster_capacity" {
+  description = "Minimum number of EC2 nodes for the EKS cluster"
   default     = 1
   type        = number
   validation {
-    condition     = var.desired_capacity > 0 && var.desired_capacity <= 10
-    error_message = "Desired cluster capacity must be between 1 and 10 (included)."
+    condition     = var.min_cluster_capacity > 0 && var.min_cluster_capacity <= 20
+    error_message = "Minimum cluster capacity must be between 1 and 20 (included)."
+  }
+}
+
+variable "max_cluster_capacity" {
+  description = "Maximum number of EC2 nodes that cluster can scale up to."
+  default     = 5
+  type        = number
+  validation {
+    condition     = var.max_cluster_capacity > 0 && var.max_cluster_capacity <= 20
+    error_message = "Maximum cluster capacity must be between 1 and 20 (included)."
   }
 }
 
@@ -141,6 +157,12 @@ variable "jira_reserved_code_cache" {
   default     = "512m"
 }
 
+variable "jira_local_home_size" {
+  description = "Storage size for Jira local home"
+  type        = string
+  default     = "10Gi"
+}
+
 variable "jira_db_major_engine_version" {
   description = "The database major version to use for Jira."
   default     = "12"
@@ -226,6 +248,12 @@ variable "confluence_max_heap" {
   description = "Maximum heap size for confluence instance"
   type        = string
   default     = "512m"
+}
+
+variable "confluence_local_home_size" {
+  description = "Storage size for Confluence local home"
+  type        = string
+  default     = "10Gi"
 }
 
 variable "confluence_db_major_engine_version" {
@@ -368,6 +396,18 @@ variable "bitbucket_max_heap" {
   description = "Maximum heap size for Bitbucket instance"
   type        = string
   default     = "512m"
+}
+
+variable "bitbucket_local_home_size" {
+  description = "Storage size for Bitbucket local home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "bitbucket_shared_home_size" {
+  description = "Storage size for Bitbucket shared home"
+  type        = string
+  default     = "10Gi"
 }
 
 variable "bitbucket_nfs_requests_cpu" {
@@ -522,6 +562,12 @@ variable "bamboo_agent_mem" {
   description = "Amount of memory for Bamboo agent instance"
   type        = string
   default     = "256m"
+}
+
+variable "bamboo_local_home_size" {
+  description = "Storage size for Bamboo local home"
+  type        = string
+  default     = "10Gi"
 }
 
 variable "bamboo_install_local_chart" {

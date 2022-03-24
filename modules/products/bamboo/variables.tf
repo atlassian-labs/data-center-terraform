@@ -47,6 +47,12 @@ variable "bamboo_configuration" {
   }
 }
 
+variable "local_home_size" {
+  description = "The storage capacity to allocate to local home"
+  type        = string
+  default     = "10Gi"
+}
+
 variable "license" {
   description = "License to use for Bamboo"
   type        = string
