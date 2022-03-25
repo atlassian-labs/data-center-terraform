@@ -64,10 +64,8 @@ output "bitbucket_database" {
   description = "Bitbucket database information"
 
   value = local.install_bitbucket && length(module.bitbucket) == 1 ? {
-    rds_instance_id        = module.bitbucket[0].rds_instance_id
-    db_name                = module.bitbucket[0].db_name
+    db_name                = module.bitbucket[0].postgres.name
     kubernetes_secret_name = module.bitbucket[0].kubernetes_rds_secret_name
-    jdbc_connection        = module.bitbucket[0].rds_jdbc_connection
   } : null
 }
 

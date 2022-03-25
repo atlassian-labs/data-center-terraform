@@ -74,6 +74,11 @@ locals {
     ]
   })
 
+  # PostgreSQL
+  postgres_name                  = "postgres"
+  postgres_helm_chart_repository = "https://charts.bitnami.com/bitnami"
+  postgres_helm_chart_version    = "11.1.9"
+
   # Bitbucket display name
   display_name = var.display_name != null ? yamlencode({
     bitbucket = {

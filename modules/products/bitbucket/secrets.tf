@@ -8,8 +8,8 @@ resource "kubernetes_secret" "rds_secret" {
   }
 
   data = {
-    username = module.database.rds_master_username
-    password = module.database.rds_master_password
+    username = "bitbucketuser"
+    password = random_string.random_password.result
   }
 }
 

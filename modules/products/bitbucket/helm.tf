@@ -32,7 +32,7 @@ resource "helm_release" "bitbucket" {
         }
       }
       database = {
-        url    = module.database.rds_jdbc_connection
+        url    = "jdbc:postgresql://${local.postgres_name}-postgresql:5432/bitbucket"
         driver = "org.postgresql.Driver"
         credentials = {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
