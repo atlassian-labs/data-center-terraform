@@ -40,4 +40,10 @@ locals {
       tag = var.version_tag
     }
   }) : yamlencode({})
+
+  ignore_index_check = var.db_snapshot_identifier != null ? yamlencode({
+    jira = {
+      additionalJvmArgs = ["-Dcom.atlassian.jira.status.index.check=false"]
+    }
+  }) : yamlencode({})
 }

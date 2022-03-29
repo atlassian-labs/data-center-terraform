@@ -24,4 +24,5 @@ module "database" {
   iops                 = var.db_iops
   vpc                  = var.vpc
   major_engine_version = var.db_major_engine_version
+  snapshot_identifier  = var.db_snapshot_identifier
 }

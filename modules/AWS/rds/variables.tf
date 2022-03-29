@@ -45,3 +45,9 @@ variable "major_engine_version" {
     error_message = "Invalid major engine version. Valid ranges are from 10 to 13 (integer)."
   }
 }
+
+variable "snapshot_identifier" {
+  description = "Snapshot identifier for RDS."
+  type        = string
+  default     = null
+}

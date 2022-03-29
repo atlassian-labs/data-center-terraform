@@ -177,6 +177,12 @@ variable "jira_db_iops" {
   type        = number
 }
 
+variable "jira_db_snapshot_identifier" {
+  description = "The identifier for the DB snapshot to restore from."
+  default     = null
+  type        = string
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################

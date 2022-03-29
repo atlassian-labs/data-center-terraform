@@ -83,6 +83,7 @@ module "jira" {
   db_allocated_storage    = var.jira_db_allocated_storage
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
+  db_snapshot_identifier  = var.jira_db_snapshot_identifier
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
