@@ -89,3 +89,13 @@ jira_db_iops = 1000
 
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
+
+### Database Snapshot Identifier
+
+`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no DB snapshot is used.
+
+```terraform
+jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+```
+
+!!! info "The DB snapshot must be in the same AWS Region and AWS account as the DB instance. If you are restoring from a shared DB snapshot, the DB instance must have backup retention enabled."
