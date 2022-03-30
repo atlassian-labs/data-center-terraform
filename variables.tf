@@ -187,6 +187,10 @@ variable "jira_db_master_pwd" {
   description = "Master password for the Jira RDS instance."
   type        = string
   default     = null
+  validation {
+    condition     = var.jira_db_master_pwd == null || can(regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", var.jira_db_master_pwd))
+    error_message = "Master password must be set. It must be at least 8 characters long and contain at least one number and one letter."
+  }
 }
 
 ################################################################################
