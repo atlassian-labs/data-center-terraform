@@ -183,6 +183,12 @@ variable "jira_db_snapshot_identifier" {
   type        = string
 }
 
+variable "jira_db_master_pwd" {
+  description = "Master password for the Jira RDS instance."
+  type        = string
+  default     = null
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################

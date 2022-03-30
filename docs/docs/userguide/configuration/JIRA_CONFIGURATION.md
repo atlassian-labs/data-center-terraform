@@ -99,3 +99,11 @@ jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
 !!! info "The DB snapshot must be in the same AWS Region and AWS account as the DB instance. If you are restoring from a shared DB snapshot, the DB instance must have backup retention enabled."
+
+### Database Master Password
+
+'jira_db_master_password' sets the password for the RDS master user. If you do not specify a value, a random password will be generated.
+
+```terraform
+jira_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
+```
