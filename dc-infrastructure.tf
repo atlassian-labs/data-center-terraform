@@ -84,6 +84,7 @@ module "jira" {
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
   db_snapshot_identifier  = var.jira_db_snapshot_identifier
+  db_master_pwd           = var.jira_db_master_pwd
 
   pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
