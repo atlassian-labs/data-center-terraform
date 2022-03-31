@@ -165,7 +165,7 @@ create_tfstate_resources() {
   then
     log "S3 bucket '${S3_BUCKET}' already exists."
   else
-    # Check if the logging bucket is existed otherwise stop the installation
+    # Check if the logging bucket exists otherwise stop the installation
     LOGGING_BUCKET=$(get_variable 'logging_bucket' "${CONFIG_ABS_PATH}")
     if [ -n "${LOGGING_BUCKET}" ]; then
       set +e
