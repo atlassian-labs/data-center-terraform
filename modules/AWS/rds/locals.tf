@@ -1,5 +1,5 @@
 locals {
-  db_master_usr      = "alt${var.product}"
+  db_master_usr      = "atl${var.product}"
   db_master_pwd      = var.db_master_pwd == null ? random_password.password.result : var.db_master_pwd
   db_jdbc_connection = "jdbc:postgresql://${module.db.db_instance_endpoint}/${module.db.db_instance_name}"
 

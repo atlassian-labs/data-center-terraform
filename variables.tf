@@ -188,8 +188,8 @@ variable "jira_db_master_pwd" {
   type        = string
   default     = null
   validation {
-    condition     = var.jira_db_master_pwd == null || can(regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", var.jira_db_master_pwd))
-    error_message = "Master password must be set. It must be at least 8 characters long and contain at least one number and one letter."
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.jira_db_master_pwd)) || var.jira_db_master_pwd == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
   }
 }
 
