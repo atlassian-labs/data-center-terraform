@@ -160,11 +160,15 @@ max_cluster_capacity = 5  # between 1 and 20
 
 ### Logging S3 bucket name
 
-This optional property defines the name of the S3 bucket that will be used to store the logs for the terraform activities.
+If you wish to log activities of terraform backend create S3 bucket and provide the name of the S3 bucket as follows. This will allow the terraform script to link your terraform backend to logging bucket.
 
 ```terraform
 logging_bucket = <LOGGING_S3_BUCKET_NAME>  # default is null
 ```
+
+!!! warning "S3 Logging bucket Creation"
+
+    Providing `logging_bucket` will not guarantee the creation of the S3 Bucket. You will need to create one as part of the prerequisites.
 
 ## Product specific configuration
 
