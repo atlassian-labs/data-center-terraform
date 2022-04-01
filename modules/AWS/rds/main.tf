@@ -42,7 +42,7 @@ module "db" {
 
   name     = var.product
   username = local.db_master_usr
-  password = local.db_master_pwd
+  password = local.db_master_password
   port     = 5432
 
   subnet_ids             = var.vpc.private_subnets

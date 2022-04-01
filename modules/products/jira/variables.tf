@@ -89,7 +89,7 @@ variable "db_snapshot_identifier" {
   default     = null
 }
 
-variable "db_master_pwd" {
+variable "db_master_password" {
   description = "Master password for the RDS instance."
   type        = string
   default     = null

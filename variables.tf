@@ -183,12 +183,12 @@ variable "jira_db_snapshot_identifier" {
   type        = string
 }
 
-variable "jira_db_master_pwd" {
+variable "jira_db_master_password" {
   description = "Master password for the Jira RDS instance."
   type        = string
   default     = null
   validation {
-    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.jira_db_master_pwd)) || var.jira_db_master_pwd == null
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.jira_db_master_password)) || var.jira_db_master_password == null
     error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
   }
 }
