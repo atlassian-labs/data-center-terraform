@@ -292,6 +292,22 @@ variable "confluence_collaborative_editing_enabled" {
   default     = true
 }
 
+variable "confluence_db_snapshot_identifier" {
+  description = "The identifier for the Confluence DB snapshot to restore from."
+  default     = null
+  type        = string
+}
+
+variable "confluence_db_master_password" {
+  description = "Master password for the Confluence RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.confluence_db_master_password)) || var.confluence_db_master_password == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
