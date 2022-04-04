@@ -124,6 +124,24 @@ bitbucket_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+### Database Snapshot Identifier
+
+`bitbucket_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no DB snapshot is used.
+
+```terraform
+bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+```
+
+!!! info "The DB snapshot must be in the same AWS Region and AWS account as the DB instance. If you are restoring from a shared DB snapshot, the DB instance must have backup retention enabled."
+
+### Database Master Password
+
+'bitbucket_db_master_password' sets the password for the RDS master user. If you do not specify a value, a random password will be generated.
+
+```terraform
+bitbucket_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
+```
+
 ### NFS resource configuration
 
 The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
