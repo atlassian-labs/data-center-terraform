@@ -464,6 +464,22 @@ variable "bitbucket_elasticsearch_replicas" {
   default     = 2
 }
 
+variable "bitbucket_db_snapshot_identifier" {
+  description = "The identifier for the Bitbucket DB snapshot to restore from."
+  default     = null
+  type        = string
+}
+
+variable "bitbucket_db_master_password" {
+  description = "Master password for the Bitbucket RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.bitbucket_db_master_password)) || var.bitbucket_db_master_password == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################

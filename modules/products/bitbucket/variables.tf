@@ -154,3 +154,15 @@ variable "display_name" {
     error_message = "Bitbucket display name must be a non-empty value less than 255 characters."
   }
 }
+
+variable "db_snapshot_identifier" {
+  description = "Snapshot identifier for RDS. If not provided, no snapshot will be taken."
+  type        = string
+  default     = null
+}
+
+variable "db_master_password" {
+  description = "Master password for the RDS instance. If not provided, a random password will be generated."
+  type        = string
+  default     = null
+}
