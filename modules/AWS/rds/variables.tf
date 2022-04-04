@@ -47,7 +47,7 @@ variable "major_engine_version" {
 }
 
 variable "snapshot_identifier" {
-  description = "Snapshot identifier for RDS."
+  description = "Snapshot identifier for RDS. If specified, the DB instance is created from the snapshot."
   type        = string
   default     = null
 }

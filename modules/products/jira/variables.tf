@@ -84,7 +84,7 @@ variable "pvc_claim_name" {
 }
 
 variable "db_snapshot_identifier" {
-  description = "Snapshot identifier for RDS."
+  description = "Snapshot identifier for RDS. The snapshot should be in the same AWS Region as the DB instance."
   type        = string
   default     = null
 }
