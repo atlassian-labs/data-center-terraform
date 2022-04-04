@@ -160,6 +160,7 @@ const inputRdsInstanceId = "dummy-rds-instance-id"
 const inputInstanceClass = "dummy.instance.class"
 const inputAllocatedStorage = 100
 const inputIops = 1000
+const dbVersion = 13
 
 const invalidInputRdsInstanceId = "1-"
 
