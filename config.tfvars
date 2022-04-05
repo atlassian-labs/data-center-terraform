@@ -79,7 +79,7 @@ jira_db_iops                 = 1000
 
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier. This will
 # restore the database from the snapshot and will not create a new database.
-#jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER"
+#jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
 
 # (Optional) The master password for the database instance. If not provided, a random password will be generated.
 #jira_db_master_password     = "<DB_MASTER_PASSWORD>!"
