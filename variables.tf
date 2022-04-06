@@ -188,7 +188,7 @@ variable "jira_rds_master_username" {
   type        = string
   default     = null
   validation {
-    condition     = can(regex("^[a_zA-Z_]\\w.{5,30}$", var.jira_rds_master_username)) || var.jira_rds_master_username == null
+    condition     = can(regex("^[a-zA-Z_]([a-zA-Z0-9_]).{5,30}$", var.jira_rds_master_username)) || var.jira_rds_master_username == null
     error_message = "Master username must be set. It must be between 6 and 31 characters long and start with a letter/underscore and contain combination of numbers, letters, and underscore."
   }
 }

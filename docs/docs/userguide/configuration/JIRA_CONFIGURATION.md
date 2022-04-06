@@ -92,20 +92,20 @@ You may want to adjust these values according to your needs. For more informatio
 
 ### Database Snapshot Identifier
 
-`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no DB snapshot is used.
+`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
 jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
-!!! info "The DB snapshot must be in the same AWS Region and AWS account as the DB instance. If you are restoring from a shared DB snapshot, the DB instance must have backup retention enabled."
+!!! info "The AWS RDS snapshot must be in the same Region and account as the RDS instance. If you are restoring from a shared RDS snapshot, the RDS instance must have backup retention enabled."
 
 ### Database Master Username
 
 'jira_rds_master_username' sets the username for the RDS master user. If you do not specify a value, username is "postgres".
 
 ```terraform
-jira_rds_master_username = "<DB_MASTER_username>"   # e.g. "postgres"
+jira_rds_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
 ```
 
 ### Database Master Password
