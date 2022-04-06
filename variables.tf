@@ -183,12 +183,22 @@ variable "jira_db_snapshot_identifier" {
   type        = string
 }
 
-variable "jira_db_master_password" {
+variable "jira_rds_master_username" {
+  description = "Master username for the Jira RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^[a_zA-Z_]\\w.{5,30}$", var.jira_rds_master_username)) || var.jira_rds_master_username == null
+    error_message = "Master username must be set. It must be between 6 and 31 characters long and start with a letter/underscore and contain combination of numbers, letters, and underscore."
+  }
+}
+
+variable "jira_rds_master_password" {
   description = "Master password for the Jira RDS instance."
   type        = string
   default     = null
   validation {
-    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.jira_db_master_password)) || var.jira_db_master_password == null
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$%^&*(){}?<>,.]).{8,}$", var.jira_rds_master_password)) || var.jira_rds_master_password == null
     error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
   }
 }

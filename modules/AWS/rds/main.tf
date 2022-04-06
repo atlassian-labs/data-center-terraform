@@ -41,7 +41,7 @@ module "db" {
   iops              = var.iops
 
   name     = var.product
-  username = local.db_master_usr
+  username = local.db_master_username
   password = local.db_master_password
   port     = 5432
 
