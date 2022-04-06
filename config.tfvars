@@ -77,15 +77,17 @@ jira_db_instance_class       = "db.t3.micro"
 jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
 
-# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier. This will
-# restore the database from the snapshot and will not create a new database.
+# Dataset restore configuration
+# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
+# This will restore the database from the snapshot and will not create a new database.
+# The snapshot should be in the same AWS region as the environment and be accessible with the your AWS account.
 #jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
 
-# (Optional) The master username for the database instance. If you provided, the username is "postgres".
-#jira_rds_master_username     = "<RDS_MASTER_USERNAME>"
-
-# (Optional) The master password for the database instance. If not provided, a random password will be generated.
-#jira_rds_master_password     = "<RDS_MASTER_PASSWORD>"
+# (Optional) The master user credential for the database instance.
+# If username not provided, the username is "postgres".
+# If password not provided, a random password will be generated.
+#jira_db_master_username     = "<DB_MASTER_USERNAME>"
+#jira_db_master_password     = "<DB_MASTER_PASSWORD>"
 
 ################################################################################
 # Confluence Settings
