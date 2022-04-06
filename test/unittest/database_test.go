@@ -57,7 +57,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planIops := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["iops"]
 	planApplyImmediately := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["apply_immediately"]
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
-	assert.Equal(t, "atl"+inputProduct, planUserName)
+	assert.Equal(t, "postgres", planUserName)
 	assert.Equal(t, "postgres", planEngine)
 	assert.Equal(t, inputProduct, planDbName)
 	assert.Equal(t, inputInstanceClass, planInstanceClass)

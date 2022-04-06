@@ -90,15 +90,32 @@ jira_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+## Dataset restore
+To restore the dataset into the newly created instance, uncomment the following lines and provide all necessary parameters. 
+
 ### Database Snapshot Identifier
 
-`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no DB snapshot is used.
+`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
 jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
-!!! info "The DB snapshot must be in the same AWS Region and AWS account as the DB instance. If you are restoring from a shared DB snapshot, the DB instance must have backup retention enabled."
+!!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance."
+    
+    You also need to provide the master user credentials (`jira_db_master_username` and `jira_db_master_password`) that match the snapshot.
+
+!!! tip "Optimise the restore performance."
+    
+    To obtain the best performance, configure Jira RDS that match the snapshot including `jira_db_instance_class` and `jira_db_allocated_storage`.
+
+### Database Master Username
+
+'jira_db_master_username' sets the username for the RDS master user. If you do not specify a value, username is "postgres".
+
+```terraform
+jira_db_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
+```
 
 ### Database Master Password
 

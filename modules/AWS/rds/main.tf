@@ -41,7 +41,7 @@ module "db" {
   iops              = var.iops
 
   name     = var.product
-  username = local.db_master_usr
+  username = local.db_master_username
   password = local.db_master_password
   port     = 5432
 
@@ -53,7 +53,7 @@ module "db" {
 
   # Snapshot settings
   snapshot_identifier         = var.snapshot_identifier
-  allow_major_version_upgrade = true
+  allow_major_version_upgrade = var.snapshot_identifier != null
 
   backup_retention_period = 0
 
@@ -64,5 +64,5 @@ module "db" {
 resource "random_password" "password" {
   length           = 12
   special          = true
-  override_special = "!@#$%^&*(){}?<>,."
+  override_special = "!#$%^&*(){}?<>,."
 }
