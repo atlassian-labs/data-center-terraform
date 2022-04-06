@@ -81,8 +81,11 @@ jira_db_iops                 = 1000
 # restore the database from the snapshot and will not create a new database.
 #jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER"
 
+# (Optional) The master username for the database instance. If you provided, the username is "postgres".
+#jira_rds_master_username     = "<RDS_MASTER_USERNAME>!"
+
 # (Optional) The master password for the database instance. If not provided, a random password will be generated.
-#jira_db_master_password     = "<DB_MASTER_PASSWORD>!"
+#jira_rds_master_password     = "<RDS_MASTER_PASSWORD>!"
 
 ################################################################################
 # Confluence Settings
