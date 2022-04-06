@@ -178,7 +178,7 @@ variable "jira_db_iops" {
 }
 
 variable "jira_db_snapshot_identifier" {
-  description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS Region as the DB instance."
+  description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
   type        = string
 }
