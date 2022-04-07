@@ -41,6 +41,9 @@ locals {
     }
   }) : yamlencode({})
 
+  # After restoring the snapshot of the Jira database, a re-index is required. To avoid interruption in the Jira
+  # service we should exclude indexing status from the health check process.
+  # For more info see: https://jira.atlassian.com/browse/JRASERVER-66970
   ignore_index_check = var.db_snapshot_identifier != null ? yamlencode({
     jira = {
       additionalJvmArgs = ["-Dcom.atlassian.jira.status.index.check=false"]
