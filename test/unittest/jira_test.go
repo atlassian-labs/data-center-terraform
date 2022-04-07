@@ -49,7 +49,7 @@ var JiraCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count":           1,
+	"replica_count": 1,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",
@@ -58,4 +58,7 @@ var JiraCorrectVariables = map[string]interface{}{
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
 	},
+	"db_master_password":     "dummy_password",
+	"db_master_username":     "dummy_username",
+	"db_snapshot_identifier": "dummy-rds-snapshot-id",
 }
