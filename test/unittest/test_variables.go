@@ -156,6 +156,7 @@ var inputSubnets = []interface{}{"subnet1", "subnet2"}
 
 const inputSourceSgId = "dummy-source-sg"
 const inputProduct = "bamboo"
+const inputRdsInstanceName = "dummy-rds-instance-name"
 const inputRdsInstanceId = "dummy-rds-instance-id"
 const inputRdsSnapshotId = "dummy-rds-snapshot-id"
 const inputInstanceClass = "dummy.instance.class"
@@ -167,6 +168,7 @@ const invalidInputRdsInstanceId = "1-"
 var DbValidVariable = map[string]interface{}{
 	"product":           inputProduct,
 	"rds_instance_id":   inputRdsInstanceId,
+	"rds_instance_name": inputRdsInstanceName,
 	"instance_class":    inputInstanceClass,
 	"allocated_storage": inputAllocatedStorage,
 	"iops":              inputIops,
