@@ -157,6 +157,7 @@ var inputSubnets = []interface{}{"subnet1", "subnet2"}
 const inputSourceSgId = "dummy-source-sg"
 const inputProduct = "bamboo"
 const inputRdsInstanceId = "dummy-rds-instance-id"
+const inputRdsSnapshotId = "dummy-rds-snapshot-id"
 const inputInstanceClass = "dummy.instance.class"
 const inputAllocatedStorage = 100
 const inputIops = 1000
@@ -181,6 +182,7 @@ var DbValidVariable = map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
 	},
+	"snapshot_identifier": inputRdsSnapshotId,
 }
 
 var DbInvalidVariable = map[string]interface{}{
