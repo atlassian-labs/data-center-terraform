@@ -99,6 +99,9 @@ cleanup_terraform() {
       "${ROOT_PATH}/modules/AWS/rds"
       "${ROOT_PATH}/modules/AWS/vpc"
       "${ROOT_PATH}/modules/bamboo"
+      "${ROOT_PATH}/modules/jira"
+      "${ROOT_PATH}/modules/confluence"
+      "${ROOT_PATH}/modules/bitbucket"
       "${ROOT_PATH}/modules/common"
       "${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
     )
