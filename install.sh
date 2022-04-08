@@ -154,6 +154,7 @@ create_tfstate_resources() {
   if ! test -d "${ROOT_PATH}/logs" ; then
     mkdir "${ROOT_PATH}/logs"
   fi
+
   touch "${LOG_FILE}"
   local STATE_FOLDER="${ROOT_PATH}/modules/tfstate"
   set +e
@@ -164,6 +165,18 @@ create_tfstate_resources() {
   then
     log "S3 bucket '${S3_BUCKET}' already exists."
   else
+    # Check if the logging bucket exists otherwise stop the installation
+    LOGGING_BUCKET=$(get_variable 'logging_bucket' "${CONFIG_ABS_PATH}")
+    if [ -n "${LOGGING_BUCKET}" ]; then
+      set +e
+      aws s3api head-bucket --bucket "${LOGGING_BUCKET}" 2>/dev/null
+      LOGGING_BUCKET_EXISTS=$?
+      set -e
+      if [ "${LOGGING_BUCKET_EXISTS}" -ne 0 ]; then
+        log "The logging bucket '${LOGGING_BUCKET}' is not existed. Please create the bucket first." "ERROR"
+        exit 1
+      fi
+    fi
     # create s3 bucket to be used for keep state of the terraform project
     log "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
     if ! test -d "${STATE_FOLDER}/.terraform" ; then
