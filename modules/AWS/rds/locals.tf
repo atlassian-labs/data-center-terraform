@@ -1,5 +1,5 @@
 locals {
-  product_db_name   = var.product_db_name == null ? var.product : var.product_db_name
+  product_db_name   = var.product
   rds_instance_name = var.snapshot_identifier == null ? var.product : null
 
   db_master_username = var.db_master_username == null ? "postgres" : var.db_master_username

@@ -11,12 +11,6 @@ variable "rds_instance_id" {
   }
 }
 
-variable "product_db_name" {
-  description = "Name of the product database."
-  type        = string
-  default     = null
-}
-
 variable "instance_class" {
   description = "Instance class of the RDS instance."
   type        = string
