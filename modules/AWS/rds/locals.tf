@@ -1,6 +1,8 @@
 locals {
-  db_master_usr      = "${var.product}user"
-  db_jdbc_connection = "jdbc:postgresql://${module.db.db_instance_endpoint}/${module.db.db_instance_name}"
+  product_db_name    = var.product_db_name == null ? var.product : var.product_db_name
+  db_master_username = var.db_master_username == null ? "postgres" : var.db_master_username
+  db_master_password = var.db_master_password == null ? random_password.password.result : var.db_master_password
+  db_jdbc_connection = "jdbc:postgresql://${module.db.db_instance_endpoint}/${local.product_db_name}"
 
   # RDS major version is mapped to the lastest minor version for more details.
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.version13

@@ -40,11 +40,10 @@ module "db" {
   allocated_storage = var.allocated_storage
   iops              = var.iops
 
-  name                   = var.product
-  username               = local.db_master_usr
-  create_random_password = true
-  random_password_length = 12
-  port                   = 5432
+  name     = var.rds_instance_name
+  username = local.db_master_username
+  password = local.db_master_password
+  port     = 5432
 
   subnet_ids             = var.vpc.private_subnets
   vpc_security_group_ids = [module.security_group.security_group_id]
@@ -52,8 +51,18 @@ module "db" {
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
 
+  # Snapshot settings
+  snapshot_identifier         = var.snapshot_identifier
+  allow_major_version_upgrade = var.snapshot_identifier != null
+
   backup_retention_period = 0
 
   skip_final_snapshot = true
   apply_immediately   = true
+}
+
+resource "random_password" "password" {
+  length           = 12
+  special          = true
+  override_special = "!#$%^&*(){}?<>,."
 }
