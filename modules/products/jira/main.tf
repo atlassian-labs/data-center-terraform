@@ -17,7 +17,7 @@ module "database" {
   source = "../../AWS/rds"
 
   product              = local.product_name
-  rds_instance_id      = local.rds_instance_name
+  rds_instance_id      = local.rds_instance_id
   allocated_storage    = var.db_allocated_storage
   eks                  = var.eks
   instance_class       = var.db_instance_class
