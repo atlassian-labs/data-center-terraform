@@ -2,11 +2,11 @@ variable "product" {
   description = "Name of the product that this database will be created for."
 }
 
-variable "rds_instance_id" {
+variable "rds_instance_identifier" {
   description = "The DB instance identifier. This is the unique value for the DB instance."
   type        = string
   validation {
-    condition     = can(regex("^[a-z][a-z0-9\\-]+[a-z0-9]$", var.rds_instance_id))
+    condition     = can(regex("^[a-z][a-z0-9\\-]+[a-z0-9]$", var.rds_instance_identifier))
     error_message = "Invalid RDS instance name."
   }
 }
