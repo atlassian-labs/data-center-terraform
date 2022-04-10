@@ -1,6 +1,9 @@
 package unittest
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -46,6 +49,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.module.db_instance.aws_db_instance.this[0]")
 	planDbIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["identifier"]
+	planDbSnapshotIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
 	planUserName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["username"]
 	planEngine := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine"]
 	planDbName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["name"]
@@ -54,13 +58,30 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planIops := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["iops"]
 	planApplyImmediately := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["apply_immediately"]
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
+	assert.Equal(t, inputRdsSnapshotId, planDbSnapshotIdentifier)
 	assert.Equal(t, "postgres", planUserName)
 	assert.Equal(t, "postgres", planEngine)
-	assert.Equal(t, inputProduct, planDbName)
+	assert.Equal(t, nil, planDbName) // This should be nil because RDS Snapshot identifier is provided
 	assert.Equal(t, inputInstanceClass, planInstanceClass)
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 	assert.EqualValues(t, true, planApplyImmediately)
+}
+
+func TestDbPostgresVersionMap(t *testing.T) {
+	t.Parallel()
+
+	DbValidVariable["major_engine_version"] = dbVersion
+
+	DbValidVariableWithDBVersion := DbValidVariable
+
+	tfOptions := GenerateTFOptions(DbValidVariableWithDBVersion, t, databaseModule)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	planDbVersion := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine_version"]
+
+	assert.True(t, strings.Contains(fmt.Sprintf("%v", planDbVersion), strconv.Itoa(dbVersion)))
+
 }
 
 func TestDbRdsInstanceIdInvalid(t *testing.T) {

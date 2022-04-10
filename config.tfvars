@@ -254,8 +254,7 @@ bamboo_local_home_size = "10Gi"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.
-# Feel free to uncomment the following line and supply the number of remote agents.
-#number_of_bamboo_agents = 5
+number_of_bamboo_agents = 5
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
