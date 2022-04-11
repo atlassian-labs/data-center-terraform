@@ -104,10 +104,7 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 func TestDbWithMasterPassword(t *testing.T) {
 	t.Parallel()
 
-	DbValidVariable["db_master_password"] = masterPwd
-	DbValidVariableWithDBMasterPassword := DbValidVariable
-
-	tfOptions := GenerateTFOptions(DbValidVariableWithDBMasterPassword, t, databaseModule)
+	tfOptions := GenerateTFOptions(DbVariableWithDBMasterPassword, t, databaseModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 	planDbMasterPwd := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["password"]
@@ -117,12 +114,9 @@ func TestDbWithMasterPassword(t *testing.T) {
 func TestDbWithInvalidMasterPassword(t *testing.T) {
 	t.Parallel()
 
-	DbValidVariable["db_master_password"] = "123@"
-	DbValidVariableWithInvalidDBMasterPassword := DbValidVariable
-
-	tfOptions := GenerateTFOptions(DbValidVariableWithInvalidDBMasterPassword, t, databaseModule)
+	tfOptions := GenerateTFOptions(DbVariableWithInvalidDBMasterPassword, t, databaseModule)
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Master password must be set. ")
+	assert.Contains(t, err.Error(), "Master password must be at least 8 characters long and can include any")
 }

@@ -184,6 +184,28 @@ var DbValidVariable = map[string]interface{}{
 	"snapshot_identifier": inputRdsSnapshotId,
 }
 
+var DbVariableWithDBMasterPassword = map[string]interface{}{
+	"product":           inputProduct,
+	"rds_instance_id":   inputRdsInstanceId,
+	"instance_class":    inputInstanceClass,
+	"allocated_storage": inputAllocatedStorage,
+	"iops":              inputIops,
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": inputSourceSgId,
+	},
+	"vpc": map[string]interface{}{
+		"vpc_id":          inputVpcId,
+		"private_subnets": inputSubnets,
+	},
+	"snapshot_identifier": inputRdsSnapshotId,
+	"db_master_password":  masterPwd,
+}
+
 var DbInvalidVariable = map[string]interface{}{
 	"product":           inputProduct,
 	"rds_instance_id":   invalidInputRdsInstanceId,
@@ -201,6 +223,28 @@ var DbInvalidVariable = map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
 	},
+}
+
+var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
+	"product":           inputProduct,
+	"rds_instance_id":   inputRdsInstanceId,
+	"instance_class":    inputInstanceClass,
+	"allocated_storage": inputAllocatedStorage,
+	"iops":              inputIops,
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": inputSourceSgId,
+	},
+	"vpc": map[string]interface{}{
+		"vpc_id":          inputVpcId,
+		"private_subnets": inputSubnets,
+	},
+	"snapshot_identifier": inputRdsSnapshotId,
+	"db_master_password":  "123@",
 }
 
 // Bitbucket
