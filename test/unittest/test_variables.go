@@ -160,7 +160,7 @@ const inputInstanceClass = "dummy.instance.class"
 const inputAllocatedStorage = 100
 const inputIops = 1000
 const dbVersion = 13
-
+const masterPwd = "dummyPassword!"
 const invalidInputRdsInstanceId = "1-"
 
 var DbValidVariable = map[string]interface{}{

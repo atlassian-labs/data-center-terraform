@@ -1,5 +1,6 @@
 variable "product" {
   description = "Name of the product that this database will be created for."
+  type        = string
 }
 
 variable "rds_instance_id" {
