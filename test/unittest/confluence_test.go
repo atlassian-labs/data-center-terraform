@@ -26,6 +26,7 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, dbModuleKey)
 	dbModule := plan.ResourcePlannedValuesMap[dbModuleKey]
 	assert.Equal(t, "dummy-snapshot-id", dbModule.AttributeValues["snapshot_identifier"])
+	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
 	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
 
 }
@@ -105,6 +106,7 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_identifier":   "dummy-snapshot-id",
+	"db_master_username":       "dummyUsername",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",
 }
