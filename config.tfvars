@@ -130,6 +130,14 @@ confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
 
+# DB restore
+# If you choose to restore database from an RDS snapshot, please provide the snapshot name, as well as master username and password of the snapshot.
+# Please also provide build number stored within the snapshot and Confluence license, so that Confluence can be fully setup prior to start.
+#confluence_db_snapshot_identifier = "<DB_SNAPSHOT_IDENTIFIER>"
+#confluence_db_snapshot_build_number = "<BUILD_NUMBER>"
+#confluence_db_master_username = "<MASTER_USERNAME>"
+#confluence_db_master_password = "<MASTER_PASSWORD>"
+
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
 

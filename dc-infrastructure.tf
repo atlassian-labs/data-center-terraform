@@ -118,13 +118,16 @@ module "confluence" {
   pvc_claim_name   = module.base-infrastructure.pvc_claim_name
 
   db_major_engine_version = var.confluence_db_major_engine_version
-  db_snapshot_identifier  = var.confluence_db_snapshot_identifier
-  db_master_password      = var.confluence_db_master_password
   db_configuration = {
     db_allocated_storage = var.confluence_db_allocated_storage
     db_instance_class    = var.confluence_db_instance_class
     db_iops              = var.confluence_db_iops
   }
+
+  db_snapshot_identifier   = var.confluence_db_snapshot_identifier
+  db_snapshot_build_number = var.confluence_db_snapshot_build_number
+  db_master_username       = var.confluence_db_master_username
+  db_master_password       = var.confluence_db_master_password
 
   replica_count = var.confluence_replica_count
 
