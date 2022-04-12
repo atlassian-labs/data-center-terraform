@@ -259,7 +259,7 @@ This guide contains general tips on how to investigate an application deployment
     If you need to copy the log files to a local machine, you can use the following command:
 
     ```shell
-    kubectl cp atlassian/<pod-name>:/var/atlassian/<application>/logs/<log_file.log> <local-path>
+    kubectl cp atlassian/<pod-name>:/var/atlassian/<application>/logs/<log_files> <local-path>
     ```
 
    
