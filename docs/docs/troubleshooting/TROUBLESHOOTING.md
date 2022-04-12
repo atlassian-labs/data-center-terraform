@@ -216,3 +216,50 @@ This guide contains general tips on how to investigate an application deployment
     aws --version
     ```
 
+
+??? tip "How to `ssh` to application nodes?"
+
+    Sometimes you need to ssh to the application nodes. This can be done by running:
+
+    ```shell
+    kubectl exec -it <pod-name> -n atlassian -- /bin/bash
+    ```
+
+    where `<pod-name>` is the name of the application pod you want to ssh such as `bitbucket-0` or `jira-1`. To get the pod names you can run:
+
+    ```shell
+    kubectl get pods -n atlassian
+    ```
+
+??? tip "How to access to the application log files?"
+
+    A simple way to access to the application log content is running the following command:
+
+    ```shell
+    kubectl logs <pod-name> -n atlassian
+    ```
+
+    where `<pod-name>` is the name of the application pod you want to see the log such as `bitbucket-0` or `jira-1`. To get the pod names you can run:
+
+    ```shell
+    kubectl get pods -n atlassian
+    ```
+    
+    However, another approach to see the full log files produced by the application would be to `ssh` to the application pod and access directly the log folder.
+
+    ```shell  
+    kubectl exec -it <pod-name> -n atlassian -- /bin/bash
+    cd /var/atlassian/<application>/logs
+    ```
+
+    where `<application>` is the name of the application such as `confluence`, `bamboo`, `bitbucket`, or `jira`.
+
+    Note that for some applications log foler is `/var/atlassian/<application>/log` and for others is `/var/atlassian/<application>/logs`.
+
+    If you need to copy the log files to a local machine, you can use the following command:
+
+    ```shell
+    kubectl cp atlassian/<pod-name>:/var/atlassian/<application>/logs/<log_file.log> <local-path>
+    ```
+
+   
