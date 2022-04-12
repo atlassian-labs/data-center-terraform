@@ -1,8 +1,8 @@
 resource "aws_ebs_volume" "shared_home" {
   availability_zone = var.availability_zone
 
-  snapshot_id = var.shared_home_snapshot_id ? var.shared_home_snapshot_id : null
-  size        = var.capacity
+  snapshot_id = var.shared_home_snapshot_id != null ? var.shared_home_snapshot_id : null
+  size        = tonumber(regex("\\d+", var.capacity))
   type        = "gp2"
 
   tags = {
@@ -18,7 +18,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
   spec {
     access_modes = ["ReadWriteOnce"]
     capacity = {
-      storage = "${var.capacity}G"
+      storage = var.capacity
     }
     storage_class_name = "gp2"
     persistent_volume_source {
@@ -38,7 +38,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "${var.capacity}G"
+        storage = var.capacity
       }
     }
     storage_class_name = "gp2"
