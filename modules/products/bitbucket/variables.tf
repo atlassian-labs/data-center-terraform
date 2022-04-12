@@ -154,3 +154,13 @@ variable "display_name" {
     error_message = "Bitbucket display name must be a non-empty value less than 255 characters."
   }
 }
+
+variable "shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.shared_home_snapshot_id == null || can(regex("^.{1,255}$", var.shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}

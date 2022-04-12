@@ -483,6 +483,15 @@ variable "bitbucket_elasticsearch_replicas" {
   type        = number
   default     = 2
 }
+variable "bitbucket_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^.{1,255}$", var.bitbucket_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
 
 ################################################################################
 # Bamboo Variables

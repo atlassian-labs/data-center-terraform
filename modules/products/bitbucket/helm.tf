@@ -6,7 +6,7 @@ resource "helm_release" "bitbucket" {
   repository = local.helm_chart_repository
   chart      = local.product_name
   version    = local.bitbucket_helm_chart_version
-  timeout    = 10 * 60 # autoscaler potentially needs to scale up the cluster
+  timeout    = 120 * 60 # TODO - convert this to variable with default of 10 minutes
 
   values = [
     yamlencode({
@@ -61,7 +61,6 @@ resource "helm_release" "bitbucket" {
             create           = true
             storageClassName = ""
           }
-          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
@@ -80,10 +79,4 @@ data "kubernetes_service" "bitbucket" {
     name      = local.product_name
     namespace = var.namespace
   }
-}
-
-resource "random_string" "random" {
-  length  = 10
-  special = false
-  number  = true
 }

@@ -1,5 +1,54 @@
+resource "aws_ebs_volume" "shared_home" {
+  availability_zone = var.availability_zone
+
+  snapshot_id = var.shared_home_snapshot_id ? var.shared_home_snapshot_id : null
+  size        = var.capacity
+  type        = "gp2"
+
+  tags = {
+    Name = "nfs-shared-home"
+  }
+}
+
+
+resource "kubernetes_persistent_volume" "shared_home" {
+  metadata {
+    name = "bitbucket-shared-home-pv"
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    capacity = {
+      storage = "${var.capacity}G"
+    }
+    storage_class_name = "gp2"
+    persistent_volume_source {
+      aws_elastic_block_store {
+        volume_id = aws_ebs_volume.shared_home.id
+      }
+    }
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "shared_home" {
+  metadata {
+    name      = "bitbucket-shared-home-pvc"
+    namespace = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "${var.capacity}G"
+      }
+    }
+    storage_class_name = "gp2"
+    volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
+  }
+}
+
+
 resource "helm_release" "nfs" {
-  chart     = "https://raw.githubusercontent.com/atlassian/data-center-helm-charts/main/docs/docs/examples/storage/nfs/nfs-server-example-0.1.0.tgz"
+  chart     = "modules/products/bitbucket/nfs/nfs-server"
   name      = "bitbucket-nfs"
   namespace = var.namespace
 
@@ -7,7 +56,7 @@ resource "helm_release" "nfs" {
     yamlencode({
       nameOverride = var.chart_name
       persistence = {
-        size = var.capacity
+        volumeClaimName = kubernetes_persistent_volume_claim.shared_home.metadata.0.name
       }
       resources = {
         limits = {

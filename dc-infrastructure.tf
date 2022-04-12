@@ -191,4 +191,6 @@ module "bitbucket" {
   elasticsearch_mem      = var.bitbucket_elasticsearch_mem
   elasticsearch_storage  = var.bitbucket_elasticsearch_storage
   elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
+
+  shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
 }
