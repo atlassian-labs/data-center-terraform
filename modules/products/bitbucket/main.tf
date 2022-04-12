@@ -43,5 +43,5 @@ data "aws_eks_cluster" "eks_cluster" {
 }
 
 data "aws_subnet" "eks_subnet" {
-  id = data.aws_eks_cluster.eks_cluster.vpc_config[0]["subnet_ids"][0]
+  id = one(data.aws_eks_cluster.eks_cluster.vpc_config[0]["subnet_ids"])
 }
