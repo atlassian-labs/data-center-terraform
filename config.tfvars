@@ -209,6 +209,18 @@ bitbucket_db_iops                 = 1000
 #bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
 #bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
 
+# Dataset restore configuration
+# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
+# This will restore the database from the snapshot and will not create a new database.
+# The snapshot should be in the same AWS region as the environment and be accessible with the your AWS account.
+#bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
+
+# The master user credential for the database instance.
+# If a username is not provided, the username is "postgres".
+# If a password is not provided, a random password will be generated.
+#bitbucket_db_master_username     = "<DB_MASTER_USERNAME>"
+#bitbucket_db_master_password     = "<DB_MASTER_PASSWORD>"
+
 ################################################################################
 # Bamboo Settings
 ################################################################################

@@ -25,7 +25,7 @@ module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "~> 3.0"
 
-  identifier = var.rds_instance_id
+  identifier = var.rds_instance_identifier
 
   create_db_option_group    = false
   create_db_parameter_group = false

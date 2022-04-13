@@ -20,7 +20,7 @@ func TestDbVariablesNotProvided(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "No value for required variable")
 	assert.Contains(t, err.Error(), "\"product\" is not set")
-	assert.Contains(t, err.Error(), "\"rds_instance_id\" is not set")
+	assert.Contains(t, err.Error(), "\"rds_instance_identifier\" is not set")
 	assert.Contains(t, err.Error(), "\"instance_class\" is not set")
 	assert.Contains(t, err.Error(), "\"allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"iops\" is not set")
