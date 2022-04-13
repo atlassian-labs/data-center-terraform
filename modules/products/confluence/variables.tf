@@ -125,6 +125,6 @@ variable "db_snapshot_build_number" {
   default     = null
   validation {
     condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4}$", var.db_snapshot_build_number))
-    error_message = "Build number must be provided in the right format when using snapshot to restore database."
+    error_message = "Invalid build number. Valid build number will be a 4-digit string."
   }
 }

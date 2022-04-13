@@ -112,7 +112,7 @@ confluence_collaborative_editing_enabled = true
 ```
 
 ## Dataset restore configuration
-To restore the dataset into the newly created instance, configure the following parameters.
+To restore the dataset into the newly created instance, configure all the parameters in this section.
 
 ### Database Snapshot Identifier
 
@@ -150,6 +150,8 @@ confluence_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 
 `confluence_db_snapshot_build_number` configures Confluence instance with the correct build number that stores in the snapshot.
 Without a matching build number, Confluence will not be able to start. 
+[List of build numbers](https://developer.atlassian.com/server/confluence/confluence-build-information/).
+
 
 ```terraform
 confluence_db_snapshot_build_number = "<BUILD_NUMBER>" # e.g. "8703"
