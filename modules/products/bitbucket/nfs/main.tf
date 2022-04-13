@@ -13,7 +13,7 @@ resource "aws_ebs_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume" "shared_home" {
   metadata {
-    name = "bitbucket-shared-home-pv"
+    name = "bitbucket-nfs-pv"
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -31,7 +31,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume_claim" "shared_home" {
   metadata {
-    name      = "bitbucket-shared-home-pvc"
+    name      = "bitbucket-nfs-pvc"
     namespace = var.namespace
   }
   spec {
