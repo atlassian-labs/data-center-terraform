@@ -42,7 +42,7 @@ func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Confluence database configuration is not valid.")
 	assert.Contains(t, err.Error(), "Confluence configuration is not valid.")
 	assert.Contains(t, err.Error(), "Invalid claim name.")
-	assert.Contains(t, err.Error(), "Build number must be provided in the right format when using snapshot to")
+	assert.Contains(t, err.Error(), "Invalid build number.")
 }
 
 func TestConfluenceVariablesNotProvided(t *testing.T) {
