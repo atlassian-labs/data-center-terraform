@@ -208,8 +208,8 @@ bitbucket_db_iops                 = 1000
 #bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
 
 # The master user credential for the database instance.
-# If username not provided, the username is "postgres".
-# If password not provided, a random password will be generated.
+# If a username is not provided, the username is "postgres".
+# If a password is not provided, a random password will be generated.
 #bitbucket_db_master_username     = "<DB_MASTER_USERNAME>"
 #bitbucket_db_master_password     = "<DB_MASTER_PASSWORD>"
 
