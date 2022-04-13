@@ -1,5 +1,7 @@
 # Bitbucket configuration
 
+## Application configuration
+
 ### Helm chart version
 
 `bitbucket_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bitbucket instance.
@@ -82,6 +84,8 @@ bitbucket_min_heap = "256m"
 bitbucket_max_heap = "512m"
 ```
 
+## RDS Configuration
+
 ### Database engine version
 
 `bitbucket_db_major_engine_version` sets the PostgeSQL engine version that will be used.
@@ -93,6 +97,7 @@ bitbucket_db_major_engine_version = "13"
 !!! info "Supported DB versions"
 
     Be sure to use a [DB engine version that is supported by Bitbucket](https://confluence.atlassian.com/bitbucketserver/supported-platforms-776640981.html){.external} 
+
 
 ### Database Instance Class
 
@@ -124,6 +129,8 @@ bitbucket_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+## NFS and Elasticsearch Configuration
+
 ### NFS resource configuration
 
 The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
@@ -148,4 +155,40 @@ bitbucket_elasticsearch_cpu      = "0.25"
 bitbucket_elasticsearch_mem      = "1Gi"
 bitbucket_elasticsearch_storage  = 10
 bitbucket_elasticsearch_replicas = 2
+```
+
+
+## Dataset restore configuration
+To restore the dataset into the newly created instance, uncomment the following lines and provide all necessary parameters.
+
+### Database Snapshot Identifier
+
+`bitbucket_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
+
+```terraform
+bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+```
+
+!!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance."
+
+    You also need to provide the master user credentials (`bitbucket_db_master_username` and `bitbucket_db_master_password`) that match the snapshot.
+
+!!! tip "Optimise the restore performance."
+
+    To obtain the best performance, configure Bitbucket RDS that match the snapshot including `bitbucket_db_instance_class` and `bitbucket_db_allocated_storage`.
+
+### Database Master Username
+
+'bitbucket_db_master_username' sets the username for the RDS master user. If you do not specify a value, username is "postgres".
+
+```terraform
+bitbucket_db_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
+```
+
+### Database Master Password
+
+'bitbucket_db_master_password' sets the password for the RDS master user. If you do not specify a value, a random password will be generated.
+
+```terraform
+bitbucket_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 ```
