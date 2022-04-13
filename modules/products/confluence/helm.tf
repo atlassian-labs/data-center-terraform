@@ -2,6 +2,7 @@
 # Confluence DC helm installation
 ################################################################################
 resource "helm_release" "confluence" {
+  depends_on = [kubernetes_job.pre_install]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
@@ -28,6 +29,24 @@ resource "helm_release" "confluence" {
             }
           }
         }
+        additionalEnvironmentVariables = [
+          {
+            name  = "ATL_SETUP_STEP",
+            value = "complete"
+          },
+          {
+            name  = "ATL_SETUP_TYPE",
+            value = "cluster"
+          },
+          {
+            name  = "ATL_BUILD_NUMBER",
+            value = "8703"
+          },
+          {
+            name  = "ATL_SNAPSHOT_USED",
+            value = "true"
+          },
+        ]
       }
       database = {
         type = "postgresql"

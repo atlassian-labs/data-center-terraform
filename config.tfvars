@@ -77,11 +77,14 @@ jira_db_instance_class       = "db.t3.micro"
 jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
 
-# Dataset restore configuration
+# Dataset restore configuration and Jira license
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
 # This will restore the database from the snapshot and will not create a new database.
 # The snapshot should be in the same AWS region as the environment and be accessible with the your AWS account.
+# You must provide Jira license if you wish to retore the database from a snapshot.
 #jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
+#jira_license = "<LICENSE_KEY>"
+
 
 # (Optional) The master user credential for the database instance.
 # If username not provided, the username is "postgres".
@@ -129,6 +132,18 @@ confluence_db_major_engine_version = "11"
 confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
+
+# Dataset restore configuration
+# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
+# This will restore the database from the snapshot and will not create a new database.
+# The snapshot should be in the same AWS region as the environment and be accessible with the your AWS account.
+#confluence_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"
+
+# (Optional) The master user credential for the database instance.
+# If username not provided, the username is "postgres".
+# If password not provided, a random password will be generated.
+#confluence_db_master_username     = "<DB_MASTER_USERNAME>"
+#confluence_db_master_password     = "<DB_MASTER_PASSWORD>"
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true

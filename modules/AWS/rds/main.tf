@@ -40,7 +40,7 @@ module "db" {
   allocated_storage = var.allocated_storage
   iops              = var.iops
 
-  name     = local.rds_instance_name
+  name     = local.db_name
   username = local.db_master_username
   password = local.db_master_password
   port     = 5432

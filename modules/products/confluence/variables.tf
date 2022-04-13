@@ -100,3 +100,23 @@ variable "enable_synchrony" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
 }
+
+
+variable "db_snapshot_identifier" {
+  description = "Snapshot identifier for RDS. The snapshot should be in the same AWS region as the DB instance."
+  type        = string
+  default     = null
+}
+
+variable "db_master_username" {
+  description = "Master username for the RDS instance."
+  type        = string
+  default     = null
+}
+
+
+variable "db_master_password" {
+  description = "Master password for the RDS instance."
+  type        = string
+  default     = null
+}

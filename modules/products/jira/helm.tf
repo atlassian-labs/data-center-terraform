@@ -1,6 +1,7 @@
 # Install helm chart for Jira Data Center.
 
 resource "helm_release" "jira" {
+  depends_on = [kubernetes_job.pre_install]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository

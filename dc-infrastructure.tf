@@ -123,6 +123,9 @@ module "confluence" {
     db_instance_class    = var.confluence_db_instance_class
     db_iops              = var.confluence_db_iops
   }
+  db_snapshot_identifier = var.confluence_db_snapshot_identifier
+  db_master_username     = var.confluence_db_master_username
+  db_master_password     = var.confluence_db_master_password
 
   replica_count = var.confluence_replica_count
 

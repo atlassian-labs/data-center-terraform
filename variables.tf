@@ -312,6 +312,32 @@ variable "confluence_collaborative_editing_enabled" {
   default     = true
 }
 
+variable "confluence_db_snapshot_identifier" {
+  description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
+  default     = null
+  type        = string
+}
+
+variable "confluence_db_master_username" {
+  description = "Master username for the Jira RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^[a-zA-Z_]([a-zA-Z0-9_]).{5,30}$", var.confluence_db_master_username)) || var.confluence_db_master_username == null
+    error_message = "Master username must be set. It must be between 6 and 31 characters long and start with a letter/underscore and contain combination of numbers, letters, and underscore."
+  }
+}
+
+variable "confluence_db_master_password" {
+  description = "Master password for the Jira RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?<>,.]).{8,}$", var.confluence_db_master_password)) || var.confluence_db_master_password == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
@@ -392,6 +418,32 @@ variable "bitbucket_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
+}
+
+variable "bitbucket_db_snapshot_identifier" {
+  description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
+  default     = null
+  type        = string
+}
+
+variable "bitbucket_db_master_username" {
+  description = "Master username for the Jira RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^[a-zA-Z_]([a-zA-Z0-9_]).{5,30}$", var.bitbucket_db_master_username)) || var.bitbucket_db_master_username == null
+    error_message = "Master username must be set. It must be between 6 and 31 characters long and start with a letter/underscore and contain combination of numbers, letters, and underscore."
+  }
+}
+
+variable "bitbucket_db_master_password" {
+  description = "Master password for the Jira RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?<>,.]).{8,}$", var.bitbucket_db_master_password)) || var.bitbucket_db_master_password == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
 }
 
 variable "bitbucket_display_name" {
