@@ -129,7 +129,9 @@ bitbucket_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+
 ## NFS and Elasticsearch Configuration
+
 
 ### NFS resource configuration
 
@@ -159,6 +161,7 @@ bitbucket_elasticsearch_replicas = 2
 
 
 ## Dataset restore configuration
+
 To restore the dataset into the newly created instance, uncomment the following lines and provide all necessary parameters.
 
 ### Database Snapshot Identifier

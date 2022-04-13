@@ -157,6 +157,9 @@ module "bitbucket" {
   db_allocated_storage    = var.bitbucket_db_allocated_storage
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
+  db_snapshot_identifier  = var.bitbucket_db_snapshot_identifier
+  db_master_username      = var.bitbucket_db_master_username
+  db_master_password      = var.bitbucket_db_master_password
 
   replica_count = var.bitbucket_replica_count
 
