@@ -111,7 +111,7 @@ You may want to adjust these values according to your needs. For more informatio
 confluence_collaborative_editing_enabled = true
 ```
 
-## Dataset restore configuration
+## Database restore configuration
 To restore the dataset into the newly created instance, configure all the parameters in this section.
 
 ### Database Snapshot Identifier
