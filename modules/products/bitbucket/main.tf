@@ -22,7 +22,7 @@ module "nfs" {
   limits_cpu        = var.nfs_limits_cpu
   limits_memory     = var.nfs_limits_memory
   capacity          = var.shared_home_size
-  availability_zone = data.aws_subnet.eks_subnet.availability_zone
+  availability_zone = var.eks.availability_zone
 }
 
 module "database" {
@@ -36,12 +36,4 @@ module "database" {
   iops                 = var.db_iops
   vpc                  = var.vpc
   major_engine_version = var.db_major_engine_version
-}
-
-data "aws_eks_cluster" "eks_cluster" {
-  name = var.eks.cluster_id
-}
-
-data "aws_subnet" "eks_subnet" {
-  id = one(data.aws_eks_cluster.eks_cluster.vpc_config[0]["subnet_ids"])
 }

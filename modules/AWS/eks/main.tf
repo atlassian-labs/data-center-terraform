@@ -39,3 +39,8 @@ module "eks" {
     }
   }
 }
+
+# Exposing the single AWS subnet used by the EKS nodes - this is required for EBS volume creation for shared home PVC
+data "aws_subnet" "eks_subnet" {
+  id = one(module.eks.node_groups["appNodes"]["subnet_ids"])
+}

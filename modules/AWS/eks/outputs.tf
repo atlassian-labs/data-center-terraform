@@ -38,3 +38,7 @@ output "max_cluster_size" {
 output "min_cluster_size" {
   value = module.eks.node_groups["appNodes"]["scaling_config"][0]["min_size"]
 }
+
+output "availability_zone" {
+  value = data.aws_subnet.eks_subnet.availability_zone
+}
