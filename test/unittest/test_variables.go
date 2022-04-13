@@ -166,11 +166,11 @@ const dbVersion = 13
 const invalidInputRdsInstanceId = "1-"
 
 var DbValidVariable = map[string]interface{}{
-	"product":           inputProduct,
-	"rds_instance_id":   inputRdsInstanceId,
-	"instance_class":    inputInstanceClass,
-	"allocated_storage": inputAllocatedStorage,
-	"iops":              inputIops,
+	"product":                 inputProduct,
+	"rds_instance_identifier": inputRdsInstanceId,
+	"instance_class":          inputInstanceClass,
+	"allocated_storage":       inputAllocatedStorage,
+	"iops":                    inputIops,
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -187,11 +187,11 @@ var DbValidVariable = map[string]interface{}{
 }
 
 var DbInvalidVariable = map[string]interface{}{
-	"product":           inputProduct,
-	"rds_instance_id":   invalidInputRdsInstanceId,
-	"instance_class":    inputInstanceClass,
-	"allocated_storage": inputAllocatedStorage,
-	"iops":              inputIops,
+	"product":                 inputProduct,
+	"rds_instance_identifier": invalidInputRdsInstanceId,
+	"instance_class":          inputInstanceClass,
+	"allocated_storage":       inputAllocatedStorage,
+	"iops":                    inputIops,
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
