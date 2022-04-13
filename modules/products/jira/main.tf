@@ -16,15 +16,15 @@ resource "aws_route53_record" "jira" {
 module "database" {
   source = "../../AWS/rds"
 
-  product              = local.product_name
-  rds_instance_id      = local.rds_instance_id
-  allocated_storage    = var.db_allocated_storage
-  eks                  = var.eks
-  instance_class       = var.db_instance_class
-  iops                 = var.db_iops
-  vpc                  = var.vpc
-  major_engine_version = var.db_major_engine_version
-  snapshot_identifier  = var.db_snapshot_identifier
-  db_master_username   = var.db_master_username
-  db_master_password   = var.db_master_password
+  product                 = local.product_name
+  rds_instance_identifier = local.rds_instance_id
+  allocated_storage       = var.db_allocated_storage
+  eks                     = var.eks
+  instance_class          = var.db_instance_class
+  iops                    = var.db_iops
+  vpc                     = var.vpc
+  major_engine_version    = var.db_major_engine_version
+  snapshot_identifier     = var.db_snapshot_identifier
+  db_master_username      = var.db_master_username
+  db_master_password      = var.db_master_password
 }
