@@ -64,7 +64,7 @@ variable "db_master_password" {
   type        = string
   default     = null
   validation {
-    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?<>,.]).{8,}$", var.db_master_password)) || var.db_master_password == null
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?,.]).{8,}$", var.db_master_password)) || var.db_master_password == null
     error_message = "Master password must be at least 8 characters long and can include any printable ASCII character except /, \", @, or a space."
   }
 }
