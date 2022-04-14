@@ -29,24 +29,6 @@ resource "helm_release" "confluence" {
             }
           }
         }
-        additionalEnvironmentVariables = [
-          {
-            name  = "ATL_SETUP_STEP",
-            value = "complete"
-          },
-          {
-            name  = "ATL_SETUP_TYPE",
-            value = "cluster"
-          },
-          {
-            name  = "ATL_BUILD_NUMBER",
-            value = "8703"
-          },
-          {
-            name  = "ATL_SNAPSHOT_USED",
-            value = "true"
-          },
-        ]
       }
       database = {
         type = "postgresql"
