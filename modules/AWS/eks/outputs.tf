@@ -40,5 +40,7 @@ output "min_cluster_size" {
 }
 
 output "availability_zone" {
-  value = data.aws_subnet.eks_subnet.availability_zone
+  # TODO we are assuming the used availability zone is always aws-region"a"
+  # Fetching this value dynamically from ASG subnet brings additional challenges
+  value = "${var.region}a"
 }

@@ -60,11 +60,6 @@ resource "helm_release" "bitbucket" {
           persistentVolumeClaim = {
             create           = true
             storageClassName = ""
-            resources = {
-              requests = {
-                storage = var.shared_home_size
-              }
-            }
           }
         }
       }
