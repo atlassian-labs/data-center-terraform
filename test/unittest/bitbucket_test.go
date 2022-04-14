@@ -112,6 +112,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 		"cluster_size":           2,
+		"availability_zone":      "dummy-az",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
 	"db_major_engine_version": "13",
@@ -124,7 +125,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
-	"display_name":  "dummy_display_name",
+	"display_name": "dummy_display_name",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
