@@ -41,7 +41,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	returnCode, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
 		"exec", "bitbucket-nfs-server-0",
 		"--", "/bin/bash",
-		"-c", "echo \"Greetings from an NFS\" >> $(find /srv/nfs/bitbucket-* | head -1)/nfs-file-share-test.txt; echo $?")
+		"-c", "echo \"Greetings from an NFS\" >> $(find /srv/nfs/ | head -1)/nfs-file-share-test.txt; echo $?")
 
 	assert.Nil(t, kubectlError)
 	assert.Equal(t, "0", returnCode)
