@@ -1,5 +1,6 @@
 variable "product" {
   description = "Name of the product that this database will be created for."
+  type        = string
 }
 
 variable "rds_instance_identifier" {
@@ -62,4 +63,8 @@ variable "db_master_password" {
   description = "Master password for the RDS instance."
   type        = string
   default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^*(){}?,.]).{8,}$", var.db_master_password)) || var.db_master_password == null
+    error_message = "Master password must be at least 8 characters long and can include any printable ASCII character except /, \", @, &, <>, or a space."
+  }
 }

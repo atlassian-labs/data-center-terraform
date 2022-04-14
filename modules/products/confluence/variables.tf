@@ -101,9 +101,8 @@ variable "enable_synchrony" {
   type        = bool
 }
 
-
 variable "db_snapshot_identifier" {
-  description = "Snapshot identifier for RDS. The snapshot should be in the same AWS region as the DB instance."
+  description = "Snapshot identifier for RDS."
   type        = string
   default     = null
 }
@@ -114,9 +113,18 @@ variable "db_master_username" {
   default     = null
 }
 
-
 variable "db_master_password" {
   description = "Master password for the RDS instance."
   type        = string
   default     = null
+}
+
+variable "db_snapshot_build_number" {
+  description = "Confluence build number of the database snapshot."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4}$", var.db_snapshot_build_number))
+    error_message = "Invalid build number. Valid build number will be a 4-digit string."
+  }
 }
