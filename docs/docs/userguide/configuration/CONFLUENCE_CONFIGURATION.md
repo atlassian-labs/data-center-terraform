@@ -110,3 +110,49 @@ You may want to adjust these values according to your needs. For more informatio
 ```terraform
 confluence_collaborative_editing_enabled = true
 ```
+
+## Database restore configuration
+To restore the dataset into the newly created instance, configure all the parameters in this section.
+
+### Database Snapshot Identifier
+
+`confluence_db_snapshot_identifier` sets the identifier of the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot will be used.
+
+```terraform
+confluence_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+```
+
+!!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance to be created."
+
+    You also need to provide the master user credentials (`confluence_db_master_username` and `confluence_db_master_password`) that match the snapshot.
+
+!!! tip "Optimise the restore performance."
+
+    To obtain the best performance, configure Jira RDS that match the snapshot including `confluence_db_instance_class` and `confluence_db_allocated_storage`.
+
+### Database Master Username
+
+`confluence_db_master_username` sets the username for the RDS master user. If you do not specify a value, username is "postgres".
+
+```terraform
+confluence_db_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
+```
+
+### Database Master Password
+
+`confluence_db_master_password` sets the password for the RDS master user. If you do not specify a value, a random password will be generated.
+
+```terraform
+confluence_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
+```
+
+### Build Number
+
+`confluence_db_snapshot_build_number` configures Confluence instance with the correct build number that stores in the snapshot.
+Without a matching build number, Confluence will not be able to start. 
+[List of build numbers](https://developer.atlassian.com/server/confluence/confluence-build-information/).
+
+
+```terraform
+confluence_db_snapshot_build_number = "<BUILD_NUMBER>" # e.g. "8703"
+```

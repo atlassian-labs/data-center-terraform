@@ -312,6 +312,30 @@ variable "confluence_collaborative_editing_enabled" {
   default     = true
 }
 
+variable "confluence_db_snapshot_identifier" {
+  description = "The identifier for the Confluence DB snapshot to restore from."
+  default     = null
+  type        = string
+}
+
+variable "confluence_db_snapshot_build_number" {
+  description = "Confluence build number of the database snapshot."
+  type        = string
+  default     = null
+}
+
+variable "confluence_db_master_username" {
+  description = "Master username for the Confluence RDS instance."
+  type        = string
+  default     = null
+}
+
+variable "confluence_db_master_password" {
+  description = "Master password for the Confluence RDS instance."
+  type        = string
+  default     = null
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
