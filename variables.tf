@@ -193,6 +193,14 @@ variable "jira_db_snapshot_identifier" {
   type        = string
 }
 
+variable "jira_license" {
+  description = "Jira license."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+
 variable "jira_db_master_username" {
   description = "Master username for the Jira RDS instance."
   type        = string
