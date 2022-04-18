@@ -1,5 +1,7 @@
 # Bamboo configuration
 
+## Application configuration
+
 ### Helm chart version
 
 `bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo instance.
@@ -16,25 +18,6 @@ For more information, see [Bamboo Version Tags](https://hub.docker.com/r/atlassi
 
 ```terraform
 bamboo_version_tag = "<BAMBOO_VERSION_TAG>"
-```
-
-
-### Agent Helm chart version
-
-`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
-
-```terraform
-bamboo_agent_helm_chart_version = "1.2.0"
-```
-
-### Agent version tag
-
-Bamboo Agent will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/bamboo-agent/Chart.yaml#L6). If you want to install a specific version of Agent, you can set the `bamboo_agent_version_tag` to the version you want to install.
-
-For more information, see [Bamboo Agent Version Tags](https://hub.docker.com/r/atlassian/bamboo-agent-base/tags){.external}.
-
-```terraform
-bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
 ```
 
 ### License
@@ -85,6 +68,26 @@ bamboo_min_heap = "256m"
 bamboo_max_heap = "512m"
 ```
 
+##  Bamboo Agents configuration
+
+### Agent Helm chart version
+
+`bamboo_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Bamboo Agent instance.
+
+```terraform
+bamboo_agent_helm_chart_version = "1.2.0"
+```
+
+### Agent version tag
+
+Bamboo Agent will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/bamboo-agent/Chart.yaml#L6). If you want to install a specific version of Agent, you can set the `bamboo_agent_version_tag` to the version you want to install.
+
+For more information, see [Bamboo Agent Version Tags](https://hub.docker.com/r/atlassian/bamboo-agent-base/tags){.external}.
+
+```terraform
+bamboo_agent_version_tag = "<BAMBOO_AGENT_VERSION_TAG>"
+```
+
 ### Agent instance resource configuration
 
 The following variables set number of CPU and amount of memory of Bamboo Agent instances. (Used default values as example.)
@@ -109,6 +112,8 @@ number_of_bamboo_agents = 5
 !!! warning "A valid license is required to install bamboo agents"
     
     Bamboo needs a valid license to install remote agents. Disable agents if you don't provide a license at installation time.
+
+## RDS Configuration
 
 ### Database engine version
 

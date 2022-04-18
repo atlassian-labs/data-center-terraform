@@ -1,5 +1,7 @@
 # Confluence configuration
 
+## Application configuration
+
 ### Helm chart version
 
 `confluence_helm_chart_version` sets the [Helm chart](https://github.com/atlassian/data-center-helm-charts){.external} version of Confluence instance.
@@ -60,6 +62,8 @@ confluence_mem                 = "1Gi"
 confluence_min_heap            = "256m"
 confluence_max_heap            = "512m"
 ```
+
+## RDS Configuration
 
 ### Database engine version
 
