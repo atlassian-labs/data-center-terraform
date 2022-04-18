@@ -80,7 +80,7 @@ bamboo_agent_helm_chart_version = "1.2.0"
 
 ### Agent version tag
 
-Bamboo Agent will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/bamboo-agent/Chart.yaml#L6). If you want to install a specific version of Agent, you can set the `bamboo_agent_version_tag` to the version you want to install.
+Bamboo Agent will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/7e7897dda093b174ce66b4294b0783663a4eddaf/src/main/charts/bamboo-agent/Chart.yaml#L6). If you want to install a specific version of the Agent, you can set the `bamboo_agent_version_tag` to the desired version.
 
 For more information, see [Bamboo Agent Version Tags](https://hub.docker.com/r/atlassian/bamboo-agent-base/tags){.external}.
 
