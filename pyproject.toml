@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "data-center-terraform"
+version = "0.1.0"
+description = ""
+authors = ["Adam Brokes <adam.brokes@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6.2"
+python-terraform = "^0.10.1"
+typer = "^0.4.0"
+black = "^22.1.0"
+python-hcl2 = "^3.0.4"
+pytest = "^7.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
