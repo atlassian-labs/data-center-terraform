@@ -66,6 +66,12 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 	assert.EqualValues(t, true, planApplyImmediately)
+
+	// when db_master_password is not set
+	randomPwdKey := "random_password.password"
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, randomPwdKey)
+	keyLength := plan.ResourcePlannedValuesMap[randomPwdKey].AttributeValues["length"]
+	assert.Equal(t, float64(12), keyLength)
 }
 
 func TestDbPostgresVersionMap(t *testing.T) {
@@ -93,4 +99,24 @@ func TestDbRdsInstanceIdInvalid(t *testing.T) {
 
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "Invalid RDS instance name.")
+}
+
+func TestDbWithMasterPassword(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(DbVariableWithDBMasterPassword, t, databaseModule)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	planDbMasterPwd := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["password"]
+	assert.Equal(t, masterPwd, planDbMasterPwd)
+}
+
+func TestDbWithInvalidMasterPassword(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(DbVariableWithInvalidDBMasterPassword, t, databaseModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Master password must be at least 8 characters long and can include any")
 }

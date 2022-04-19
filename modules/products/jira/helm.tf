@@ -1,12 +1,13 @@
 # Install helm chart for Jira Data Center.
 
 resource "helm_release" "jira" {
+  depends_on = [kubernetes_job.pre_install]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
   chart      = local.product_name
   version    = local.jira_helm_chart_version
-  timeout    = 10 * 60 # autoscaler potentially needs to scale up the cluster
+  timeout    = 15 * 60 # autoscaler potentially needs to scale up the cluster
 
   values = [
     yamlencode({

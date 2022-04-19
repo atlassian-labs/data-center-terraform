@@ -1,9 +1,10 @@
 package unittest
 
 import (
+	"testing"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestJiraVariablesPopulatedWithValidValues(t *testing.T) {
@@ -57,6 +58,7 @@ var JiraCorrectVariables = map[string]interface{}{
 		"min_heap":            "384m",
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
+		"license":             "dummy_license",
 	},
 	"db_master_password":     "dummy_password",
 	"db_master_username":     "dummy_username",
