@@ -81,8 +81,10 @@ jira_db_iops                 = 1000
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
 # This will restore the database from the snapshot and will not create a new database.
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
-# Please also provide jira_db_master_username and jira_db_master_password that matches the ones in snapshot
+# You must provide Jira license if you wish to retore the database from a snapshot.
+# You must provide jira_db_master_username and jira_db_master_password that matches the ones in snapshot
 #jira_db_snapshot_identifier = "<DB_SNAPSHOT_IDENTIFIER>"
+#jira_license = "<LICENSE_KEY>"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".

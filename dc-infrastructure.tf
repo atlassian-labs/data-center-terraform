@@ -92,12 +92,13 @@ module "jira" {
   replica_count = var.jira_replica_count
 
   jira_configuration = {
-    "helm_version"        = var.jira_helm_chart_version
-    "cpu"                 = var.jira_cpu
-    "mem"                 = var.jira_mem
-    "min_heap"            = var.jira_min_heap
-    "max_heap"            = var.jira_max_heap
-    "reserved_code_cache" = var.jira_reserved_code_cache
+    helm_version        = var.jira_helm_chart_version
+    cpu                 = var.jira_cpu
+    mem                 = var.jira_mem
+    min_heap            = var.jira_min_heap
+    max_heap            = var.jira_max_heap
+    reserved_code_cache = var.jira_reserved_code_cache
+    license             = var.jira_license
   }
 
   local_home_size = var.jira_local_home_size

@@ -1,5 +1,5 @@
 output "product_domain_name" {
-  value = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
+  value = local.jira_ingress_url
 }
 
 output "rds_instance_id" {

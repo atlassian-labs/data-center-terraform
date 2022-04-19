@@ -46,7 +46,7 @@ confluence_replica_count = 1
 confluence_license = "<LICENSE_KEY>"
 ```
 
-!!!warning "Sensitive data"
+!!! warning "Sensitive data"
 
     `confluence_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
 
