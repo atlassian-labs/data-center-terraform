@@ -40,7 +40,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
         storage = var.capacity
       }
     }
-    storage_class_name = local.storage_class_name
+    storage_class_name = local.storage_class
     volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
   }
 }
