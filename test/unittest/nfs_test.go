@@ -20,6 +20,7 @@ func TestNfsVariablesNotProvided(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "No value for required variable")
 	assert.Contains(t, err.Error(), "\"namespace\" is not set")
+	assert.Contains(t, err.Error(), "\"product\" is not set")
 }
 
 func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
