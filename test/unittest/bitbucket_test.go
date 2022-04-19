@@ -90,8 +90,8 @@ func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
 	helmRelease := plan.ResourcePlannedValuesMap["helm_release.nfs"]
 	values := helmRelease.AttributeValues["values"].([]interface{})[0].(string)
 
-	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"size\": \"%s\"\n\"resources\":\n  \"limits\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n  \"requests\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n",
-		nfsVarChartNameOverride, nfsVarCapacity, nfsLimitsCpu, nfsLimitsMemory, nfsRequestsCpu, nfsRequestsMemory)
+	expectedHelmValues := fmt.Sprintf("\"nameOverride\": \"%s\"\n\"persistence\":\n  \"volumeClaimName\": \"%s\"\n\"resources\":\n  \"limits\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n  \"requests\":\n    \"cpu\": \"%s\"\n    \"memory\": \"%s\"\n",
+		nfsVarChartNameOverride, nfsPvc, nfsLimitsCpu, nfsLimitsMemory, nfsRequestsCpu, nfsRequestsMemory)
 
 	expectedNamespace := nfsVarNamespace
 
@@ -112,6 +112,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 		"cluster_size":           2,
+		"availability_zone":      "dummy-az",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
 	"db_major_engine_version": "13",
@@ -124,7 +125,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
-	"display_name":  "dummy_display_name",
+	"display_name": "dummy_display_name",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",

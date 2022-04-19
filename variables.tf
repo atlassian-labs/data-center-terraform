@@ -515,6 +515,15 @@ variable "bitbucket_elasticsearch_replicas" {
   type        = number
   default     = 2
 }
+variable "bitbucket_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.bitbucket_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
 
 variable "bitbucket_db_snapshot_identifier" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."

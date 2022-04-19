@@ -135,15 +135,17 @@ const nfsRequestsCpu = "0.25"
 const nfsRequestsMemory = "256Mi"
 const nfsLimitsCpu = "0.25"
 const nfsLimitsMemory = "256Mi"
+const nfsPvc = "bitbucket-nfs-pvc"
 
 var NfsValidVariable = map[string]interface{}{
-	"namespace":       nfsVarNamespace,
-	"chart_name":      nfsVarChartNameOverride,
-	"capacity":        nfsVarCapacity,
-	"requests_cpu":    nfsRequestsCpu,
-	"requests_memory": nfsRequestsMemory,
-	"limits_cpu":      nfsLimitsCpu,
-	"limits_memory":   nfsLimitsMemory,
+	"namespace":         nfsVarNamespace,
+	"chart_name":        nfsVarChartNameOverride,
+	"capacity":          nfsVarCapacity,
+	"requests_cpu":      nfsRequestsCpu,
+	"requests_memory":   nfsRequestsMemory,
+	"limits_cpu":        nfsLimitsCpu,
+	"limits_memory":     nfsLimitsMemory,
+	"availability_zone": "dummy-az",
 }
 
 // DB

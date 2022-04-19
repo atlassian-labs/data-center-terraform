@@ -173,3 +173,13 @@ variable "db_master_password" {
   type        = string
   default     = null
 }
+
+variable "shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}

@@ -38,3 +38,9 @@ output "max_cluster_size" {
 output "min_cluster_size" {
   value = module.eks.node_groups["appNodes"]["scaling_config"][0]["min_size"]
 }
+
+output "availability_zone" {
+  # TODO we are assuming the used availability zone is always aws-region"a"
+  # Fetching this value dynamically from ASG subnet brings additional challenges
+  value = "${var.region}a"
+}
