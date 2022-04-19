@@ -179,7 +179,7 @@ variable "shared_home_snapshot_id" {
   type        = string
   default     = null
   validation {
-    condition     = var.shared_home_snapshot_id == null || can(regex("^.{1,255}$", var.shared_home_snapshot_id))
+    condition     = var.shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.shared_home_snapshot_id))
     error_message = "Provide correct EBS snapshot ID."
   }
 }
