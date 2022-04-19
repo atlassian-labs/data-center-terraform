@@ -193,6 +193,14 @@ variable "jira_db_snapshot_identifier" {
   type        = string
 }
 
+variable "jira_license" {
+  description = "Jira license."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+
 variable "jira_db_master_username" {
   description = "Master username for the Jira RDS instance."
   type        = string
@@ -310,6 +318,30 @@ variable "confluence_collaborative_editing_enabled" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
   default     = true
+}
+
+variable "confluence_db_snapshot_identifier" {
+  description = "The identifier for the Confluence DB snapshot to restore from."
+  default     = null
+  type        = string
+}
+
+variable "confluence_db_snapshot_build_number" {
+  description = "Confluence build number of the database snapshot."
+  type        = string
+  default     = null
+}
+
+variable "confluence_db_master_username" {
+  description = "Master username for the Confluence RDS instance."
+  type        = string
+  default     = null
+}
+
+variable "confluence_db_master_password" {
+  description = "Master password for the Confluence RDS instance."
+  type        = string
+  default     = null
 }
 
 ################################################################################

@@ -80,4 +80,6 @@ locals {
       displayName = var.display_name
     }
   }) : yamlencode({})
+
+  bitbucket_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
 }

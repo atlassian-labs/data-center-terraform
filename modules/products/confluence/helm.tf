@@ -2,12 +2,13 @@
 # Confluence DC helm installation
 ################################################################################
 resource "helm_release" "confluence" {
+  depends_on = [kubernetes_job.pre_install]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
   chart      = local.confluence_helm_chart_name
   version    = local.confluence_helm_chart_version
-  timeout    = 10 * 60 # autoscaler potentially needs to scale up the cluster
+  timeout    = 15 * 60 # autoscaler potentially needs to scale up the cluster
 
   values = [
     yamlencode({
@@ -62,6 +63,7 @@ resource "helm_release" "confluence" {
     local.license_settings,
     local.synchrony_settings_stanza,
     local.version_tag,
+    local.db_restore_env_vars,
   ]
 }
 

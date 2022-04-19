@@ -27,6 +27,8 @@ locals {
     }
   })
 
+  jira_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
+
   context_path_settings = !local.domain_supplied ? yamlencode({
     jira = {
       service = {

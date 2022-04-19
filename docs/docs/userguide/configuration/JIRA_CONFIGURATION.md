@@ -99,12 +99,18 @@ jira_db_iops = 1000
 ## Dataset restore configuration
 To restore the dataset into the newly created instance, uncomment the following lines and provide all necessary parameters. 
 
-### Database Snapshot Identifier
+### Database Snapshot Identifier and Jira license
 
 `jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
 jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+```
+
+`jira_license` takes the license key of Jira product. you must provide Jira license key when a RDS snapshot is used. 
+
+```terraform
+jira_license = "<LICENSE_KEY>"
 ```
 
 !!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance."
@@ -114,6 +120,12 @@ jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 !!! tip "Optimise the restore performance."
     
     To obtain the best performance, configure Jira RDS that match the snapshot including `jira_db_instance_class` and `jira_db_allocated_storage`.
+
+!!! warning "Jira license limitation"
+
+    you can provide `jira_license` ONLY when a RDS snapshot is used. If you plans to provision a new RDS instance comment out `jira_license` and add the license key manually via application UI.
+
+    Please refer to [Sensitive Data](#sensitive-data) section.
 
 ### Database Master Username
 
