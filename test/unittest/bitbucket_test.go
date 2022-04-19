@@ -66,7 +66,7 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.NotContains(t, err.Error(), "display_name")
 }
 
-const nfsModule = "products/bitbucket/nfs"
+const nfsModule = "products/AWS/nfs"
 
 func TestNfsVariablesNotProvided(t *testing.T) {
 	t.Parallel()
