@@ -17,6 +17,7 @@ module "nfs" {
   source = "../../AWS/nfs"
 
   namespace               = var.namespace
+  product                 = local.product_name
   requests_cpu            = var.nfs_requests_cpu
   requests_memory         = var.nfs_requests_memory
   limits_cpu              = var.nfs_limits_cpu

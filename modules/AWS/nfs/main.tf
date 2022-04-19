@@ -13,7 +13,7 @@ resource "aws_ebs_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume" "shared_home" {
   metadata {
-    name = "bitbucket-nfs-pv"
+    name = "${local.nfs_name}-pv"
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -31,7 +31,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume_claim" "shared_home" {
   metadata {
-    name      = "bitbucket-nfs-pvc"
+    name      = "${local.nfs_name}-pvc"
     namespace = var.namespace
   }
   spec {
@@ -48,8 +48,8 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
 
 
 resource "helm_release" "nfs" {
-  chart     = "modules/products/bitbucket/nfs/nfs-server"
-  name      = "bitbucket-nfs"
+  chart     = "modules/AWS/nfs/nfs-server"
+  name      = local.nfs_name
   namespace = var.namespace
 
   values = [

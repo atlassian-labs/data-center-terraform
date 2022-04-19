@@ -3,6 +3,11 @@ variable "namespace" {
   type        = string
 }
 
+variable "product" {
+  description = "Product name to install NFS server for."
+  type        = string
+}
+
 variable "chart_name" {
   description = "The chart name to use."
   type        = string
