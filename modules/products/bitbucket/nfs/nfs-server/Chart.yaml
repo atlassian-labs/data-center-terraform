@@ -3,5 +3,5 @@ name: nfs-server
 description: A NFS server for testing purposes. Do not use in production.
 
 type: application
-version: 0.1.0
+version: 0.2.0
 appVersion: "2.0"

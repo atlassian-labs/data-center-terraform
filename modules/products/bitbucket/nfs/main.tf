@@ -3,10 +3,10 @@ resource "aws_ebs_volume" "shared_home" {
 
   snapshot_id = var.shared_home_snapshot_id != null ? var.shared_home_snapshot_id : null
   size        = tonumber(regex("\\d+", var.capacity))
-  type        = "gp2"
+  type        = local.storage_class
 
   tags = {
-    Name = "nfs-shared-home"
+    Name = "${local.product}-nfs-shared-home"
   }
 }
 
@@ -20,7 +20,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
     capacity = {
       storage = var.capacity
     }
-    storage_class_name = "gp2"
+    storage_class_name = local.storage_class
     persistent_volume_source {
       aws_elastic_block_store {
         volume_id = aws_ebs_volume.shared_home.id
@@ -31,7 +31,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume_claim" "shared_home" {
   metadata {
-    name      = "bitbucket-nfs-pvc"
+    name      = "${local.product}-nfs-pvc"
     namespace = var.namespace
   }
   spec {
@@ -41,7 +41,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
         storage = var.capacity
       }
     }
-    storage_class_name = "gp2"
+    storage_class_name = local.storage_class
     volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
   }
 }
@@ -49,7 +49,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
 
 resource "helm_release" "nfs" {
   chart     = "modules/products/bitbucket/nfs/nfs-server"
-  name      = "bitbucket-nfs"
+  name      = "${local.product}-nfs"
   namespace = var.namespace
 
   values = [
