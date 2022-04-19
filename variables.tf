@@ -520,7 +520,7 @@ variable "bitbucket_shared_home_snapshot_id" {
   type        = string
   default     = null
   validation {
-    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^.{1,255}$", var.bitbucket_shared_home_snapshot_id))
+    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.bitbucket_shared_home_snapshot_id))
     error_message = "Provide correct EBS snapshot ID."
   }
 }
