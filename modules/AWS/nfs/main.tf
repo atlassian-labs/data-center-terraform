@@ -10,7 +10,6 @@ resource "aws_ebs_volume" "shared_home" {
   }
 }
 
-
 resource "kubernetes_persistent_volume" "shared_home" {
   metadata {
     name = "${local.nfs_name}-pv"
@@ -44,32 +43,6 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
     storage_class_name = "gp2"
     volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
   }
-}
-
-
-resource "helm_release" "nfs" {
-  chart     = "modules/AWS/nfs/nfs-server"
-  name      = local.nfs_name
-  namespace = var.namespace
-
-  values = [
-    yamlencode({
-      nameOverride = var.chart_name
-      persistence = {
-        volumeClaimName = kubernetes_persistent_volume_claim.shared_home.metadata.0.name
-      }
-      resources = {
-        limits = {
-          cpu    = var.limits_cpu
-          memory = var.limits_memory
-        }
-        requests = {
-          cpu    = var.requests_cpu
-          memory = var.requests_memory
-        }
-      }
-    })
-  ]
 }
 
 data "kubernetes_service" "nfs" {
