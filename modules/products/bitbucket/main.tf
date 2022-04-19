@@ -14,7 +14,7 @@ resource "aws_route53_record" "bitbucket" {
 }
 
 module "nfs" {
-  source = "./nfs"
+  source = "../../AWS/nfs"
 
   namespace               = var.namespace
   requests_cpu            = var.nfs_requests_cpu
