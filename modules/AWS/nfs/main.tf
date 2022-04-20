@@ -3,10 +3,10 @@ resource "aws_ebs_volume" "shared_home" {
 
   snapshot_id = var.shared_home_snapshot_id != null ? var.shared_home_snapshot_id : null
   size        = tonumber(regex("\\d+", var.capacity))
-  type        = "gp2"
+  type        = local.storage_class
 
   tags = {
-    Name = "nfs-shared-home"
+    Name = "${var.product}-nfs-shared-home"
   }
 }
 
@@ -19,7 +19,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
     capacity = {
       storage = var.capacity
     }
-    storage_class_name = "gp2"
+    storage_class_name = local.storage_class
     persistent_volume_source {
       aws_elastic_block_store {
         volume_id = aws_ebs_volume.shared_home.id

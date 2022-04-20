@@ -219,6 +219,8 @@ bitbucket_db_iops                 = 1000
 #bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
 #bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
 
+# Dataset Restore
+
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
 # This will restore the database from the snapshot and will not create a new database.
@@ -231,6 +233,12 @@ bitbucket_db_iops                 = 1000
 # If password is not provided, a random password will be generated.
 #bitbucket_db_master_username     = "<DB_MASTER_USERNAME>"
 #bitbucket_db_master_password     = "<DB_MASTER_PASSWORD>"
+
+# Shared home restore configuration
+# To restore shared home dataset, you can provide EBS snapshot ID that contains content of the shared home volume.
+# This volume will be mounted to the NFS server and used when the product is started.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#bitbucket_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
 ################################################################################
 # Bamboo Settings
