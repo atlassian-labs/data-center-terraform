@@ -135,7 +135,8 @@ const nfsRequestsCpu = "0.25"
 const nfsRequestsMemory = "256Mi"
 const nfsLimitsCpu = "0.25"
 const nfsLimitsMemory = "256Mi"
-const nfsPvc = "bitbucket-nfs-pvc"
+const nfsPvc = productName + "-nfs-pvc"
+const productName = "dummy-product"
 
 var NfsValidVariable = map[string]interface{}{
 	"namespace":         nfsVarNamespace,
@@ -146,6 +147,7 @@ var NfsValidVariable = map[string]interface{}{
 	"limits_cpu":        nfsLimitsCpu,
 	"limits_memory":     nfsLimitsMemory,
 	"availability_zone": "dummy-az",
+	"product":           productName,
 }
 
 // DB

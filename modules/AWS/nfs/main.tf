@@ -6,14 +6,13 @@ resource "aws_ebs_volume" "shared_home" {
   type        = local.storage_class
 
   tags = {
-    Name = "${local.product}-nfs-shared-home"
+    Name = "${var.product}-nfs-shared-home"
   }
 }
 
-
 resource "kubernetes_persistent_volume" "shared_home" {
   metadata {
-    name = "bitbucket-nfs-pv"
+    name = "${local.nfs_name}-pv"
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -31,7 +30,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
 
 resource "kubernetes_persistent_volume_claim" "shared_home" {
   metadata {
-    name      = "${local.product}-nfs-pvc"
+    name      = "${local.nfs_name}-pvc"
     namespace = var.namespace
   }
   spec {
@@ -44,32 +43,6 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
     storage_class_name = local.storage_class
     volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
   }
-}
-
-
-resource "helm_release" "nfs" {
-  chart     = "modules/products/bitbucket/nfs/nfs-server"
-  name      = "${local.product}-nfs"
-  namespace = var.namespace
-
-  values = [
-    yamlencode({
-      nameOverride = var.chart_name
-      persistence = {
-        volumeClaimName = kubernetes_persistent_volume_claim.shared_home.metadata.0.name
-      }
-      resources = {
-        limits = {
-          cpu    = var.limits_cpu
-          memory = var.limits_memory
-        }
-        requests = {
-          cpu    = var.requests_cpu
-          memory = var.requests_memory
-        }
-      }
-    })
-  ]
 }
 
 data "kubernetes_service" "nfs" {
