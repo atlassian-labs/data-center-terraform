@@ -6,7 +6,7 @@ resource "aws_ebs_volume" "shared_home" {
   type        = local.storage_class
 
   tags = {
-    Name = "nfs-shared-home"
+    Name = "${var.product}-nfs-shared-home"
   }
 }
 
