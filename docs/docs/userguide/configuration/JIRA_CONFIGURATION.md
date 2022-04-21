@@ -147,7 +147,6 @@ jira_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 
 The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
 
-
 ```terraform
 # Jira NFS instance resource configuration
 jira_nfs_requests_cpu    = "<REQUESTS_CPU>"
@@ -155,6 +154,7 @@ jira_nfs_requests_memory = "<REQUESTS_MEMORY>"
 jira_nfs_limits_cpu      = "<LIMITS_CPU>"
 jira_nfs_limits_memory   = "<LIMITS_MEMORY>"
 ```
+
 ### Shared Home Restore
 
 `jira_shared_home_snapshot_id` sets id of Shared home EBS snapshot. This will spin up EBS volume adn it will be mounted to the NFS server and used when the product is started.

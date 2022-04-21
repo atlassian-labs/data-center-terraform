@@ -77,7 +77,9 @@ jira_reserved_code_cache = "512m"
 #jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
 # Storage
+# initial volume size of local/share home EBS.
 jira_local_home_size = "10Gi"
+jira_shared_home_size = "10Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
