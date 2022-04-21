@@ -51,10 +51,9 @@ resource "helm_release" "confluence" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = var.pvc_claim_name
+              claimName = kubernetes_persistent_volume_claim.shared-home-pvc.metadata[0].name
             }
           }
-          subPath = "${local.product_name}-${random_string.random.result}"
         }
       }
     }),
