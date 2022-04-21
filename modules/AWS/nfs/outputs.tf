@@ -3,5 +3,5 @@ output "helm_release_nfs_service_ip" {
 }
 
 output "nfs_pvc_claim_name" {
-  value = kubernetes_persistent_volume_claim.shared-home-pvc.metadata[0].name
+  value = var.shared_home_size == null ? null : kubernetes_persistent_volume_claim.shared-home-pvc[0].metadata[0].name
 }
