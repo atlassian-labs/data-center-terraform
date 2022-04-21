@@ -1,6 +1,4 @@
 locals {
-  db_name = var.snapshot_identifier == null ? var.product : null
-
   db_master_username = var.db_master_username == null ? "postgres" : var.db_master_username
   db_master_password = var.db_master_password == null ? random_password.password.result : var.db_master_password
   db_jdbc_connection = "jdbc:postgresql://${module.db.db_instance_endpoint}/${var.product}"
