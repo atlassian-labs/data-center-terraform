@@ -64,6 +64,18 @@ jira_min_heap            = "384m"
 jira_max_heap            = "786m"
 jira_reserved_code_cache = "512m"
 
+# Jira NFS instance resource configuration
+#jira_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#jira_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#jira_nfs_limits_cpu      = "<LIMITS_CPU>"
+#jira_nfs_limits_memory   = "<LIMITS_MEMORY>"
+
+# Shared home restore configuration
+# To restore shared home dataset, you can provide EBS snapshot ID that contains content of the shared home volume.
+# This volume will be mounted to the NFS server and used when the product is started.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+
 # Storage
 jira_local_home_size = "10Gi"
 
