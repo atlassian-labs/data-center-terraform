@@ -58,3 +58,9 @@ variable "shared_home_snapshot_id" {
     error_message = "Provide correct EBS snapshot ID."
   }
 }
+
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to local home"
+  type        = string
+  default     = "10Gi"
+}
