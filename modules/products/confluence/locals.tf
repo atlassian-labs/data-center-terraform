@@ -88,4 +88,5 @@ locals {
     }
   }) : yamlencode({})
 
+  storage_class_name = "gp2"
 }

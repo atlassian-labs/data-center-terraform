@@ -345,7 +345,7 @@ variable "confluence_db_master_password" {
 }
 
 variable "confluence_shared_home_size" {
-  description = "Storage size for Bitbucket shared home"
+  description = "Storage size for Confluence shared home"
   type        = string
   default     = "10Gi"
 }
@@ -507,25 +507,25 @@ variable "bitbucket_shared_home_size" {
 variable "bitbucket_nfs_requests_cpu" {
   description = "The minimum CPU compute to request for the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "1"
 }
 
 variable "bitbucket_nfs_requests_memory" {
   description = "The minimum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "1Gi"
 }
 
 variable "bitbucket_nfs_limits_cpu" {
   description = "The maximum CPU compute to allocate to the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "2"
 }
 
 variable "bitbucket_nfs_limits_memory" {
   description = "The maximum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_cpu" {

@@ -53,7 +53,7 @@ resource "kubernetes_persistent_volume" "shared-home-pv" {
     }
     volume_mode        = "Filesystem"
     access_modes       = ["ReadWriteMany"]
-    storage_class_name = "nfs"
+    storage_class_name = local.storage_class_name
     mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev", "nfsvers=3", "rsize=32768", "wsize=32768"]
     persistent_volume_source {
       nfs {
@@ -77,6 +77,6 @@ resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
       }
     }
     volume_name        = kubernetes_persistent_volume.shared-home-pv.metadata[0].name
-    storage_class_name = "nfs"
+    storage_class_name = local.storage_class_name
   }
 }
