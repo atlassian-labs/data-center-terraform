@@ -313,8 +313,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":            VpcDefaultModuleVariable,
-	"pvc_claim_name": "invalid@pvc_claimname",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",

@@ -87,9 +87,3 @@ data "kubernetes_service" "confluence_synchrony" {
     namespace = var.namespace
   }
 }
-
-resource "random_string" "random" {
-  length  = 10
-  special = false
-  number  = true
-}
