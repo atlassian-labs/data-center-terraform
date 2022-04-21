@@ -62,10 +62,51 @@ variable "jira_configuration" {
   }
 }
 
+variable "nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "0.25"
+}
+
+variable "nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "256Mi"
+}
+
 variable "local_home_size" {
   description = "The storage capacity to allocate to local home"
   type        = string
   default     = "10Gi"
+}
+
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to the NFS"
+  type        = string
+  default     = "10Gi"
+}
+
+
+variable "shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
 }
 
 variable "version_tag" {
