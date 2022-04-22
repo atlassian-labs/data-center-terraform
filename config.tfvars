@@ -55,6 +55,7 @@ jira_replica_count = 1
 
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
+#jira_image_repository = "atlassian/jira-software"
 #jira_version_tag = "<JIRA_VERSION_TAG>"
 
 # Jira instance resource configuration

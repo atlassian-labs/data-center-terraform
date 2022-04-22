@@ -105,7 +105,8 @@ module "jira" {
 
   local_home_size = var.jira_local_home_size
 
-  version_tag = var.jira_version_tag
+  image_repository = var.jira_image_repository
+  version_tag      = var.jira_version_tag
 }
 
 module "confluence" {

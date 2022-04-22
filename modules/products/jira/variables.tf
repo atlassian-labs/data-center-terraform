@@ -73,6 +73,12 @@ variable "local_home_size" {
   default     = "10Gi"
 }
 
+variable "image_repository" {
+  description = "Jira image repository"
+  type        = string
+  default     = "atlassian/jira-software"
+}
+
 variable "version_tag" {
   description = "Version of Jira Software"
   type        = string
