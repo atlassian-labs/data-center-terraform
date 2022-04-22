@@ -36,7 +36,7 @@ const (
 	bambooLicense     = ""
 
 	// If there is a change in the computational requests, this value should be updated
-	expectedNumberOfNodes = 4
+	expectedNumberOfNodes = 3
 )
 
 type TestConfig struct {
