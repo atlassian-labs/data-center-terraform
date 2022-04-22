@@ -61,7 +61,7 @@ var JiraCorrectVariables = map[string]interface{}{
 		"reserved_code_cache": "512m",
 		"license":             "dummy_license",
 	},
-	"db_master_password":     "dummy_password",
-	"db_master_username":     "dummy_username",
-	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+	"db_master_password": "dummy_password",
+	"db_master_username": "dummy_username",
+	"db_snapshot_id":     "dummy-rds-snapshot-id",
 }

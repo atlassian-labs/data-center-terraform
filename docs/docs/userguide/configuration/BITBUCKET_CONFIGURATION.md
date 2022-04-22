@@ -166,10 +166,10 @@ To restore the dataset into the newly created instance, uncomment the following 
 
 ### Database Snapshot Identifier
 
-`bitbucket_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
+`bitbucket_db_snapshot_id` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
-bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+bitbucket_db_snapshot_id = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
 !!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance."

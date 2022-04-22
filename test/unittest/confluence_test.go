@@ -107,7 +107,7 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"license":      "dummy_license",
 	},
 	"enable_synchrony":         false,
-	"db_snapshot_identifier":   "dummy-snapshot-id",
+	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_master_username":       "dummyUsername",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",

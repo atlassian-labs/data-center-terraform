@@ -193,7 +193,7 @@ variable "jira_db_name" {
   type        = string
 }
 
-variable "jira_db_snapshot_identifier" {
+variable "jira_db_snapshot_id" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
   type        = string
@@ -332,7 +332,7 @@ variable "confluence_collaborative_editing_enabled" {
   default     = true
 }
 
-variable "confluence_db_snapshot_identifier" {
+variable "confluence_db_snapshot_id" {
   description = "The identifier for the Confluence DB snapshot to restore from."
   default     = null
   type        = string
@@ -543,7 +543,7 @@ variable "bitbucket_shared_home_snapshot_id" {
   }
 }
 
-variable "bitbucket_db_snapshot_identifier" {
+variable "bitbucket_db_snapshot_id" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
   type        = string

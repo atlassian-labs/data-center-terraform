@@ -65,7 +65,7 @@ locals {
   }) : yamlencode({})
 
   # Provide additional environment variables to Confluence Helm chart to skip setup wizard when restoring database from snapshot.
-  db_restore_env_vars = var.db_snapshot_identifier != null ? yamlencode({
+  db_restore_env_vars = var.db_snapshot_id != null ? yamlencode({
     confluence = {
       additionalEnvironmentVariables = [
         {

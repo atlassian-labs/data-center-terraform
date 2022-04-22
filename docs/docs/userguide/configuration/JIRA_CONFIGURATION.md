@@ -101,10 +101,10 @@ To restore the dataset into the newly created instance, uncomment the following 
 
 ### Database Snapshot Identifier and Jira license
 
-`jira_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
+`jira_db_snapshot_id` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
-jira_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+jira_db_snapshot_id = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
 `jira_license` takes the license key of Jira product. you must provide Jira license key when a RDS snapshot is used. 
