@@ -1,5 +1,4 @@
 resource "kubernetes_persistent_volume" "shared-home-pv" {
-  count = var.shared_home_size == null ? 0 : 1
   metadata {
     name = "${var.product}-shared-home-pv"
   }
@@ -14,14 +13,13 @@ resource "kubernetes_persistent_volume" "shared-home-pv" {
     persistent_volume_source {
       nfs {
         path   = "/srv/nfs"
-        server = data.kubernetes_service.nfs.spec[0].cluster_ip
+        server = var.nfs_server_ip
       }
     }
   }
 }
 
 resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
-  count = var.shared_home_size == null ? 0 : 1
   metadata {
     name      = "${var.product}-shared-home-pvc"
     namespace = var.namespace
@@ -33,7 +31,7 @@ resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
         storage = var.shared_home_size
       }
     }
-    volume_name        = kubernetes_persistent_volume.shared-home-pv[0].metadata[0].name
+    volume_name        = kubernetes_persistent_volume.shared-home-pv.metadata[0].name
     storage_class_name = local.storage_class
   }
 }

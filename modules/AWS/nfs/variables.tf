@@ -58,9 +58,3 @@ variable "shared_home_snapshot_id" {
     error_message = "Provide correct EBS snapshot ID."
   }
 }
-# The size of the EBS volume to allocate for shared home. If is null no PV and PVC will be created.
-variable "shared_home_size" {
-  description = "The storage capacity to allocate to local home"
-  type        = string
-  default     = null
-}
