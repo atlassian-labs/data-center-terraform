@@ -51,7 +51,7 @@ resource "helm_release" "confluence" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = kubernetes_persistent_volume_claim.shared-home-pvc.metadata[0].name
+              claimName = module.nfs.nfs_claim_name
             }
           }
         }

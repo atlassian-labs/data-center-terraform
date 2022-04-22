@@ -41,42 +41,5 @@ module "nfs" {
   capacity                = var.shared_home_size
   availability_zone       = var.eks.availability_zone
   shared_home_snapshot_id = var.shared_home_snapshot_id
-}
-
-resource "kubernetes_persistent_volume" "shared-home-pv" {
-  metadata {
-    name = "${local.product_name}-shared-home-pv"
-  }
-  spec {
-    capacity = {
-      storage = var.shared_home_size
-    }
-    volume_mode        = "Filesystem"
-    access_modes       = ["ReadWriteMany"]
-    storage_class_name = local.storage_class_name
-    mount_options      = ["rw", "lookupcache=pos", "noatime", "intr", "_netdev", "nfsvers=3", "rsize=32768", "wsize=32768"]
-    persistent_volume_source {
-      nfs {
-        path        = "/srv/nfs"
-        server = module.nfs.helm_release_nfs_service_ip
-      }
-    }
-  }
-}
-
-resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
-  metadata {
-    name      = "${local.product_name}-shared-home-pvc"
-    namespace = var.namespace
-  }
-  spec {
-    access_modes = ["ReadWriteMany"]
-    resources {
-      requests = {
-        storage = var.shared_home_size
-      }
-    }
-    volume_name        = kubernetes_persistent_volume.shared-home-pv.metadata[0].name
-    storage_class_name = local.storage_class_name
-  }
+  shared_home_size        = var.shared_home_size // This will create PVC for Confluence instance
 }
