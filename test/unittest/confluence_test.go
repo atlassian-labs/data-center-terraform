@@ -1,8 +1,9 @@
 package unittest
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
@@ -94,6 +95,7 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"db_allocated_storage": 5,
 		"db_instance_class":    "dummy_db_instance_class",
 		"db_iops":              1000,
+		"db_name":              "confluence",
 	},
 	"replica_count": 1,
 	"confluence_configuration": map[string]interface{}{

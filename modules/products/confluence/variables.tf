@@ -36,10 +36,10 @@ variable "db_configuration" {
   description = "Confluence database spec"
   type        = map(any)
   validation {
-    condition = (length(var.db_configuration) == 3 &&
+    condition = (length(var.db_configuration) == 4 &&
       alltrue([
         for o in keys(var.db_configuration) : contains([
-          "db_allocated_storage", "db_instance_class", "db_iops"
+          "db_allocated_storage", "db_instance_class", "db_iops", "db_name"
         ], o)
     ]))
     error_message = "Confluence database configuration is not valid."

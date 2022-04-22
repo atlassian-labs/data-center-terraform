@@ -67,6 +67,7 @@ var BambooCorrectVariables = map[string]interface{}{
 		"db_allocated_storage": 5,
 		"db_instance_class":    "dummy_db_instance_class",
 		"db_iops":              1000,
+		"db_name":              "bamboo",
 	},
 	"license":             "dummy_license",
 	"admin_username":      "dummy_admin_username",

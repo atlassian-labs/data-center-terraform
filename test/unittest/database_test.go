@@ -61,7 +61,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, inputRdsSnapshotId, planDbSnapshotIdentifier)
 	assert.Equal(t, "postgres", planUserName)
 	assert.Equal(t, "postgres", planEngine)
-	assert.Equal(t, "bamboo", planDbName)
+	assert.Equal(t, dbName, planDbName)
 	assert.Equal(t, inputInstanceClass, planInstanceClass)
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)

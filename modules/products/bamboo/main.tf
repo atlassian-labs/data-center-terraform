@@ -24,4 +24,5 @@ module "database" {
   instance_class          = var.db_configuration["db_instance_class"]
   iops                    = var.db_configuration["db_iops"]
   vpc                     = var.vpc
+  db_name                 = var.db_configuration["db_name"]
 }

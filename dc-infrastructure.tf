@@ -40,6 +40,7 @@ module "bamboo" {
     db_allocated_storage = var.bamboo_db_allocated_storage
     db_instance_class    = var.bamboo_db_instance_class
     db_iops              = var.bamboo_db_iops
+    db_name              = var.bamboo_db_name
   }
 
   bamboo_configuration = {
@@ -83,6 +84,7 @@ module "jira" {
   db_allocated_storage    = var.jira_db_allocated_storage
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
+  db_name                 = var.jira_db_name
   db_snapshot_identifier  = var.jira_db_snapshot_identifier
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
@@ -131,6 +133,7 @@ module "confluence" {
     db_allocated_storage = var.confluence_db_allocated_storage
     db_instance_class    = var.confluence_db_instance_class
     db_iops              = var.confluence_db_iops
+    db_name              = var.confluence_db_name
   }
 
   db_snapshot_identifier   = var.confluence_db_snapshot_identifier
@@ -171,6 +174,7 @@ module "bitbucket" {
   db_allocated_storage    = var.bitbucket_db_allocated_storage
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
+  db_name                 = var.bitbucket_db_name
   db_snapshot_identifier  = var.bitbucket_db_snapshot_identifier
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password

@@ -27,6 +27,16 @@ variable "iops" {
   type        = number
 }
 
+variable "db_name" {
+  description = "The default DB name of the DB instance."
+  validation {
+    condition     = var.db_name == null || can(regex("^[a-zA-Z_][a-zA-Z0-9_]*$", var.db_name))
+    error_message = "Invalid RDS DB name."
+  }
+  default = null
+  type = string
+}
+
 variable "eks" {
   description = "EKS module that hosts the product."
   type        = any

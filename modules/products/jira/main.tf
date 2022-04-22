@@ -41,6 +41,7 @@ module "database" {
   snapshot_identifier     = var.db_snapshot_identifier
   db_master_username      = var.db_master_username
   db_master_password      = var.db_master_password
+  db_name                 = var.db_name
 }
 
 resource "kubernetes_persistent_volume" "share-home-pv" {
