@@ -131,7 +131,7 @@ confluence_shared_home_size = "10Gi"
 #confluence_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Shared home restore configuration
-# To restore shared home dataset, you can provide EBS snapshot ID that contains content of the shared home volume.
+# To restore shared home dataset, you can provide EBS snapshot ID of the shared home volume.
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
