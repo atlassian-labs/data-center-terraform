@@ -368,7 +368,6 @@ var JiraCorrectVariables = map[string]interface{}{
 		"availability_zone":      "dummy-az",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
-	"pvc_claim_name":          "dummy_pvc_claimname",
 	"db_major_engine_version": "12",
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
@@ -410,11 +409,11 @@ var JiraInvalidVariables = map[string]interface{}{
 		"cluster_security_group": "dummy-sg",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
-	"pvc_claim_name":          "invalid@pvc_claimname",
 	"db_major_engine_version": "12",
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
+	"db_name":                 "jira",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
