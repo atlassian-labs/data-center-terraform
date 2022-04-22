@@ -150,6 +150,19 @@ var NfsValidVariable = map[string]interface{}{
 	"product":           productName,
 }
 
+var NfsPVCCreation = map[string]interface{}{
+	"namespace":         nfsVarNamespace,
+	"chart_name":        nfsVarChartNameOverride,
+	"capacity":          nfsVarCapacity,
+	"requests_cpu":      nfsRequestsCpu,
+	"requests_memory":   nfsRequestsMemory,
+	"limits_cpu":        nfsLimitsCpu,
+	"limits_memory":     nfsLimitsMemory,
+	"availability_zone": "dummy-az",
+	"product":           productName,
+	"shared_home_size":  nfsVarCapacity,
+}
+
 // DB
 const databaseModule = "AWS/rds"
 const inputVpcId = "dummy_vpc_id"
