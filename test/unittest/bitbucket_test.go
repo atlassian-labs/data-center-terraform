@@ -84,6 +84,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
+	"db_name":                 "bitbucket",
 	"admin_configuration": map[string]interface{}{
 		"admin_username":      "dummy_admin_username",
 		"admin_password":      "dummy_admin_password",

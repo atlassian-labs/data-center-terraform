@@ -89,8 +89,8 @@ variable "db_configuration" {
   description = "Bamboo database spec"
   type        = map(any)
   validation {
-    condition = (length(var.db_configuration) == 3 &&
-    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops"], o)]))
+    condition = (length(var.db_configuration) == 4 &&
+    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops", "db_name"], o)]))
     error_message = "Bamboo database configuration is not valid."
   }
 }

@@ -47,6 +47,11 @@ variable "db_iops" {
   type        = number
 }
 
+variable "db_name" {
+  description = "The default DB name of the DB instance."
+  type        = string
+}
+
 variable "replica_count" {
   description = "Number of Jira application nodes"
   type        = number
