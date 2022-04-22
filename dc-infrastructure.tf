@@ -89,8 +89,6 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
-
   replica_count = var.jira_replica_count
 
   jira_configuration = {

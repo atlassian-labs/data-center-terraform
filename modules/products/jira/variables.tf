@@ -70,25 +70,25 @@ variable "jira_configuration" {
 variable "nfs_requests_cpu" {
   description = "The minimum CPU compute to request for the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "1"
 }
 
 variable "nfs_requests_memory" {
   description = "The minimum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "1Gi"
 }
 
 variable "nfs_limits_cpu" {
   description = "The maximum CPU compute to allocate to the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "2"
 }
 
 variable "nfs_limits_memory" {
   description = "The maximum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "2Gi"
 }
 
 variable "local_home_size" {
@@ -118,15 +118,6 @@ variable "version_tag" {
   description = "Version of Jira Software"
   type        = string
   default     = null
-}
-
-variable "pvc_claim_name" {
-  description = "Persistent volume claim name for shared home."
-  type        = string
-  validation {
-    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-    error_message = "Invalid claim name."
-  }
 }
 
 variable "db_snapshot_identifier" {

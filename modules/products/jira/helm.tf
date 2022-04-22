@@ -52,7 +52,7 @@ resource "helm_release" "jira" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = kubernetes_persistent_volume_claim.share-home-pvc.metadata.0.name
+              claimName = module.nfs.nfs_claim_name
             }
           }
         }
