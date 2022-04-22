@@ -166,6 +166,7 @@ const inputIops = 1000
 const dbVersion = 13
 const masterPwd = "dummyPassword!"
 const invalidInputRdsInstanceId = "1-"
+const dbName = "duumy_name"
 
 var DbValidVariable = map[string]interface{}{
 	"product":                 inputProduct,
@@ -173,6 +174,7 @@ var DbValidVariable = map[string]interface{}{
 	"instance_class":          inputInstanceClass,
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
+	"db_name":                 dbName,
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -194,6 +196,7 @@ var DbVariableWithDBMasterPassword = map[string]interface{}{
 	"instance_class":          inputInstanceClass,
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
+	"db_name":                 dbName,
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -216,6 +219,7 @@ var DbInvalidVariable = map[string]interface{}{
 	"instance_class":          inputInstanceClass,
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
+	"db_name":                 dbName,
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -270,6 +274,8 @@ var BitbucketInvalidVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
+	"db_name":                 "dummy_db_name",
+
 	"admin_configuration": map[string]interface{}{
 		"invalid":             "dummy_admin_username",
 		"admin_password":      "dummy_admin_password",
@@ -329,6 +335,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"db_allocated_storage": 5,
 		"db_instance_class":    "dummy_db_instance_class",
 		"db_iops":              1000,
+		"db_name":              "dummy_db_name",
 		"invalid_db_config":    "extra",
 	},
 	"replica_count": 1,

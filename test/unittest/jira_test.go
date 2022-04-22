@@ -41,6 +41,7 @@ var JiraCorrectVariables = map[string]interface{}{
 	"db_allocated_storage":    5,
 	"db_instance_class":       "dummy_db_instance_class",
 	"db_iops":                 1000,
+	"db_name":                 "jira",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",

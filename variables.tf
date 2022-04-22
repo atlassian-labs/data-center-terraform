@@ -187,6 +187,12 @@ variable "jira_db_iops" {
   type        = number
 }
 
+variable "jira_db_name" {
+  description = "The default DB name of the DB instance."
+  default     = null
+  type        = string
+}
+
 variable "jira_db_snapshot_identifier" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
@@ -314,6 +320,12 @@ variable "confluence_db_iops" {
   type        = number
 }
 
+variable "confluence_db_name" {
+  description = "The default DB name of the DB instance."
+  default     = null
+  type        = string
+}
+
 variable "confluence_collaborative_editing_enabled" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
@@ -424,6 +436,12 @@ variable "bitbucket_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
+}
+
+variable "bitbucket_db_name" {
+  description = "The default DB name of the DB instance."
+  default     = null
+  type        = string
 }
 
 variable "bitbucket_display_name" {
@@ -691,6 +709,12 @@ variable "bamboo_db_iops" {
   description = "The requested number of I/O operations per second that the DB instance can support."
   default     = 1000
   type        = number
+}
+
+variable "bamboo_db_name" {
+  description = "The default DB name of the DB instance."
+  default     = null
+  type        = string
 }
 
 variable "bamboo_dataset_url" {

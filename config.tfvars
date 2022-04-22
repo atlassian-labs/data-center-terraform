@@ -76,6 +76,8 @@ jira_db_major_engine_version = "12"
 jira_db_instance_class       = "db.t3.micro"
 jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
+# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+jira_db_name = "jira"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
@@ -132,6 +134,8 @@ confluence_db_major_engine_version = "11"
 confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
+# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+confluence_db_name = "confluence"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following lines and provide the snapshot identifier.
@@ -206,6 +210,8 @@ bitbucket_db_major_engine_version = "13"
 bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
+# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+bitbucket_db_name = "bitbucket"
 
 # Bitbucket NFS instance resource configuration
 #bitbucket_nfs_requests_cpu    = "<REQUESTS_CPU>"
@@ -304,6 +310,7 @@ bamboo_db_major_engine_version = "13"
 bamboo_db_instance_class       = "db.t3.micro"
 bamboo_db_allocated_storage    = 100
 bamboo_db_iops                 = 1000
+bamboo_db_name                 = "bamboo"
 
 # (Optional) URL for dataset to import
 # The provided default is the dataset used in the DCAPT framework.
