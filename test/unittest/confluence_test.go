@@ -28,9 +28,6 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "dummy-snapshot-id", dbModule.AttributeValues["snapshot_identifier"])
 	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
 	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
-
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume.shared-home-pv")
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume_claim.shared-home-pvc")
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
