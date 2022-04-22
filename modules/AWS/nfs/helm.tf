@@ -1,6 +1,6 @@
 
 resource "helm_release" "nfs" {
-  chart     = "modules/AWS/nfs/nfs-server"
+  chart     = "helm-charts/nfs-server"
   name      = local.nfs_name
   namespace = var.namespace
 
