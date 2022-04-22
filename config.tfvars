@@ -76,7 +76,7 @@ jira_db_major_engine_version = "12"
 jira_db_instance_class       = "db.t3.micro"
 jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
-# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
 jira_db_name = "jira"
 
 # Database restore configuration
@@ -134,7 +134,7 @@ confluence_db_major_engine_version = "11"
 confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
-# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
 confluence_db_name = "confluence"
 
 # Database restore configuration
@@ -210,7 +210,7 @@ bitbucket_db_major_engine_version = "13"
 bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
-# IF you want to restore the database from a snapshot, please provide the default db name for the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
 bitbucket_db_name = "bitbucket"
 
 # Bitbucket NFS instance resource configuration

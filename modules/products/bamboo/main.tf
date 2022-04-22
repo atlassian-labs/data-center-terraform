@@ -25,5 +25,4 @@ module "database" {
   iops                    = var.db_configuration["db_iops"]
   vpc                     = var.vpc
   db_name                 = var.db_configuration["db_name"]
-
 }
