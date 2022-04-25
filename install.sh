@@ -201,12 +201,21 @@ create_update_infrastructure() {
 
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
+  if [ -n "${FORCE_FLAG}" ]; then
+    log "The script is executed by end2end test. Tagging of ASG and EC2 resources failure will be compromised."
+    set +e
+  fi
   log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
   TAG_MODULE_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
 
   terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
   terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
-  log "Resource tags are applied to ASG and all EC2 instances."
+  if [ $_ == 0 ]; then
+    log "Resource tags are applied to ASG and all EC2 instances."
+  else
+    log "Resource tags are not applied to ASG and all EC2 instances." "ERROR"
+  fi
+  set -e
 }
 
 set_current_context_k8s() {
