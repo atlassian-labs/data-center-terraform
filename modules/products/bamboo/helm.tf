@@ -46,7 +46,7 @@ resource "helm_release" "bamboo" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = var.pvc_claim_name
+              claimName = module.nfs.nfs_claim_name
             }
           }
           subPath = local.sub_path
@@ -102,10 +102,4 @@ resource "helm_release" "bamboo_agent" {
     }),
     local.agent_version_tag,
   ]
-}
-
-resource "random_string" "random" {
-  length  = 10
-  special = false
-  number  = true
 }

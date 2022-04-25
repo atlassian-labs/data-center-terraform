@@ -296,6 +296,13 @@ bamboo_agent_mem = "256m"
 
 # Storage
 bamboo_local_home_size = "10Gi"
+bamboo_shared_home_size = "10Gi"
+
+# Bamboo NFS instance resource configuration
+#bamboo_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#bamboo_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#bamboo_nfs_limits_cpu      = "<LIMITS_CPU>"
+#bamboo_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.

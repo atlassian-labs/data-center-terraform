@@ -28,8 +28,6 @@ module "bamboo" {
 
   dataset_url = var.bamboo_dataset_url
 
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
-
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
   admin_display_name  = var.bamboo_admin_display_name
@@ -60,7 +58,14 @@ module "bamboo" {
     agent_count  = var.number_of_bamboo_agents
   }
 
-  local_home_size = var.bamboo_local_home_size
+  local_home_size  = var.bamboo_local_home_size
+  shared_home_size = var.bamboo_shared_home_size
+
+  nfs_requests_cpu    = var.bamboo_nfs_requests_cpu
+  nfs_requests_memory = var.bamboo_nfs_requests_memory
+  nfs_limits_cpu      = var.bamboo_nfs_limits_cpu
+  nfs_limits_memory   = var.bamboo_nfs_limits_memory
+
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
