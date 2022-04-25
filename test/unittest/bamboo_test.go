@@ -42,6 +42,7 @@ var BambooCorrectVariables = map[string]interface{}{
 			"cluster_ca_certificate": "dummy-certificate",
 		},
 		"cluster_security_group": "dummy-sg",
+		"availability_zone":      "dummy-az",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
 	"pvc_claim_name":          "dummy_pvc_claimname",
