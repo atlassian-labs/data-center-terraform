@@ -65,8 +65,22 @@ jira_min_heap            = "384m"
 jira_max_heap            = "786m"
 jira_reserved_code_cache = "512m"
 
+# Jira NFS instance resource configuration
+#jira_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#jira_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#jira_nfs_limits_cpu      = "<LIMITS_CPU>"
+#jira_nfs_limits_memory   = "<LIMITS_MEMORY>"
+
+# Shared home restore configuration
+# To restore a shared home dataset, you can provide an EBS snapshot ID that contains the content of the shared home volume.
+# This volume will be mounted to the NFS server and used when the product is started.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+
 # Storage
-jira_local_home_size = "10Gi"
+# initial volume size of local/shared home EBS.
+jira_local_home_size  = "10Gi"
+jira_shared_home_size = "10Gi"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
