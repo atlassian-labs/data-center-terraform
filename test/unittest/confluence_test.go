@@ -29,7 +29,6 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "dummy-snapshot-id", dbModule.AttributeValues["snapshot_identifier"])
 	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
 	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
-
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -42,7 +41,6 @@ func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
 	assert.Contains(t, err.Error(), "Confluence database configuration is not valid.")
 	assert.Contains(t, err.Error(), "Confluence configuration is not valid.")
-	assert.Contains(t, err.Error(), "Invalid claim name.")
 	assert.Contains(t, err.Error(), "Invalid build number.")
 }
 
@@ -62,7 +60,6 @@ func TestConfluenceVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"db_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"replica_count\" is not set")
 	assert.Contains(t, err.Error(), "\"confluence_configuration\" is not set")
-	assert.Contains(t, err.Error(), "\"pvc_claim_name\" is not set")
 	assert.Contains(t, err.Error(), "\"enable_synchrony\" is not set")
 }
 
@@ -78,9 +75,9 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 			"cluster_ca_certificate": "dummy-certificate",
 		},
 		"cluster_security_group": "dummy-sg",
+		"availability_zone":      "dummy-az",
 	},
-	"vpc":            VpcDefaultModuleVariable,
-	"pvc_claim_name": "dummy_pvc_claimname",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",

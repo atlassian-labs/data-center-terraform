@@ -50,7 +50,7 @@ confluence_license = "<LICENSE_KEY>"
 
     `confluence_license` is marked as sensitive, storing in a plain-text `config.tfvars` file is not recommended. 
 
-    Please refer to [Sensitive Data](#sensitive-data) section.
+    Please refer to [Sensitive Data](../CONFIGURATION.md#sensitive-data) section.
 
 ### Instance resource configuration
 
@@ -61,6 +61,14 @@ confluence_cpu                 = "2"
 confluence_mem                 = "1Gi"
 confluence_min_heap            = "256m"
 confluence_max_heap            = "512m"
+```
+
+### Collaborative editing
+
+`confluence_collaborative_editing_enabled` enables [Collaborative editing](https://confluence.atlassian.com/doc/collaborative-editing-858771779.html). (default: `true`)
+
+```terraform
+confluence_collaborative_editing_enabled = true
 ```
 
 ## RDS Configuration
@@ -107,15 +115,27 @@ confluence_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
-### Collaborative editing
-
-`confluence_collaborative_editing_enabled` enables [Collaborative editing](https://confluence.atlassian.com/doc/collaborative-editing-858771779.html). (default: `true`)
+## Shared home configuration
+### Shared home size
+`confluence_shared_home_size` sets the size of shared home storage in Gi. Default is 10Gi.
 
 ```terraform
-confluence_collaborative_editing_enabled = true
+confluence_shared_home_size = "10Gi"
 ```
 
-## Database restore configuration
+### NFS server resource configuration
+NFS is used as shared home storage for Confluence. The deployment will create an NFS server within the cluster.
+The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
+
+```terraform
+# Confluence NFS instance resource configuration
+confluence_nfs_requests_cpu    = "1"
+confluence_nfs_requests_memory = "1Gi"
+confluence_nfs_limits_cpu      = "2"
+confluence_nfs_limits_memory   = "2Gi"
+```
+
+## Dataset restore configuration
 To restore the dataset into the newly created instance, configure all the parameters in this section.
 
 ### Database Snapshot Identifier
@@ -156,7 +176,19 @@ confluence_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 Without a matching build number, Confluence will not be able to start. 
 [List of build numbers](https://developer.atlassian.com/server/confluence/confluence-build-information/).
 
-
 ```terraform
 confluence_db_snapshot_build_number = "<BUILD_NUMBER>" # e.g. "8703"
 ```
+
+### Shared home snapshot id
+To restore a shared home dataset, you can provide an EBS snapshot id that contains content of the shared home volume.
+This volume will then be mounted to the NFS server and used when the product is started.
+
+`confluence_shared_home_snapshot_id` sets the id of shared home EBS snapshot. 
+Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
+
+```terraform
+confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+```
+
+??? Warning "Snapshot and your environment must be in same region"  

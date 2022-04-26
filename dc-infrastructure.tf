@@ -124,7 +124,6 @@ module "confluence" {
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
   ingress          = module.base-infrastructure.ingress
-  pvc_claim_name   = module.base-infrastructure.pvc_claim_name
 
   db_major_engine_version = var.confluence_db_major_engine_version
   db_configuration = {
@@ -139,7 +138,9 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count = var.confluence_replica_count
+  replica_count    = var.confluence_replica_count
+  version_tag      = var.confluence_version_tag
+  enable_synchrony = var.confluence_collaborative_editing_enabled
 
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
@@ -151,8 +152,14 @@ module "confluence" {
   }
 
   local_home_size  = var.confluence_local_home_size
-  version_tag      = var.confluence_version_tag
-  enable_synchrony = var.confluence_collaborative_editing_enabled
+  shared_home_size = var.confluence_shared_home_size
+
+  nfs_requests_cpu    = var.confluence_nfs_requests_cpu
+  nfs_requests_memory = var.confluence_nfs_requests_memory
+  nfs_limits_cpu      = var.confluence_nfs_limits_cpu
+  nfs_limits_memory   = var.confluence_nfs_limits_memory
+
+  shared_home_snapshot_id = var.confluence_shared_home_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path

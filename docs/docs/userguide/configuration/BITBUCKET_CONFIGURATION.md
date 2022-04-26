@@ -137,14 +137,12 @@ You may want to adjust these values according to your needs. For more informatio
 
 The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
 
-
-
 ```terraform
 # Bitbucket NFS instance resource configuration
-bitbucket_nfs_requests_cpu    = "0.25"
-bitbucket_nfs_requests_memory = "256Mi"
-bitbucket_nfs_limits_cpu      = "0.25"
-bitbucket_nfs_limits_memory   = "256Mi"
+bitbucket_nfs_requests_cpu    = "1"
+bitbucket_nfs_requests_memory = "1Gi"
+bitbucket_nfs_limits_cpu      = "2"
+bitbucket_nfs_limits_memory   = "2Gi"
 ```
 
 ### Elasticsearch Configuration
@@ -195,3 +193,16 @@ bitbucket_db_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
 ```terraform
 bitbucket_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 ```
+
+### Shared home snapshot id
+To restore a shared home dataset, you can provide an EBS snapshot ID that contains the content of the shared home volume.
+This volume will then be mounted to the NFS server and used when the product is started.
+
+`bitbucket_shared_home_snapshot_id` sets the id of the shared home EBS snapshot to use. This will spin up an EBS volume that will be mounted to the NFS server and used when the product is started.
+Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
+
+```terraform
+bitbucket_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+```
+
+??? Warning "Snapshot and your environment must be in same region"  

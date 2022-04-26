@@ -137,7 +137,20 @@ confluence_min_heap = "1024m"
 confluence_max_heap = "2048m"
 
 # Storage
-confluence_local_home_size = "10Gi"
+confluence_local_home_size  = "10Gi"
+confluence_shared_home_size = "10Gi"
+
+# Confluence NFS instance resource configuration
+#confluence_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#confluence_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#confluence_nfs_limits_cpu      = "<LIMITS_CPU>"
+#confluence_nfs_limits_memory   = "<LIMITS_MEMORY>"
+
+# Shared home restore configuration
+# To restore shared home dataset, you can provide EBS snapshot ID of the shared home volume.
+# This volume will be mounted to the NFS server and used when the product is started.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
