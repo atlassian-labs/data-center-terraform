@@ -45,7 +45,6 @@ var BambooCorrectVariables = map[string]interface{}{
 		"availability_zone":      "dummy-az",
 	},
 	"vpc":                     VpcDefaultModuleVariable,
-	"pvc_claim_name":          "dummy_pvc_claimname",
 	"db_major_engine_version": "13",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
