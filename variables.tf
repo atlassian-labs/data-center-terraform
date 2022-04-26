@@ -227,6 +227,46 @@ variable "jira_db_master_password" {
   }
 }
 
+variable "jira_shared_home_size" {
+  description = "Storage size for Jira shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "jira_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "jira_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "jira_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "jira_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "jira_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.jira_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.jira_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################

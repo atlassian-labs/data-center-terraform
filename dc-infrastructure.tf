@@ -89,8 +89,6 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
-
   replica_count = var.jira_replica_count
 
   jira_configuration = {
@@ -102,10 +100,18 @@ module "jira" {
     reserved_code_cache = var.jira_reserved_code_cache
     license             = var.jira_license
   }
-
-  local_home_size = var.jira_local_home_size
-
   version_tag = var.jira_version_tag
+
+  local_home_size  = var.jira_local_home_size
+  shared_home_size = var.jira_shared_home_size
+
+  nfs_requests_cpu    = var.jira_nfs_requests_cpu
+  nfs_requests_memory = var.jira_nfs_requests_memory
+  nfs_limits_cpu      = var.jira_nfs_limits_cpu
+  nfs_limits_memory   = var.jira_nfs_limits_memory
+
+  shared_home_snapshot_id = var.jira_shared_home_snapshot_id
+
 }
 
 module "confluence" {
