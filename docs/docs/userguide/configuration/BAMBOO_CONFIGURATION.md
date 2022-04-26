@@ -157,6 +157,15 @@ bamboo_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+
+### Database name
+
+`bamboo_db_name` defines the name of database used for Bamboo in RDS instance.
+
+```terraform
+bamboo_db_name = "bamboo"
+```
+
 ### Restoring from Backup
 
 To restore data from an existing [Bamboo backup](https://confluence.atlassian.com/bamboo/exporting-data-for-backup-289277255.html){.external},
