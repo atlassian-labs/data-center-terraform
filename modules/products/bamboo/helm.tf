@@ -7,7 +7,7 @@ resource "helm_release" "bamboo" {
   repository = local.helm_chart_repository
   chart      = local.bamboo_helm_chart_name
   version    = local.bamboo_helm_chart_version
-  timeout    = 40 * 60 # dataset import can take a long time
+  timeout    = 10 * 60
 
   values = [
     yamlencode({
@@ -49,7 +49,6 @@ resource "helm_release" "bamboo" {
               claimName = module.nfs.nfs_claim_name
             }
           }
-          subPath = local.sub_path
         }
       }
     }),
