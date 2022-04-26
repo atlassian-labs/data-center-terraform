@@ -53,6 +53,36 @@ variable "local_home_size" {
   default     = "10Gi"
 }
 
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to the NFS"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
 variable "license" {
   description = "License to use for Bamboo"
   type        = string
@@ -113,15 +143,6 @@ variable "local_agent_chart_path" {
     error_message = "Invalid local Bamboo Agent Helm chart path."
   }
   default = ""
-}
-
-variable "pvc_claim_name" {
-  description = "Persistent volume claim name for shared home."
-  type        = string
-  validation {
-    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-    error_message = "Invalid claim name."
-  }
 }
 
 variable "admin_username" {
