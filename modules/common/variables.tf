@@ -47,15 +47,6 @@ variable "namespace" {
   }
 }
 
-variable "shared_home_size" {
-  description = "Shared home persistent volume size."
-  type        = string
-  validation {
-    condition     = can(regex("^[0-9]+([mMgG]|Gi)$", var.shared_home_size)) || var.shared_home_size == null
-    error_message = "Invalid shared home persistent volume size. Should be a number followed by 'm' or 'g'."
-  }
-}
-
 variable "enable_ssh_tcp" {
   description = "If true, TCP will be enabled at ingress controller level."
   type        = bool
