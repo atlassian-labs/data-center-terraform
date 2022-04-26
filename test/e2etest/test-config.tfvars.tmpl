@@ -26,7 +26,7 @@ resource_tags = {
 }
 
 # Instance types that is preferred for node group.
-instance_types = ["m5.xlarge"]
+instance_types = ["m5.2xlarge"]
 
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 {{if .domain}}domain = "{{.domain}}"{{end}}
