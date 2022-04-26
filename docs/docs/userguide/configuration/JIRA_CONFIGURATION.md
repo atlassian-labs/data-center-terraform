@@ -157,7 +157,7 @@ jira_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 ```
 ### Shared Home Restore
 
-`jira_shared_home_snapshot_id` sets id of shared home EBS snapshot. This will spin up EBS volume and it will be mounted to the NFS server and used when the product is started.
+`jira_shared_home_snapshot_id` sets the id of the shared home EBS snapshot to use. This will spin up an EBS volume that will be mounted to the NFS server and used when the product is started.
 ```terraform
 jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 ```
