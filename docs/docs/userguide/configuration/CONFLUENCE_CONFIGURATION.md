@@ -181,7 +181,7 @@ confluence_db_snapshot_build_number = "<BUILD_NUMBER>" # e.g. "8703"
 ```
 
 ### Shared home snapshot id
-To restore shared home dataset, you can provide an EBS snapshot that contains content of the shared home volume.
+To restore a shared home dataset, you can provide an EBS snapshot id that contains content of the shared home volume.
 This volume will then be mounted to the NFS server and used when the product is started.
 
 `confluence_shared_home_snapshot_id` sets the id of shared home EBS snapshot. 

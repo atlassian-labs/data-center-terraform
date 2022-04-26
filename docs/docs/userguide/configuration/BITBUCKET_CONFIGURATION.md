@@ -195,10 +195,10 @@ bitbucket_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 ```
 
 ### Shared home snapshot id
-To restore shared home dataset, you can provide an EBS snapshot that contains content of the shared home volume.
+To restore a shared home dataset, you can provide an EBS snapshot ID that contains the content of the shared home volume.
 This volume will then be mounted to the NFS server and used when the product is started.
 
-`bitbucket_shared_home_snapshot_id` sets the id of shared home EBS snapshot.
+`bitbucket_shared_home_snapshot_id` sets the id of the shared home EBS snapshot to use. This will spin up an EBS volume that will be mounted to the NFS server and used when the product is started.
 Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
 
 ```terraform
