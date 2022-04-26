@@ -118,4 +118,4 @@ Running the installation script with no parameters will use the default configur
     This saves the decoded username and password to the `$DB_USERNAME` and `$DB_PASSWORD` environment variables respectively.
 
 ## Uninstall 
-The deployment and all of its associated resources can be un-installed by following the [Uninstallation and cleanup](../userguide/CLEANUP.md) guide.
+The deployment and all of its associated resources can be un-installed by following the [Uninstallation and cleanup](CLEANUP.md) guide.
