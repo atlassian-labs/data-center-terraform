@@ -93,6 +93,11 @@ jira_db_iops                 = 1000
 
 confluence_license                 = "{{.confluence_license}}"
 
+confluence_nfs_requests_cpu    = "0.25"
+confluence_nfs_requests_memory = "256Mi"
+confluence_nfs_limits_cpu      = "0.25"
+confluence_nfs_limits_memory   = "256Mi"
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################
@@ -103,3 +108,8 @@ bitbucket_admin_display_name  = "Admin"
 bitbucket_admin_email_address = "admin@example.com"
 
 bitbucket_license        = "{{.bitbucket_license}}"
+
+bitbucket_nfs_requests_cpu    = "0.25"
+bitbucket_nfs_requests_memory = "256Mi"
+bitbucket_nfs_limits_cpu      = "0.25"
+bitbucket_nfs_limits_memory   = "256Mi"

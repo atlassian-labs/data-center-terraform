@@ -402,6 +402,42 @@ variable "confluence_db_master_password" {
   default     = null
 }
 
+variable "confluence_shared_home_size" {
+  description = "Storage size for Confluence shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "confluence_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "confluence_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "confluence_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "confluence_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "confluence_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
@@ -535,25 +571,25 @@ variable "bitbucket_shared_home_size" {
 variable "bitbucket_nfs_requests_cpu" {
   description = "The minimum CPU compute to request for the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "1"
 }
 
 variable "bitbucket_nfs_requests_memory" {
   description = "The minimum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "1Gi"
 }
 
 variable "bitbucket_nfs_limits_cpu" {
   description = "The maximum CPU compute to allocate to the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "2"
 }
 
 variable "bitbucket_nfs_limits_memory" {
   description = "The maximum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_cpu" {
@@ -579,14 +615,11 @@ variable "bitbucket_elasticsearch_replicas" {
   type        = number
   default     = 2
 }
+
 variable "bitbucket_shared_home_snapshot_id" {
   description = "EBS Snapshot ID with shared home content."
   type        = string
   default     = null
-  validation {
-    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.bitbucket_shared_home_snapshot_id))
-    error_message = "Provide correct EBS snapshot ID."
-  }
 }
 
 variable "bitbucket_db_snapshot_identifier" {
