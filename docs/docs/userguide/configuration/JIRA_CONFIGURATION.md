@@ -20,6 +20,20 @@ For more information, see [Jira Version Tags](https://hub.docker.com/r/atlassian
 jira_version_tag = "<JIRA_VERSION_TAG>"
 ```
 
+### Jira image repository
+
+To change the Jira edition you can set a different image repository. By default, Jira Software edition is installed. 
+You need to make sure the appropriate version defined in `jira_version_tag` is available for the selected Jira edition.
+
+```terraform
+jira_image_repository = "<JIRA_IMAGE_REPOSITORY>"
+```
+
+!!! info "Supported image repository values"
+    * [`atlassian/jira-software`](https://hub.docker.com/r/atlassian/jira-software/tags)
+    * [`atlassian/jira-servicemanagement`](https://hub.docker.com/r/atlassian/jira-servicemanagement/tags)
+
+
 ### Number of Jira application nodes
 
 The initial Jira installation needs to be started with a single application node. After all the setup steps
