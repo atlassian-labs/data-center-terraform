@@ -202,7 +202,7 @@ create_update_infrastructure() {
 # Apply the tags into ASG and EC2 instances created by ASG
 add_tags_to_asg_resources() {
   if [ -n "${FORCE_FLAG}" ]; then
-    log "The script is executed by end2end test. Tagging of ASG and EC2 resources failure will be compromised."
+    log "The script is executed by end2end test. Failure in tagging of ASG and EC2 resources will not cause the script to error out."
     set +e
   fi
   log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
@@ -213,7 +213,7 @@ add_tags_to_asg_resources() {
   if [ $? == 0 ]; then
     log "Resource tags were applied to ASG and all EC2 instances."
   else
-    log "Resource tags are not applied to ASG and all EC2 instances." "ERROR"
+    log "Resource tags were not applied to ASG and all EC2 instances." "ERROR"
   fi
   set -e
 }
