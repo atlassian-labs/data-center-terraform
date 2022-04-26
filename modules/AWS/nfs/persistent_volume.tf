@@ -1,4 +1,4 @@
-resource "kubernetes_persistent_volume" "shared-home-pv" {
+resource "kubernetes_persistent_volume" "product_shared_home_pv" {
   metadata {
     name = "${var.product}-shared-home-pv"
   }
@@ -19,7 +19,7 @@ resource "kubernetes_persistent_volume" "shared-home-pv" {
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
+resource "kubernetes_persistent_volume_claim" "product_shared_home_pvc" {
   metadata {
     name      = "${var.product}-shared-home-pvc"
     namespace = var.namespace
@@ -31,7 +31,7 @@ resource "kubernetes_persistent_volume_claim" "shared-home-pvc" {
         storage = var.shared_home_size
       }
     }
-    volume_name        = kubernetes_persistent_volume.shared-home-pv.metadata[0].name
+    volume_name        = kubernetes_persistent_volume.product_shared_home_pv.metadata[0].name
     storage_class_name = local.storage_class
   }
 }

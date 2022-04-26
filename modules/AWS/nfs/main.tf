@@ -10,7 +10,7 @@ resource "aws_ebs_volume" "shared_home" {
   }
 }
 
-resource "kubernetes_persistent_volume" "shared_home" {
+resource "kubernetes_persistent_volume" "nfs_shared_home" {
   metadata {
     name = "${local.nfs_name}-pv"
   }
@@ -28,7 +28,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "shared_home" {
+resource "kubernetes_persistent_volume_claim" "nfs_shared_home" {
   metadata {
     name      = "${local.nfs_name}-pvc"
     namespace = var.namespace
@@ -41,7 +41,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
       }
     }
     storage_class_name = local.storage_class
-    volume_name        = kubernetes_persistent_volume.shared_home.metadata.0.name
+    volume_name        = kubernetes_persistent_volume.nfs_shared_home.metadata.0.name
   }
 }
 
