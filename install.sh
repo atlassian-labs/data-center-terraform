@@ -211,7 +211,7 @@ add_tags_to_asg_resources() {
   terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
   terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
   if [ $? == 0 ]; then
-    log "Resource tags are applied to ASG and all EC2 instances."
+    log "Resource tags were applied to ASG and all EC2 instances."
   else
     log "Resource tags are not applied to ASG and all EC2 instances." "ERROR"
   fi
