@@ -682,7 +682,7 @@ variable "bamboo_local_home_size" {
 }
 
 variable "bamboo_shared_home_size" {
-  description = "Storage size for Jira shared home"
+  description = "Storage size for Bamboo shared home"
   type        = string
   default     = "10Gi"
 }
