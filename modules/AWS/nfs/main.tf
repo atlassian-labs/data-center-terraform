@@ -2,7 +2,7 @@ resource "aws_ebs_volume" "shared_home" {
   availability_zone = var.availability_zone
 
   snapshot_id = var.shared_home_snapshot_id != null ? var.shared_home_snapshot_id : null
-  size        = tonumber(regex("\\d+", var.capacity))
+  size        = tonumber(regex("\\d+", var.shared_home_size))
   type        = local.storage_class
 
   tags = {
@@ -17,7 +17,7 @@ resource "kubernetes_persistent_volume" "shared_home" {
   spec {
     access_modes = ["ReadWriteOnce"]
     capacity = {
-      storage = var.capacity
+      storage = var.shared_home_size
     }
     storage_class_name = local.storage_class
     persistent_volume_source {
@@ -37,7 +37,7 @@ resource "kubernetes_persistent_volume_claim" "shared_home" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = var.capacity
+        storage = var.shared_home_size
       }
     }
     storage_class_name = local.storage_class
