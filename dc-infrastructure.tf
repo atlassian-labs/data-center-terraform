@@ -104,7 +104,8 @@ module "jira" {
     reserved_code_cache = var.jira_reserved_code_cache
     license             = var.jira_license
   }
-  version_tag = var.jira_version_tag
+  image_repository = var.jira_image_repository
+  version_tag      = var.jira_version_tag
 
   local_home_size  = var.jira_local_home_size
   shared_home_size = var.jira_shared_home_size
@@ -115,7 +116,6 @@ module "jira" {
   nfs_limits_memory   = var.jira_nfs_limits_memory
 
   shared_home_snapshot_id = var.jira_shared_home_snapshot_id
-
 }
 
 module "confluence" {

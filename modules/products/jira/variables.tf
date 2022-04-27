@@ -103,7 +103,6 @@ variable "shared_home_size" {
   default     = "10Gi"
 }
 
-
 variable "shared_home_snapshot_id" {
   description = "EBS Snapshot ID with shared home content."
   type        = string
@@ -112,6 +111,12 @@ variable "shared_home_snapshot_id" {
     condition     = var.shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.shared_home_snapshot_id))
     error_message = "Provide correct EBS snapshot ID."
   }
+}
+
+variable "image_repository" {
+  description = "Jira image repository"
+  type        = string
+  default     = "atlassian/jira-software"
 }
 
 variable "version_tag" {
