@@ -24,6 +24,7 @@ jira_version_tag = "<JIRA_VERSION_TAG>"
 
 To change the Jira edition you can set a different image repository. By default, Jira Software edition is installed. 
 You need to make sure the appropriate version defined in `jira_version_tag` is available for the selected Jira edition.
+See below the available tags for each edition.
 
 ```terraform
 jira_image_repository = "<JIRA_IMAGE_REPOSITORY>"

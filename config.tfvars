@@ -59,9 +59,8 @@ jira_replica_count = 1
 
 # To select a different image repository for the Jira application, you can change following variable:
 # Official suitable values are:
-# * "atlassian/jira-software"
-# * "atlassian/jira-servicemanagement"
-# * "atlassian/jira-core"
+# - "atlassian/jira-software"
+# - "atlassian/jira-servicemanagement"
 #jira_image_repository = "atlassian/jira-software"
 
 # Jira instance resource configuration
@@ -332,7 +331,7 @@ bamboo_agent_cpu = "0.25"
 bamboo_agent_mem = "256m"
 
 # Storage
-bamboo_local_home_size = "10Gi"
+bamboo_local_home_size  = "10Gi"
 bamboo_shared_home_size = "10Gi"
 
 # Bamboo NFS instance resource configuration
