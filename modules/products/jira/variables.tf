@@ -67,25 +67,57 @@ variable "jira_configuration" {
   }
 }
 
+variable "nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
 variable "local_home_size" {
   description = "The storage capacity to allocate to local home"
   type        = string
   default     = "10Gi"
 }
 
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to the NFS"
+  type        = string
+  default     = "10Gi"
+}
+
+
+variable "shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 variable "version_tag" {
   description = "Version of Jira Software"
   type        = string
   default     = null
-}
-
-variable "pvc_claim_name" {
-  description = "Persistent volume claim name for shared home."
-  type        = string
-  validation {
-    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-    error_message = "Invalid claim name."
-  }
 }
 
 variable "db_snapshot_id" {

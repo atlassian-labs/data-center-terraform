@@ -87,5 +87,4 @@ locals {
       ]
     }
   }) : yamlencode({})
-
 }

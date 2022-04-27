@@ -189,7 +189,7 @@ variable "jira_db_iops" {
 
 variable "jira_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "jira"
   type        = string
 }
 
@@ -224,6 +224,46 @@ variable "jira_db_master_password" {
   validation {
     condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?<>,.]).{8,}$", var.jira_db_master_password)) || var.jira_db_master_password == null
     error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
+variable "jira_shared_home_size" {
+  description = "Storage size for Jira shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "jira_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "jira_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "jira_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "jira_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "jira_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.jira_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.jira_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
   }
 }
 
@@ -322,7 +362,7 @@ variable "confluence_db_iops" {
 
 variable "confluence_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "confluence"
   type        = string
 }
 
@@ -352,6 +392,42 @@ variable "confluence_db_master_username" {
 
 variable "confluence_db_master_password" {
   description = "Master password for the Confluence RDS instance."
+  type        = string
+  default     = null
+}
+
+variable "confluence_shared_home_size" {
+  description = "Storage size for Confluence shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "confluence_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "confluence_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "confluence_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "confluence_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "confluence_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
   type        = string
   default     = null
 }
@@ -440,7 +516,7 @@ variable "bitbucket_db_iops" {
 
 variable "bitbucket_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bitbucket"
   type        = string
 }
 
@@ -489,25 +565,25 @@ variable "bitbucket_shared_home_size" {
 variable "bitbucket_nfs_requests_cpu" {
   description = "The minimum CPU compute to request for the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "1"
 }
 
 variable "bitbucket_nfs_requests_memory" {
   description = "The minimum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "1Gi"
 }
 
 variable "bitbucket_nfs_limits_cpu" {
   description = "The maximum CPU compute to allocate to the NFS instance"
   type        = string
-  default     = "0.25"
+  default     = "2"
 }
 
 variable "bitbucket_nfs_limits_memory" {
   description = "The maximum amount of memory to allocate to the NFS instance"
   type        = string
-  default     = "256Mi"
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_cpu" {
@@ -533,14 +609,11 @@ variable "bitbucket_elasticsearch_replicas" {
   type        = number
   default     = 2
 }
+
 variable "bitbucket_shared_home_snapshot_id" {
   description = "EBS Snapshot ID with shared home content."
   type        = string
   default     = null
-  validation {
-    condition     = var.bitbucket_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.bitbucket_shared_home_snapshot_id))
-    error_message = "Provide correct EBS snapshot ID."
-  }
 }
 
 variable "bitbucket_db_snapshot_id" {
@@ -681,6 +754,36 @@ variable "bamboo_local_home_size" {
   default     = "10Gi"
 }
 
+variable "bamboo_shared_home_size" {
+  description = "Storage size for Bamboo shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "bamboo_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "bamboo_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bamboo_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "bamboo_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
 variable "bamboo_install_local_chart" {
   description = "If true installs Bamboo and Agents using local Helm charts located in local_helm_charts_path"
   type        = bool
@@ -713,7 +816,7 @@ variable "bamboo_db_iops" {
 
 variable "bamboo_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bamboo"
   type        = string
 }
 

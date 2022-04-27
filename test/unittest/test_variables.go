@@ -109,24 +109,6 @@ var EksDefaultModuleVariable = map[string]interface{}{
 	},
 }
 
-// EFS
-
-var EfsValidVariable = map[string]interface{}{
-	"efs_name":                     "test-efs",
-	"region_name":                  "us-east-1",
-	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVariable,
-	"csi_controller_replica_count": 1,
-}
-
-var EfsInvalidVariable = map[string]interface{}{
-	"efs_name":                     "test-efs",
-	"region_name":                  "invalid-region",
-	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVariable,
-	"csi_controller_replica_count": 1,
-}
-
 // NFS
 const nfsVarNamespace = "test-name-space"
 const nfsVarChartNameOverride = "test-nfs-override-name"
@@ -148,6 +130,19 @@ var NfsValidVariable = map[string]interface{}{
 	"limits_memory":     nfsLimitsMemory,
 	"availability_zone": "dummy-az",
 	"product":           productName,
+}
+
+var NfsPVCCreation = map[string]interface{}{
+	"namespace":         nfsVarNamespace,
+	"chart_name":        nfsVarChartNameOverride,
+	"capacity":          nfsVarCapacity,
+	"requests_cpu":      nfsRequestsCpu,
+	"requests_memory":   nfsRequestsMemory,
+	"limits_cpu":        nfsLimitsCpu,
+	"limits_memory":     nfsLimitsMemory,
+	"availability_zone": "dummy-az",
+	"product":           productName,
+	"shared_home_size":  nfsVarCapacity,
 }
 
 // DB
@@ -319,8 +314,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":            VpcDefaultModuleVariable,
-	"pvc_claim_name": "invalid@pvc_claimname",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -351,4 +345,88 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "invalid.build.number",
+}
+
+// Jira
+
+var JiraCorrectVariables = map[string]interface{}{
+	"environment_name": "dummy-environment",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+		"availability_zone":      "dummy-az",
+	},
+	"vpc":                     VpcDefaultModuleVariable,
+	"db_major_engine_version": "12",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"db_name":                 "jira",
+	"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
+	"replica_count": 1,
+	"jira_configuration": map[string]interface{}{
+		"helm_version":        "1.0.0",
+		"cpu":                 "2",
+		"mem":                 "2Gi",
+		"min_heap":            "384m",
+		"max_heap":            "786m",
+		"reserved_code_cache": "512m",
+		"license":             "dummy_license",
+	},
+	"db_master_password":     "dummy_password",
+	"db_master_username":     "dummy_username",
+	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+}
+
+var JiraInvalidVariables = map[string]interface{}{
+	"environment_name": "invalid?environment",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+	},
+	"vpc":                     VpcDefaultModuleVariable,
+	"db_major_engine_version": "12",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"db_name":                 "jira",
+	"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
+	"replica_count": 1,
+	"jira_configuration": map[string]interface{}{
+		"helm_version":        "1.0.0",
+		"cpu":                 "2",
+		"mem":                 "2Gi",
+		"min_heap":            "384m",
+		"max_heap":            "786m",
+		"reserved_code_cache": "512m",
+	},
+	"db_master_password":     "dummy_password",
+	"db_master_username":     "dummy_username",
+	"db_snapshot_identifier": "dummy-rds-snapshot-id",
 }

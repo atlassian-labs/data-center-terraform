@@ -10,7 +10,6 @@ module "base-infrastructure" {
   min_cluster_capacity = var.min_cluster_capacity
   domain               = var.domain
   namespace            = local.namespace
-  shared_home_size     = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
@@ -27,8 +26,6 @@ module "bamboo" {
   ingress          = module.base-infrastructure.ingress
 
   dataset_url = var.bamboo_dataset_url
-
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
@@ -60,7 +57,14 @@ module "bamboo" {
     agent_count  = var.number_of_bamboo_agents
   }
 
-  local_home_size = var.bamboo_local_home_size
+  local_home_size  = var.bamboo_local_home_size
+  shared_home_size = var.bamboo_shared_home_size
+
+  nfs_requests_cpu    = var.bamboo_nfs_requests_cpu
+  nfs_requests_memory = var.bamboo_nfs_requests_memory
+  nfs_limits_cpu      = var.bamboo_nfs_limits_cpu
+  nfs_limits_memory   = var.bamboo_nfs_limits_memory
+
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
@@ -89,8 +93,6 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
-
   replica_count = var.jira_replica_count
 
   jira_configuration = {
@@ -102,10 +104,18 @@ module "jira" {
     reserved_code_cache = var.jira_reserved_code_cache
     license             = var.jira_license
   }
-
-  local_home_size = var.jira_local_home_size
-
   version_tag = var.jira_version_tag
+
+  local_home_size  = var.jira_local_home_size
+  shared_home_size = var.jira_shared_home_size
+
+  nfs_requests_cpu    = var.jira_nfs_requests_cpu
+  nfs_requests_memory = var.jira_nfs_requests_memory
+  nfs_limits_cpu      = var.jira_nfs_limits_cpu
+  nfs_limits_memory   = var.jira_nfs_limits_memory
+
+  shared_home_snapshot_id = var.jira_shared_home_snapshot_id
+
 }
 
 module "confluence" {
@@ -118,7 +128,6 @@ module "confluence" {
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
   ingress          = module.base-infrastructure.ingress
-  pvc_claim_name   = module.base-infrastructure.pvc_claim_name
 
   db_major_engine_version = var.confluence_db_major_engine_version
   db_configuration = {
@@ -133,7 +142,9 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count = var.confluence_replica_count
+  replica_count    = var.confluence_replica_count
+  version_tag      = var.confluence_version_tag
+  enable_synchrony = var.confluence_collaborative_editing_enabled
 
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
@@ -145,8 +156,14 @@ module "confluence" {
   }
 
   local_home_size  = var.confluence_local_home_size
-  version_tag      = var.confluence_version_tag
-  enable_synchrony = var.confluence_collaborative_editing_enabled
+  shared_home_size = var.confluence_shared_home_size
+
+  nfs_requests_cpu    = var.confluence_nfs_requests_cpu
+  nfs_requests_memory = var.confluence_nfs_requests_memory
+  nfs_limits_cpu      = var.confluence_nfs_limits_cpu
+  nfs_limits_memory   = var.confluence_nfs_limits_memory
+
+  shared_home_snapshot_id = var.confluence_shared_home_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path

@@ -24,14 +24,14 @@ resource "kubernetes_job" "import_dataset" {
           }
           command = [
             "/bin/sh", "-c",
-            "mkdir /shared-home/${local.sub_path} && apk update && apk add wget && wget ${var.dataset_url} -O /shared-home/${local.sub_path}/${local.dataset_filename}"
+            "apk update && apk add wget && wget ${var.dataset_url} -O /shared-home/${local.dataset_filename}"
           ]
         }
         restart_policy = "Never"
         volume {
           name = "shared-home"
           persistent_volume_claim {
-            claim_name = var.pvc_claim_name
+            claim_name = module.nfs.nfs_claim_name
           }
         }
       }

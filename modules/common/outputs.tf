@@ -18,19 +18,9 @@ output "eks" {
   description = "EKS Module"
 }
 
-output "efs" {
-  value       = local.create_shared_home && length(module.efs) == 1 ? module.efs[0] : null
-  description = "EFS Module"
-}
-
 output "ingress" {
   value       = module.ingress
   description = "Ingress Module"
-}
-
-output "pvc_claim_name" {
-  value       = local.create_shared_home ? kubernetes_persistent_volume_claim.atlassian-dc-share-home-pvc[0].metadata[0].name : null
-  description = "Persistent volume claim name"
 }
 
 output "namespace" {

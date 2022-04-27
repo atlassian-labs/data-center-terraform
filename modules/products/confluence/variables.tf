@@ -87,15 +87,6 @@ variable "local_confluence_chart_path" {
   }
 }
 
-variable "pvc_claim_name" {
-  description = "Persistent volume claim name for shared home."
-  type        = string
-  validation {
-    condition     = can(regex("^[a-zA-Z]+[a-zA-Z0-9|\\-|_]*$", var.pvc_claim_name))
-    error_message = "Invalid claim name."
-  }
-}
-
 variable "enable_synchrony" {
   description = "If true, Collaborative editing service will be enabled."
   type        = bool
@@ -127,4 +118,40 @@ variable "db_snapshot_build_number" {
     condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4}$", var.db_snapshot_build_number))
     error_message = "Invalid build number. Valid build number will be a 4-digit string."
   }
+}
+
+variable "nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "shared_home_size" {
+  description = "The storage capacity to allocate to the NFS"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
 }

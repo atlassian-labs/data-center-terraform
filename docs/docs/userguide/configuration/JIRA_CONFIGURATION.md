@@ -96,6 +96,29 @@ jira_db_iops = 1000
 
     You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+### Database name
+
+`jira_db_name` defines the name of database to be used for the Jira in RDS instance.
+
+If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name, then set this variable to `null`.
+
+```terraform
+jira_db_name = "jira"
+```
+
+## NFS configuration
+
+### NFS resource configuration
+
+The following variables set the initial cpu/memory request sizes including their limits for the NFS instance. (Default values used as example.)
+
+```terraform
+# Jira NFS instance resource configuration
+jira_nfs_requests_cpu    = "1"
+jira_nfs_requests_memory = "1Gi"
+jira_nfs_limits_cpu      = "2"
+jira_nfs_limits_memory   = "2Gi"
+```
 ## Dataset restore configuration
 To restore the dataset into the newly created instance, uncomment the following lines and provide all necessary parameters. 
 
@@ -142,3 +165,11 @@ jira_db_master_username = "<DB_MASTER_USERNAME>"   # e.g. "postgres"
 ```terraform
 jira_db_master_password = "<DB_MASTER_PASSWORD>"   # default value is null
 ```
+### Shared Home Restore
+
+`jira_shared_home_snapshot_id` sets the id of the shared home EBS snapshot to use. This will spin up an EBS volume that will be mounted to the NFS server and used when the product is started.
+```terraform
+jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+```
+
+??? Warning "Snapshot and your environment must be in same region"  
