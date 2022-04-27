@@ -37,6 +37,11 @@ variable "dataset_url" {
   type        = string
 }
 
+variable "installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+}
+
 variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)

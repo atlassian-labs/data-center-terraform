@@ -51,6 +51,11 @@ variable "replica_count" {
   type        = number
 }
 
+variable "installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+}
+
 variable "confluence_configuration" {
   description = "Confluence resource spec and chart version"
   type        = map(any)

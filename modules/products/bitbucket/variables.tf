@@ -57,6 +57,11 @@ variable "replica_count" {
   type        = number
 }
 
+variable "installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+}
+
 variable "bitbucket_configuration" {
   description = "Bitbucket resource spec and chart version"
   type        = map(any)

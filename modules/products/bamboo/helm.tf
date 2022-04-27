@@ -7,7 +7,7 @@ resource "helm_release" "bamboo" {
   repository = local.helm_chart_repository
   chart      = local.bamboo_helm_chart_name
   version    = local.bamboo_helm_chart_version
-  timeout    = 10 * 60
+  timeout    = var.installation_timeout * 60
 
   values = [
     yamlencode({

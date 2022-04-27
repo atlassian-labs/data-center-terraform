@@ -133,6 +133,12 @@ variable "jira_replica_count" {
   }
 }
 
+variable "jira_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
@@ -306,6 +312,12 @@ variable "confluence_replica_count" {
   }
 }
 
+variable "confluence_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
 variable "confluence_install_local_chart" {
   description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
   default     = false
@@ -462,6 +474,12 @@ variable "bitbucket_replica_count" {
     condition     = var.bitbucket_replica_count >= 0
     error_message = "Number of nodes must be greater than or equal to 0."
   }
+}
+
+variable "bitbucket_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
 }
 
 variable "bitbucket_license" {
@@ -710,6 +728,12 @@ variable "bamboo_version_tag" {
   description = "Version tag for Bamboo"
   type        = string
   default     = null
+}
+
+variable "bamboo_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 10
 }
 
 variable "bamboo_agent_version_tag" {
