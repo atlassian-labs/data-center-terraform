@@ -10,7 +10,6 @@ module "base-infrastructure" {
   min_cluster_capacity = var.min_cluster_capacity
   domain               = var.domain
   namespace            = local.namespace
-  shared_home_size     = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
@@ -27,8 +26,6 @@ module "bamboo" {
   ingress          = module.base-infrastructure.ingress
 
   dataset_url = var.bamboo_dataset_url
-
-  pvc_claim_name = module.base-infrastructure.pvc_claim_name
 
   admin_username      = var.bamboo_admin_username
   admin_password      = var.bamboo_admin_password
@@ -60,7 +57,14 @@ module "bamboo" {
     agent_count  = var.number_of_bamboo_agents
   }
 
-  local_home_size = var.bamboo_local_home_size
+  local_home_size  = var.bamboo_local_home_size
+  shared_home_size = var.bamboo_shared_home_size
+
+  nfs_requests_cpu    = var.bamboo_nfs_requests_cpu
+  nfs_requests_memory = var.bamboo_nfs_requests_memory
+  nfs_limits_cpu      = var.bamboo_nfs_limits_cpu
+  nfs_limits_memory   = var.bamboo_nfs_limits_memory
+
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag

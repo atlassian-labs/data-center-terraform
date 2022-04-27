@@ -97,7 +97,8 @@ jira_db_major_engine_version = "12"
 jira_db_instance_class       = "db.t3.micro"
 jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
-# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, make sure `jira_db_name' is set to the db name from the snapshot.
+# Set `null` if the snapshot does not have a default db name.
 jira_db_name = "jira"
 
 # Database restore configuration
@@ -168,7 +169,8 @@ confluence_db_major_engine_version = "11"
 confluence_db_instance_class       = "db.t3.micro"
 confluence_db_allocated_storage    = 100
 confluence_db_iops                 = 1000
-# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
+# Set `null` if the snapshot does not have a default db name.
 confluence_db_name = "confluence"
 
 # Database restore configuration
@@ -244,7 +246,8 @@ bitbucket_db_major_engine_version = "13"
 bitbucket_db_instance_class       = "db.t3.micro"
 bitbucket_db_allocated_storage    = 100
 bitbucket_db_iops                 = 1000
-# If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name comment out this variable.
+# If you restore the database, make sure `bitbucket_db_name' is set to the db name from the snapshot.
+# Set `null` if the snapshot does not have a default db name.
 bitbucket_db_name = "bitbucket"
 
 # Bitbucket NFS instance resource configuration
@@ -330,6 +333,13 @@ bamboo_agent_mem = "256m"
 
 # Storage
 bamboo_local_home_size = "10Gi"
+bamboo_shared_home_size = "10Gi"
+
+# Bamboo NFS instance resource configuration
+#bamboo_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#bamboo_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#bamboo_nfs_limits_cpu      = "<LIMITS_CPU>"
+#bamboo_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Number of Bamboo remote agents to launch
 # To install and use the Bamboo agents, you need to provide pre-seed data including a valid Bamboo license and system admin information.

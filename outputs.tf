@@ -18,14 +18,6 @@ output "eks" {
   }
 }
 
-output "efs" {
-  description = "EFS shared storage"
-
-  value = {
-    efs = module.base-infrastructure.efs == null ? "EFS is not provisioned" : module.base-infrastructure.efs.efs_id
-  }
-}
-
 output "ingress" {
   description = "Ingress controller deployed to access the products from outside of the cluster"
 

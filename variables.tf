@@ -195,7 +195,7 @@ variable "jira_db_iops" {
 
 variable "jira_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "jira"
   type        = string
 }
 
@@ -368,7 +368,7 @@ variable "confluence_db_iops" {
 
 variable "confluence_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "confluence"
   type        = string
 }
 
@@ -522,7 +522,7 @@ variable "bitbucket_db_iops" {
 
 variable "bitbucket_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bitbucket"
   type        = string
 }
 
@@ -760,6 +760,36 @@ variable "bamboo_local_home_size" {
   default     = "10Gi"
 }
 
+variable "bamboo_shared_home_size" {
+  description = "Storage size for Bamboo shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "bamboo_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "bamboo_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "bamboo_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "bamboo_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
 variable "bamboo_install_local_chart" {
   description = "If true installs Bamboo and Agents using local Helm charts located in local_helm_charts_path"
   type        = bool
@@ -792,7 +822,7 @@ variable "bamboo_db_iops" {
 
 variable "bamboo_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bamboo"
   type        = string
 }
 

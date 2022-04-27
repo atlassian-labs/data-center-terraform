@@ -115,6 +115,16 @@ confluence_db_iops = 1000
 !!! info "The allowed value range of IOPS may vary based on instance class"
 You may want to adjust these values according to your needs. For more information, see [Amazon RDS DB instance storage — Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html){.external}.
 
+### Database name
+
+`confluence_db_name` defines the name of database to be used for the Confluence in RDS instance.
+
+If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db, then name set this variable to `null`.
+
+```terraform
+confluence_db_name = "confluence"
+```
+
 ## Shared home configuration
 ### Shared home size
 `confluence_shared_home_size` sets the size of shared home storage in Gi. Default is 10Gi.
