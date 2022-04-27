@@ -21,6 +21,7 @@ func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	bitbucket := plan.ResourcePlannedValuesMap[bitbucketKey]
 	assert.Equal(t, "deployed", bitbucket.AttributeValues["status"])
 	assert.Equal(t, "bitbucket", bitbucket.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), bitbucket.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bitbucket.AttributeValues["repository"])
 }
 
@@ -101,7 +102,8 @@ var BitbucketCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",

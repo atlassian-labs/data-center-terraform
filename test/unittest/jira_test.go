@@ -19,6 +19,7 @@ func TestJiraVariablesPopulatedWithValidValues(t *testing.T) {
 	jira := plan.ResourcePlannedValuesMap[jiraKey]
 	assert.Equal(t, "deployed", jira.AttributeValues["status"])
 	assert.Equal(t, "jira", jira.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), jira.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", jira.AttributeValues["repository"])
 }
 

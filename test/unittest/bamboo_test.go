@@ -19,6 +19,7 @@ func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
 	bamboo := plan.ResourcePlannedValuesMap[bambooKey]
 	assert.Equal(t, "deployed", bamboo.AttributeValues["status"])
 	assert.Equal(t, "bamboo", bamboo.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), bamboo.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bamboo.AttributeValues["repository"])
 
 	// verify Bamboo Agents
@@ -55,7 +56,8 @@ var BambooCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"dataset_url": nil,
+	"dataset_url":          nil,
+	"installation_timeout": testTimeout,
 	"bamboo_configuration": map[string]interface{}{
 		"helm_version": "1.0.0",
 		"cpu":          "1",

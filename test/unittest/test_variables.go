@@ -149,6 +149,7 @@ const dbVersion = 13
 const masterPwd = "dummyPassword!"
 const invalidInputRdsInstanceId = "1-"
 const dbName = "duumy_name"
+const testTimeout = 10
 
 var DbValidVariable = map[string]interface{}{
 	"product":                 inputProduct,
@@ -363,7 +364,8 @@ var JiraCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",

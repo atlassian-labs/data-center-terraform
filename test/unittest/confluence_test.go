@@ -21,6 +21,7 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	confluence := plan.ResourcePlannedValuesMap[confluenceKey]
 	assert.Equal(t, "deployed", confluence.AttributeValues["status"])
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
 
 	dbModuleKey := "module.database.module.db.module.db_instance.aws_db_instance.this[0]"
@@ -94,7 +95,8 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"db_iops":              1000,
 		"db_name":              "confluence",
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",
