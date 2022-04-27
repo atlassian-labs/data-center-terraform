@@ -109,24 +109,6 @@ var EksDefaultModuleVariable = map[string]interface{}{
 	},
 }
 
-// EFS
-
-var EfsValidVariable = map[string]interface{}{
-	"efs_name":                     "test-efs",
-	"region_name":                  "us-east-1",
-	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVariable,
-	"csi_controller_replica_count": 1,
-}
-
-var EfsInvalidVariable = map[string]interface{}{
-	"efs_name":                     "test-efs",
-	"region_name":                  "invalid-region",
-	"eks":                          EksDefaultModuleVariable,
-	"vpc":                          VpcDefaultModuleVariable,
-	"csi_controller_replica_count": 1,
-}
-
 // NFS
 const nfsVarNamespace = "test-name-space"
 const nfsVarChartNameOverride = "test-nfs-override-name"

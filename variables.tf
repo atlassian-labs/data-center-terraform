@@ -189,7 +189,7 @@ variable "jira_db_iops" {
 
 variable "jira_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "jira"
   type        = string
 }
 
@@ -362,7 +362,7 @@ variable "confluence_db_iops" {
 
 variable "confluence_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "confluence"
   type        = string
 }
 
@@ -516,7 +516,7 @@ variable "bitbucket_db_iops" {
 
 variable "bitbucket_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bitbucket"
   type        = string
 }
 
@@ -816,7 +816,7 @@ variable "bamboo_db_iops" {
 
 variable "bamboo_db_name" {
   description = "The default DB name of the DB instance."
-  default     = null
+  default     = "bamboo"
   type        = string
 }
 
