@@ -42,6 +42,8 @@ func TestNfsVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, expectedNamespace, helmRelease.AttributeValues["namespace"])
 	assert.Equal(t, expectedHelmValues, values)
 
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume.shared-home-pv")
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume_claim.shared-home-pvc")
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume.nfs_shared_home")
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume_claim.nfs_shared_home")
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume.product_shared_home_pv")
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "kubernetes_persistent_volume_claim.product_shared_home_pvc")
 }
