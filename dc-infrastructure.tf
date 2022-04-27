@@ -10,7 +10,6 @@ module "base-infrastructure" {
   min_cluster_capacity = var.min_cluster_capacity
   domain               = var.domain
   namespace            = local.namespace
-  shared_home_size     = local.shared_home_size
 
   enable_ssh_tcp = local.install_bitbucket
 }
