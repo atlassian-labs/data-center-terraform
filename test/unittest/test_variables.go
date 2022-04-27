@@ -265,9 +265,10 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
-	"display_name":  superLongStr,
-	"ingress":       map[string]interface{}{},
-	"replica_count": 1,
+	"display_name":         superLongStr,
+	"ingress":              map[string]interface{}{},
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",
@@ -320,7 +321,8 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"db_name":              "dummy_db_name",
 		"invalid_db_config":    "extra",
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",
@@ -406,7 +408,8 @@ var JiraInvalidVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",

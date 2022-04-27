@@ -62,6 +62,7 @@ func TestConfluenceVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"replica_count\" is not set")
 	assert.Contains(t, err.Error(), "\"confluence_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"enable_synchrony\" is not set")
+	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 }
 
 // Variables

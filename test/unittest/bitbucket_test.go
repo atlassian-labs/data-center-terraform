@@ -53,6 +53,7 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"namespace\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 	assert.Contains(t, err.Error(), "\"db_major_engine_version\" is not set")
 	assert.Contains(t, err.Error(), "\"db_allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"db_instance_class\" is not set")
