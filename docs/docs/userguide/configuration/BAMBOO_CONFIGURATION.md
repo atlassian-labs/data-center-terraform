@@ -160,7 +160,7 @@ You may want to adjust these values according to your needs. For more informatio
 
 ### Database name
 
-`bamboo_db_name` defines the name of database used for Bamboo in RDS instance.
+`bamboo_db_name` defines the name of database to be used for the Bamboo in RDS instance.
 
 ```terraform
 bamboo_db_name = "bamboo"

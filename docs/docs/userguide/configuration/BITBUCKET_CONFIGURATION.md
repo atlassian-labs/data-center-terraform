@@ -131,9 +131,9 @@ You may want to adjust these values according to your needs. For more informatio
 
 ### Database name
 
-`bitbucket_db_name` defines the name of database used for Bitbucket in RDS instance.
+`bitbucket_db_name` defines the name of database to be used for the Bitbucket in RDS instance.
 
-If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name set this variable to `null`.
+If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name, then set this variable to `null`.
 
 ```terraform
 bitbucket_db_name = "bitbucket"

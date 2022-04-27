@@ -98,9 +98,9 @@ jira_db_iops = 1000
 
 ### Database name
 
-`jira_db_name` defines the name of database used for Jira in RDS instance.
+`jira_db_name` defines the name of database to be used for the Jira in RDS instance.
 
-If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name set this variable to `null`.
+If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name, then set this variable to `null`.
 
 ```terraform
 jira_db_name = "jira"

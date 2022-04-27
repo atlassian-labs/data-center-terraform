@@ -117,9 +117,9 @@ You may want to adjust these values according to your needs. For more informatio
 
 ### Database name
 
-`confluence_db_name` defines the name of database used for Confluence in RDS instance.
+`confluence_db_name` defines the name of database to be used for the Confluence in RDS instance.
 
-If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db name set this variable to `null`.
+If you restore the database, you need to provide the db name from the snapshot. If the snapshot does not have default db, then name set this variable to `null`.
 
 ```terraform
 confluence_db_name = "confluence"
