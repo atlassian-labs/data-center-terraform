@@ -110,6 +110,7 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license":      "dummy_license",
 	},
+	"shared_home_size":       "10Gi",
 	"nfs_requests_cpu":       "0.25",
 	"nfs_requests_memory":    "256Mi",
 	"nfs_limits_cpu":         "0.25",
