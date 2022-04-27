@@ -51,8 +51,8 @@ variable "shared_home_size" {
   description = "Shared home persistent volume size."
   type        = string
   validation {
-    condition     = can(regex("^[0-9]+([mMgG]|Gi)$", var.shared_home_size)) || var.shared_home_size == null
-    error_message = "Invalid shared home persistent volume size. Should be a number followed by 'm' or 'g'."
+    condition     = can(regex("^[0-9]+([gG]|Gi)$", var.shared_home_size)) || var.shared_home_size == null
+    error_message = "Invalid shared home persistent volume size. Should be a number followed by 'Gi' or 'g'."
   }
 }
 

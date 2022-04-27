@@ -54,7 +54,10 @@ variable "shared_home_snapshot_id" {
 }
 
 variable "shared_home_size" {
-  description = "The storage capacity to allocate to local home"
+  description = "The storage capacity to allocate to shared home"
   type        = string
-  default     = null
+  validation {
+    condition     = can(regex("^[0-9]+([gG]|Gi)$", var.shared_home_size)) || var.shared_home_size == null
+    error_message = "Invalid shared home persistent volume size. Should be a number followed by 'Gi' or 'g'."
+  }
 }
