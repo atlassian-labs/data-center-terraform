@@ -733,7 +733,7 @@ variable "bamboo_version_tag" {
 variable "bamboo_installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number
-  default     = 10
+  default     = 15
 }
 
 variable "bamboo_agent_version_tag" {
