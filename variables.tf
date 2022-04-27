@@ -111,6 +111,12 @@ variable "jira_helm_chart_version" {
   default     = "1.2.0"
 }
 
+variable "jira_image_repository" {
+  description = "Jira image repository"
+  type        = string
+  default     = "atlassian/jira-software"
+}
+
 variable "jira_version_tag" {
   description = "Version of Jira Software"
   type        = string

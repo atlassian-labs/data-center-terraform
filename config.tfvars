@@ -57,6 +57,12 @@ jira_replica_count = 1
 # the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
 #jira_version_tag = "<JIRA_VERSION_TAG>"
 
+# To select a different image repository for the Jira application, you can change following variable:
+# Official suitable values are:
+# - "atlassian/jira-software"
+# - "atlassian/jira-servicemanagement"
+#jira_image_repository = "atlassian/jira-software"
+
 # Jira instance resource configuration
 jira_cpu                 = "2"
 jira_mem                 = "2Gi"
@@ -325,7 +331,7 @@ bamboo_agent_cpu = "0.25"
 bamboo_agent_mem = "256m"
 
 # Storage
-bamboo_local_home_size = "10Gi"
+bamboo_local_home_size  = "10Gi"
 bamboo_shared_home_size = "10Gi"
 
 # Bamboo NFS instance resource configuration

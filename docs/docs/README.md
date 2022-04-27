@@ -48,7 +48,7 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 !!! tip "Multiple deployments to a single cluster"
 
-    Multiple DC products can also be provisioned to the same cluster. See the [Configuration guide](./userguide/CONFIGURATION.md#products) for more details
+    Multiple DC products can also be provisioned to the same cluster. See the [Configuration guide](./userguide/configuration/CONFIGURATION.md#products) for more details
 
 ## Deploying a Data Center product
 

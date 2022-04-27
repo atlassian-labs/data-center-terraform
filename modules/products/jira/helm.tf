@@ -12,6 +12,9 @@ resource "helm_release" "jira" {
   values = [
     yamlencode({
       replicaCount = var.replica_count,
+      image = {
+        repository = var.image_repository
+      }
       jira = {
         clustering = {
           enabled = true

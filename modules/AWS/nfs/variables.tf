@@ -14,12 +14,6 @@ variable "chart_name" {
   default     = "server"
 }
 
-variable "capacity" {
-  description = "The storage capacity to allocate to the NFS"
-  type        = string
-  default     = "10Gi"
-}
-
 variable "requests_cpu" {
   description = "The minimum CPU compute to request for the NFS instance"
   type        = string
@@ -58,9 +52,12 @@ variable "shared_home_snapshot_id" {
     error_message = "Provide correct EBS snapshot ID."
   }
 }
-# The size of the EBS volume to allocate for shared home. If is null no PV and PVC will be created.
+
 variable "shared_home_size" {
-  description = "The storage capacity to allocate to local home"
+  description = "The storage capacity to allocate to shared home"
   type        = string
-  default     = null
+  validation {
+    condition     = can(regex("^[0-9]+([gG]|Gi)$", var.shared_home_size))
+    error_message = "Invalid shared home persistent volume size. Should be a number followed by 'Gi' or 'g'."
+  }
 }

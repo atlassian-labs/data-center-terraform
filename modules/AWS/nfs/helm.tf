@@ -8,7 +8,7 @@ resource "helm_release" "nfs" {
     yamlencode({
       nameOverride = var.chart_name
       persistence = {
-        volumeClaimName = kubernetes_persistent_volume_claim.shared_home.metadata.0.name
+        volumeClaimName = kubernetes_persistent_volume_claim.nfs_shared_home.metadata.0.name
       }
       resources = {
         limits = {

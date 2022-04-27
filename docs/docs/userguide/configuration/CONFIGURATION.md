@@ -118,7 +118,7 @@ resource_tags = {
 
 !!! warning "Using Terraform CLI to apply tags is not recommended and may lead to missing tags in some resources."
 
-    To apply tags to all resources, follow the [installation guide](INSTALLATION.md).
+    To apply tags to all resources, follow the [installation guide](../INSTALLATION.md).
 
 ### EKS instance type and storage size
 
