@@ -21,6 +21,7 @@ func TestBitbucketVariablesPopulatedWithValidValues(t *testing.T) {
 	bitbucket := plan.ResourcePlannedValuesMap[bitbucketKey]
 	assert.Equal(t, "deployed", bitbucket.AttributeValues["status"])
 	assert.Equal(t, "bitbucket", bitbucket.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), bitbucket.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", bitbucket.AttributeValues["repository"])
 }
 
@@ -37,6 +38,7 @@ func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Bitbucket administrator configuration is not valid.")
 	assert.Contains(t, err.Error(), "Invalid elasticsearch replicas. Valid replicas is a positive integer in")
 	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
+	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }
 
 func TestBitbucketVariablesNotProvided(t *testing.T) {
@@ -52,6 +54,7 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"namespace\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 	assert.Contains(t, err.Error(), "\"db_major_engine_version\" is not set")
 	assert.Contains(t, err.Error(), "\"db_allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"db_instance_class\" is not set")
@@ -101,7 +104,8 @@ var BitbucketCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",

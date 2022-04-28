@@ -19,6 +19,7 @@ func TestJiraVariablesPopulatedWithValidValues(t *testing.T) {
 	jira := plan.ResourcePlannedValuesMap[jiraKey]
 	assert.Equal(t, "deployed", jira.AttributeValues["status"])
 	assert.Equal(t, "jira", jira.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), jira.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", jira.AttributeValues["repository"])
 }
 
@@ -32,4 +33,5 @@ func TestJiraVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid value for variable")
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
 	assert.Contains(t, err.Error(), "Jira configuration is not valid.")
+	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }

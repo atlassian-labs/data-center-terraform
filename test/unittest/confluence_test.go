@@ -21,6 +21,7 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	confluence := plan.ResourcePlannedValuesMap[confluenceKey]
 	assert.Equal(t, "deployed", confluence.AttributeValues["status"])
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
+	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
 
 	dbModuleKey := "module.database.module.db.module.db_instance.aws_db_instance.this[0]"
@@ -42,6 +43,7 @@ func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Confluence database configuration is not valid.")
 	assert.Contains(t, err.Error(), "Confluence configuration is not valid.")
 	assert.Contains(t, err.Error(), "Invalid build number.")
+	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }
 
 func TestConfluenceVariablesNotProvided(t *testing.T) {
@@ -61,6 +63,7 @@ func TestConfluenceVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"replica_count\" is not set")
 	assert.Contains(t, err.Error(), "\"confluence_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"enable_synchrony\" is not set")
+	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 }
 
 // Variables
@@ -94,7 +97,8 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"db_iops":              1000,
 		"db_name":              "confluence",
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",

@@ -37,6 +37,15 @@ variable "dataset_url" {
   type        = string
 }
 
+variable "installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  validation {
+    condition     = var.installation_timeout > 0
+    error_message = "Installation timeout needs to be a positive number."
+  }
+}
+
 variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)
@@ -88,7 +97,7 @@ variable "license" {
   type        = string
   sensitive   = true
   validation {
-    condition     = var.license != null
+    condition     = var.license != null && var.license != ""
     error_message = "License is not valid."
   }
 }

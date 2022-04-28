@@ -7,7 +7,7 @@ resource "helm_release" "jira" {
   repository = local.helm_chart_repository
   chart      = local.product_name
   version    = local.jira_helm_chart_version
-  timeout    = 15 * 60 # autoscaler potentially needs to scale up the cluster
+  timeout    = var.installation_timeout * 60
 
   values = [
     yamlencode({

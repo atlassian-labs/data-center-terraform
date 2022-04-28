@@ -149,6 +149,8 @@ const dbVersion = 13
 const masterPwd = "dummyPassword!"
 const invalidInputRdsInstanceId = "1-"
 const dbName = "duumy_name"
+const testTimeout = 10
+const invalidTestTimeout = -10
 
 var DbValidVariable = map[string]interface{}{
 	"product":                 inputProduct,
@@ -264,9 +266,10 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"admin_display_name":  "dummy_admin_display_name",
 		"admin_email_address": "dummy_admin_email_address",
 	},
-	"display_name":  superLongStr,
-	"ingress":       map[string]interface{}{},
-	"replica_count": 1,
+	"display_name":         superLongStr,
+	"ingress":              map[string]interface{}{},
+	"replica_count":        1,
+	"installation_timeout": invalidTestTimeout,
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",
@@ -319,7 +322,8 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"db_name":              "dummy_db_name",
 		"invalid_db_config":    "extra",
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": invalidTestTimeout,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",
@@ -363,7 +367,8 @@ var JiraCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",
@@ -404,7 +409,8 @@ var JiraInvalidVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"replica_count": 1,
+	"replica_count":        1,
+	"installation_timeout": invalidTestTimeout,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",
