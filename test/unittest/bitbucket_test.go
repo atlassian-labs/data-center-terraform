@@ -38,6 +38,7 @@ func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Bitbucket administrator configuration is not valid.")
 	assert.Contains(t, err.Error(), "Invalid elasticsearch replicas. Valid replicas is a positive integer in")
 	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
+	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }
 
 func TestBitbucketVariablesNotProvided(t *testing.T) {

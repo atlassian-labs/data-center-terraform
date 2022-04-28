@@ -33,4 +33,5 @@ func TestJiraVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid value for variable")
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
 	assert.Contains(t, err.Error(), "Jira configuration is not valid.")
+	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }

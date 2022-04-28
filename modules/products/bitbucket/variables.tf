@@ -60,6 +60,10 @@ variable "replica_count" {
 variable "installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number
+  validation {
+    condition     = var.installation_timeout > 0
+    error_message = "Installation timeout needs to be a positive number."
+  }
 }
 
 variable "bitbucket_configuration" {
@@ -176,7 +180,6 @@ variable "db_master_username" {
   type        = string
   default     = null
 }
-
 
 variable "db_master_password" {
   description = "Master password for the RDS instance."

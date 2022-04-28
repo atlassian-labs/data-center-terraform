@@ -150,6 +150,7 @@ const masterPwd = "dummyPassword!"
 const invalidInputRdsInstanceId = "1-"
 const dbName = "duumy_name"
 const testTimeout = 10
+const invalidTestTimeout = -10
 
 var DbValidVariable = map[string]interface{}{
 	"product":                 inputProduct,
@@ -268,7 +269,7 @@ var BitbucketInvalidVariables = map[string]interface{}{
 	"display_name":         superLongStr,
 	"ingress":              map[string]interface{}{},
 	"replica_count":        1,
-	"installation_timeout": testTimeout,
+	"installation_timeout": invalidTestTimeout,
 	"bitbucket_configuration": map[string]interface{}{
 		"helm_version": "1.2.0",
 		"cpu":          "1",
@@ -322,7 +323,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"invalid_db_config":    "extra",
 	},
 	"replica_count":        1,
-	"installation_timeout": testTimeout,
+	"installation_timeout": invalidTestTimeout,
 	"confluence_configuration": map[string]interface{}{
 		"helm_version": "1.1.0",
 		"cpu":          "1",
@@ -409,7 +410,7 @@ var JiraInvalidVariables = map[string]interface{}{
 		},
 	},
 	"replica_count":        1,
-	"installation_timeout": testTimeout,
+	"installation_timeout": invalidTestTimeout,
 	"jira_configuration": map[string]interface{}{
 		"helm_version":        "1.0.0",
 		"cpu":                 "2",
