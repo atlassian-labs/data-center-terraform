@@ -61,8 +61,10 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"db_iops\" is not set")
 	assert.Contains(t, err.Error(), "\"bitbucket_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"admin_configuration\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_cpu\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_mem\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_requests_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_requests_memory\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_limits_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"elasticsearch_limits_memory\" is not set")
 	assert.Contains(t, err.Error(), "\"elasticsearch_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"elasticsearch_replicas\" is not set")
 	assert.NotContains(t, err.Error(), "display_name")
@@ -114,13 +116,15 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license":      "dummy_license",
 	},
-	"shared_home_size":       "10Gi",
-	"nfs_requests_cpu":       "0.25",
-	"nfs_requests_memory":    "256Mi",
-	"nfs_limits_cpu":         "0.25",
-	"nfs_limits_memory":      "256Mi",
-	"elasticsearch_cpu":      "1",
-	"elasticsearch_mem":      "1Gi",
-	"elasticsearch_storage":  10,
-	"elasticsearch_replicas": 2,
+	"shared_home_size":              "10Gi",
+	"nfs_requests_cpu":              "0.25",
+	"nfs_requests_memory":           "256Mi",
+	"nfs_limits_cpu":                "0.25",
+	"nfs_limits_memory":             "256Mi",
+	"elasticsearch_requests_cpu":    "1",
+	"elasticsearch_requests_memory": "1Gi",
+	"elasticsearch_limits_cpu":      "1",
+	"elasticsearch_limits_memory":   "1Gi",
+	"elasticsearch_storage":         10,
+	"elasticsearch_replicas":        2,
 }

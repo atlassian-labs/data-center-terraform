@@ -279,14 +279,16 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"license":      "dummy_license",
 		"invalid":      "bitbucket-configuration",
 	},
-	"nfs_requests_cpu":       "0.25",
-	"nfs_requests_memory":    "256Mi",
-	"nfs_limits_cpu":         "0.25",
-	"nfs_limits_memory":      "256Mi",
-	"elasticsearch_cpu":      "1",
-	"elasticsearch_mem":      "1Gi",
-	"elasticsearch_storage":  10,
-	"elasticsearch_replicas": 9, // invalid, should be [2,8]
+	"nfs_requests_cpu":              "0.25",
+	"nfs_requests_memory":           "256Mi",
+	"nfs_limits_cpu":                "0.25",
+	"nfs_limits_memory":             "256Mi",
+	"elasticsearch_requests_cpu":    "1",
+	"elasticsearch_requests_memory": "1Gi",
+	"elasticsearch_limits_cpu":      "1",
+	"elasticsearch_limits_memory":   "1Gi",
+	"elasticsearch_storage":         10,
+	"elasticsearch_replicas":        9, // invalid, should be [2,8]
 }
 
 var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci mauris, cursus sit amet tortor sit amet, aliquam dapibus magna. In sodales felis in ipsum euismod tempor. Phasellus mattis, justo id auctor lacinia, ipsum nulla sodales massa, ac porttitor arcu sem et quam."

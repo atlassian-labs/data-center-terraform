@@ -271,10 +271,12 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Elasticsearch resource configuration for Bitbucket
-#bitbucket_elasticsearch_cpu      = "<REQUESTS_CPU>"
-#bitbucket_elasticsearch_mem      = "<REQUESTS_MEMORY>"
-#bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
-#bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
+#bitbucket_elasticsearch_requests_cpu    = "<REQUESTS_CPU>"
+#bitbucket_elasticsearch_requests_memory = "<REQUESTS_MEMORY>"
+#bitbucket_elasticsearch_limits_cpu      = "<LIMITS_CPU>"
+#bitbucket_elasticsearch_limits_memory   = "<LIMITS_MEMORY>"
+#bitbucket_elasticsearch_storage         = "<REQUESTS_STORAGE>"
+#bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
 
 # Dataset Restore
 
