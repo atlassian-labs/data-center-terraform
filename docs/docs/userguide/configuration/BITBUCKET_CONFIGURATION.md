@@ -170,10 +170,12 @@ The following variables set the request for number of CPU, amount of memory, amo
 
 ```terraform
 # Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_cpu      = "0.25"
-bitbucket_elasticsearch_mem      = "1Gi"
-bitbucket_elasticsearch_storage  = 10
-bitbucket_elasticsearch_replicas = 2
+bitbucket_elasticsearch_requests_cpu    = "0.5"
+bitbucket_elasticsearch_requests_memory = "0.5Gi"
+bitbucket_elasticsearch_limits_cpu      = "1"
+bitbucket_elasticsearch_limits_memory   = "1Gi"
+bitbucket_elasticsearch_storage         = 10
+bitbucket_elasticsearch_replicas        = 2
 ```
 
 

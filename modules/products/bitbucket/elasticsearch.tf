@@ -20,8 +20,12 @@ resource "helm_release" "elasticsearch" {
 
       resources = {
         requests = {
-          cpu    = var.elasticsearch_cpu
-          memory = var.elasticsearch_mem
+          cpu    = var.elasticsearch_requests_cpu
+          memory = var.elasticsearch_requests_memory
+        }
+        limits = {
+          cpu    = var.elasticsearch_limits_cpu
+          memory = var.elasticsearch_limits_memory
         }
       },
       volumeClaimTemplate = {

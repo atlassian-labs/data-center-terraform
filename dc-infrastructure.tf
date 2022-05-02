@@ -221,10 +221,12 @@ module "bitbucket" {
   nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
   nfs_limits_memory   = var.bitbucket_nfs_limits_memory
 
-  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
-  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
-  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
-  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
+  elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
+  elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
+  elasticsearch_limits_cpu      = var.bitbucket_elasticsearch_limits_cpu
+  elasticsearch_limits_memory   = var.bitbucket_elasticsearch_limits_memory
+  elasticsearch_storage         = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
 
   shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
 }

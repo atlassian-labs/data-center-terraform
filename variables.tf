@@ -610,16 +610,28 @@ variable "bitbucket_nfs_limits_memory" {
   default     = "2Gi"
 }
 
-variable "bitbucket_elasticsearch_cpu" {
+variable "bitbucket_elasticsearch_requests_cpu" {
   description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
   default     = "0.25"
 }
 
-variable "bitbucket_elasticsearch_mem" {
+variable "bitbucket_elasticsearch_requests_memory" {
   description = "Amount of memory for Bitbucket elasticsearch instance."
   type        = string
   default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_limits_cpu" {
+  description = "CPUs limit for elasticsearch instance."
+  type        = string
+  default     = "0.5"
+}
+
+variable "bitbucket_elasticsearch_limits_memory" {
+  description = "Memory limit for elasticsearch instance."
+  type        = string
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_storage" {
