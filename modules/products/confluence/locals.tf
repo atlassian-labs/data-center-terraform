@@ -104,7 +104,9 @@ locals {
   # TODO: For permanent solution we may get the snapshot creation date in advanced and calculate the required validity duration (in milliseconds) and set `timeToLiveInMillis`
   # For now I hard coded based on the test snapshot which is created by May 2nd to complete my tests
 
-  date_year     = formatdate("YYYY", timestamp()) # current year
+  date_year     = tonumber(formatdate("YYYY", timestamp())) # current year
+  date_month     = tonumber(formatdate("MM", timestamp())) # current year
+  date_days     = tonumber(formatdate("DD", timestamp())) # current year
   day_in_millis = 24 * 360 * 10000
   # hardcode the snapshot creation date
   snapshot_creation_year  = 2022
@@ -112,7 +114,7 @@ locals {
   snapshot_creation_day   = 1
   # Calculate the time passed from snapshot creation in milliseconds
   offset       = ((local.snapshot_creation_month - 1 ) * 30) + local.snapshot_creation_day * local.day_in_millis # the snapshot I used is generated on May 2nd, so we can deduct 4 months from the following calculation
-  time_to_live = (tonumber(local.date_year) - local.snapshot_creation_year - 1) * 365 * local.day_in_millis - local.offset  # valid duration for ebs snapshot in milliseconds
+  time_to_live = ((local.date_year - local.snapshot_creation_year - 1) * 365 + local.date_month * 30 + local.date_days) * local.day_in_millis - local.offset  # valid duration for ebs snapshot in milliseconds
 
   extend_snapshot_validity = var.db_snapshot_identifier != null ? yamlencode({
     confluence = {
