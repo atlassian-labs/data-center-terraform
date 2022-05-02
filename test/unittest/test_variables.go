@@ -335,7 +335,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"license_abc":  "dummy_license", //invalid var name
 	},
 	"enable_synchrony":         false,
-	"db_snapshot_identifier":   "dummy-snapshot-id",
+	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "invalid.build.number",
 }
@@ -380,9 +380,9 @@ var JiraCorrectVariables = map[string]interface{}{
 		"reserved_code_cache": "512m",
 		"license":             "dummy_license",
 	},
-	"db_master_password":     "dummy_password",
-	"db_master_username":     "dummy_username",
-	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+	"db_master_password": "dummy_password",
+	"db_master_username": "dummy_username",
+	"db_snapshot_id":     "dummy-rds-snapshot-id",
 }
 
 var JiraInvalidVariables = map[string]interface{}{
@@ -421,7 +421,7 @@ var JiraInvalidVariables = map[string]interface{}{
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
 	},
-	"db_master_password":     "dummy_password",
-	"db_master_username":     "dummy_username",
-	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+	"db_master_password": "dummy_password",
+	"db_master_username": "dummy_username",
+	"db_snapshot_id":     "dummy-rds-snapshot-id",
 }

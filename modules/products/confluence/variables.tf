@@ -101,7 +101,7 @@ variable "enable_synchrony" {
   type        = bool
 }
 
-variable "db_snapshot_identifier" {
+variable "db_snapshot_id" {
   description = "Snapshot identifier for RDS."
   type        = string
   default     = null

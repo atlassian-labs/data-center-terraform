@@ -160,10 +160,10 @@ To restore the dataset into the newly created instance, configure all the parame
 
 ### Database Snapshot Identifier
 
-`confluence_db_snapshot_identifier` sets the identifier of the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot will be used.
+`confluence_db_snapshot_id` sets the identifier of the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot will be used.
 
 ```terraform
-confluence_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+confluence_db_snapshot_id = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
 !!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance to be created."

@@ -24,7 +24,7 @@ module "database" {
   instance_class          = var.db_configuration["db_instance_class"]
   iops                    = var.db_configuration["db_iops"]
   vpc                     = var.vpc
-  snapshot_identifier     = var.db_snapshot_identifier
+  snapshot_identifier     = var.db_snapshot_id
   db_master_username      = var.db_master_username
   db_master_password      = var.db_master_password
   db_name                 = var.db_configuration["db_name"]

@@ -90,7 +90,7 @@ module "jira" {
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
   db_name                 = var.jira_db_name
-  db_snapshot_identifier  = var.jira_db_snapshot_identifier
+  db_snapshot_id          = var.jira_db_snapshot_id
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
@@ -139,7 +139,7 @@ module "confluence" {
     db_name              = var.confluence_db_name
   }
 
-  db_snapshot_identifier   = var.confluence_db_snapshot_identifier
+  db_snapshot_id           = var.confluence_db_snapshot_id
   db_snapshot_build_number = var.confluence_db_snapshot_build_number
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
@@ -187,7 +187,7 @@ module "bitbucket" {
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
   db_name                 = var.bitbucket_db_name
-  db_snapshot_identifier  = var.bitbucket_db_snapshot_identifier
+  db_snapshot_id          = var.bitbucket_db_snapshot_id
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
