@@ -133,6 +133,12 @@ variable "jira_replica_count" {
   }
 }
 
+variable "jira_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
 variable "jira_cpu" {
   description = "Number of CPUs for Jira instance"
   type        = string
@@ -306,6 +312,12 @@ variable "confluence_replica_count" {
   }
 }
 
+variable "confluence_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
 variable "confluence_install_local_chart" {
   description = "If true installs Confluence using local Helm charts located in local_helm_charts_path"
   default     = false
@@ -464,6 +476,12 @@ variable "bitbucket_replica_count" {
   }
 }
 
+variable "bitbucket_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
 variable "bitbucket_license" {
   description = "Bitbucket license."
   type        = string
@@ -592,16 +610,28 @@ variable "bitbucket_nfs_limits_memory" {
   default     = "2Gi"
 }
 
-variable "bitbucket_elasticsearch_cpu" {
+variable "bitbucket_elasticsearch_requests_cpu" {
   description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
   default     = "0.25"
 }
 
-variable "bitbucket_elasticsearch_mem" {
+variable "bitbucket_elasticsearch_requests_memory" {
   description = "Amount of memory for Bitbucket elasticsearch instance."
   type        = string
   default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_limits_cpu" {
+  description = "CPUs limit for elasticsearch instance."
+  type        = string
+  default     = "0.5"
+}
+
+variable "bitbucket_elasticsearch_limits_memory" {
+  description = "Memory limit for elasticsearch instance."
+  type        = string
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_storage" {
@@ -710,6 +740,12 @@ variable "bamboo_version_tag" {
   description = "Version tag for Bamboo"
   type        = string
   default     = null
+}
+
+variable "bamboo_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
 }
 
 variable "bamboo_agent_version_tag" {

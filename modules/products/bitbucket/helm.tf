@@ -6,7 +6,7 @@ resource "helm_release" "bitbucket" {
   repository = local.helm_chart_repository
   chart      = local.product_name
   version    = local.bitbucket_helm_chart_version
-  timeout    = 15 * 60
+  timeout    = var.installation_timeout * 60
 
   values = [
     yamlencode({

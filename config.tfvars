@@ -53,6 +53,11 @@ jira_helm_chart_version = "1.2.0"
 # installed and configured.
 jira_replica_count = 1
 
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+#jira_installation_timeout = <MINUTES>
+
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the jira_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/jira-software/tags
 #jira_version_tag = "<JIRA_VERSION_TAG>"
@@ -127,6 +132,11 @@ confluence_helm_chart_version = "1.2.0"
 # installed and configured.
 confluence_replica_count = 1
 
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+#confluence_installation_timeout = <MINUTES>
+
 # By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
 # the following line and set the confluence_version_tag to any of the versions available on https://hub.docker.com/r/atlassian/confluence/tags
 #confluence_version_tag = "<CONFLUENCE_VERSION_TAG>"
@@ -200,6 +210,11 @@ bitbucket_helm_chart_version = "1.2.0"
 # Number of Bitbucket application nodes
 bitbucket_replica_count = 1
 
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+#bitbucket_installation_timeout = <MINUTES>
+
 # By default, Bitbucket will use the version defined in the Bitbucket Helm chart:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bitbucket/Chart.yaml 
 # If you wish to override the version, uncomment the following line and set the bitbucket_version_tag to any of the versions published for Bitbucket on Docker Hub: https://hub.docker.com/r/atlassian/bitbucket/tags
@@ -256,10 +271,12 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Elasticsearch resource configuration for Bitbucket
-#bitbucket_elasticsearch_cpu      = "<REQUESTS_CPU>"
-#bitbucket_elasticsearch_mem      = "<REQUESTS_MEMORY>"
-#bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
-#bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
+#bitbucket_elasticsearch_requests_cpu    = "<REQUESTS_CPU>"
+#bitbucket_elasticsearch_requests_memory = "<REQUESTS_MEMORY>"
+#bitbucket_elasticsearch_limits_cpu      = "<LIMITS_CPU>"
+#bitbucket_elasticsearch_limits_memory   = "<LIMITS_MEMORY>"
+#bitbucket_elasticsearch_storage         = "<REQUESTS_STORAGE>"
+#bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
 
 # Dataset Restore
 
@@ -319,6 +336,11 @@ bamboo_agent_helm_chart_version = "1.2.0"
 #bamboo_admin_password      = "<PASSWORD>"
 #bamboo_admin_display_name  = "<DISPLAY_NAME>"
 #bamboo_admin_email_address = "<EMAIL_ADDRESS>"
+
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+#bamboo_installation_timeout = <MINUTES>
 
 # Bamboo instance resource configuration
 bamboo_cpu      = "1"

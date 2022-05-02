@@ -40,6 +40,8 @@ module "bamboo" {
     db_name              = var.bamboo_db_name
   }
 
+  installation_timeout = var.bamboo_installation_timeout
+
   bamboo_configuration = {
     helm_version = var.bamboo_helm_chart_version
     cpu          = var.bamboo_cpu
@@ -64,7 +66,6 @@ module "bamboo" {
   nfs_requests_memory = var.bamboo_nfs_requests_memory
   nfs_limits_cpu      = var.bamboo_nfs_limits_cpu
   nfs_limits_memory   = var.bamboo_nfs_limits_memory
-
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
@@ -93,7 +94,8 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  replica_count = var.jira_replica_count
+  replica_count        = var.jira_replica_count
+  installation_timeout = var.jira_installation_timeout
 
   jira_configuration = {
     helm_version        = var.jira_helm_chart_version
@@ -142,9 +144,10 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count    = var.confluence_replica_count
-  version_tag      = var.confluence_version_tag
-  enable_synchrony = var.confluence_collaborative_editing_enabled
+  replica_count        = var.confluence_replica_count
+  installation_timeout = var.confluence_installation_timeout
+  version_tag          = var.confluence_version_tag
+  enable_synchrony     = var.confluence_collaborative_editing_enabled
 
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
@@ -188,7 +191,8 @@ module "bitbucket" {
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
-  replica_count = var.bitbucket_replica_count
+  replica_count        = var.bitbucket_replica_count
+  installation_timeout = var.bitbucket_installation_timeout
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version
@@ -217,10 +221,12 @@ module "bitbucket" {
   nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
   nfs_limits_memory   = var.bitbucket_nfs_limits_memory
 
-  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
-  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
-  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
-  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
+  elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
+  elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
+  elasticsearch_limits_cpu      = var.bitbucket_elasticsearch_limits_cpu
+  elasticsearch_limits_memory   = var.bitbucket_elasticsearch_limits_memory
+  elasticsearch_storage         = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
 
   shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
 }

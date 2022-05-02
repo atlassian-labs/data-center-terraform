@@ -20,6 +20,16 @@ For more information, see [Bamboo Version Tags](https://hub.docker.com/r/atlassi
 bamboo_version_tag = "<BAMBOO_VERSION_TAG>"
 ```
 
+### Installation timeout
+
+`bamboo_installation_timeout` defines the timeout (in minutes) for product **helm chart installation**. Different variables
+can influence how long it takes the application from installation to ready state. These can be dataset restoration,
+resource requirements, number of replicas and others.
+
+```terraform
+bamboo_installation_timeout = 10
+```
+
 ### License
 
 `bamboo_license` takes the license key of Bamboo product. Make sure that there is no new lines or spaces in license key.

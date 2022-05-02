@@ -38,6 +38,16 @@ confluence_replica_count = 1
     [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) installed in the 
     cluster will monitor the amount of required resources and adjust the cluster size to accomodate the requested cpu and memory.
 
+### Installation timeout
+
+`confluence_installation_timeout` defines the timeout (in minutes) for product **helm chart installation**. Different variables
+can influence how long it takes the application from installation to ready state. These can be dataset restoration,
+resource requirements, number of replicas and others.
+
+```terraform
+confluence_installation_timeout = 10
+```
+
 ### License
 
 `confluence_license` takes the license key of Confluence product. Make sure that there is no new lines or spaces in license key.

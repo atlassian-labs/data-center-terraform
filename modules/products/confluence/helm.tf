@@ -8,7 +8,7 @@ resource "helm_release" "confluence" {
   repository = local.helm_chart_repository
   chart      = local.confluence_helm_chart_name
   version    = local.confluence_helm_chart_version
-  timeout    = 15 * 60 # autoscaler potentially needs to scale up the cluster
+  timeout    = var.installation_timeout * 60
 
   values = [
     yamlencode({
