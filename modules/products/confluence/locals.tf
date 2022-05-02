@@ -87,4 +87,46 @@ locals {
       ]
     }
   }) : yamlencode({})
+
+  # After restoring the snapshot of the Confluence database, a re-index is required. To avoid interruption in the Confluence
+  # service we should exclude indexing status from the health check process. Re-index should be performed manually if is required.
+  # For more info see: https://confluence.atlassian.com/conf78/recognized-system-properties-1021242818.html
+  # TODO: The snapshot get expired by 2 days after creation by default. For permanent solution we may get the snapshot creation date in
+  # advanced amd calculate the required validity duration (in milliseconds) and set `timeToLiveInMillis`
+  # For now I hard coded based on the test snapshot which is created by May 2nd
+
+  date_year     = formatdate("YYYY", timestamp()) # current year
+  day_in_millis = 24 * 360 * 10000
+  # hardcode the snapshot creation date
+  snapshot_creation_year  = 2022
+  snapshot_creation_month = 5
+  snapshot_creation_day   = 1
+  # Calculate the time passed from snapshot creation in milliseconds
+  offset       = ((local.snapshot_creation_month - 1 ) * 30) + local.snapshot_creation_day * local.day_in_millis # the snapshot I used is generated on May 2nd, so we can deduct 4 months from the following calculation
+  time_to_live = (tonumber(local.date_year) - local.snapshot_creation_year - 1) * 365 * local.day_in_millis - local.offset  # valid duration for ebs snapshot in milliseconds
+
+  extend_snapshot_validity = var.db_snapshot_identifier != null ? yamlencode({
+    confluence = {
+      additionalJvmArgs = [
+        "-Dcom.atlassian.confluence.journal.timeToLiveInMillis=${local.time_to_live}",
+        "-Dconfluence.cluster.index.recovery.query.timeout=360",
+        "-Dconfluence.cluster.index.recovery.generation.timeout=420",
+        "-Dconfluence.cluster.snapshot.file.wait.time=420"
+      ]
+    }
+  }) : yamlencode({})
+
+  # optimum number of threads used for re-index will calculated using this formula: `CPUs x 0.5 x (1 + WC)`, while WC is a constant equals to 0.8
+  number_of_threads = min(4, floor(tonumber(confluence_configuration["cpu"]) x 0.5 x (1 + 0.8)))
+
+  extend_reindex_thread_counts = var.db_snapshot_identifier != null ? yamlencode({
+    confluence = {
+      additionalJvmArgs = [
+        "-Dreindex.thread.count=${local.number_of_threads}",
+        "-Dindex.queue.thread.count=${local.number_of_threads}",
+        "-Dreindex.attachments.thread.count=${local.number_of_threads}",
+      ]
+    }
+  }) : yamlencode({})
+
 }

@@ -63,6 +63,8 @@ resource "helm_release" "confluence" {
     local.synchrony_settings_stanza,
     local.version_tag,
     local.db_restore_env_vars,
+    local.extend_snapshot_validity,
+    local.extend_reindex_thread_counts,
   ]
 }
 
