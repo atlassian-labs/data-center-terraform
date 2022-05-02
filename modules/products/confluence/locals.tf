@@ -88,12 +88,21 @@ locals {
     }
   }) : yamlencode({})
 
-  # After restoring the snapshot of the Confluence database, a re-index is required. To avoid interruption in the Confluence
-  # service we should exclude indexing status from the health check process. Re-index should be performed manually if is required.
-  # For more info see: https://confluence.atlassian.com/conf78/recognized-system-properties-1021242818.html
-  # TODO: The snapshot get expired by 2 days after creation by default. For permanent solution we may get the snapshot creation date in
-  # advanced amd calculate the required validity duration (in milliseconds) and set `timeToLiveInMillis`
-  # For now I hard coded based on the test snapshot which is created by May 2nd
+  # After restoring the snapshot of the Confluence database, a re-index is required. An alternative is recover the index.
+  # Because there is no node existed when the environment is created, so index recovery cannot be borrow the files from other nodes
+  # and is forced to use the recovery journal files from shared home.
+  # By default recovery index files are only valid for 2 days which is not enough in our use case.
+  # One way for extend the validity duration for index recovery file is override the `com.atlassian.confluence.journal.timeToLiveInMillis`
+  # system property. Also we may need to extend the index recovery timeout as for enterprise data we may hit the timeout and it will
+  # results a failure in index recovery and Confluence will start a full re-index which is not efficient.
+  # For more info see the following links:
+  # https://confluence.atlassian.com/conf78/recognized-system-properties-1021242818.html
+  # https://extranet.atlassian.com/pages/viewpage.action?pageId=4215563160
+  # https://extranet.atlassian.com/pages/viewpage.action?spaceKey=CONFARCH&title=Index+recovery
+
+
+  # TODO: For permanent solution we may get the snapshot creation date in advanced and calculate the required validity duration (in milliseconds) and set `timeToLiveInMillis`
+  # For now I hard coded based on the test snapshot which is created by May 2nd to complete my tests
 
   date_year     = formatdate("YYYY", timestamp()) # current year
   day_in_millis = 24 * 360 * 10000
