@@ -43,12 +43,11 @@ locals {
     }
   }) : yamlencode({})
 
-  # After restoring the snapshot of the Jira database, a re-index is required. To avoid interruption in the Jira
-  # service we should exclude indexing status from the health check process.
-  # For more info see: https://jira.atlassian.com/browse/JRASERVER-66970
-  ignore_index_check = var.db_snapshot_id != null ? yamlencode({
+  # By default, Jira accepts an index snapshot taken within 24hours. In order to use snapshot older than 24hours we need to update following property value.
+  # It is set to 10 years.
+  reuse_old_index_snapshot = var.shared_home_snapshot_id != null ? yamlencode({
     jira = {
-      additionalJvmArgs = ["-Dcom.atlassian.jira.status.index.check=false"]
+      additionalJvmArgs = ["-Dcom.atlassian.jira.startup.max.age.of.usable.index.snapshot.in.hours=87600"]
     }
   }) : yamlencode({})
 }

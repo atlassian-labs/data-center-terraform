@@ -64,7 +64,7 @@ resource "helm_release" "jira" {
     local.ingress_settings,
     local.context_path_settings,
     local.version_tag,
-    local.ignore_index_check,
+    local.reuse_old_index_snapshot
   ]
 }
 
