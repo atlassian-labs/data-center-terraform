@@ -100,32 +100,35 @@ locals {
   # https://extranet.atlassian.com/pages/viewpage.action?pageId=4215563160
   # https://extranet.atlassian.com/pages/viewpage.action?spaceKey=CONFARCH&title=Index+recovery
 
+  # Current date - the date the index recovery files are going to be used
   date_year  = tonumber(formatdate("YYYY", timestamp())) # current year
   date_month = tonumber(formatdate("MM", timestamp())) # current year
   date_days  = tonumber(formatdate("DD", timestamp())) # current year
-  day_millis = 24 * 360 * 10000
-  # hardcode the snapshot creation date
+  day_millis = 24 * 360 * 10000 # number of milliseconds in a day
+  # Get the snapshot creation date
   creation_date  = split("-", var.shared_home_snapshot_creation_date)
   snapshot_year  = tonumber(local.creation_date[0])
   snapshot_month = tonumber(local.creation_date[1])
   snapshot_day   = tonumber(local.creation_date[2])
-  # Calculate the time passed from snapshot creation in milliseconds
-  offset       = ((local.snapshot_month - 1 ) * 30) + local.snapshot_day * local.day_millis # the snapshot I used is generated on May 2nd, so we can deduct 4 months from the following calculation
-  time_to_live = ((local.date_year - local.snapshot_year - 1) * 365 + local.date_month * 30 + local.date_days + 2) * local.day_millis - local.offset  # valid duration for ebs snapshot in milliseconds
+  # Calculate the days passed from snapshot creation + 7 days extra
+  offset       = ((local.snapshot_month - 1 ) * 30) + local.snapshot_day
+  days_from_snapshot = (local.date_year - local.snapshot_year) * 365 + local.date_month * 30 + local.date_days - local.offset + 7
 
+  # Override the lifetime of recovery index in shared home and make sure there is enough timeout for copy long files
   extend_snapshot_validity = var.db_snapshot_identifier != null ? yamlencode({
     confluence = {
       additionalJvmArgs = [
-        "-Dcom.atlassian.confluence.journal.timeToLiveInMillis=${local.time_to_live}",
-        "-Dconfluence.cluster.index.recovery.generation.timeout=480",
-        "-Dconfluence.cluster.snapshot.file.wait.time=480",
+        "-Dcom.atlassian.confluence.journal.timeToLiveInMillis=${local.days_from_snapshot * local.day_millis}", # milliseconds
+        "-Dconfluence.cluster.index.recovery.generation.timeout=480", # seconds
+        "-Dconfluence.cluster.snapshot.file.wait.time=480", # seconds
       ]
     }
   }) : yamlencode({})
 
   number_of_threads = min(4, floor(tonumber(local.confluence_software_resources.cpu)))
 
-  extend_reindex_thread_counts = var.db_snapshot_identifier != null ? yamlencode({
+  # Set the number of threads to boost re-index process based on number of Confluence CPUs per node
+  extend_reindex_thread_counts = yamlencode({
     confluence = {
       additionalJvmArgs = [
         "-Dreindex.thread.count=${local.number_of_threads}",
@@ -133,6 +136,6 @@ locals {
         "-Dreindex.attachments.thread.count=${local.number_of_threads}",
       ]
     }
-  }) : yamlencode({})
+  })
 
 }
