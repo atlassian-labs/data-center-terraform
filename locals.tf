@@ -13,4 +13,5 @@ locals {
   local_confluence_chart_path = var.local_helm_charts_path != "" && var.confluence_install_local_chart ? "${var.local_helm_charts_path}/confluence" : ""
   local_bamboo_chart_path     = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo" : ""
   local_agent_chart_path      = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo-agent" : ""
+  ebs_lifecycle = var.confluence_shared_home_snapshot_creation_date == null ? formatdate("YYYY-MM-DD", timeadd(timestamp(), "-96h")) : var.confluence_shared_home_snapshot_creation_date
 }

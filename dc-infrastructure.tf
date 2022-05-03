@@ -167,7 +167,7 @@ module "confluence" {
   nfs_limits_memory   = var.confluence_nfs_limits_memory
 
   shared_home_snapshot_id            = var.confluence_shared_home_snapshot_id
-  shared_home_snapshot_creation_date = var.confluence_shared_home_snapshot_creation_date
+  shared_home_snapshot_creation_date = local.ebs_lifecycle
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path

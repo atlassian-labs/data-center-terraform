@@ -212,3 +212,13 @@ confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 ```
 
 ??? Warning "Snapshot and your environment must be in same region"  
+
+### Shared home snapshot creation date
+The index recovery files are valid for four days after creation by default.
+If you restore the RDS and EBS to retrieve the data, and the creation date for the index recovery files in the shared home when the snapshot is created is more than four days, you need to extend the life cycle time of index recovery time by defining the snapshot creation date.
+
+`shared_home_snapshot_creation_date` defines the creation date of the shared home EBS snapshot.
+
+```terraform
+shared_home_snapshot_creation_date = "<SHARED_HOME_EBS_SNAPSHOT_CREATION_DATE>" # e.g. "2022-04-28"
+```
