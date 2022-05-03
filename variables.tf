@@ -450,11 +450,11 @@ variable "confluence_shared_home_snapshot_id" {
   default     = null
 }
 
-#variable "confluence_shared_home_snapshot_creation_date" {
-#  description = "EBS Snapshot creation date for shared home content."
-#  type        = string
-#  default     = "2022-04-28"
-#}
+variable "confluence_shared_home_snapshot_creation_date" {
+  description = "EBS Snapshot creation date for shared home content."
+  type        = string
+  default     = "2022-04-28"
+}
 
 ################################################################################
 # Bitbucket Variables

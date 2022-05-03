@@ -164,3 +164,8 @@ variable "shared_home_snapshot_id" {
   type        = string
   default     = null
 }
+
+variable "shared_home_snapshot_creation_date" {
+  description = "EBS Snapshot creation date for shared home content."
+  type        = string
+}
