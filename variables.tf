@@ -454,6 +454,10 @@ variable "confluence_shared_home_snapshot_creation_date" {
   description = "EBS Snapshot creation date for shared home content."
   type        = string
   default     = "2022-04-28"
+  validation {
+    condition     = var.confluence_shared_home_snapshot_creation_date == null || can(regex("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$", var.confluence_shared_home_snapshot_creation_date))
+    error_message = "Provide correct EBS snapshot creation date using this format: yyyy-mm-dd"
+  }
 }
 
 ################################################################################
