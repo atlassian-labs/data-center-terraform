@@ -115,7 +115,7 @@ locals {
   days_from_snapshot = (local.date_year - local.snapshot_year) * 365 + local.date_month * 30 + local.date_days - local.offset + 7
 
   # Override the lifetime of recovery index in shared home and make sure there is enough timeout for copy long files
-  extend_snapshot_validity = var.db_snapshot_identifier != null ? yamlencode({
+  extend_snapshot_validity = var.db_snapshot_id != null ? yamlencode({
     confluence = {
       additionalJvmArgs = [
         "-Dcom.atlassian.confluence.journal.timeToLiveInMillis=${local.days_from_snapshot * local.day_millis}", # milliseconds
