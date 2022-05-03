@@ -335,7 +335,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"license_abc":  "dummy_license", //invalid var name
 	},
 	"enable_synchrony":                   false,
-	"db_snapshot_identifier":             "dummy-snapshot-id",
+	"db_snapshot_id":                     "dummy-snapshot-id",
 	"db_master_password":                 "dummyPassword!",
 	"db_snapshot_build_number":           "invalid.build.number",
 	"shared_home_snapshot_creation_date": "2022-04-28",
