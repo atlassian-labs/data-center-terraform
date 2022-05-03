@@ -135,13 +135,23 @@ variable "elasticsearch_endpoint" {
   default     = null
 }
 
-variable "elasticsearch_cpu" {
-  description = "Number of CPUs for elasticsearch instance."
+variable "elasticsearch_requests_cpu" {
+  description = "Number of CPUs requested for elasticsearch instance."
   type        = string
 }
 
-variable "elasticsearch_mem" {
-  description = "Amount of memory for elasticsearch instance."
+variable "elasticsearch_requests_memory" {
+  description = "Amount of memory requested for elasticsearch instance."
+  type        = string
+}
+
+variable "elasticsearch_limits_cpu" {
+  description = "CPU limit for elasticsearch instance."
+  type        = string
+}
+
+variable "elasticsearch_limits_memory" {
+  description = "Memory limit for elasticsearch instance."
   type        = string
 }
 
@@ -169,7 +179,7 @@ variable "display_name" {
   }
 }
 
-variable "db_snapshot_identifier" {
+variable "db_snapshot_id" {
   description = "Snapshot identifier for RDS. The snapshot should be in the same AWS region as the DB instance."
   type        = string
   default     = null

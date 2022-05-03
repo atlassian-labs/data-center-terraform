@@ -5,5 +5,4 @@ locals {
 
   # The name of the NFS storage class.
   storage_class = "gp2"
-
 }

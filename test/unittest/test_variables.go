@@ -279,14 +279,16 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"license":      "dummy_license",
 		"invalid":      "bitbucket-configuration",
 	},
-	"nfs_requests_cpu":       "0.25",
-	"nfs_requests_memory":    "256Mi",
-	"nfs_limits_cpu":         "0.25",
-	"nfs_limits_memory":      "256Mi",
-	"elasticsearch_cpu":      "1",
-	"elasticsearch_mem":      "1Gi",
-	"elasticsearch_storage":  10,
-	"elasticsearch_replicas": 9, // invalid, should be [2,8]
+	"nfs_requests_cpu":              "0.25",
+	"nfs_requests_memory":           "256Mi",
+	"nfs_limits_cpu":                "0.25",
+	"nfs_limits_memory":             "256Mi",
+	"elasticsearch_requests_cpu":    "1",
+	"elasticsearch_requests_memory": "1Gi",
+	"elasticsearch_limits_cpu":      "1",
+	"elasticsearch_limits_memory":   "1Gi",
+	"elasticsearch_storage":         10,
+	"elasticsearch_replicas":        9, // invalid, should be [2,8]
 }
 
 var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci mauris, cursus sit amet tortor sit amet, aliquam dapibus magna. In sodales felis in ipsum euismod tempor. Phasellus mattis, justo id auctor lacinia, ipsum nulla sodales massa, ac porttitor arcu sem et quam."
@@ -379,9 +381,9 @@ var JiraCorrectVariables = map[string]interface{}{
 		"reserved_code_cache": "512m",
 		"license":             "dummy_license",
 	},
-	"db_master_password":     "dummy_password",
-	"db_master_username":     "dummy_username",
-	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+	"db_master_password": "dummy_password",
+	"db_master_username": "dummy_username",
+	"db_snapshot_id":     "dummy-rds-snapshot-id",
 }
 
 var JiraInvalidVariables = map[string]interface{}{
@@ -420,7 +422,7 @@ var JiraInvalidVariables = map[string]interface{}{
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
 	},
-	"db_master_password":     "dummy_password",
-	"db_master_username":     "dummy_username",
-	"db_snapshot_identifier": "dummy-rds-snapshot-id",
+	"db_master_password": "dummy_password",
+	"db_master_username": "dummy_username",
+	"db_snapshot_id":     "dummy-rds-snapshot-id",
 }

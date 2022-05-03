@@ -205,7 +205,7 @@ variable "jira_db_name" {
   type        = string
 }
 
-variable "jira_db_snapshot_identifier" {
+variable "jira_db_snapshot_id" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
   type        = string
@@ -390,7 +390,7 @@ variable "confluence_collaborative_editing_enabled" {
   default     = true
 }
 
-variable "confluence_db_snapshot_identifier" {
+variable "confluence_db_snapshot_id" {
   description = "The identifier for the Confluence DB snapshot to restore from."
   default     = null
   type        = string
@@ -620,16 +620,28 @@ variable "bitbucket_nfs_limits_memory" {
   default     = "2Gi"
 }
 
-variable "bitbucket_elasticsearch_cpu" {
+variable "bitbucket_elasticsearch_requests_cpu" {
   description = "Number of CPUs for Bitbucket elasticsearch instance."
   type        = string
   default     = "0.25"
 }
 
-variable "bitbucket_elasticsearch_mem" {
+variable "bitbucket_elasticsearch_requests_memory" {
   description = "Amount of memory for Bitbucket elasticsearch instance."
   type        = string
   default     = "1Gi"
+}
+
+variable "bitbucket_elasticsearch_limits_cpu" {
+  description = "CPUs limit for elasticsearch instance."
+  type        = string
+  default     = "0.5"
+}
+
+variable "bitbucket_elasticsearch_limits_memory" {
+  description = "Memory limit for elasticsearch instance."
+  type        = string
+  default     = "2Gi"
 }
 
 variable "bitbucket_elasticsearch_storage" {
@@ -650,7 +662,7 @@ variable "bitbucket_shared_home_snapshot_id" {
   default     = null
 }
 
-variable "bitbucket_db_snapshot_identifier" {
+variable "bitbucket_db_snapshot_id" {
   description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
   default     = null
   type        = string

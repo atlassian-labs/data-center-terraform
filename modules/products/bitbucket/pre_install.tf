@@ -1,5 +1,5 @@
 resource "kubernetes_job" "pre_install" {
-  count      = var.db_snapshot_identifier != null ? 1 : 0
+  count      = var.db_snapshot_id != null ? 1 : 0
   depends_on = [module.database]
   metadata {
     name      = "bitbucket-pre-install"

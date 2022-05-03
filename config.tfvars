@@ -111,7 +111,7 @@ jira_db_name = "jira"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # You must provide Jira license if you wish to retore the database from a snapshot.
 # You must provide jira_db_master_username and jira_db_master_password that matches the ones in snapshot
-#jira_db_snapshot_identifier = "<DB_SNAPSHOT_IDENTIFIER>"
+#jira_db_snapshot_id = "<DB_SNAPSHOT_ID>"
 #jira_license = "<LICENSE_KEY>"
 
 # The master user credential for the database instance.
@@ -188,7 +188,7 @@ confluence_db_name = "confluence"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide confluence_db_master_username and confluence_db_master_password that matches the ones in snapshot
 # Build number stored within the snapshot and Confluence license are also required, so that Confluence can be fully setup prior to start.
-#confluence_db_snapshot_identifier = "<DB_SNAPSHOT_IDENTIFIER>"
+#confluence_db_snapshot_id = "<DB_SNAPSHOT_ID>"
 #confluence_db_snapshot_build_number = "<BUILD_NUMBER>"
 
 # The master user credential for the database instance.
@@ -271,10 +271,12 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
 # Elasticsearch resource configuration for Bitbucket
-#bitbucket_elasticsearch_cpu      = "<REQUESTS_CPU>"
-#bitbucket_elasticsearch_mem      = "<REQUESTS_MEMORY>"
-#bitbucket_elasticsearch_storage  = "<REQUESTS_STORAGE>"
-#bitbucket_elasticsearch_replicas = "<NUMBER_OF_NODES>"
+#bitbucket_elasticsearch_requests_cpu    = "<REQUESTS_CPU>"
+#bitbucket_elasticsearch_requests_memory = "<REQUESTS_MEMORY>"
+#bitbucket_elasticsearch_limits_cpu      = "<LIMITS_CPU>"
+#bitbucket_elasticsearch_limits_memory   = "<LIMITS_MEMORY>"
+#bitbucket_elasticsearch_storage         = "<REQUESTS_STORAGE>"
+#bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
 
 # Dataset Restore
 
@@ -283,7 +285,7 @@ bitbucket_db_name = "bitbucket"
 # This will restore the database from the snapshot and will not create a new database.
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide bitbucket_db_master_username and bitbucket_db_master_password that matches the ones in snapshot
-#bitbucket_db_snapshot_identifier = "<DB_SNAPSHOT_IDENTIFIER>"
+#bitbucket_db_snapshot_id = "<DB_SNAPSHOT_ID>"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".

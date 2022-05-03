@@ -90,7 +90,7 @@ module "jira" {
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
   db_name                 = var.jira_db_name
-  db_snapshot_identifier  = var.jira_db_snapshot_identifier
+  db_snapshot_id          = var.jira_db_snapshot_id
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
@@ -139,7 +139,7 @@ module "confluence" {
     db_name              = var.confluence_db_name
   }
 
-  db_snapshot_identifier   = var.confluence_db_snapshot_identifier
+  db_snapshot_id           = var.confluence_db_snapshot_id
   db_snapshot_build_number = var.confluence_db_snapshot_build_number
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
@@ -188,7 +188,7 @@ module "bitbucket" {
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
   db_name                 = var.bitbucket_db_name
-  db_snapshot_identifier  = var.bitbucket_db_snapshot_identifier
+  db_snapshot_id          = var.bitbucket_db_snapshot_id
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
@@ -222,10 +222,12 @@ module "bitbucket" {
   nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
   nfs_limits_memory   = var.bitbucket_nfs_limits_memory
 
-  elasticsearch_cpu      = var.bitbucket_elasticsearch_cpu
-  elasticsearch_mem      = var.bitbucket_elasticsearch_mem
-  elasticsearch_storage  = var.bitbucket_elasticsearch_storage
-  elasticsearch_replicas = var.bitbucket_elasticsearch_replicas
+  elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
+  elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
+  elasticsearch_limits_cpu      = var.bitbucket_elasticsearch_limits_cpu
+  elasticsearch_limits_memory   = var.bitbucket_elasticsearch_limits_memory
+  elasticsearch_storage         = var.bitbucket_elasticsearch_storage
+  elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
 
   shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
 }

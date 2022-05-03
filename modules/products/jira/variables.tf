@@ -134,7 +134,7 @@ variable "version_tag" {
   default     = null
 }
 
-variable "db_snapshot_identifier" {
+variable "db_snapshot_id" {
   description = "Snapshot identifier for RDS. The snapshot should be in the same AWS region as the DB instance."
   type        = string
   default     = null

@@ -170,10 +170,12 @@ The following variables set the request for number of CPU, amount of memory, amo
 
 ```terraform
 # Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_cpu      = "0.25"
-bitbucket_elasticsearch_mem      = "1Gi"
-bitbucket_elasticsearch_storage  = 10
-bitbucket_elasticsearch_replicas = 2
+bitbucket_elasticsearch_requests_cpu    = "0.5"
+bitbucket_elasticsearch_requests_memory = "0.5Gi"
+bitbucket_elasticsearch_limits_cpu      = "1"
+bitbucket_elasticsearch_limits_memory   = "1Gi"
+bitbucket_elasticsearch_storage         = 10
+bitbucket_elasticsearch_replicas        = 2
 ```
 
 
@@ -183,10 +185,10 @@ To restore the dataset into the newly created instance, uncomment the following 
 
 ### Database Snapshot Identifier
 
-`bitbucket_db_snapshot_identifier` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
+`bitbucket_db_snapshot_id` sets the identifier for the DB snapshot to restore from. If you do not specify a value, no AWS RDS snapshot is used.
 
 ```terraform
-bitbucket_db_snapshot_identifier = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
+bitbucket_db_snapshot_id = "<SNAPSHOT_IDENTIFIER>"   # e.g. "my-snapshot"
 ```
 
 !!! info "The AWS RDS snapshot must be in the same region and account as the RDS instance."
