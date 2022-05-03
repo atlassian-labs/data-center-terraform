@@ -114,21 +114,19 @@ locals {
   snapshot_creation_day   = 1
   # Calculate the time passed from snapshot creation in milliseconds
   offset       = ((local.snapshot_creation_month - 1 ) * 30) + local.snapshot_creation_day * local.day_in_millis # the snapshot I used is generated on May 2nd, so we can deduct 4 months from the following calculation
-  time_to_live = ((local.date_year - local.snapshot_creation_year - 1) * 365 + local.date_month * 30 + local.date_days) * local.day_in_millis - local.offset  # valid duration for ebs snapshot in milliseconds
+  time_to_live = ((local.date_year - local.snapshot_creation_year - 1) * 365 + local.date_month * 30 + local.date_days + 2) * local.day_in_millis - local.offset  # valid duration for ebs snapshot in milliseconds
 
   extend_snapshot_validity = var.db_snapshot_identifier != null ? yamlencode({
     confluence = {
       additionalJvmArgs = [
         "-Dcom.atlassian.confluence.journal.timeToLiveInMillis=${local.time_to_live}",
-        "-Dconfluence.cluster.index.recovery.query.timeout=360",
-        "-Dconfluence.cluster.index.recovery.generation.timeout=420",
-        "-Dconfluence.cluster.snapshot.file.wait.time=420"
+        "-Dconfluence.cluster.index.recovery.generation.timeout=480",
+        "-Dconfluence.cluster.snapshot.file.wait.time=480",
       ]
     }
   }) : yamlencode({})
 
-  # optimum number of threads used for re-index will calculated using this formula: `CPUs x 0.5 x (1 + WC)`, while WC is a constant equals to 0.8
-  number_of_threads = min(4, floor(tonumber(confluence_configuration["cpu"]) x 0.5 x (1 + 0.8)))
+  number_of_threads = min(4, floor(tonumber(local.confluence_software_resources.cpu)))
 
   extend_reindex_thread_counts = var.db_snapshot_identifier != null ? yamlencode({
     confluence = {
