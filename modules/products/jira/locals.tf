@@ -16,6 +16,7 @@ locals {
 
   domain_supplied     = var.ingress.outputs.domain != null ? true : false
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
+  ageOfUsableIndexSnapshot = 24 * 365 * 10 # 10 years
 
   # ingress settings for Jira service
   ingress_settings = yamlencode({
@@ -46,9 +47,9 @@ locals {
   # After restoring the snapshot of the Jira database, a re-index is required. To avoid interruption in the Jira
   # service we should exclude indexing status from the health check process.
   # For more info see: https://jira.atlassian.com/browse/JRASERVER-66970
-  ignore_index_check = var.db_snapshot_id != null ? yamlencode({
-    jira = {
-      additionalJvmArgs = ["-Dcom.atlassian.jira.status.index.check=false"]
-    }
-  }) : yamlencode({})
+  ignore_index_check = var.db_snapshot_id != null ? ["-Dcom.atlassian.jira.status.index.check=false"] :[]
+
+  # By default, Jira accepts an index snapshot taken within 24hours. In order to use snapshot older than 24hours we need to update following property value.
+  # It is set to 10 years.
+  reuse_old_index_snapshot = var.shared_home_snapshot_id != null ? ["-Dcom.atlassian.jira.startup.max.age.of.usable.index.snapshot.in.hours=${local.ageOfUsableIndexSnapshot}"]:[]
 }
