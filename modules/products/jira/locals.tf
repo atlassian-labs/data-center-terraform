@@ -16,6 +16,7 @@ locals {
 
   domain_supplied     = var.ingress.outputs.domain != null ? true : false
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
+  ageOfUsableIndexSnapshot = 24 * 365 * 10
 
   # ingress settings for Jira service
   ingress_settings = yamlencode({
@@ -47,7 +48,7 @@ locals {
   # It is set to 10 years.
   reuse_old_index_snapshot = var.shared_home_snapshot_id != null ? yamlencode({
     jira = {
-      additionalJvmArgs = ["-Dcom.atlassian.jira.startup.max.age.of.usable.index.snapshot.in.hours=87600"]
+      additionalJvmArgs = ["-Dcom.atlassian.jira.startup.max.age.of.usable.index.snapshot.in.hours=${local.ageOfUsableIndexSnapshot}"]
     }
   }) : yamlencode({})
 }
