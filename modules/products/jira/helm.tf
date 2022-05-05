@@ -32,6 +32,7 @@ resource "helm_release" "jira" {
             }
           }
         }
+        additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot)
       }
       database = {
         type   = "postgres72"
@@ -64,7 +65,6 @@ resource "helm_release" "jira" {
     local.ingress_settings,
     local.context_path_settings,
     local.version_tag,
-    local.reuse_old_index_snapshot
   ]
 }
 
