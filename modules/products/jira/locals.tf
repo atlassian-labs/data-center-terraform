@@ -16,7 +16,7 @@ locals {
 
   domain_supplied     = var.ingress.outputs.domain != null ? true : false
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
-  ageOfUsableIndexSnapshot = 24 * 365 * 10
+  ageOfUsableIndexSnapshot = 24 * 365 * 10 # 10 years
 
   # ingress settings for Jira service
   ingress_settings = yamlencode({
