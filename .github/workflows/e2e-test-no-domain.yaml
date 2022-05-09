@@ -64,8 +64,6 @@ jobs:
         id: e2e-test
         working-directory: test/
         run: |
-          aws --version
-          kubectl version
           set -o pipefail
           go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
