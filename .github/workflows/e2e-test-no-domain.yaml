@@ -28,6 +28,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup AWS CLI
+        uses: unfor19/install-aws-cli-action@v1.0.3
+        with:
+          version: 2.6.3
+
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
         with:
@@ -59,6 +64,7 @@ jobs:
         id: e2e-test
         working-directory: test/
         run: |
+          aws --version
           set -o pipefail
           go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
