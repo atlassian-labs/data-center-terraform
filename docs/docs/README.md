@@ -45,6 +45,12 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/jira/Terraform.png "Deployment")
 
+=== "Bitbucket"
+
+    !!! info "Architectural overview for Bitbucket"
+
+    ![architecture](assets/images/bitbucket/Terraform.png "Deployment")
+
 !!! tip "Cluster size and cost"
 
     [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) is provisioned as part of the deployment.
