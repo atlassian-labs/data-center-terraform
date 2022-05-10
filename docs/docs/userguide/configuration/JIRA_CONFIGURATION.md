@@ -1,5 +1,13 @@
 # Jira configuration
 
+!!! info "Jira Service Management"
+    [Jira Service Management DC](https://www.atlassian.com/enterprise/data-center/jira/service-management){.external} deployment is
+    configured the same as a Jira deployment with several specific configuration values.
+
+    * `products = ["jira"] `
+    * `jira_image_repository = "atlassian/jira-servicemanagement"`
+    * `jira_version_tag = "4.20" # or other compatible version`
+    
 ## Application configuration
 
 ### Helm chart version

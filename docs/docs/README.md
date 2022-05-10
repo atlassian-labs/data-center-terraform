@@ -5,17 +5,23 @@
 
 ## Support disclaimer
 
-!!! warning "Supported Products and Platforms"
-    **This project is designed for Atlassian vendors to run DCAPT performance toolkit and is not officially supported.**
+!!! warning "Officially support warning"
+    **This project is designed for Atlassian vendors to run [DCAPT performance toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
+
+    We don't recommend using the scripts to deploy production instances but they can be used for inspiration and to deploy testing stacks.
+    Beware that the project is tested only for DCAPT framework use case.
+
+
+## Products and Platforms
+
+!!! info "Available Products and Platforms"
 
     Current project limitations listed below:
 
     * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
+    * [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}, [Jira Service Management](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html), [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external}, [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} are the DC products supported by this project.
 
-    Support for additional DC products will be made available in future.
-    
-This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will stand-up a Kubernetes cluster and all the required infrastructure. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
+This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will create a Kubernetes cluster and all the required infrastructure. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
 
 ## Deployment overview
 
@@ -60,9 +66,9 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 The minimum versions that we support for each product are:
 
-|  Bamboo DC                                                                                         | Confluence DC                                                                                          | Jira DC                                                                                                                  |
-|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}  | [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}      |  
+| Jira DC                                                                                                             | Jira Service Management DC                                                                                                         | Confluence DC                                                                                         | Bitbucket DC                                                                                                                            | Bamboo DC                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} | [4.20](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external} | [8.17](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external} | [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} |  
 
 ## Feedback
 

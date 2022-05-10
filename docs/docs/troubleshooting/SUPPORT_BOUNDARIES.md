@@ -1,18 +1,10 @@
 # Support boundaries
 
-This page describes what is within our scope of support for Terraform Data Center deployments. 
+!!! warning "Officially support warning"
+**This project is designed for Atlassian vendors to run [DCAPT performance toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
 
-!!! warning "Supported Products and Platforms"
-
-    **This project is designed for Atlassian vendors to run DCAPT performance toolkit and is not officially supported.**
-
-    Current project limitations listed below:
-
-    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
-
-    Support for additional DC products will be made available in future.
-
+    We don't recommend using the scripts to deploy production instances but they can be used for inspiration and to deploy testing stacks.
+    Beware that the project is tested only for DCAPT framework use case.
 
 ???+ info "Additional information"
     * Read our [troubleshooting tips](TROUBLESHOOTING.md).
