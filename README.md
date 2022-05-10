@@ -3,9 +3,9 @@
 
 **NOTE: This project is designed for Atlassian vendors to run DCAPT performance toolkit and is not officially supported.**
 
-Atlassian DC APP program provides App vendors in our ecosystem with ready-to-use environment setup tools. 
+Atlassian DC APP program provides App vendors in Atlassian ecosystem with ready-to-use environment setup tools. 
 This project provides a tool to provision infrastructure for Atlassian DC products deployed with [Helm charts](https://atlassian.github.io/data-center-helm-charts/).
-At this stage the scope is providing the infrastructure for[Bamboo DC](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html), [Confluence DC](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html), and [Jira DC](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html) on AWS.  
+At this stage the project is providing the infrastructure for [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}, [Jira Service Management](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html), [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external}, [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} on AWS.  
 
 
 ## Get started
