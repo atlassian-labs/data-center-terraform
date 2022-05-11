@@ -30,6 +30,9 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "dummy-snapshot-id", dbModule.AttributeValues["snapshot_identifier"])
 	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
 	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
+
+	jobKey := "kubernetes_job.pre_install[0]" // if we have snapshot, we need to run the pre-install job as well
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, jobKey)
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
