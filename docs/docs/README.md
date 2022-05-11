@@ -27,11 +27,11 @@ This project can be used for bootstrapping Atlassian DC products in a K8s cluste
 
 The diagram below provides a high level overview of what a typical deployment will look like for each DC product:
 
-=== "Bamboo"
+=== "Jira"
 
-    !!! info "Architectural overview for Bamboo"
+    !!! info "Architectural overview for Jira"
 
-    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
+    ![architecture](assets/images/jira/Terraform.png "Deployment")
 
 === "Confluence"
 
@@ -39,11 +39,17 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/confluence/Terraform.png "Deployment")
 
-=== "Jira"
+=== "Bitbucket"
 
-    !!! info "Architectural overview for Jira"
+    !!! info "Architectural overview for Bitbucket"
 
-    ![architecture](assets/images/jira/Terraform.png "Deployment")
+    ![architecture](assets/images/bitbucket/Terraform.png "Deployment")
+
+=== "Bamboo"
+
+    !!! info "Architectural overview for Bamboo"
+
+    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
 
 !!! tip "Cluster size and cost"
 
