@@ -32,7 +32,7 @@ resource "helm_release" "jira" {
             }
           }
         }
-        additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot)
+        additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot, local.dcapt_analytics_property)
       }
       database = {
         type   = "postgres72"
