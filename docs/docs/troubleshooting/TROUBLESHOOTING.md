@@ -267,3 +267,29 @@ This guide contains general tips on how to investigate an application deployment
     PVC is not able to be destroyed when bounded to pod. Scale down the pod to 0 first before deleting PVC. 
     
     `helm upgrade PRODUCT atlassian-data-center/PRODUCT --set replicaCount=0 --reuse-values -n atlassian`
+
+??? tip "How to manually clean up resources when uninstall failed?"
+
+    Sometimes Terraform is unable to destroy resources due to various reasons. This normally happens at EKS level. 
+    One quick solution is to manually delete EKS cluster, and re-run uninstall, so that Terraform will pick up from there. 
+
+    To delete EKS cluster, go to AWS console > EKS service > the cluster you're deploying. 
+    You'll need to go to 'Configuration' tab > 'Compute' tab > click into node group.
+    Then in node group screen > Details > click into Autoscaling group.
+    It'll then direct you to EC2 > Auto Scaling Group screen with the ASG selected > 'Delete' the chosen ASG.
+    Wait for the ASG to be deleted, then go back to EKS cluster > Delete.
+
+??? tip "How to deal with EIP AddressLimitExceeded error"
+
+    If you encounter the below error during installation stage:
+
+    ```shell
+    Error: Error creating EIP: AddressLimitExceeded: The maximum number of addresses has been reached.
+	status code: 400, request id: 0061b744-ced3-4d0e-9905-503c85013bcc
+
+    with module.base-infrastructure.module.vpc.module.vpc.aws_eip.nat[0],
+    on .terraform/modules/base-infrastructure.vpc.vpc/main.tf line 1078, in resource "aws_eip" "nat":
+    1078: resource "aws_eip" "nat" {
+    ```
+
+    Go to AWS consle > VPC service > Elastic IPs, choose the one(s) without any Association ID > Actions > Release Elastic IP addresses.
