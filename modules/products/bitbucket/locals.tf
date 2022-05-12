@@ -82,4 +82,7 @@ locals {
   }) : yamlencode({})
 
   bitbucket_ingress_url = local.domain_supplied ? "https://${local.product_domain_name}" : "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
+
+  # DC App Performance Toolkit analytics
+  dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 }

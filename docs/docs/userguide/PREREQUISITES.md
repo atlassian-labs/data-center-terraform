@@ -18,13 +18,6 @@ Terraform is an open-source infrastructure as code tool that provides a consiste
 
 This project uses Terraform to create and manage the Atlassian Data Center infrastructure on AWS for use with supported Data Center products. 
 
-!!! warning "Supported Products and Platforms"  
-
-    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
-
-    Support for additional DC products will be made available in future.
-
 1. Check if Terraform is already installed by running the following command:
    ```shell
    terraform version
@@ -48,17 +41,17 @@ Before using this project, make sure that Helm v3.3 or later is installed on you
 
 You need to have the AWS CLI tool installed on your local machine before creating the Kubernetes infrastructure. 
 
-!!! warning "Version 2"
+!!! warning "AWS CLI Version 2"
 
-      Version 2 of the AWS CLI is required. If not using version 2 your experience may vary. 
+      Version 2 of the AWS CLI is required.
 
 1. Check if AWS CLI version 2 is already installed by running the following command:
     ```shell
     aws --version
     ```
-2. If the AWS CLI is not installed or you're running version 1, install AWS CLI version 2 by following the [official instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external}.
+2. If the AWS CLI is not installed, or you're running version 1, install AWS CLI version 2 by following the [official instructions](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html){.external}.
 
-### :material-tools: Kubectl
+### :material-tools: Kubectl (optional)
 
 Kubectl is a command line tool lets you control Kubernetes clusters. 
 

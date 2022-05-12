@@ -6,32 +6,35 @@
 ## Support disclaimer
 
 !!! warning "Officially support warning"
-    **This project is designed for Atlassian vendors to run [DCAPT performance toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
+    **This project is designed for Atlassian vendors to run [DC App Performance Toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
 
     We don't recommend using the scripts to deploy production instances but they can be used for inspiration and to deploy testing stacks.
-    Beware that the project is tested only for DCAPT framework use case.
+    Beware that the project is tested only for DCAPT framework use case with the pre-defined configuration files only.
 
 
 ## Products and Platforms
 
 !!! info "Available Products and Platforms"
+    
+    The following products can be installed to [Amazon Web Services](https://aws.amazon.com/){.external}:
 
-    Current project limitations listed below:
+    * [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}
+    * [Jira Service Management](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html){.external}
+    * [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}
+    * [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external}
+    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}
 
-    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external}, [Jira Service Management](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html), [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external}, [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} are the DC products supported by this project.
-
-This project can be used for bootstrapping Atlassian DC products in a K8s cluster. This tool will create a Kubernetes cluster and all the required infrastructure. It will also install supported Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/#additional-content){.external}.
+This project can be used for bootstrapping Atlassian DC products in a Kubernetes cluster. This tool will create a Kubernetes cluster and all the required infrastructure. It will also install Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/){.external}.
 
 ## Deployment overview
 
 The diagram below provides a high level overview of what a typical deployment will look like for each DC product:
 
-=== "Bamboo"
+=== "Jira"
 
-    !!! info "Architectural overview for Bamboo"
+    !!! info "Architectural overview for Jira"
 
-    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
+    ![architecture](assets/images/jira/Terraform.png "Deployment")
 
 === "Confluence"
 
@@ -39,11 +42,17 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/confluence/Terraform.png "Deployment")
 
-=== "Jira"
+=== "Bitbucket"
 
-    !!! info "Architectural overview for Jira"
+    !!! info "Architectural overview for Bitbucket"
 
-    ![architecture](assets/images/jira/Terraform.png "Deployment")
+    ![architecture](assets/images/bitbucket/Terraform.png "Deployment")
+
+=== "Bamboo"
+
+    !!! info "Architectural overview for Bamboo"
+
+    ![architecture](assets/images/bamboo/Terraform.png "Deployment")
 
 !!! tip "Cluster size and cost"
 
@@ -72,7 +81,7 @@ The minimum versions that we support for each product are:
 
 ## Feedback
 
-If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. If you have general feedback or question regarding the project, use [Atlassian Community Kubernetes space](https://community.atlassian.com/t5/Atlassian-Data-Center-on/gh-p/DC_Kubernetes){.external}.
+If you find any issues, [raise a ticket](https://github.com/atlassian-labs/data-center-terraform/issues){.external}. In case of technical questions, issues or problems using this project with DC App Performance Toolkit, contact us for help in the community Slack [#data-center-app-performance-toolkit](http://bit.ly/dcapt_slack){.external} channel.
 
 ## Contributions
 
@@ -81,6 +90,3 @@ Contributions are welcome! [Find out how to contribute](https://github.com/atlas
 ## License
 
 Apache 2.0 licensed, see [license file](https://github.com/atlassian-labs/data-center-terraform/blob/main/LICENSE){.external}.
-
-
-[![With ❤️ from Atlassian](https://raw.githubusercontent.com/atlassian-internal/oss-assets/master/banner-cheers-light.png)](https://www.atlassian.com)
