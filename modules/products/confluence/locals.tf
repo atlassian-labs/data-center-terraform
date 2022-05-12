@@ -87,4 +87,7 @@ locals {
       ]
     }
   }) : yamlencode({})
+
+  # DC App Performance Toolkit analytics
+  dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 }
