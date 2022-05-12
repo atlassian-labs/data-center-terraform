@@ -46,7 +46,7 @@ max_cluster_capacity = 5
 ################################################################################
 
 # Helm chart version of Jira
-jira_helm_chart_version = "1.2.0"
+jira_helm_chart_version = "1.3.0"
 
 # Number of Jira application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
@@ -125,7 +125,7 @@ jira_db_name = "jira"
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.2.0"
+confluence_helm_chart_version = "1.3.0"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
@@ -205,7 +205,7 @@ confluence_collaborative_editing_enabled = true
 ################################################################################
 
 # Helm chart version of Bitbucket
-bitbucket_helm_chart_version = "1.2.0"
+bitbucket_helm_chart_version = "1.3.0"
 
 # Number of Bitbucket application nodes
 bitbucket_replica_count = 1
@@ -304,8 +304,8 @@ bitbucket_db_name = "bitbucket"
 ################################################################################
 
 # Helm chart version of Bamboo and Bamboo agent instances
-bamboo_helm_chart_version       = "1.2.0"
-bamboo_agent_helm_chart_version = "1.2.0"
+bamboo_helm_chart_version       = "1.3.0"
+bamboo_agent_helm_chart_version = "1.3.0"
 
 # By default, Bamboo and the Bamboo Agent will use the versions defined in their respective Helm charts:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo/Chart.yaml
