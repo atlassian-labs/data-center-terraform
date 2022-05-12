@@ -129,7 +129,7 @@ This guide contains general tips on how to investigate an application deployment
      
     3. Click on the item and replace the `Digest` value with the given value in the error message.
 
-??? tip "How do I deal with Pre-existing state in multiple environment?"
+??? tip "How do I deal with pre-existing state in multiple environment?"
 
     If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
     
@@ -262,4 +262,8 @@ This guide contains general tips on how to investigate an application deployment
     kubectl cp atlassian/<pod-name>:/var/atlassian/<application>/logs/<log_files> <local-path>
     ```
 
-   
+??? tip "How to deal with persistent volume claim destroy failed error?"
+
+    PVC is not able to be destroyed when bounded to pod. Scale down the pod to 0 first before deleting PVC. 
+    
+    `helm upgrade PRODUCT atlassian-data-center/PRODUCT --set replicaCount=0 --reuse-values -n atlassian`
