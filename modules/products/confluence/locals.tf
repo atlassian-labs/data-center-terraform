@@ -88,6 +88,13 @@ locals {
     }
   }) : yamlencode({})
 
+
+  # updates base url (in case we are restoring from snapshot)
+  cmd_psql_update = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.db_master_password} psql postgresql://${module.database.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.db_master_password} psql postgresql://${module.database.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\""
+
+  # updates license in shared home (in case we are restoring from snapshot)
+  cmd_license_update = "sed -i 's|<property name=\"atlassian.license.message\">.*</property>|<property name=\"atlassian.license.message\">${var.confluence_configuration["license"]}</property>|g' /shared-home/confluence.cfg.xml"
+
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 }

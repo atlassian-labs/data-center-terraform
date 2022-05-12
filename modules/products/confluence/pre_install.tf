@@ -12,9 +12,19 @@ resource "kubernetes_job" "pre_install" {
         container {
           name    = "pre-install"
           image   = "ubuntu"
-          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.db_master_password} psql postgresql://${module.database.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.db_master_password} psql postgresql://${module.database.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" "]
+          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; ${local.cmd_psql_update}; ${local.cmd_license_update}"]
+          volume_mount {
+            mount_path = "/shared-home"
+            name       = "nfs-shared-home"
+          }
         }
         restart_policy = "Never"
+        volume {
+          name = "nfs-shared-home"
+          persistent_volume_claim {
+            claim_name = module.nfs.nfs_claim_name
+          }
+        }
       }
     }
     backoff_limit = 10
