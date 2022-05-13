@@ -64,3 +64,5 @@ PostgreSQL is the defined database engine for the products and cannot be modifie
 Stick to either domain or no domain for the whole deployment. Switching between domain and no domain is not supported.
 
 ## Deployment limitations
+Destroying product by removing product from products list and then running another install is not supported
+as it will result in unexpected behaviour on the following re-installation. 
