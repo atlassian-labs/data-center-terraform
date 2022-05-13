@@ -41,7 +41,6 @@ jobs:
       - name: Print CLI version
         id: cli-version
         run: |
-          kubectl version
           aws --version
 
       # - name: Setup dependencies
