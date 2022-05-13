@@ -1,4 +1,4 @@
-name: E2E Testing with no domain
+name: E2E Testing - additional cases
 on:
   push:
     branches:
