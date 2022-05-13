@@ -46,8 +46,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	assert.Nil(t, kubectlError)
 	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
 	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\n0
-	println("Output 1 >>> ", output)
-	outputSlice := strings.Split(output, "\\n")
+	outputSlice := strings.Split(output, "\n")
 	returnCode := outputSlice[1]
 	assert.Equal(t, "0", returnCode)
 
@@ -61,8 +60,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	assert.Nil(t, kubectlError)
 	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
 	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\nGreetings from an NFS
-	println("Output 2 >>> ", output)
-	outputSlice = strings.Split(output, "\\n")
+	outputSlice = strings.Split(output, "\n")
 	fileContents := outputSlice[1]
 	assert.Equal(t, "Greetings from an NFS", fileContents)
 }
