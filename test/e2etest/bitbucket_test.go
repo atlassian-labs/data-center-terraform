@@ -38,22 +38,32 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	kubectlOptions := getKubectlOptions(testConfig)
 
 	// Write a file to the NFS server
-	returnCode, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+	output, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
 		"exec", "bitbucket-nfs-server-0",
 		"--", "/bin/bash",
 		"-c", "echo \"Greetings from an NFS\" >> $(find /srv/nfs/ | head -1)/nfs-file-share-test.txt; echo $?")
 
 	assert.Nil(t, kubectlError)
+	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
+	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\n0
+	println("Output 1 >>> ", output)
+	outputSlice := strings.Split(output, "\\n")
+	returnCode := outputSlice[1]
 	assert.Equal(t, "0", returnCode)
 
 	// Read the file from the Bitbucket pod
-	fileContents, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+	output, kubectlError = k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
 		"exec", "bitbucket-0",
 		"-c", "bitbucket",
 		"--", "/bin/bash",
 		"-c", "cat /var/atlassian/application-data/shared-home/nfs-file-share-test.txt")
 
 	assert.Nil(t, kubectlError)
+	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
+	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\nGreetings from an NFS
+	println("Output 2 >>> ", output)
+	outputSlice = strings.Split(output, "\\n")
+	fileContents := outputSlice[1]
 	assert.Equal(t, "Greetings from an NFS", fileContents)
 }
 
