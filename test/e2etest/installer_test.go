@@ -12,7 +12,7 @@ func TestInstaller(t *testing.T) {
 
 	productList := []string{jira, confluence, bamboo, bitbucket}
 	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
-	testConfig := createConfig(t, productList, useDomain)
+	testConfig := createConfig(t, productList, useDomain, false)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)

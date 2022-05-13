@@ -1,4 +1,4 @@
-name: E2E Testing with domain
+name: E2E Testing with no domain
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    name: E2E Testing with domain
+    name: E2E Testing with JSM
     runs-on: ubuntu-latest
     env:
       AWS_DEFAULT_REGION: us-east-1
@@ -22,12 +22,12 @@ jobs:
       TF_VAR_bitbucket_license: ${{ secrets.TF_VAR_BITBUCKET_LICENSE }}
       TF_VAR_bamboo_admin_password: ${{ secrets.TF_VAR_BAMBOO_ADMIN_PASSWORD }}
       TF_VAR_bitbucket_admin_password: ${{ secrets.TF_VAR_BITBUCKET_ADMIN_PASSWORD }}
-      USE_DOMAIN: "true"
+      USE_DOMAIN: "false"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: Pin Kubectl version
         uses: azure/setup-kubectl@v2.0
         with:
@@ -60,12 +60,12 @@ jobs:
         run: |
           echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} > /home/runner/.ssh/bitbucket-e2e.pub
 
-      - name: E2E Testing with domain
+      - name: E2E Testing with no domain
         id: e2e-test
         working-directory: test/
         run: |
           set -o pipefail
-          go test ./e2etest -v -timeout 85m -run TestInstaller | tee ./e2etest/artifacts/e2etest.log
+          go test ./e2etest -v -timeout 85m -run TestJSMInstaller | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
         if: always()

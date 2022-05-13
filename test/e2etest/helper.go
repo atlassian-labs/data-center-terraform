@@ -153,7 +153,7 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool, isJsm bool) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
@@ -183,8 +183,14 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	vars["bamboo_license"] = testConfig.BambooLicense
 	vars["bamboo_password"] = testConfig.BambooPassword
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
+
 	if useDomain {
 		vars["domain"] = domain
+	}
+
+	if isJsm {
+		vars["jira_version_tag"] = "4.20.1"
+		vars["jira_image_repository"] = "atlassian/jira-servicemanagement"
 	}
 
 	// parse the template
