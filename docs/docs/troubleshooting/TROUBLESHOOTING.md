@@ -264,14 +264,14 @@ This guide contains general tips on how to investigate an application deployment
 
 ??? tip "How to deal with persistent volume claim destroy failed error?"
 
-    PVC is not able to be destroyed when bounded to pod. Scale down the pod to 0 first before deleting PVC. 
+    The PVC cannot be destroyed when bound to a pod. Overcome this by scaling down to `0` pods first before deleting PVC. 
     
     `helm upgrade PRODUCT atlassian-data-center/PRODUCT --set replicaCount=0 --reuse-values -n atlassian`
 
-??? tip "How to manually clean up resources when uninstall failed?"
+??? tip "How to manually clean up resources when uninstall has failed?"
 
-    Sometimes Terraform is unable to destroy resources due to various reasons. This normally happens at EKS level. 
-    One quick solution is to manually delete EKS cluster, and re-run uninstall, so that Terraform will pick up from there. 
+    Sometimes Terraform is unable to destroy resources for various reasons. This normally happens at EKS level. 
+    One quick solution is to manually delete the EKS cluster, and re-run uninstall, so that Terraform will pick up from there. 
 
     To delete EKS cluster, go to AWS console > EKS service > the cluster you're deploying. 
     You'll need to go to 'Configuration' tab > 'Compute' tab > click into node group.

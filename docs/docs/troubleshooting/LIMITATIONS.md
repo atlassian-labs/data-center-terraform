@@ -11,7 +11,7 @@
 
 ### Bitbucket scaling up issue with NFS
 
-There is an intermittent issue where scaling the Bitbucket cluster up resulted in new pods not being able to aquire a lock on shared home. 
+There is an intermittent issue when scaling the Bitbucket cluster up results in new pods not being able to acquire a lock on the shared home. 
 
 Log file: 
     
@@ -40,10 +40,10 @@ If this is already the case, please check the logs for more information.
 2022-03-22 05:38:46,136 INFO  [spring-startup]  c.a.s.internal.home.HomeLockAcquirer Releasing lock on /var/atlassian/application-data/bitbucket
 ```
 
-This only been occasionally observed to happen when scaling pods from 1 to 2. 
-If you pre-seed Bitbucket instance and set bitbucket_replica_count to 2 from the beginning, no issue will occur. 
+This issue is intermittent and is occasionally exhibited when scaling the pod count from `1` to `2`. 
+If you pre-seed the Bitbucket instance and set `bitbucket_replica_count` to `2` from the beginning, no issue will occur.
 
-Workaround will be to kill both Bitbucket pod and NFS pod, and wait for them to be up again.
+When encountered, the issue can be resolved by killing the Bitbucket and NFS pods and waiting for them to become available again.
 
 ```
 kubectl delete pod bitbucket-0 -n atlassian
