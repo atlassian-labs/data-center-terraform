@@ -61,7 +61,8 @@ Amazon Web Services (AWS) is the only supported cloud platform.
 PostgreSQL is the defined database engine for the products and cannot be modified in the configuration. However, users can change the database [instance type](../userguide/configuration/CONFIGURATION.md#database-instance-class) and [storage size](../userguide/configuration/CONFIGURATION.md#database-allocated-storage).
 
 ### Domain
-Stick to either domain or no domain for the whole deployment. Switching between domain and no domain is not supported.
+Stick to either domain or no domain for the whole deployment, i.e. configure `domain = "<example.com>"` value or leave it commented. 
+Switching between domain and no domain is not supported.
 
 ## Deployment limitations
 Destroying product by removing product from products list and then running another install is not supported

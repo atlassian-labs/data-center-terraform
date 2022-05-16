@@ -281,7 +281,7 @@ This guide contains general tips on how to investigate an application deployment
 
 ??? tip "How to deal with EIP AddressLimitExceeded error"
 
-    If you encounter the below error during installation stage:
+    If you encounter the below error during installation stage, it means VPC is successfully created, but no Elastic IP addresses available. 
 
     ```shell
     Error: Error creating EIP: AddressLimitExceeded: The maximum number of addresses has been reached.
@@ -292,4 +292,7 @@ This guide contains general tips on how to investigate an application deployment
     1078: resource "aws_eip" "nat" {
     ```
 
-    Go to AWS consle > VPC service > Elastic IPs, choose the one(s) without any Association ID > Actions > Release Elastic IP addresses.
+    It happens when an old VPC was deleted but associated Elastic IPs were not released. Refer to AWS documentation on 
+    [how to release an Elastic IP address](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html#release-eip){.external}.  
+
+    Another option is to [increase the Elastic UP address limit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-limit){.external}. 
