@@ -12,6 +12,8 @@
 * Upgraded Helm chart version to 1.3.0
 * Improved documentation
 
+**Note:** An upgrade from the pre 2.x version is not supported.
+
 ## 1.0.2
 
 **Release date:** 2022-03-22
