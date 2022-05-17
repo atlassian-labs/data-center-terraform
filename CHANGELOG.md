@@ -5,11 +5,11 @@
 **Release date:** 2022-05-17
 
 * Added support for Jira Software, Jira Service Management, Confluence and Bitbucket
-* Added feature to pre-populate products with existing dataset
+* AWS EBS and RDS snapshots can now be used for restoring datasets
 * Changed shared home storage from EFS to NFS for all products
 * Made product version configurable
 * Added autoscaler to EKS cluster
-* Bumped up Helm chart version
+* Upgraded Helm chart version to 1.3.0
 * Improved documentation
 
 ## 1.0.2
