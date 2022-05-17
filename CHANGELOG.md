@@ -9,6 +9,7 @@
 * Changed shared home storage from EFS to NFS for all products
 * Made product version configurable
 * Added autoscaler to EKS cluster
+* Bumped up Helm chart version
 * Improved documentation
 
 ## 1.0.2
