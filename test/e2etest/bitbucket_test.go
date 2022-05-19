@@ -105,7 +105,6 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 	*/
 	publicKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e.pub"
 	publicKey, err := ioutil.ReadFile(publicKeyPath)
-	println(fmt.Sprintf("Public key to be added to Bitbucket: %s", string(publicKey)))
 	assert.Nil(t, err)
 
 	restEndpoint := fmt.Sprintf("%s/rest/ssh/latest/keys", productUrl)
