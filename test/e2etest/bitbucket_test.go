@@ -114,7 +114,9 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addSshKeyJsonPayload))
 	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
-	assert.Contains(t, string(content), string(publicKey))
+	publicKeyComponents := strings.Fields(string(publicKey))
+	publicKeyString := publicKeyComponents[1]
+	assert.Contains(t, string(content), publicKeyString)
 }
 
 func createNewProject(t *testing.T, password string, productUrl string) {
