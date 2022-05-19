@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-git/go-git/v5"
+    "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
@@ -114,7 +114,7 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addSshKeyJsonPayload))
 	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
-	assert.Contains(t, string(content), publicKey)
+	assert.Contains(t, string(content), string(publicKey))
 }
 
 func createNewProject(t *testing.T, password string, productUrl string) {
