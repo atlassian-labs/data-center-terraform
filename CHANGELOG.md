@@ -1,5 +1,25 @@
 # Change Log
 
+## 2.0.1
+
+**Release date:** 2022-05-18
+
+* Improved Bitbucket e2e tests
+
+## 2.0.0
+
+**Release date:** 2022-05-17
+
+* Added support for Jira Software, Jira Service Management, Confluence and Bitbucket
+* AWS EBS and RDS snapshots can now be used for restoring datasets
+* Changed shared home storage from EFS to NFS for all products
+* Made product version configurable
+* Added autoscaler to EKS cluster
+* Upgraded Helm chart version to 1.3.0
+* Improved documentation
+
+**Note:** An upgrade from the pre 2.x version is not supported.
+
 ## 1.0.2
 
 **Release date:** 2022-03-22

@@ -129,7 +129,7 @@ This guide contains general tips on how to investigate an application deployment
      
     3. Click on the item and replace the `Digest` value with the given value in the error message.
 
-??? tip "How do I deal with Pre-existing state in multiple environment?"
+??? tip "How do I deal with pre-existing state in multiple environment?"
 
     If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
     
@@ -262,4 +262,37 @@ This guide contains general tips on how to investigate an application deployment
     kubectl cp atlassian/<pod-name>:/var/atlassian/<application>/logs/<log_files> <local-path>
     ```
 
-   
+??? tip "How to deal with persistent volume claim destroy failed error?"
+
+    The PVC cannot be destroyed when bound to a pod. Overcome this by scaling down to `0` pods first before deleting PVC. 
+    
+    `helm upgrade PRODUCT atlassian-data-center/PRODUCT --set replicaCount=0 --reuse-values -n atlassian`
+
+??? tip "How to manually clean up resources when uninstall has failed?"
+
+    Sometimes Terraform is unable to destroy resources for various reasons. This normally happens at EKS level. 
+    One quick solution is to manually delete the EKS cluster, and re-run uninstall, so that Terraform will pick up from there. 
+
+    To delete EKS cluster, go to AWS console > EKS service > the cluster you're deploying. 
+    You'll need to go to 'Configuration' tab > 'Compute' tab > click into node group.
+    Then in node group screen > Details > click into Autoscaling group.
+    It'll then direct you to EC2 > Auto Scaling Group screen with the ASG selected > 'Delete' the chosen ASG.
+    Wait for the ASG to be deleted, then go back to EKS cluster > Delete.
+
+??? tip "How to deal with EIP AddressLimitExceeded error"
+
+    If you encounter the below error during installation stage, it means VPC is successfully created, but no Elastic IP addresses available. 
+
+    ```shell
+    Error: Error creating EIP: AddressLimitExceeded: The maximum number of addresses has been reached.
+	status code: 400, request id: 0061b744-ced3-4d0e-9905-503c85013bcc
+
+    with module.base-infrastructure.module.vpc.module.vpc.aws_eip.nat[0],
+    on .terraform/modules/base-infrastructure.vpc.vpc/main.tf line 1078, in resource "aws_eip" "nat":
+    1078: resource "aws_eip" "nat" {
+    ```
+
+    It happens when an old VPC was deleted but associated Elastic IPs were not released. Refer to AWS documentation on 
+    [how to release an Elastic IP address](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html#release-eip){.external}.  
+
+    Another option is to [increase the Elastic UP address limit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-limit){.external}. 
