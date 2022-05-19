@@ -27,6 +27,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Setup AWS CLI
+        uses: chrislennon/action-aws-cli@v2.7.1
+
 
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
@@ -59,12 +63,14 @@ jobs:
         id: e2e-test
         working-directory: test/
         run: |
-          set -o pipefail
-          go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
+           aws --version
+           aws eks get-token --cluster-name atlas-kubeconfig-test-cluster --region sa-east-1
+#          set -o pipefail
+#          go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
-      - name: Upload test log files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2e-test-artifacts
-          path: test/e2etest/artifacts/
+      # - name: Upload test log files
+      #   if: always()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: e2e-test-artifacts
+      #     path: test/e2etest/artifacts/
