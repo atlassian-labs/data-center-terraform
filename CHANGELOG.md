@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+**Release date:** 2022-05-18
+
+* Improved Bitbucket e2e tests
+
 ## 2.0.0
 
 **Release date:** 2022-05-17
