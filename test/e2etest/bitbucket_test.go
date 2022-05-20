@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-git/go-git/v5"
+    "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
@@ -38,22 +38,30 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	kubectlOptions := getKubectlOptions(testConfig)
 
 	// Write a file to the NFS server
-	returnCode, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+	output, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
 		"exec", "bitbucket-nfs-server-0",
 		"--", "/bin/bash",
 		"-c", "echo \"Greetings from an NFS\" >> $(find /srv/nfs/ | head -1)/nfs-file-share-test.txt; echo $?")
 
 	assert.Nil(t, kubectlError)
+	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
+	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\n0
+	outputSlice := strings.Split(output, "\n")
+	returnCode := outputSlice[1]
 	assert.Equal(t, "0", returnCode)
 
 	// Read the file from the Bitbucket pod
-	fileContents, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+	output, kubectlError = k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
 		"exec", "bitbucket-0",
 		"-c", "bitbucket",
 		"--", "/bin/bash",
 		"-c", "cat /var/atlassian/application-data/shared-home/nfs-file-share-test.txt")
 
 	assert.Nil(t, kubectlError)
+	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
+	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\nGreetings from an NFS
+	outputSlice = strings.Split(output, "\n")
+	fileContents := outputSlice[1]
 	assert.Equal(t, "Greetings from an NFS", fileContents)
 }
 
@@ -106,8 +114,9 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 
 	sendPostRequest(t, restEndpoint, "application/json", "admin", password, bytes.NewBuffer(addSshKeyJsonPayload))
 	content := getPageContentWithBasicAuth(t, restEndpoint, "admin", password)
-	const expectedPublicKey = "AAAAB3NzaC1yc2EAAAADAQABAAACAQDjfTvP42K+jhLm729U896GDAy16XlGc2OxRLjKf3eBquiVM4iZ+GOGWTxsjmyP7TEfBXGAjTde/0xv2HzBzRUlx6c1XvqQ8pNNpXdO0QDZTj0DOAxaRsfKSOzw9LAR9dcf5u2tkXfRDjWvfl/9i8+gn4Vz9WBkTo7+RzpDEHebj/1chKSDzeyMJuuTQeukxtsEWTbYjWIYKkckbWxhN8jpN2FAAqaV8c3wrfvBlFPJ02t+solxlUpx/Qo7NgQIJyRfVoGtyhHmB4OAwl6pbDZAXb0iK5Im3oP5pAL8Wsx5RjEI7Zt/7PBhbBPskEHjAZBdyBDh0mk5FzziMbKXNcPJq10lISMsDNh1cHLjJoEWPPoXsDGFjxAy+cdv/V+8zImHQA8frPZGx8tXGV7twP+6o57TEVf3uQeUcfSE6l1CKauVAL+MrxRbQBaUit7+w8uazoE4AHrRydraD0/aTAGaUMN9BicMdy5j5Utl5zwjrG/XxW8eljspJA1I7Py1FbaRoGmNyV3aRfh9Cq5Bet8XFE8n383nPYejzIwYz8OSJaj8xoPpOuoDQlEaj3pPV5OOUDVHq6ehjH8ClbSGM02TB4OAQYeHa3PdcJd39H3vPdKfG1DNQAIpqPj25aLnE7zuT68p0JXsMGreCLRooJsTEfjHPXDqldk1NpqjRYyryw=="
-	assert.Contains(t, string(content), expectedPublicKey)
+	publicKeyComponents := strings.Fields(string(publicKey))
+	publicKeyString := publicKeyComponents[1]
+	assert.Contains(t, string(content), publicKeyString)
 }
 
 func createNewProject(t *testing.T, password string, productUrl string) {

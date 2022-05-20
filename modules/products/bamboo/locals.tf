@@ -116,4 +116,7 @@ locals {
   }) : yamlencode({})
 
   dataset_filename = "bamboo_dataset_to_import.zip"
+
+  # DC App Performance Toolkit analytics
+  dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 }

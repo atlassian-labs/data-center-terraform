@@ -24,6 +24,7 @@ resource "helm_release" "bamboo" {
             }
           }
         }
+        additionalJvmArgs = concat(local.dcapt_analytics_property)
       }
       database = {
         type = "postgresql"

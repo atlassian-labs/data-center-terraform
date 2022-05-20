@@ -2,13 +2,6 @@
 
 This guide describes how to provision the cloud environment infrastructure and install Atlassian Data Center products in a Kubernetes cluster running on AWS.
 
-!!! warning "Supported Products and Platforms"
-
-    * [AWS](https://aws.amazon.com/){.external} is the only supported cloud provider.
-    * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}, [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}, and [Jira](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} are the DC products supported by this project.
-
-    Support for additional DC products will be made available in future.
-
 ## 1. Set up AWS security credentials
 
 Set up a user with an administrator IAM role. See [Configuration basics — AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html){.external}.
@@ -18,7 +11,7 @@ Set up a user with an administrator IAM role. See [Configuration basics — AWS 
 Clone the `data-center-terraform` project repository from GitHub:
 
 ```shell
-git clone -b 1.0.2 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
+git clone -b 2.0.0 https://github.com/atlassian-labs/data-center-terraform.git && cd data-center-terraform
 ```
 
 ## 3. Configure the infrastructure

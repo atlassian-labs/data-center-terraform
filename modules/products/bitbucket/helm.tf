@@ -1,6 +1,7 @@
 # Install Helm chart for Bitbucket Data Center.
 
 resource "helm_release" "bitbucket" {
+  depends_on = [kubernetes_job.pre_install]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
@@ -30,6 +31,7 @@ resource "helm_release" "bitbucket" {
         elasticSearch = {
           baseUrl = local.elasticsearch_endpoint
         }
+        additionalJvmArgs = concat(local.dcapt_analytics_property)
       }
       database = {
         url    = module.database.rds_jdbc_connection
