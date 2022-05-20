@@ -69,6 +69,7 @@ jobs:
            aws eks get-token --cluster-name atlas-kubeconfig-test-cluster --region sa-east-1
            set -o pipefail
            go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
+           cat ~/.kube/config
 
       - name: Upload test log files
         if: always()
