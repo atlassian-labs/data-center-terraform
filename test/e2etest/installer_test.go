@@ -12,7 +12,41 @@ func TestInstaller(t *testing.T) {
 
 	productList := []string{jira, confluence, bamboo, bitbucket}
 	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
-	testConfig := createConfig(t, productList, useDomain)
+	testConfig := createConfig(t, productList, useDomain, false)
+
+	// Schedule uninstall and cleanup the environment
+	defer runUninstallScript(testConfig.ConfigPath)
+
+	printTestBanner("AWS test region -", testConfig.AwsRegion)
+
+	runInstallScript(testConfig.ConfigPath)
+
+	clusterHealthTests(t, testConfig)
+
+	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
+
+	if contains(productList, bamboo) {
+		bambooHealthTests(t, testConfig, productUrls[bamboo])
+	}
+
+	if contains(productList, jira) {
+		jiraHealthTests(t, productUrls[jira])
+	}
+
+	if contains(productList, confluence) {
+		confluenceHealthTests(t, productUrls[confluence])
+	}
+
+	if contains(productList, bitbucket) {
+		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
+	}
+}
+
+func TestInstallerJSM(t *testing.T) {
+
+	productList := []string{jira}
+	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
+	testConfig := createConfig(t, productList, useDomain, true)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)

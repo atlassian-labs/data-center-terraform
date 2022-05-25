@@ -153,7 +153,7 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool, jsm bool) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
@@ -185,6 +185,9 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
 	if useDomain {
 		vars["domain"] = domain
+	}
+	if jsm {
+		vars["jsm"] = true
 	}
 
 	// parse the template
