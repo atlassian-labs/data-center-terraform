@@ -21,7 +21,7 @@ func TestInstaller(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
-	clusterHealthTests(t, testConfig)
+	clusterHealthTests(t, testConfig, 2)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 
@@ -55,25 +55,12 @@ func TestInstallerJSM(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
-	clusterHealthTests(t, testConfig)
+	clusterHealthTests(t, testConfig, 1)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 
-	if contains(productList, bamboo) {
-		bambooHealthTests(t, testConfig, productUrls[bamboo])
-	}
+	jiraHealthTests(t, productUrls[jira])
 
-	if contains(productList, jira) {
-		jiraHealthTests(t, productUrls[jira])
-	}
-
-	if contains(productList, confluence) {
-		confluenceHealthTests(t, productUrls[confluence])
-	}
-
-	if contains(productList, bitbucket) {
-		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
-	}
 }
 
 func runInstallScript(configPath string) {

@@ -14,7 +14,7 @@ region = "{{.region}}"
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
-products = ["jira", "confluence", "bamboo", "bitbucket"]
+products = [{{.products}}]
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {

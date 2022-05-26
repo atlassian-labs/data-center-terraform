@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func clusterHealthTests(t *testing.T, testConfig TestConfig) {
+func clusterHealthTests(t *testing.T, testConfig TestConfig, expectedNumberOfNodes int) {
 	printTestBanner("Cluster", "Tests")
 
 	config := getKubectlOptions(testConfig)
