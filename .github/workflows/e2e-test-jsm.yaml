@@ -7,7 +7,6 @@ on:
       - 'docs/**'
       - '.atlassian/**'
       - 'test/unittest**'
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -18,11 +17,6 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_VAR_bamboo_license: ${{ secrets.TF_VAR_BAMBOO_LICENSE }}
-      TF_VAR_confluence_license: ${{ secrets.TF_VAR_CONFLUENCE_LICENSE }}
-      TF_VAR_bitbucket_license: ${{ secrets.TF_VAR_BITBUCKET_LICENSE }}
-      TF_VAR_bamboo_admin_password: ${{ secrets.TF_VAR_BAMBOO_ADMIN_PASSWORD }}
-      TF_VAR_bitbucket_admin_password: ${{ secrets.TF_VAR_BITBUCKET_ADMIN_PASSWORD }}
       USE_DOMAIN: "false"
 
     steps:
@@ -48,18 +42,6 @@ jobs:
 
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
-
-      - name: Add private SSH key for Bitbucket tests
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
-          name: bitbucket-e2e # optional
-          known_hosts: dummy-entry
-          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-
-      - name: Add public SSH key for Bitbucket tests
-        run: |
-          echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} > /home/runner/.ssh/bitbucket-e2e.pub
 
       - name: E2E Testing with no domain
         id: e2e-test
