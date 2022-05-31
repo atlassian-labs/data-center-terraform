@@ -150,7 +150,7 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string, useDomain bool, jsm bool) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
@@ -182,9 +182,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool, jsm bool) 
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
 	if useDomain {
 		vars["domain"] = domain
-	}
-	if jsm {
-		vars["jsm"] = true
+		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
 	}
 
 	// parse the template
