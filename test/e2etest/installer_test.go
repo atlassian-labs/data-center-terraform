@@ -21,7 +21,7 @@ func TestInstaller(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
-	clusterHealthTests(t, testConfig, 2)
+	clusterHealthTests(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 

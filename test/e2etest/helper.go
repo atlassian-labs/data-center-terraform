@@ -34,6 +34,9 @@ const (
 	confluenceLicense = ""
 	bitbucketLicense  = ""
 	bambooLicense     = ""
+
+	// If there is a change in the computational requests, this value should be updated
+	expectedNumberOfNodes = 2
 )
 
 type TestConfig struct {
