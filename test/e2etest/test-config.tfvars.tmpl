@@ -14,7 +14,7 @@ region = "{{.region}}"
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]
-products = ["jira", "confluence", "bamboo", "bitbucket"]
+products = [{{.products}}]
 
 # Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
 resource_tags = {
@@ -70,6 +70,9 @@ bamboo_dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_data
 
 # Helm chart version of Jira
 #
+
+{{if .jsm}}jira_image_repository = "atlassian/jira-servicemanagement"
+jira_version_tag = "4.20"{{end}}
 
 # Jira instance resource configuration
 #

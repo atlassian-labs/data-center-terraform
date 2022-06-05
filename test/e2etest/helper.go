@@ -185,6 +185,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
 	if useDomain {
 		vars["domain"] = domain
+		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
 	}
 
 	// parse the template
