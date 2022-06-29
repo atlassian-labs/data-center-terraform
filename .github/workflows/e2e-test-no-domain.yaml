@@ -65,8 +65,6 @@ jobs:
         working-directory: test/
         run: |
           set -o pipefail
-          aws --version
-          kubectl version --short
           go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
