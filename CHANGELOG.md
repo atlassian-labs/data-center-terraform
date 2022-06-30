@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.0.2
+
+**Release date:** 2022-06-30
+
+* Upgraded Helm chart version to 1.4.0
+* Using v1beta1 apiVersion for client.authentication.k8s.io
+
+
 ## 2.0.1
 
 **Release date:** 2022-05-18

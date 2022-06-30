@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-    "github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
@@ -44,11 +44,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 		"-c", "echo \"Greetings from an NFS\" >> $(find /srv/nfs/ | head -1)/nfs-file-share-test.txt; echo $?")
 
 	assert.Nil(t, kubectlError)
-	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
-	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\n0
-	outputSlice := strings.Split(output, "\n")
-	returnCode := outputSlice[1]
-	assert.Equal(t, "0", returnCode)
+	assert.Equal(t, "0", output)
 
 	// Read the file from the Bitbucket pod
 	output, kubectlError = k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
@@ -58,11 +54,7 @@ func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 		"-c", "cat /var/atlassian/application-data/shared-home/nfs-file-share-test.txt")
 
 	assert.Nil(t, kubectlError)
-	// Due to the deprecation of v1alpha1, there will be an extra line added to kubectl output:
-	// Kubeconfig user entry is using deprecated API version client.authentication.k8s.io/v1alpha1. Run 'aws eks update-kubeconfig' to update.\nGreetings from an NFS
-	outputSlice = strings.Split(output, "\n")
-	fileContents := outputSlice[1]
-	assert.Equal(t, "Greetings from an NFS", fileContents)
+	assert.Equal(t, "Greetings from an NFS", output)
 }
 
 func assertBitbucketSshConnectivity(t *testing.T, testConfig TestConfig, productUrl string) {

@@ -223,6 +223,9 @@ set_current_context_k8s() {
     if [ -z "${FORCE_FLAG}" ]; then
       aws --region "${REGION}" eks update-kubeconfig --name "${EKS_CLUSTER}"
     fi
+    # e2e test uses context file to connect to k8s and since aws-iam-authenticator 0.5.5 is using v1beta1 api version
+    # for authentication, then we need to switch to v1beta1
+    sed 's/client.authentication.k8s.io\/v1alpha1/client.authentication.k8s.io\/v1beta1/g' "${CONTEXT_FILE}" > tmp && mv tmp "${CONTEXT_FILE}"
   else
     log "Kubernetes context file '${CONTEXT_FILE}' could not be found."
   fi

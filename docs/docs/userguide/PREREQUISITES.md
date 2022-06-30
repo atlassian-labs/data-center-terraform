@@ -8,7 +8,7 @@ Its advised that the tooling below is installed to your development environment.
 
 1. [Terraform](#terraform) 
 2. [Helm v3.3 or later](#helm)
-3. [AWS CLI](#aws-cli)
+3. [AWS CLI v2.7 or later](#aws-cli)
 4. [Kubectl](#kubectl) (optional)
 5. [Kubernetes cluster monitoring tools](#kubernetes-cluster-monitoring-tools) (optional)
 
