@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.2
+
+**Release date:** TBD
+
+* Upgraded Helm chart version to 1.4.0
+
 ## 2.0.1
 
 **Release date:** 2022-05-18
