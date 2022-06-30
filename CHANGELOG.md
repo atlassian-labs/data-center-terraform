@@ -1,5 +1,7 @@
 # Change Log
 
+* Using v1beta1 apiVersion for client.authentication.k8s.io
+
 ## 2.0.1
 
 **Release date:** 2022-05-18
