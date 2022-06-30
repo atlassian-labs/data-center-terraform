@@ -271,7 +271,7 @@ var BitbucketInvalidVariables = map[string]interface{}{
 	"replica_count":        1,
 	"installation_timeout": invalidTestTimeout,
 	"bitbucket_configuration": map[string]interface{}{
-		"helm_version": "1.3.0",
+		"helm_version": "1.4.0",
 		"cpu":          "1",
 		"mem":          "1Gi",
 		"min_heap":     "256m",
