@@ -1,7 +1,7 @@
 name: E2E Testing with domain
 on:
   schedule:
-    - cron: '0 2 */2 * *' # schedule the test to run every Monday at 2:00am
+    - cron: '0 2 */2 * *' # schedule the test to run every second day at 2:00am
   push:
     branches:
       - main
