@@ -1,5 +1,7 @@
 name: E2E Testing with no domain
 on:
+  schedule:
+    - cron: '0 1 * * 1' # schedule the test to run every Monday at 1:00am
   push:
     branches:
       - main
