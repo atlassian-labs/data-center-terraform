@@ -79,6 +79,7 @@ resource "helm_release" "bamboo_agent" {
   repository = local.helm_chart_repository
   chart      = local.agent_helm_chart_name
   version    = local.agent_helm_chart_version
+  timeout    = var.installation_timeout * 60
 
   depends_on = [helm_release.bamboo]
 
