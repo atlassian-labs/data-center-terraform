@@ -232,9 +232,14 @@ func exportLogFile(product string, logPath string, logfile string) {
 	source := fmt.Sprintf("atlassian/bamboo-0://var/atlassian/application-data/%s/%s/%s", product, logPath, logfile)
 	artifactPath := "e2etest/artifacts"
 	destination := fmt.Sprintf("%s/%s", artifactPath, logfile)
+	pwd := exec.Command("pwd")
+	res, nil := pwd.Output()
+	fmt.Println(string(res))
+	log.Println(string(res))
+
 	folderInfo, err := os.Stat(artifactPath)
 	if os.IsNotExist(err) {
-		if err := os.Mkdir(artifactPath, os.ModePerm); err != nil {
+		if err := os.MkdirAll(artifactPath, os.ModePerm); err != nil {
 			log.Fatal(err)
 		}
 	}
