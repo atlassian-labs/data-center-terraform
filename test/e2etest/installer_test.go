@@ -27,18 +27,22 @@ func TestInstaller(t *testing.T) {
 
 	if contains(productList, bamboo) {
 		bambooHealthTests(t, testConfig, productUrls[bamboo])
+		exportLogFile(bamboo, "logs", "atlassian-bamboo.log")
 	}
 
 	if contains(productList, jira) {
 		jiraHealthTests(t, productUrls[jira])
+		exportLogFile(jira, "log", "atlassian-jira.log")
 	}
 
 	if contains(productList, confluence) {
 		confluenceHealthTests(t, productUrls[confluence])
+		exportLogFile(confluence, "logs", "atlassian-confluence.log")
 	}
 
 	if contains(productList, bitbucket) {
 		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
+		exportLogFile(bitbucket, "log", "atlassian-bitbucket.log")
 	}
 }
 

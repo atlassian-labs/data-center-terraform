@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -223,4 +224,27 @@ func contains(s []string, e string) bool {
 
 func printTestBanner(text1 string, text2 string) {
 	println(fmt.Sprintf("################## %s %s ##################", text1, text2))
+}
+
+func exportLogFile(product string, logPath string, logfile string) {
+	kubctl := "kubectl"
+	copy := "cp"
+	source := fmt.Sprintf("atlassian/bamboo-0://var/atlassian/application-data/%s/%s/%s", product, logPath, logfile)
+	artifactPath := "e2etest/artifacts"
+	destination := fmt.Sprintf("%s/%s", artifactPath, logfile)
+	folderInfo, err := os.Stat(artifactPath)
+	if os.IsNotExist(err) {
+		if err := os.Mkdir(artifactPath, os.ModePerm); err != nil {
+			log.Fatal(err)
+		}
+	}
+	log.Println(folderInfo)
+	// Copy the log file from the Kubernetes Pod
+	cmd := exec.Command(kubctl, copy, source, destination)
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(stdout))
 }
