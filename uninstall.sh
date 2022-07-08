@@ -199,6 +199,11 @@ save_application_log() {
     set +e
     log "Saving the application logs to `./test/e2etest/artifacts` folder."
     mkdir -p test/e2etest/logs
+    #
+    mkdir -p $HOME/.kube
+    sudo chmod a+r /etc/kubernetes/admin.conf
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
     install_bitbucket=$(get_product "bitbucket" "${CONFIG_ABS_PATH}")
     install_confluence=$(get_product "confluence" "${CONFIG_ABS_PATH}")
     install_jira=$(get_product "jira" "${CONFIG_ABS_PATH}")
