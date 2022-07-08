@@ -216,7 +216,7 @@ save_application_log() {
     if [ -n "${install_bamboo}" ]; then
       kubectl cp atlassian/bamboo-0://var/atlassian/application-data/bamboo/logs/atlassian-bamboo.log test/e2etest/artifacts/atlassian-bamboo.log
     fi
-    ls test/e2etest/artifacts
+    ls test/e2etest/artifacts -la
   fi
 
 }
