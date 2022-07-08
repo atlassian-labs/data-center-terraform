@@ -254,6 +254,16 @@ func exportLogFile(product string, logPath string, logfile string) {
 	fmt.Println(string(lsResult))
 
 	// Copy the log file from the Kubernetes Pod
+	tst := exec.Command(kubctl, "get", "pods", "-n", "atlassian")
+	tstres, err := tst.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(string(tstres))
+	log.Println(string(tstres))
+
+	// Copy the log file from the Kubernetes Pod
 	cmd := exec.Command(kubctl, copy, source, destination)
 	stdout, err := cmd.Output()
 	if err != nil {
