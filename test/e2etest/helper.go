@@ -229,7 +229,7 @@ func printTestBanner(text1 string, text2 string) {
 func exportLogFile(product string, logPath string, logfile string) {
 	kubctl := "kubectl"
 	copy := "cp"
-	source := fmt.Sprintf("atlassian/bamboo-0://var/atlassian/application-data/%s/%s/%s", product, logPath, logfile)
+	source := fmt.Sprintf("atlassian/%s-0://var/atlassian/application-data/%s/%s/%s", product, product, logPath, logfile)
 	artifactPath := "artifacts"
 	destination := fmt.Sprintf("%s/%s", artifactPath, logfile)
 	folderInfo, err := os.Stat(artifactPath)
@@ -238,6 +238,11 @@ func exportLogFile(product string, logPath string, logfile string) {
 			log.Fatal(err)
 		}
 	}
+	log.Println(folderInfo)
+	fmt.Println(folderInfo)
+
+	log.Printf("%s %s %s %s", kubctl, copy, source, destination)
+	fmt.Printf("%s %s %s %s", kubctl, copy, source, destination)
 
 	ls := exec.Command("ls", "-la", artifactPath)
 	lsResult, err := ls.Output()
@@ -246,8 +251,8 @@ func exportLogFile(product string, logPath string, logfile string) {
 		return
 	}
 	log.Println(string(lsResult))
-	// Copy the log file from the Kubernetes Pod
-	log.Println(folderInfo)
+	fmt.Println(string(lsResult))
+
 	// Copy the log file from the Kubernetes Pod
 	cmd := exec.Command(kubctl, copy, source, destination)
 	stdout, err := cmd.Output()
@@ -255,6 +260,7 @@ func exportLogFile(product string, logPath string, logfile string) {
 		fmt.Println(err.Error())
 		return
 	}
+	fmt.Println(string(stdout))
 	log.Println(string(stdout))
 	ls = exec.Command("ls", "-la", artifactPath)
 	lsResult, err = ls.Output()
@@ -262,5 +268,6 @@ func exportLogFile(product string, logPath string, logfile string) {
 		fmt.Println(err.Error())
 		return
 	}
+	fmt.Println(string(lsResult))
 	log.Println(string(lsResult))
 }
