@@ -194,6 +194,33 @@ destroy_tfstate() {
   fi
 }
 
+save_application_log() {
+  set +e
+
+  if [ -n "${FORCE_FLAG}" ]; then
+    log "Saving the application logs to `./test/e2etest/artifacts` folder."
+    mkdir -p test/e2etest/logs
+    install_bitbucket=$(get_product "bitbucket" "${CONFIG_ABS_PATH}")
+    install_confluence=$(get_product "confluence" "${CONFIG_ABS_PATH}")
+    install_jira=$(get_product "jira" "${CONFIG_ABS_PATH}")
+    install_bamboo=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
+    if [ -n "${install_bitbucket}" ]; then
+      kubectl cp atlassian/bitbucket-0://var/atlassian/application-data/bitbucket/log/atlassian-bitbucket.log test/e2etest/artifacts/atlassian-bitbucket.log
+    fi
+    if [ -n "${install_confluence}" ]; then
+      kubectl cp atlassian/confluence-0://var/atlassian/application-data/confluence/logs/atlassian-confluence.log test/e2etest/artifacts/atlassian-confluence.log
+    fi
+    if [ -n "${install_jira}" ]; then
+      kubectl cp atlassian/jira-0://var/atlassian/application-data/jira/log/atlassian-jira.log test/e2etest/artifacts/atlassian-jira.log
+    fi
+    if [ -n "${install_bamboo}" ]; then
+      kubectl cp atlassian/bamboo-0://var/atlassian/application-data/bamboo/logs/atlassian-bamboo.log test/e2etest/artifacts/atlassian-bamboo.log
+    fi
+    ls test/e2etest/artifacts
+  fi
+
+}
+
 # Process the arguments
 process_arguments
 
@@ -202,6 +229,9 @@ confirm_action
 
 # cleanup environment variable and regenerate them
 regenerate_environment_variables
+
+# Save log files from application pods
+save_application_log
 
 # Destroy the infrastructure for the given product
 destroy_infrastructure
