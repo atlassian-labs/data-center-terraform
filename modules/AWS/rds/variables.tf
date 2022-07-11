@@ -34,7 +34,7 @@ variable "db_name" {
     error_message = "Invalid RDS DB name."
   }
   default = null
-  type = string
+  type    = string
 }
 
 variable "eks" {

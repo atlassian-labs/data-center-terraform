@@ -29,9 +29,10 @@ module "eks" {
 
   node_groups = {
     appNodes = {
-      name         = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
-      max_capacity = var.max_cluster_capacity
-      min_capacity = var.min_cluster_capacity
+      name             = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
+      max_capacity     = var.max_cluster_capacity
+      desired_capacity = var.min_cluster_capacity
+      min_capacity     = var.min_cluster_capacity
 
       subnets        = slice(var.subnets, 0, 1)
       instance_types = var.instance_types
