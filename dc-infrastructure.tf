@@ -10,6 +10,7 @@ module "base-infrastructure" {
   min_cluster_capacity = var.min_cluster_capacity
   domain               = var.domain
   namespace            = local.namespace
+  eks_additional_roles = var.eks_additional_roles
 
   enable_ssh_tcp = local.install_bitbucket
 }

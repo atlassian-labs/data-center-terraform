@@ -101,6 +101,12 @@ variable "logging_bucket" {
   }
 }
 
+variable "eks_additional_roles" {
+  description = "Additional roles that have access to the cluster."
+  default     = []
+  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################
