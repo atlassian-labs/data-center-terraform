@@ -31,6 +31,19 @@ instance_types = ["m5.2xlarge"]
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 {{if .domain}}domain = "{{.domain}}"{{end}}
 
+{{if .additionalRole != ""}}
+# Enable access to additional role
+eks_additional_roles = [
+  {
+    rolearn  = "{{ .additionalRole }}"
+    username = "additional_role"
+    groups = [
+      "system:masters"
+    ]
+  }
+]
+{{end}}
+
 ################################################################################
 # Bamboo Settings
 ################################################################################
