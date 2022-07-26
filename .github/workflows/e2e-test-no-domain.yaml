@@ -9,10 +9,13 @@ on:
       - 'docs/**'
       - '.atlassian/**'
       - 'test/unittest**'
+  pull_request_target:
+    types: [ labeled ]
   workflow_dispatch:
 
 jobs:
   test:
+    if: ${{ github.event.label.name == 'e2e' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
     name: E2E Testing with no domain
     runs-on: ubuntu-latest
     env:
@@ -38,7 +41,7 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.4
         with:
-          go-version: 1.17
+          go-version: 1.18
 
       - name: Setup dependencies
         id: setup-dependencies

@@ -39,4 +39,6 @@ module "eks" {
       capacity_type  = "ON_DEMAND"
     }
   }
+
+  map_roles = var.additional_roles
 }

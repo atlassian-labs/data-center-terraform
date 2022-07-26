@@ -52,3 +52,8 @@ variable "enable_ssh_tcp" {
   type        = bool
   default     = false
 }
+
+variable "eks_additional_roles" {
+  description = "Additional roles that have access to the cluster."
+  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+}

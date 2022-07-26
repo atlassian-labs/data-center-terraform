@@ -41,6 +41,18 @@ instance_disk_size = 50
 min_cluster_capacity = 1
 max_cluster_capacity = 5
 
+# If you desire to access the cluster with additional roles other than the one used for cluster creation,
+# you can define them below.
+#eks_additional_roles = [
+#  {
+#    rolearn  = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
+#    username = "ROLE_NAME"
+#    groups = [
+#      "system:masters"
+#    ]
+#  }
+#]
+
 ################################################################################
 # Jira Settings
 ################################################################################

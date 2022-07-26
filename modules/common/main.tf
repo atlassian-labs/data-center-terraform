@@ -18,6 +18,8 @@ module "eks" {
   instance_disk_size   = var.instance_disk_size
   max_cluster_capacity = var.max_cluster_capacity
   min_cluster_capacity = var.min_cluster_capacity
+
+  additional_roles = var.eks_additional_roles
 }
 
 
