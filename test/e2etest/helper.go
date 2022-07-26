@@ -185,6 +185,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 	vars["bamboo_license"] = testConfig.BambooLicense
 	vars["bamboo_password"] = testConfig.BambooPassword
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
+	vars["additional_role"] = testConfig.AdditionalRole
 	if useDomain {
 		vars["domain"] = domain
 		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
