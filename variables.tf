@@ -101,6 +101,17 @@ variable "logging_bucket" {
   }
 }
 
+variable "whitelist_cidr" {
+  description = "List of CIDRs allow to access to application(s)."
+  default     = ["0.0.0.0/0"]
+  type        = list(string)
+  validation {
+    condition = alltrue([
+    for cidr in var.whitelist_cidr : can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/([1-9]|1[0-9]|2[0-4])$", cidr))])
+    error_message = "Invalid whitelist CIDR. Valid format is a list of '<IPv4>/[1-24]' e.g: [\"10.0.0.0/18\"]."
+  }
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################

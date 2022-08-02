@@ -18,6 +18,11 @@ region = "<REGION>"
 # e.g.: products = ["jira", "confluence"]
 products = ["<LIST_OF_PRODUCTS>"]
 
+# Range of IPs that are allowed to run the applications.
+# By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by change the
+# default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
+whitelist_cidr = ["0.0.0.0/0"]
+
 # (Optional) Domain name used by the ingress controller.
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.

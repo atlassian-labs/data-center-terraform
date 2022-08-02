@@ -77,6 +77,16 @@ products = ["jira", "confluence"]
 
     `jira`, `confluence`, `bitbucket`, `bamboo`
 
+### White List IP Blocks
+
+`whitelist_cidr` defines a set of CIDRs that are allowed to run the applications. 
+
+By default, the deployed applications are publicly accessible. You can restrict this access by change the default value to your desired CIDR blocks. 
+
+```terraform 
+whitelist_cidr = ["199.0.0.0/8", "119.81.0.0/16"]
+```
+
 ### Domain
 
 We recommend using a domain name to access the application via `HTTPS`. You will be required to secure a domain name and supply the configuration to the config file.

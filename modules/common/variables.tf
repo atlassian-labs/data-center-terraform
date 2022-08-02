@@ -52,3 +52,8 @@ variable "enable_ssh_tcp" {
   type        = bool
   default     = false
 }
+
+variable "whitelist_cidr" {
+  description = "List of CIDRs allow to access to application(s)."
+  type        = list(string)
+}

@@ -65,6 +65,8 @@ resource "helm_release" "ingress" {
           # https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
           externalTrafficPolicy = "Local"
 
+          loadBalancerSourceRanges = var.loadBalancerSourceRanges
+
           targetPorts = {
             # Set the HTTPS listener to accept HTTP connections only, as the AWS load
             # balancer is terminating TLS.
