@@ -41,6 +41,7 @@ var EksWithValidValues = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
+	"additional_roles":     []string{},
 }
 
 var EksWithInvalidClusterName = map[string]interface{}{
@@ -52,6 +53,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
+	"additional_roles":     []string{},
 }
 
 var EksWithMaxCapacityOverLimit = map[string]interface{}{
@@ -63,6 +65,7 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 21,
+	"additional_roles":     []string{},
 }
 
 var EksWithMaxCapacityUnderLimit = map[string]interface{}{
@@ -74,6 +77,7 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 0,
+	"additional_roles":     []string{},
 }
 
 var EksWithMinCapacityUnderLimit = map[string]interface{}{
@@ -85,6 +89,7 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 0,
 	"max_cluster_capacity": 10,
+	"additional_roles":     []string{},
 }
 
 var EksWithMinCapacityOverLimit = map[string]interface{}{
@@ -96,6 +101,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 21,
 	"max_cluster_capacity": 10,
+	"additional_roles":     []string{},
 }
 
 var EksDefaultModuleVariable = map[string]interface{}{

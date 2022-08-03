@@ -51,3 +51,8 @@ variable "min_cluster_capacity" {
     error_message = "Minimum cluster capacity must be between 1 and 20, inclusive."
   }
 }
+
+variable "additional_roles" {
+  description = "Additional roles that have access to the cluster."
+  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+}

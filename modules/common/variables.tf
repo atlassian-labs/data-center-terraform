@@ -53,6 +53,11 @@ variable "enable_ssh_tcp" {
   default     = false
 }
 
+variable "eks_additional_roles" {
+  description = "Additional roles that have access to the cluster."
+  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+}
+
 variable "whitelist_cidr" {
   description = "List of CIDRs allow to access to application(s)."
   type        = list(string)

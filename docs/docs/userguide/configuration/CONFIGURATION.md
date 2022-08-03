@@ -168,6 +168,28 @@ max_cluster_capacity = 5  # between 1 and 20
     is installed in the Kubernetes cluster. The number of nodes will be automatically adjusted depending on the workload
     resource requirements.
 
+### Additional IAM roles
+
+When the EKS cluster is created, only the entity that created the cluster can access and list
+resources inside the cluster. To enable access for additional roles, you can add them to the config file:
+
+```terraform
+eks_additional_roles = [
+  {
+    rolearn  = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
+    username = "ROLE_NAME"
+    groups = [
+      "system:masters"
+    ]
+  }
+]
+```
+
+!!! info "Permissions in AWS EKS"
+
+    For additional information regarding the authorisation in EKS cluster, follow the official 
+    [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html){.external}.
+
 ### Logging S3 bucket name
 
 If you wish to log activities of terraform backend create S3 bucket and provide the name of the S3 bucket as follows. This will allow the terraform script to link your terraform backend to logging bucket.
