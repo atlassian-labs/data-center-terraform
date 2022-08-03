@@ -77,11 +77,11 @@ products = ["jira", "confluence"]
 
     `jira`, `confluence`, `bitbucket`, `bamboo`
 
-### White List IP Blocks
+### Whitelist IP blocks
 
 `whitelist_cidr` defines a set of CIDRs that are allowed to run the applications. 
 
-By default, the deployed applications are publicly accessible. You can restrict this access by change the default value to your desired CIDR blocks. 
+By default, the deployed applications are publicly accessible. You can restrict this access by changing the default value to your desired CIDR blocks that are allowed to run the applications. 
 
 ```terraform 
 whitelist_cidr = ["199.0.0.0/8", "119.81.0.0/16"]
