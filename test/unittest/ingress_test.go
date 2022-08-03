@@ -68,3 +68,29 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	route53 := plan.ResourcePlannedValuesMap[route53Key]
 	assert.Nil(t, route53)
 }
+
+func TestIngressVariablesPopulatedWithInvalidType(t *testing.T) {
+	t.Parallel()
+	tfOptions := GenerateTFOptions(IngressInvalidVariableType, t, ingressModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid CIDR.")
+}
+
+func TestIngressVariablesPopulatedWithInvalidValue(t *testing.T) {
+	t.Parallel()
+	tfOptions := GenerateTFOptions(IngressInvalidVariablesContent, t, ingressModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid CIDR.")
+}
+
+func TestIngressVariablesPopulatedWithValidValue(t *testing.T) {
+	t.Parallel()
+	tfOptions := GenerateTFOptions(IngressValidVariables, t, ingressModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.Nil(t, err)
+}
