@@ -13,8 +13,9 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"ingress_domain": "test.deplops.com",
-		"enable_ssh_tcp": true,
+		"ingress_domain":                 "test.deplops.com",
+		"enable_ssh_tcp":                 true,
+		"TestIngressIsCreatedWithDomain": []string{"0.0.0.0/0"},
 	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
@@ -46,7 +47,9 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{}, t, ingressModule)
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"TestIngressIsCreatedWithDomain": []string{"0.0.0.0/0"},
+	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
