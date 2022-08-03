@@ -248,13 +248,13 @@ var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
 // Ingress
 
 var IngressInvalidVariableType = map[string]interface{}{
-	"ingress_domain":           "null",
+	"ingress_domain":           nil,
 	"enable_ssh_tcp":           false,
 	"loadBalancerSourceRanges": "invalid type",
 }
 
 var IngressInvalidVariablesContent = map[string]interface{}{
-	"ingress_domain": "null",
+	"ingress_domain": nil,
 	"enable_ssh_tcp": false,
 	"loadBalancerSourceRanges": []string{
 		"10.12.0/16",
@@ -263,7 +263,7 @@ var IngressInvalidVariablesContent = map[string]interface{}{
 }
 
 var IngressValidVariables = map[string]interface{}{
-	"ingress_domain": "null",
+	"ingress_domain": nil,
 	"enable_ssh_tcp": false,
 	"loadBalancerSourceRanges": []string{
 		"10.12.0.0/16",

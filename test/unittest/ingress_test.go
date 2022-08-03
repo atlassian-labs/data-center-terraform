@@ -93,7 +93,11 @@ func TestIngressVariablesPopulatedWithInvalidValue(t *testing.T) {
 func TestIngressVariablesPopulatedWithValidValue(t *testing.T) {
 	t.Parallel()
 	tfOptions := GenerateTFOptions(IngressValidVariables, t, ingressModule)
-	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
-	assert.Nil(t, err)
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	loadBalancerSourceRanges := plan.RawPlan.Variables["loadBalancerSourceRanges"].Value
+
+	// verify the input variable
+	assert.Equal(t, []interface{}{"10.12.0.0/16", "10.13.1.1/32"}, loadBalancerSourceRanges)
+
 }
