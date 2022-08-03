@@ -247,18 +247,14 @@ var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
 
 // Ingress
 
-var IngressInvalidVariableType = map[string]interface{}{
-	"loadBalancerSourceRanges": "invalid type",
-}
-
-var IngressInvalidVariablesContent = map[string]interface{}{
+var IngressInvalidVariablesValue = map[string]interface{}{
 	"loadBalancerSourceRanges": []string{
 		"10.12.0/16",
 		"10.13.1.1/32",
 	},
 }
 
-var IngressValidVariables = map[string]interface{}{
+var IngressValidVariablesValue = map[string]interface{}{
 	"loadBalancerSourceRanges": []string{
 		"10.12.0.0/16",
 		"10.13.1.1/32",

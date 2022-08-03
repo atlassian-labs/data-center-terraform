@@ -72,18 +72,9 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	assert.Nil(t, route53)
 }
 
-func TestIngressVariablesPopulatedWithInvalidType(t *testing.T) {
-	t.Parallel()
-	tfOptions := GenerateTFOptions(IngressInvalidVariableType, t, ingressModule)
-	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
-
-	assert.NotNil(t, err)
-	assert.Contains(t, err.Error(), "Invalid CIDR.")
-}
-
 func TestIngressVariablesPopulatedWithInvalidValue(t *testing.T) {
 	t.Parallel()
-	tfOptions := GenerateTFOptions(IngressInvalidVariablesContent, t, ingressModule)
+	tfOptions := GenerateTFOptions(IngressInvalidVariablesValue, t, ingressModule)
 	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 
 	assert.NotNil(t, err)
@@ -92,7 +83,7 @@ func TestIngressVariablesPopulatedWithInvalidValue(t *testing.T) {
 
 func TestIngressVariablesPopulatedWithValidValue(t *testing.T) {
 	t.Parallel()
-	tfOptions := GenerateTFOptions(IngressValidVariables, t, ingressModule)
+	tfOptions := GenerateTFOptions(IngressValidVariablesValue, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 	loadBalancerSourceRanges := plan.RawPlan.Variables["loadBalancerSourceRanges"].Value
