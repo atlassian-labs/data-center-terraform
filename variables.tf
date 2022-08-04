@@ -114,7 +114,7 @@ variable "eks_additional_roles" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.0"
 }
 
 variable "jira_image_repository" {
@@ -299,7 +299,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.0"
 }
 
 variable "confluence_version_tag" {
@@ -463,7 +463,7 @@ variable "confluence_shared_home_snapshot_id" {
 variable "bitbucket_helm_chart_version" {
   description = "Version of Bitbucket Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.0"
 }
 
 variable "bitbucket_version_tag" {
@@ -732,14 +732,14 @@ variable "number_of_bamboo_agents" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  default     = "1.4.0"
+  default     = "1.5.0"
   type        = string
 }
 
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.0"
 }
 
 variable "bamboo_version_tag" {
