@@ -44,6 +44,7 @@ type TestConfig struct {
 	EnvironmentName   string
 	ConfigPath        string
 	ResourceOwner     string
+	AdditionalRole    string
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
@@ -153,12 +154,13 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool, additionalRole string) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
 		ResourceOwner:     resourceOwner,
+		AdditionalRole:    additionalRole,
 		ConfluenceLicense: getLicense(productList, confluence),
 		BitbucketLicense:  getLicense(productList, bitbucket),
 		BambooLicense:     getLicense(productList, bamboo),
@@ -183,6 +185,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	vars["bamboo_license"] = testConfig.BambooLicense
 	vars["bamboo_password"] = testConfig.BambooPassword
 	vars["bitbucket_password"] = testConfig.BitbucketPassword
+	vars["additional_role"] = testConfig.AdditionalRole
 	if useDomain {
 		vars["domain"] = domain
 		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
