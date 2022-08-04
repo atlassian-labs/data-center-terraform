@@ -12,8 +12,7 @@ func TestInstaller(t *testing.T) {
 
 	productList := []string{jira, confluence, bamboo, bitbucket}
 	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
-	additionalRole := os.Getenv("AWS_ADDITIONAL_ROLE")
-	testConfig := createConfig(t, productList, useDomain, additionalRole)
+	testConfig := createConfig(t, productList, useDomain)
 
 	// Schedule uninstall and cleanup the environment
 	defer runUninstallScript(testConfig.ConfigPath)
