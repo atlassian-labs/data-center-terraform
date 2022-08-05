@@ -15,7 +15,7 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"ingress_domain":           "test.deplops.com",
 		"enable_ssh_tcp":           true,
-		"loadBalancerSourceRanges": []string{"0.0.0.0/0"},
+		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
@@ -48,7 +48,7 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"loadBalancerSourceRanges": []string{"0.0.0.0/0"},
+		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)

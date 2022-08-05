@@ -255,7 +255,7 @@ var IngressInvalidVariablesValue = map[string]interface{}{
 }
 
 var IngressValidVariablesValue = map[string]interface{}{
-	"loadBalancerSourceRanges": []string{
+	"load_balancer_access_ranges": []string{
 		"10.12.0.0/16",
 		"10.13.1.1/32",
 	},
