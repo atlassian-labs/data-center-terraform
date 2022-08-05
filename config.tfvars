@@ -19,7 +19,7 @@ region = "<REGION>"
 products = ["<LIST_OF_PRODUCTS>"]
 
 # Range of IPs that are allowed to access the running applications over the World Wide Web.
-# By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by change the
+# By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by changing the
 # default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
 whitelist_cidr = ["0.0.0.0/0"]
 
