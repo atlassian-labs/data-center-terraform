@@ -13,8 +13,9 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"ingress_domain": "test.deplops.com",
-		"enable_ssh_tcp": true,
+		"ingress_domain":           "test.deplops.com",
+		"enable_ssh_tcp":           true,
+		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
@@ -46,7 +47,9 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	t.Parallel()
 
-	tfOptions := GenerateTFOptions(map[string]interface{}{}, t, ingressModule)
+	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
+	}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
@@ -67,4 +70,25 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	route53Key := "aws_route53_zone.ingress[0]"
 	route53 := plan.ResourcePlannedValuesMap[route53Key]
 	assert.Nil(t, route53)
+}
+
+func TestIngressVariablesPopulatedWithInvalidValue(t *testing.T) {
+	t.Parallel()
+	tfOptions := GenerateTFOptions(IngressInvalidVariablesValue, t, ingressModule)
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid CIDR.")
+}
+
+func TestIngressVariablesPopulatedWithValidValue(t *testing.T) {
+	t.Parallel()
+	tfOptions := GenerateTFOptions(IngressValidVariablesValue, t, ingressModule)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	loadBalancerSourceRanges := plan.RawPlan.Variables["load_balancer_access_ranges"].Value
+
+	// verify the input variable
+	assert.Equal(t, []interface{}{"10.12.0.0/16", "10.13.1.1/32"}, loadBalancerSourceRanges)
+
 }
