@@ -11,6 +11,7 @@ module "base-infrastructure" {
   domain               = var.domain
   namespace            = local.namespace
   eks_additional_roles = var.eks_additional_roles
+  whitelist_cidr       = var.whitelist_cidr
 
   enable_ssh_tcp = local.install_bitbucket
 }
