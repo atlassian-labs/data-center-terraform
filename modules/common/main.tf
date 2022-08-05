@@ -30,7 +30,7 @@ module "ingress" {
   # inputs
   ingress_domain           = local.ingress_domain
   enable_ssh_tcp           = var.enable_ssh_tcp
-  loadBalancerSourceRanges = var.whitelist_cidr
+  load_balancer_access_ranges = var.whitelist_cidr
 }
 
 resource "kubernetes_namespace" "products" {
