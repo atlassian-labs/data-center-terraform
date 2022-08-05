@@ -11,7 +11,7 @@ variable "enable_ssh_tcp" {
 }
 
 variable "loadBalancerSourceRanges" {
-  description = "List of allowed CIDRs to access to the load balancer."
+  description = "List of allowed CIDRs that can access the load balancer."
   type        = list(string)
   validation {
     condition = alltrue([
