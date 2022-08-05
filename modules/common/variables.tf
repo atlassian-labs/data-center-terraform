@@ -59,6 +59,6 @@ variable "eks_additional_roles" {
 }
 
 variable "whitelist_cidr" {
-  description = "List of CIDRs allow to access to application(s)."
+  description = "List of CIDRs allowed that have access to the application(s)."
   type        = list(string)
 }
