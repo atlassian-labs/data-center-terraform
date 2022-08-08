@@ -18,6 +18,11 @@ region = "<REGION>"
 # e.g.: products = ["jira", "confluence"]
 products = ["<LIST_OF_PRODUCTS>"]
 
+# List of IP ranges that are allowed to access the running applications over the World Wide Web.
+# By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by changing the
+# default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
+whitelist_cidr = ["0.0.0.0/0"]
+
 # (Optional) Domain name used by the ingress controller.
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
@@ -137,7 +142,7 @@ jira_db_name = "jira"
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.0"
+confluence_helm_chart_version = "1.4.0"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully

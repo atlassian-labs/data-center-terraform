@@ -28,8 +28,9 @@ module "ingress" {
   depends_on = [module.eks]
 
   # inputs
-  ingress_domain = local.ingress_domain
-  enable_ssh_tcp = var.enable_ssh_tcp
+  ingress_domain           = local.ingress_domain
+  enable_ssh_tcp           = var.enable_ssh_tcp
+  load_balancer_access_ranges = var.whitelist_cidr
 }
 
 resource "kubernetes_namespace" "products" {

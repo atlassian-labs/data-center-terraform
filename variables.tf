@@ -107,6 +107,17 @@ variable "eks_additional_roles" {
   type        = list(object({ rolearn = string, username = string, groups = list(string) }))
 }
 
+variable "whitelist_cidr" {
+  description = "List of CIDRs allowed accessing the application(s)."
+  default     = ["0.0.0.0/0"]
+  type        = list(string)
+  validation {
+    condition = alltrue([
+    for o in var.whitelist_cidr : can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/([0-9]|1[0-9]|2[0-9]|3[0-2])$", o))])
+    error_message = "Invalid whitelist CIDR. Valid format is a list of '<IPv4>/[0-32]' e.g: [\"10.0.0.0/18\"]."
+  }
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################
@@ -299,7 +310,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.5.0"
+  default     = "1.4.0"
 }
 
 variable "confluence_version_tag" {

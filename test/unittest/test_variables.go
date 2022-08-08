@@ -245,6 +245,22 @@ var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
 	"db_master_password":  "123@",
 }
 
+// Ingress
+
+var IngressInvalidVariablesValue = map[string]interface{}{
+	"load_balancer_access_ranges": []string{
+		"10.12.0/16",
+		"10.13.1.1/32",
+	},
+}
+
+var IngressValidVariablesValue = map[string]interface{}{
+	"load_balancer_access_ranges": []string{
+		"10.12.0.0/16",
+		"10.13.1.1/32",
+	},
+}
+
 // Bitbucket
 
 var BitbucketInvalidVariables = map[string]interface{}{
