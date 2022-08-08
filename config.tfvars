@@ -142,7 +142,7 @@ jira_db_name = "jira"
 ################################################################################
 
 # Helm chart version of Confluence
-confluence_helm_chart_version = "1.5.0"
+confluence_helm_chart_version = "1.4.0"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
