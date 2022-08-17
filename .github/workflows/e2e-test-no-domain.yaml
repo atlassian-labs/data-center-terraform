@@ -39,14 +39,15 @@ jobs:
           version: 'v1.24.0'
 
       - name: Setup Go environment
-        uses: actions/setup-go@v2.1.4
+        uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: '1.18'
 
       - name: Setup dependencies
         id: setup-dependencies
         working-directory: test/
         run: |
+          go version
           go get -v -t -d ./... && go mod tidy
           echo ::set-output name=exit_code::$?
 
