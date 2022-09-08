@@ -22,6 +22,9 @@ func TestInstaller(t *testing.T) {
 
 	runInstallScript(testConfig.ConfigPath)
 
+	// run again with same config. This is to assure that the `re-apply` action finishes without any issue.
+	runInstallScript(testConfig.ConfigPath)
+
 	clusterHealthTests(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
@@ -56,10 +59,6 @@ func runInstallScript(configPath string) {
 	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	_ = cmd.Wait()
-
-	// run again with same config. This is to assure the `re-apply` action works without any issue.
-	_ = cmd.Start()
 	_ = cmd.Wait()
 }
 
