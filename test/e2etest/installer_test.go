@@ -1,11 +1,12 @@
 package e2etest
 
 import (
-	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"os/exec"
 	"strconv"
 	"testing"
+
+	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
 func TestInstaller(t *testing.T) {
@@ -55,6 +56,10 @@ func runInstallScript(configPath string) {
 	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
+	_ = cmd.Wait()
+
+	// run again with same config. This is to assure the `re-apply` action works without any issue.
+	_ = cmd.Start()
 	_ = cmd.Wait()
 }
 

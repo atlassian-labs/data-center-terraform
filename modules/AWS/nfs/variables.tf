@@ -61,3 +61,12 @@ variable "shared_home_size" {
     error_message = "Invalid shared home persistent volume size. Should be a number followed by 'Gi' or 'g'."
   }
 }
+
+variable "cluster_service_ipv4" {
+  description = "The static IP address for NFS service."
+  type        = string
+  validation {
+    condition     = can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", var.cluster_service_ipv4))
+    error_message = "Invalid IPv4 Address."
+  }
+}
