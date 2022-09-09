@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Print GITHUB_REF
         run: echo ${GITHUB_REF}
 
       - name: Pin Kubectl version
