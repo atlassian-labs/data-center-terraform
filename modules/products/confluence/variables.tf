@@ -51,6 +51,12 @@ variable "replica_count" {
   type        = number
 }
 
+variable "termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
+}
+
 variable "installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number

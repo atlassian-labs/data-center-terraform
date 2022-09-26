@@ -12,6 +12,9 @@ resource "helm_release" "bamboo" {
   values = [
     yamlencode({
       bamboo = {
+        shutdown = {
+          terminationGracePeriodSeconds = var.termination_grace_period
+        }
         resources = {
           jvm = {
             maxHeap = local.bamboo_software_resources.maxHeap
@@ -87,6 +90,9 @@ resource "helm_release" "bamboo_agent" {
     yamlencode({
       replicaCount = local.number_of_agents
       agent = {
+        shutdown = {
+          terminationGracePeriodSeconds = var.termination_grace_period
+        }
         securityToken = {
           secretName = kubernetes_secret.security_token_secret.metadata[0].name
         }

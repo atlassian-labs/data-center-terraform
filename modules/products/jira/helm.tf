@@ -16,6 +16,9 @@ resource "helm_release" "jira" {
         repository = var.image_repository
       }
       jira = {
+        shutdown = {
+          terminationGracePeriodSeconds = var.termination_grace_period
+        }
         clustering = {
           enabled = true
         }

@@ -46,6 +46,12 @@ variable "installation_timeout" {
   }
 }
 
+variable "termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
+}
+
 variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)

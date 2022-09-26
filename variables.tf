@@ -150,6 +150,12 @@ variable "jira_replica_count" {
   }
 }
 
+variable "jira_termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
+}
+
 variable "jira_installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number
@@ -329,6 +335,12 @@ variable "confluence_replica_count" {
   }
 }
 
+variable "confluence_termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
+}
+
 variable "confluence_installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number
@@ -491,6 +503,12 @@ variable "bitbucket_replica_count" {
     condition     = var.bitbucket_replica_count >= 0
     error_message = "Number of nodes must be greater than or equal to 0."
   }
+}
+
+variable "bitbucket_termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
 }
 
 variable "bitbucket_installation_timeout" {
@@ -763,6 +781,12 @@ variable "bamboo_installation_timeout" {
   description = "Timeout for helm chart installation in minutes"
   type        = number
   default     = 15
+}
+
+variable "bamboo_termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
 }
 
 variable "bamboo_agent_version_tag" {
