@@ -57,7 +57,7 @@ variable "replica_count" {
   type        = number
 }
 
-variable "confluence_termination_grace_period" {
+variable "termination_grace_period" {
   description = "Termination grace period in seconds"
   type        = number
   default     = 30
