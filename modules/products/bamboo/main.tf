@@ -38,5 +38,5 @@ module "nfs" {
   limits_memory        = var.nfs_limits_memory
   availability_zone    = var.eks.availability_zone
   shared_home_size     = var.shared_home_size
-  cluster_service_ipv4 = "172.20.2.2"
+  cluster_service_ipv4 = local.nfs_cluster_service_ipv4
 }

@@ -33,9 +33,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Print GITHUB_REF
-        run: echo ${GITHUB_REF}
-
       - name: Pin Kubectl version
         uses: azure/setup-kubectl@v2.0
         with:
