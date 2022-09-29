@@ -405,6 +405,8 @@ var JiraCorrectVariables = map[string]interface{}{
 	"db_master_password": "dummy_password",
 	"db_master_username": "dummy_username",
 	"db_snapshot_id":     "dummy-rds-snapshot-id",
+
+	"termination_grace_period": 0,
 }
 
 var JiraInvalidVariables = map[string]interface{}{

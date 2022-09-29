@@ -115,4 +115,5 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 	"db_master_username":       "dummyUsername",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",
+	 "termination_grace_period": 0,
 }

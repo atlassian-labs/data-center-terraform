@@ -127,4 +127,5 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	"elasticsearch_limits_memory":   "1Gi",
 	"elasticsearch_storage":         10,
 	"elasticsearch_replicas":        2,
+	"termination_grace_period":      0,
 }
