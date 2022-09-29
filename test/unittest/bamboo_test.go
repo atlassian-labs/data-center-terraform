@@ -154,4 +154,5 @@ var BambooIncorrectVariables = map[string]interface{}{
 		"agent_count":  5,
 		"invalid":      "value",
 	},
+	"termination_grace_period": 0,
 }
