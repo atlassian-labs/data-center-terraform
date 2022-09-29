@@ -12,8 +12,9 @@ module "eks" {
   enable_irsa = true
 
   # Networking
-  vpc_id  = var.vpc_id
-  subnets = var.subnets
+  vpc_id                    = var.vpc_id
+  subnets                   = var.subnets
+  cluster_service_ipv4_cidr = local.cluster_service_ipv4_cidr
 
   # These 2 properties below will be deprecated in v18 of the AWS EKS module:
   # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/UPGRADE-18.0.md

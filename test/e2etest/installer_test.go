@@ -1,11 +1,12 @@
 package e2etest
 
 import (
-	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"os/exec"
 	"strconv"
 	"testing"
+
+	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
 func TestInstaller(t *testing.T) {
@@ -19,6 +20,9 @@ func TestInstaller(t *testing.T) {
 
 	printTestBanner("AWS test region -", testConfig.AwsRegion)
 
+	runInstallScript(testConfig.ConfigPath)
+
+	// run again with same config. This is to assure that the `re-apply` action finishes without any issue.
 	runInstallScript(testConfig.ConfigPath)
 
 	clusterHealthTests(t, testConfig)

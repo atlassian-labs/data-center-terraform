@@ -20,6 +20,9 @@ resource "helm_release" "nfs" {
           memory = var.requests_memory
         }
       }
+      service = {
+        clusterIP = var.cluster_service_ipv4
+      }
     })
   ]
 }

@@ -13,7 +13,7 @@ resource "kubernetes_persistent_volume" "product_shared_home_pv" {
     persistent_volume_source {
       nfs {
         path   = "/srv/nfs"
-        server = data.kubernetes_service.nfs.spec[0].cluster_ip
+        server = var.cluster_service_ipv4
       }
     }
   }

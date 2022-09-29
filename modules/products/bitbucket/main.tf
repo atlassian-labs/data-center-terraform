@@ -25,6 +25,8 @@ module "nfs" {
   availability_zone       = var.eks.availability_zone
   shared_home_snapshot_id = var.shared_home_snapshot_id
   shared_home_size        = var.shared_home_size
+  cluster_service_ipv4    = local.nfs_cluster_service_ipv4
+
 }
 
 module "database" {

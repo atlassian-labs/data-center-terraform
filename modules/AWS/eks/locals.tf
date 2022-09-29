@@ -10,4 +10,6 @@ locals {
   autoscaler_version = "9.16.0"
 
   ami_type = "AL2_x86_64"
+
+  cluster_service_ipv4_cidr = "172.20.0.0/16"
 }

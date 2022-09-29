@@ -123,19 +123,21 @@ const nfsRequestsCpu = "0.25"
 const nfsRequestsMemory = "256Mi"
 const nfsLimitsCpu = "0.25"
 const nfsLimitsMemory = "256Mi"
+const nfsServiceIPAddress = "172.20.2.2"
 const nfsPvc = productName + "-nfs-pvc"
 const productName = "dummy-product"
 
 var NfsValidVariable = map[string]interface{}{
-	"namespace":         nfsVarNamespace,
-	"chart_name":        nfsVarChartNameOverride,
-	"shared_home_size":  nfsSharedHomeSize,
-	"requests_cpu":      nfsRequestsCpu,
-	"requests_memory":   nfsRequestsMemory,
-	"limits_cpu":        nfsLimitsCpu,
-	"limits_memory":     nfsLimitsMemory,
-	"availability_zone": "dummy-az",
-	"product":           productName,
+	"namespace":            nfsVarNamespace,
+	"chart_name":           nfsVarChartNameOverride,
+	"shared_home_size":     nfsSharedHomeSize,
+	"requests_cpu":         nfsRequestsCpu,
+	"requests_memory":      nfsRequestsMemory,
+	"limits_cpu":           nfsLimitsCpu,
+	"limits_memory":        nfsLimitsMemory,
+	"availability_zone":    "dummy-az",
+	"product":              productName,
+	"cluster_service_ipv4": "172.20.2.2",
 }
 
 // DB
