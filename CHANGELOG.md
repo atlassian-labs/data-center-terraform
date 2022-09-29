@@ -1,5 +1,26 @@
 # Change Log
 
+## 2.0.5
+
+**Release date:** 2022-09-29
+
+* Fixed EKS Cycle issue
+
+## 2.0.4
+
+**Release date:** 2022-08-18
+
+* Fix the setup-go github action
+
+## 2.0.3
+
+**Release date:** 2022-08-08
+
+* Updated the default Helm chart version to 1.5.0 for Jira, Bitbucket, and Bamboo
+* Introduced a configurable access restriction to the deployed applications
+* Allowed nodes groups to spin up more than 1 node from start
+* Allowed additional roles to access the EKS cluster
+
 ## 2.0.2
 
 **Release date:** 2022-06-30
