@@ -43,6 +43,7 @@ module "bamboo" {
   }
 
   installation_timeout = var.bamboo_installation_timeout
+  termination_grace_period  = var.bamboo_termination_grace_period
 
   bamboo_configuration = {
     helm_version = var.bamboo_helm_chart_version
@@ -96,8 +97,9 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  replica_count        = var.jira_replica_count
-  installation_timeout = var.jira_installation_timeout
+  replica_count             = var.jira_replica_count
+  installation_timeout      = var.jira_installation_timeout
+  termination_grace_period  = var.jira_termination_grace_period
 
   jira_configuration = {
     helm_version        = var.jira_helm_chart_version
@@ -146,10 +148,11 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count        = var.confluence_replica_count
-  installation_timeout = var.confluence_installation_timeout
-  version_tag          = var.confluence_version_tag
-  enable_synchrony     = var.confluence_collaborative_editing_enabled
+  replica_count             = var.confluence_replica_count
+  installation_timeout      = var.confluence_installation_timeout
+  version_tag               = var.confluence_version_tag
+  enable_synchrony          = var.confluence_collaborative_editing_enabled
+  termination_grace_period  = var.confluence_termination_grace_period
 
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
@@ -193,8 +196,9 @@ module "bitbucket" {
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
-  replica_count        = var.bitbucket_replica_count
-  installation_timeout = var.bitbucket_installation_timeout
+  replica_count             = var.bitbucket_replica_count
+  installation_timeout      = var.bitbucket_installation_timeout
+  termination_grace_period  = var.bitbucket_termination_grace_period
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version

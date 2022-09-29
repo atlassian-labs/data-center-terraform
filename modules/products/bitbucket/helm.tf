@@ -13,6 +13,9 @@ resource "helm_release" "bitbucket" {
     yamlencode({
       replicaCount = var.replica_count,
       bitbucket = {
+        shutdown = {
+          terminationGracePeriodSeconds = var.termination_grace_period
+        }
         clustering = {
           enabled = true
         }

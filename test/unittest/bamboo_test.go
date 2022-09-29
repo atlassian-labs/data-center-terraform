@@ -99,6 +99,7 @@ var BambooCorrectVariables = map[string]interface{}{
 		"mem":          "1Gi",
 		"agent_count":  5,
 	},
+	"termination_grace_period": 0,
 }
 
 var BambooIncorrectVariables = map[string]interface{}{
@@ -153,4 +154,5 @@ var BambooIncorrectVariables = map[string]interface{}{
 		"agent_count":  5,
 		"invalid":      "value",
 	},
+	"termination_grace_period": 0,
 }

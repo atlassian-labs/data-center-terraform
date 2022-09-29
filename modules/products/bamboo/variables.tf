@@ -46,6 +46,15 @@ variable "installation_timeout" {
   }
 }
 
+variable "termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  validation {
+    condition     = var.termination_grace_period >= 0
+    error_message = "Termination grace period needs to be a positive number."
+  }
+}
+
 variable "bamboo_configuration" {
   description = "Bamboo resource spec and chart version"
   type        = map(any)

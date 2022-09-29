@@ -14,6 +14,9 @@ resource "helm_release" "confluence" {
     yamlencode({
       replicaCount = var.replica_count,
       confluence = {
+        shutdown = {
+          terminationGracePeriodSeconds = var.termination_grace_period
+        }
         clustering = {
           enabled = true
         }
