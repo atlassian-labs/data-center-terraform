@@ -11,7 +11,7 @@
 
 **Release date:** 2022-08-18
 
-* Fix the setup-go github action
+* Fixed the setup-go github action
 
 ## 2.0.3
 
