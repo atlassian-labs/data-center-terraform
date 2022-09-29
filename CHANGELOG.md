@@ -5,6 +5,7 @@
 **Release date:** 2022-09-29
 
 * Fixed EKS Cycle issue
+* Introduced termination graceful period configuration for all products
 
 ## 2.0.4
 
