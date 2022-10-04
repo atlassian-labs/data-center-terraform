@@ -73,8 +73,9 @@ var BambooCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"dataset_url":          nil,
-	"installation_timeout": testTimeout,
+	"dataset_url":              nil,
+	"termination_grace_period": "0",
+	"installation_timeout":     testTimeout,
 	"bamboo_configuration": map[string]interface{}{
 		"helm_version": "1.0.0",
 		"cpu":          "1",
@@ -125,8 +126,9 @@ var BambooIncorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"dataset_url":          nil,
-	"installation_timeout": invalidTestTimeout,
+	"dataset_url":              nil,
+	"termination_grace_period": "0",
+	"installation_timeout":     invalidTestTimeout,
 	"bamboo_configuration": map[string]interface{}{
 		"helm_version": "1.0.0",
 		"cpu":          "1",
