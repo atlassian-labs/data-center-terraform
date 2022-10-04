@@ -258,7 +258,16 @@ resume_bamboo_server() {
         echo "Please enter password of the Bamboo '${ADMIN_USERNAME}' user: "
         read -s ADMIN_PASSWORD
       fi
+
       bamboo_url=$(terraform output | grep '"bamboo" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
+
+      status_url="${bamboo_url}/rest/api/latest/status"
+      local RESULT=$(curl -s "${status_url}")
+      if [[ "x${RESULT}" == *"RUNNING"* ]]; then
+        log "Bamboo server is already ${RESULT}, skip resuming."
+        return
+      fi
+
       resume_bamboo_url="${bamboo_url}/rest/api/latest/server/resume"
       local RESULT=$(curl -s -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X POST "${resume_bamboo_url}")
       if [[ "x${RESULT}" == *"RUNNING"* ]]; then
