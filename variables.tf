@@ -316,7 +316,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.1"
 }
 
 variable "confluence_version_tag" {
