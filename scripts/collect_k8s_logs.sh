@@ -39,6 +39,8 @@ for POD in ${NGINX_PODS[@]}; do
   kubectl describe pod ${POD} -n ingress-nginx > ${DEBUG_FOLDER}/${POD}_describe.log 2>&1
 done
 
+kubectl describe svc -n ingress-nginx > ${DEBUG_FOLDER}/nginx_svc_describe.log 2>&1
+
 echo "[INFO]: Getting namespaces pods and events"
 
 kubectl get events -n atlassian > ${DEBUG_FOLDER}/events.log 2>&1
