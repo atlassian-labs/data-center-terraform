@@ -5,7 +5,7 @@ variable "ingress_domain" {
 }
 
 variable "enable_https_ingress" {
-  description = "If true, Nginx controller will listen on 443."
+  description = "If true, Nginx controller will listen on 443 as well."
   type        = bool
 }
 

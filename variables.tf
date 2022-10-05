@@ -119,7 +119,7 @@ variable "whitelist_cidr" {
 }
 
 variable "enable_https_ingress" {
-  description = "If true, Nginx controller will listen on both 80 and 443."
+  description = "If true, Nginx controller will listen on 443 as well."
   type        = bool
   default     = true
 }
