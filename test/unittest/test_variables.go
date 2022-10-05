@@ -254,6 +254,7 @@ var IngressInvalidVariablesValue = map[string]interface{}{
 		"10.12.0/16",
 		"10.13.1.1/32",
 	},
+	"enable_https_ingress": bool(false),
 }
 
 var IngressValidVariablesValue = map[string]interface{}{
