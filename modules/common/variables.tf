@@ -62,3 +62,8 @@ variable "whitelist_cidr" {
   description = "List of CIDRs allowed that have access to the application(s)."
   type        = list(string)
 }
+
+variable "enable_https_ingress" {
+  description = "If true, Nginx controller will listen on both 80 and 443."
+  type        = bool
+}

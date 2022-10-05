@@ -13,8 +13,8 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
-		"ingress_domain":           "test.deplops.com",
-		"enable_ssh_tcp":           true,
+		"ingress_domain":              "test.deplops.com",
+		"enable_ssh_tcp":              true,
 		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 	}, t, ingressModule)
 
@@ -87,8 +87,9 @@ func TestIngressVariablesPopulatedWithValidValue(t *testing.T) {
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 	loadBalancerSourceRanges := plan.RawPlan.Variables["load_balancer_access_ranges"].Value
-
+	enableHttps := plan.RawPlan.Variables["enable_https_ingress"].Value
 	// verify the input variable
 	assert.Equal(t, []interface{}{"10.12.0.0/16", "10.13.1.1/32"}, loadBalancerSourceRanges)
+	assert.Equal(t, "false", enableHttps)
 
 }

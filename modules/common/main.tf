@@ -31,6 +31,7 @@ module "ingress" {
   ingress_domain              = local.ingress_domain
   enable_ssh_tcp              = var.enable_ssh_tcp
   load_balancer_access_ranges = var.whitelist_cidr
+  enable_https_ingress        = var.enable_https_ingress
 }
 
 resource "kubernetes_namespace" "products" {
