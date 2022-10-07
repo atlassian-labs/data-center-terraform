@@ -3,6 +3,7 @@ package e2etest
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
@@ -24,6 +25,8 @@ func assertConfluenceStatus(t *testing.T, productUrl string, expectedStatus stri
 
 func assertSynchronyStatus(t *testing.T, productUrl string, expectedStatus string) {
 	statusUrl := "synchrony/heartbeat"
+	// trimming confluence from productUrl to have the correct synchrony URL
+	productUrl = strings.TrimSuffix(productUrl, "/confluence")
 	url := fmt.Sprintf("%s/%s", productUrl, statusUrl)
 	content := getPageContent(t, url)
 	println("Asserting Synchrony Status Endpoint...")
