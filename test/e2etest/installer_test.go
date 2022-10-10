@@ -30,6 +30,7 @@ func TestInstaller(t *testing.T) {
 	clusterHealthTests(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
+	synchronyUrl := terraform.Output(t, &terraform.Options{TerraformDir: "../../"}, "synchrony_url")
 
 	if contains(productList, bamboo) {
 		bambooHealthTests(t, testConfig, productUrls[bamboo])
@@ -40,7 +41,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	if contains(productList, confluence) {
-		confluenceHealthTests(t, productUrls[confluence])
+		confluenceHealthTests(t, productUrls[confluence], synchronyUrl)
 	}
 
 	if contains(productList, bitbucket) {
