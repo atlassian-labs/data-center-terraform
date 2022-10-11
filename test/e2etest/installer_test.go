@@ -1,12 +1,11 @@
 package e2etest
 
 import (
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"os/exec"
 	"strconv"
 	"testing"
-
-	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
 func TestInstaller(t *testing.T) {
@@ -16,7 +15,10 @@ func TestInstaller(t *testing.T) {
 	testConfig := createConfig(t, productList, useDomain)
 
 	// Schedule uninstall and cleanup the environment
+	// multiple defer statements are executed in LIFO(Last-In, First-Out)
+	defer runCleanupScript(testConfig)
 	defer runUninstallScript(testConfig.ConfigPath)
+	defer gatherK8sLogs(testConfig)
 
 	printTestBanner("AWS test region -", testConfig.AwsRegion)
 
@@ -56,7 +58,6 @@ func runInstallScript(configPath string) {
 		Stderr: os.Stdout,
 		Dir:    "../../",
 	}
-
 	// run `cmd` in background
 	_ = cmd.Start()
 
@@ -70,6 +71,45 @@ func runUninstallScript(configPath string) {
 		Args:   []string{"uninstall.sh", "-c", configPath, "-f"},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
+		Dir:    "../../",
+	}
+
+	// run `cmd` in background
+	_ = cmd.Start()
+
+	// wait `cmd` until it finishes
+	_ = cmd.Wait()
+}
+
+func gatherK8sLogs(testConfig TestConfig) {
+	printTestBanner("Gathering K8s logs and events from environment ", testConfig.EnvironmentName)
+	//kubeconfig := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
+
+	cmd := &exec.Cmd{
+		Path:   "collect_k8s_logs.sh",
+		Args:   []string{"collect_k8s_logs.sh", "atlas-" + testConfig.EnvironmentName + "-cluster", testConfig.AwsRegion},
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+		//Env:    []string{"KUBECONFIG=" + kubeconfig},
+		Dir: "../../scripts",
+	}
+
+	// run `cmd` in background
+	_ = cmd.Start()
+
+	// wait `cmd` until it finishes
+	_ = cmd.Wait()
+}
+
+func runCleanupScript(testConfig TestConfig) {
+	printTestBanner("Cleaning up AWS resources with tag service_name", testConfig.EnvironmentName)
+
+	cmd := &exec.Cmd{
+		Path:   "/usr/bin/python",
+		Args:   []string{"python", "aws_clean.py", "--service_name", testConfig.EnvironmentName, "--region", testConfig.AwsRegion},
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+		Env:    []string{"PYTHONPATH=/opt/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages"},
 		Dir:    "../../",
 	}
 
