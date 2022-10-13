@@ -334,6 +334,22 @@ def terminate_open_id_providers(service_name):
                 iam_client.delete_open_id_connect_provider(OpenIDConnectProviderArn=provider['Arn'])
 
 
+def delete_volumes(service_name, aws_region):
+    ec2_client = boto3.resource('ec2', region_name=aws_region)
+    volumes = ec2_client.volumes.filter(Filters=[{'Name': 'status', 'Values': ['available']}])
+    for vol in volumes:
+        for tag in vol.tags:
+            if service_name in tag["Key"]:
+                logging.info(f"Volume {vol} with tag {tag} is unused. Deleting it")
+                vol.delete()
+            else:
+                if tag["Key"] == 'service_name':
+                    service_name_tag = tag["Value"]
+                    if service_name in service_name_tag:
+                        logging.info(f"Volume {vol} with tag {service_name_tag} is unused. Deleting it")
+                        vol.delete()
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--service_name")
@@ -363,6 +379,8 @@ def main():
     release_unused_eips(aws_region)
     logging.info("Terminate open ID providers")
     terminate_open_id_providers(service_name)
+    logging.info("Delete unused EBS volumes")
+    delete_volumes(service_name, aws_region)
 
 
 if __name__ == '__main__':
