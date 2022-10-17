@@ -359,6 +359,13 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"max_heap":     "512m",
 		"license_abc":  "dummy_license", //invalid var name
 	},
+	"synchrony_configuration": map[string]interface{}{
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "256m",
+		"max_heap":     "512m",
+		"unknown_var":  "dummy_license", //invalid var name
+	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_master_password":       "dummyPassword!",

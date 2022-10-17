@@ -65,6 +65,7 @@ func TestConfluenceVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"db_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"replica_count\" is not set")
 	assert.Contains(t, err.Error(), "\"confluence_configuration\" is not set")
+	assert.Contains(t, err.Error(), "\"synchrony_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"enable_synchrony\" is not set")
 	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 }
@@ -109,6 +110,13 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"min_heap":     "256m",
 		"max_heap":     "512m",
 		"license":      "dummy_license",
+	},
+	"synchrony_configuration": map[string]interface{}{
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "512m",
+		"max_heap":     "1024m",
+		"stack_size":   "1024k",
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",
