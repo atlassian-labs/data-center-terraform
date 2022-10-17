@@ -1,19 +1,24 @@
 module "base-infrastructure" {
   source = "./modules/common"
 
-  region_name      = var.region
-  environment_name = var.environment_name
+  region_name           = var.region
+  environment_name      = var.environment_name
+  tags                  = var.resource_tags
+  instance_types        = var.instance_types
+  instance_disk_size    = var.instance_disk_size
+  max_cluster_capacity  = var.max_cluster_capacity
+  min_cluster_capacity  = var.min_cluster_capacity
+  domain                = var.domain
+  namespace             = local.namespace
+  eks_additional_roles  = var.eks_additional_roles
+  whitelist_cidr        = var.whitelist_cidr
 
-  instance_types       = var.instance_types
-  instance_disk_size   = var.instance_disk_size
-  max_cluster_capacity = var.max_cluster_capacity
-  min_cluster_capacity = var.min_cluster_capacity
-  domain               = var.domain
-  namespace            = local.namespace
-  eks_additional_roles = var.eks_additional_roles
-  whitelist_cidr       = var.whitelist_cidr
-
-  enable_ssh_tcp = local.install_bitbucket
+  enable_ssh_tcp        = local.install_bitbucket
+  osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
+  osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
+  osquery_env           = var.osquery_env
+  osquery_version        = var.osquery_version
+  kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
 }
 
 module "bamboo" {

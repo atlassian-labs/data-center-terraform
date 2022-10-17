@@ -1,6 +1,9 @@
 package unittest
 
 import (
+	"encoding/base64"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -141,4 +144,37 @@ func TestEksNodeGroupIsOnlyInOneSubnet(t *testing.T) {
 	subnets := nodeGroup.AttributeValues["subnet_ids"].([]interface{})
 
 	assert.Equal(t, 1, len(subnets))
+}
+
+func TestEksNodeLaunchTemplate(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(EksWithValidValues, t, eksModule)
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	launchTemplateNodeGroupKey := "module.nodegroup_launch_template.aws_launch_template.nodegroup"
+	terraform.AssertPlannedValuesMapKeyExists(t, plan, launchTemplateNodeGroupKey)
+
+	nodeGroupLaunchTemplate := plan.ResourcePlannedValuesMap[launchTemplateNodeGroupKey]
+	userData, _ := base64.StdEncoding.DecodeString(fmt.Sprint(nodeGroupLaunchTemplate.AttributeValues["user_data"]))
+	// assert that modules/AWS/eks/nodegroup_launch_template/templates/userdata.sh.tpl makes it to user_data in launch template
+	// and contains aws command to retrieve osquery fleet enrolment secret
+	assert.True(t, strings.Contains(string(userData), "/usr/local/bin/aws --region"))
+	// assert that aws region for aws cli is set to the current region when osquery_secret_region is undefined
+	assert.True(t, strings.Contains(string(userData), "--region us-east-1"))
+}
+
+func TestKinesisRegionSelection(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(EksWithUnsupportedKinesisRegion, t, eksModule)
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+	launchTemplateNodeGroupKey := "module.nodegroup_launch_template.aws_launch_template.nodegroup"
+	terraform.AssertPlannedValuesMapKeyExists(t, plan, launchTemplateNodeGroupKey)
+
+	nodeGroupLaunchTemplate := plan.ResourcePlannedValuesMap[launchTemplateNodeGroupKey]
+	userData, _ := base64.StdEncoding.DecodeString(fmt.Sprint(nodeGroupLaunchTemplate.AttributeValues["user_data"]))
+	// since eu-west-2 from EksWithUnsupportedKinesisRegion isn't among supported regions, assert fallback to eu-west-1
+	assert.True(t, strings.Contains(string(userData), "eu-west-1"))
+	// assert that osquery_secret_region makes it to user_data - aws cli command to fetch fleet enrollment secret
+	assert.True(t, strings.Contains(string(userData), "--region eu-north-1"))
 }

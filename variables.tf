@@ -908,3 +908,39 @@ variable "bamboo_dataset_url" {
   default     = null
   type        = string
 }
+
+variable "osquery_fleet_enrollment_secret_name" {
+  type = string
+  description = "Fleet enrollment secret name"
+  default = ""
+}
+
+variable "osquery_fleet_enrollment_secret_region_aws" {
+  description = "Fleet enrollment secret AWS region"
+  type    = string
+  default = ""
+}
+
+variable "osquery_env" {
+  type = string
+  description = "Osquery environment name"
+  default = "osquery_dc_e2e_tests"
+}
+
+variable "osquery_version" {
+  description = "Osquery version"
+  type        = string
+  default     = "5.5.1"
+}
+
+variable "kinesis_log_producers_role_arns" {
+  description = "AWS kinesis log producer role"
+  type   = object({
+    eu     = string
+    non-eu = string
+  })
+  default = {
+    eu     = "dummy-arn",
+    non-eu = "dummy-arn"
+  }
+}

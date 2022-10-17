@@ -59,6 +59,33 @@ max_cluster_capacity = 5
 #]
 
 ################################################################################
+# Osquery settings. Atlassian only!
+################################################################################
+
+# The secret needs to be available in Secrets Manager. Terraform DOES NOT
+# create the secret. It should be just the secret name, not the full ARN.
+# Providing the secret name enables osquery installation in the nodegroup launch template.
+# osquery_fleet_enrollment_secret_name = "<FLEET-ENROLLMENT_SECRET-NAME>"
+
+# AWS region to fetch fleet enrollment secret. It can be different from the AWS region the environment is deployed to
+# If undefined, current AWS region will be used (the one set in `region` in this file). Defaults to undefined.
+# osquery_fleet_enrollment_secret_region_aws = ""
+
+# The value of OSQUERY_ENV that will be used to send logs to Splunk. It should not be something like “production”
+# or “prod-west2” but should instead relate to the product, platform, or team. Defaults to osquery_dc_e2e_tests
+# osquery_env = "osquery_dc_e2e_tests"
+
+# Osquery version. Defaults to 5.5.1. Osquery is installed as yum package, make sure you test the version before an update
+# osquery_version = "5.5.1"
+
+# ATLASSIAN only! Two Atlassian provided roles to push logs to kinesis. Can also be set as env var:
+# TF_VAR_kinesis_log_producers_role_arns='{"eu":"$EU_ROLE_ARN","non-eu":"$NON_EU_ROLE_ARN"}'
+# kinesis_log_producers_role_arns = {
+#   "eu"     = "arn:aws:iam::111111111111:role/pipeline-prod-log-producers-all",
+#   "non-eu" = "arn:aws:iam::111111111111:role/pipeline-prod-log-producers-all"
+# }
+
+################################################################################
 # Jira Settings
 ################################################################################
 
