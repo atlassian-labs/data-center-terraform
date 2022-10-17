@@ -392,13 +392,13 @@ variable "synchrony_mem" {
 variable "synchrony_min_heap" {
   description = "Minimum heap size for synchrony instance"
   type        = string
-  default     = "1Gi"
+  default     = "1g"
 }
 
 variable "synchrony_max_heap" {
   description = "Maximum heap size for synchrony instance"
   type        = string
-  default     = "2Gi"
+  default     = "2g"
 }
 
 variable "synchrony_stack_size" {
