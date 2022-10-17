@@ -369,12 +369,20 @@ variable "confluence_min_heap" {
   description = "Minimum heap size for confluence instance"
   type        = string
   default     = "256m"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_min_heap))
+    error_message = "Minimum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
 }
 
 variable "confluence_max_heap" {
   description = "Maximum heap size for confluence instance"
   type        = string
   default     = "512m"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_max_heap))
+    error_message = "Maximum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
 }
 
 variable "synchrony_cpu" {
@@ -393,18 +401,30 @@ variable "synchrony_min_heap" {
   description = "Minimum heap size for synchrony instance"
   type        = string
   default     = "1g"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_min_heap))
+    error_message = "Minimum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
 }
 
 variable "synchrony_max_heap" {
   description = "Maximum heap size for synchrony instance"
   type        = string
   default     = "2g"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_max_heap))
+    error_message = "Maximum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
 }
 
 variable "synchrony_stack_size" {
   description = "Stack size for synchrony instance"
   type        = string
   default     = "2048k"
+  validation {
+    condition     = can(regex("^([0-9]){1,4}[k|m]$", var.synchrony_stack_size))
+    error_message = "Stack size for synchrony instance is invalid. (Correct form: 64m | 2048k)"
+  }
 }
 
 variable "confluence_local_home_size" {
