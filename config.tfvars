@@ -182,6 +182,14 @@ confluence_mem      = "2Gi"
 confluence_min_heap = "1024m"
 confluence_max_heap = "2048m"
 
+# Synchrony instance resource configuration
+synchrony_cpu       = "2"
+synchrony_mem       = "2.5Gi"
+synchrony_min_heap  = "1024m"
+synchrony_max_heap  = "2048m"
+synchrony_stack_size = "2048k"
+
+
 # Storage
 confluence_local_home_size  = "10Gi"
 confluence_shared_home_size = "10Gi"

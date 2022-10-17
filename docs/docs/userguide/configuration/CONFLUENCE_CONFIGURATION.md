@@ -62,7 +62,7 @@ confluence_license = "<LICENSE_KEY>"
 
     Please refer to [Sensitive Data](CONFIGURATION.md#sensitive-data) section.
 
-### Instance resource configuration
+### Confluence instance resource configuration
 
 The following variables set number of CPU, amount of memory, maximum heap size and minimum heap size of Confluence instance. (Used default values as example.)
 
@@ -72,6 +72,19 @@ confluence_mem                 = "1Gi"
 confluence_min_heap            = "256m"
 confluence_max_heap            = "512m"
 ```
+
+### Synchrony instance resource configuration
+
+The following variables set number of CPU, amount of memory, maximum heap size, minimum heap size, and stack size of Synchrony instance. (Used default values as example.)
+
+```terraform
+synchrony_cpu                 = "2"
+synchrony_mem                 = "2.5Gi"
+synchrony_min_heap            = "1g"
+synchrony_max_heap            = "2g"
+synchrony_stack_size          = "2048k"
+```
+
 
 ### Collaborative editing
 

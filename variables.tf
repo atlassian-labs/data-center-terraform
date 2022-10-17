@@ -377,6 +377,36 @@ variable "confluence_max_heap" {
   default     = "512m"
 }
 
+variable "synchrony_cpu" {
+  description = "Number of CPUs for synchrony instance"
+  type        = string
+  default     = "2"
+}
+
+variable "synchrony_mem" {
+  description = "Amount of memory for synchrony instance"
+  type        = string
+  default     = "2.5Gi"
+}
+
+variable "synchrony_min_heap" {
+  description = "Minimum heap size for synchrony instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "synchrony_max_heap" {
+  description = "Maximum heap size for synchrony instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "synchrony_stack_size" {
+  description = "Stack size for synchrony instance"
+  type        = string
+  default     = "2048k"
+}
+
 variable "confluence_local_home_size" {
   description = "Storage size for Confluence local home"
   type        = string

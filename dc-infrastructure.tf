@@ -163,6 +163,14 @@ module "confluence" {
     license      = var.confluence_license
   }
 
+  synchrony_configuration = {
+    cpu        = var.synchrony_cpu
+    mem        = var.synchrony_mem
+    min_heap   = var.synchrony_min_heap
+    max_heap   = var.synchrony_max_heap
+    stack_size = var.synchrony_stack_size
+  }
+
   local_home_size  = var.confluence_local_home_size
   shared_home_size = var.confluence_shared_home_size
 

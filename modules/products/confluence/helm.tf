@@ -34,6 +34,21 @@ resource "helm_release" "confluence" {
         }
         additionalJvmArgs = concat(local.dcapt_analytics_property)
       }
+      synchrony = {
+        resources = {
+            jvm = {
+              maxHeap    = local.synchrony_resources.maxHeap
+              minHeap    = local.synchrony_resources.minHeap
+              stack_size = local.synchrony_resources.stackSize
+            }
+            container = {
+              requests = {
+                cpu    = local.synchrony_resources.cpu
+                memory = local.synchrony_resources.mem
+              }
+            }
+          }
+      }
       database = {
         type = "postgresql"
         url  = module.database.rds_jdbc_connection

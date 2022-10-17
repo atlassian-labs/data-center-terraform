@@ -15,6 +15,14 @@ locals {
     "mem" : var.confluence_configuration["mem"]
   }
 
+  synchrony_resources = {
+    "minHeap" : var.synchrony_configuration["min_heap"]
+    "maxHeap" : var.synchrony_configuration["max_heap"]
+    "stackSize" : var.synchrony_configuration["stack_size"]
+    "cpu" : var.synchrony_configuration["cpu"]
+    "mem" : var.synchrony_configuration["mem"]
+  }
+
   rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
 
   domain_supplied     = var.ingress.outputs.domain != null ? true : false
