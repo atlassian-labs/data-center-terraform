@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 CLUSTER_NAME=$1
 AWS_REGION=$2
