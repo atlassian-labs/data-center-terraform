@@ -67,6 +67,8 @@ resource "helm_release" "ingress" {
 
           loadBalancerSourceRanges = var.load_balancer_access_ranges
 
+          enableHttps = local.enable_https_ingress
+
           targetPorts = {
             # Set the HTTPS listener to accept HTTP connections only, as the AWS load
             # balancer is terminating TLS.

@@ -4,6 +4,11 @@ variable "ingress_domain" {
   default     = null
 }
 
+variable "enable_https_ingress" {
+  description = "If true, Nginx controller will listen on 443 as well."
+  type        = bool
+}
+
 variable "enable_ssh_tcp" {
   description = "If true, TCP will be enabled at ingress controller level."
   type        = bool

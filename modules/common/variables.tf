@@ -68,6 +68,11 @@ variable "whitelist_cidr" {
   type        = list(string)
 }
 
+variable "enable_https_ingress" {
+  description = "If true, Nginx controller will listen on 443 as well."
+  type        = bool
+}
+
 variable "resource_tags" {
   description = "Additional tags for all resources to be created."
   default = {

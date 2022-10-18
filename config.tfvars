@@ -23,6 +23,11 @@ products = ["<LIST_OF_PRODUCTS>"]
 # default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
 whitelist_cidr = ["0.0.0.0/0"]
 
+# By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
+# uncommenting the below line, which will disable port 443. This results in fewer inbound rules in Nginx controller security group.
+# This can be used in case you hit the limit which can happen if 30+ whitelist_cidrs are provided.
+#enable_https_ingress = false
+
 # (Optional) Domain name used by the ingress controller.
 # The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
 # You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.

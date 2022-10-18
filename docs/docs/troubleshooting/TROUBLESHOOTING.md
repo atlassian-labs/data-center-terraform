@@ -296,3 +296,31 @@ This guide contains general tips on how to investigate an application deployment
     [how to release an Elastic IP address](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html#release-eip){.external}.  
 
     Another option is to [increase the Elastic UP address limit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-limit){.external}. 
+??? tip "How to deal with Nginx Ingress Helm deployment error"
+
+    If you encounter the below error when providing 25+ cidrs in `whitelist_cidr` variable, it may be caused by the service controller being unable to create a Load Balancer due to exceeding the inbound rules quota in a security group:
+
+    ```
+    module.base-infrastructure.module.ingress.helm_release.ingress: Still creating... [5m50s elapsed]
+    Warning: Helm release "ingress-nginx" was created but has a failed status. Use the `helm` command to investigate the error, correct it, then run Terraform again.
+    ```
+    To check if it's really the case, login to the cluster and run:
+
+    ```
+    kubectl describe ingress-nginx-controller -n ingress-nginx
+    ```
+    to find the following error in Events section:
+
+    ```
+    Warning  SyncLoadBalancerFailed  112s  service-controller  Error syncing load balancer: failed to ensure load balancer: error authorizing security group ingress: "RulesPerSecurityGroupLimitExceeded: The maximum number of rules per security group has been reached.\n\tstatus code: 400, request id: 7de945ea-0571-48cd-99a1-c2ca528ad412"
+    ```
+
+    The service controller creates several inbound rules for ports 80 and 443 for each source cidr, and as a result the quota is reached if there are 25+ cidrs in `whitelist_cidr` list.
+
+    To mitigate the problem you may either file a ticket with AWS to [increase the quota of inbound rules in a security group](https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html#vpc-limits-security-groups) (60 by default) or set `enable_https_ingress` to false in `config.tfvars` if you don't need https ingresses. Port 443 will be removed from Nginx service, and as a result fewer inbound rules are created in the security group.
+
+    With an increased inbound rules quota or `enable_https_ingress` set to false (or both), it is recommended to delete Nginx Helm chart before re-running `install.sh`:
+
+    ```
+    helm delete ingress-nginx -n ingress-nginx
+    ```
