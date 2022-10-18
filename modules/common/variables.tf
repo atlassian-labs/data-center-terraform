@@ -107,5 +107,4 @@ variable "kinesis_log_producers_role_arns" {
     eu     = string
     non-eu = string
   })
->>>>>>> main
 }
