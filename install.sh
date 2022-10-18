@@ -79,7 +79,7 @@ process_arguments() {
   fi
   CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
   OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
-  
+
   log "Terraform will use '${CONFIG_ABS_PATH}' to install the infrastructure."
 
   if [ -n "${UNKNOWN_ARGS}" ]; then
@@ -139,7 +139,7 @@ verify_configuration_file() {
 
 # Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf using the content of local.tf and current aws account
 generate_terraform_backend_variables() {
-  log "${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
+  log "'${ENVIRONMENT_NAME}' infrastructure deployment is started using '${CONFIG_ABS_PATH##*/}'."
 
   log "Terraform state backend/variable files are to be created."
 
@@ -233,7 +233,7 @@ set_current_context_k8s() {
 
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
-  # is matched with admin info stored in dataset you import. 
+  # is matched with admin info stored in dataset you import.
   BAMBOO_DATASET=$(get_variable 'dataset_url' "${CONFIG_ABS_PATH}")
   INSTALL_BAMBOO=$(get_product "bamboo" "${CONFIG_ABS_PATH}")
   local SERVER_STATUS=
@@ -334,7 +334,7 @@ create_tfstate_resources
 # Deploy the infrastructure
 create_update_infrastructure
 
-# Manually add resource tags into ASG and EC2 
+# Manually add resource tags into ASG and EC2
 add_tags_to_asg_resources
 
 # Resume bamboo server if the credential is provided

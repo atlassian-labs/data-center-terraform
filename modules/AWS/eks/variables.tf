@@ -12,6 +12,11 @@ variable "region" {
   type        = string
 }
 
+variable "tags" {
+  description = "Additional tags for all resources to be created."
+  type = map(string)
+}
+
 variable "vpc_id" {
   description = "VPC where the cluster and workers will be deployed."
   type        = string
@@ -55,4 +60,40 @@ variable "min_cluster_capacity" {
 variable "additional_roles" {
   description = "Additional roles that have access to the cluster."
   type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+}
+
+variable "resource_tags" {
+  description = "Additional tags for all resources to be created."
+  default = {
+    Terraform = "true"
+  }
+  type = map(string)
+}
+
+variable "osquery_secret_name" {
+  description = "Fleet enrollment secret name"
+  type = string
+}
+
+variable "osquery_secret_region" {
+  description = "Fleet enrollment secret AWS region"
+  type = string
+}
+
+variable "osquery_env" {
+  description = "Osquery environment name"
+  type = string
+}
+
+variable "osquery_version" {
+  description = "Osquery version"
+  type = string
+}
+
+variable "kinesis_log_producers_role_arns" {
+  description = "AWS kinesis log producer role"
+  type   = object({
+    eu     = string
+    non-eu = string
+  })
 }
