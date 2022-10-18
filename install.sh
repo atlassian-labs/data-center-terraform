@@ -199,16 +199,6 @@ create_update_infrastructure() {
   terraform -chdir="${ROOT_PATH}" output -json > outputs.json
 }
 
-# Apply the tags into ASG and EC2 instances created by ASG
-add_tags_to_asg_resources() {
-  log "Tagging Auto Scaling Group and EC2 instances. It may take a few minutes. Please wait..."
-  TAG_MODULE_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
-
-  terraform -chdir="${TAG_MODULE_PATH}" init -no-color > "${LOG_TAGGING}"
-  terraform -chdir="${TAG_MODULE_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" >> "${LOG_TAGGING}"
-  log "Resource tags are applied to ASG and all EC2 instances."
-}
-
 set_current_context_k8s() {
   local EKS_PREFIX="atlas-"
   local EKS_SUFFIX="-cluster"
@@ -333,9 +323,6 @@ create_tfstate_resources
 
 # Deploy the infrastructure
 create_update_infrastructure
-
-# Manually add resource tags into ASG and EC2
-add_tags_to_asg_resources
 
 # Resume bamboo server if the credential is provided
 resume_bamboo_server

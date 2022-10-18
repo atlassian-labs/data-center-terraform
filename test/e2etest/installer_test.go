@@ -30,6 +30,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	clusterHealthTests(t, testConfig)
+	checkAGSAndEC2Tags(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 	synchronyUrl := terraform.Output(t, &terraform.Options{TerraformDir: "../../"}, "synchrony_url")
