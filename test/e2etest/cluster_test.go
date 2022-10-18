@@ -44,7 +44,7 @@ func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 			},
 		},
 	}
-	autoScalingGroups, err_ := asgClient.DescribeAutoScalingGroups(input)
-	assert.NoError(t, err_)
+	autoScalingGroups, err := asgClient.DescribeAutoScalingGroups(input)
+	assert.NoError(t, err)
 	assert.Equal(t, 1, len(autoScalingGroups.AutoScalingGroups))
 }
