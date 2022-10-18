@@ -1,5 +1,18 @@
 # Change Log
 
+## 2.0.7
+
+**Release date:** TBD
+
+* Introduced configuration for Synchrony instance for Confluence.
+
+## 2.0.6
+
+**Release date:** 2022-10-05
+
+* Fixed end-to-end test by skipping resuming Bamboo server if it's already running.
+* Added script to collecting k8s logs and events to help debugging 
+
 ## 2.0.5
 
 **Release date:** 2022-09-29

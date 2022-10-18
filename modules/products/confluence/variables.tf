@@ -83,6 +83,20 @@ variable "confluence_configuration" {
   }
 }
 
+variable "synchrony_configuration" {
+  description = "Synchrony resource spec"
+  type        = map(any)
+  validation {
+    condition = (length(var.synchrony_configuration) == 5 &&
+      alltrue([
+        for o in keys(var.synchrony_configuration) : contains([
+          "cpu", "mem", "min_heap", "max_heap", "stack_size"
+        ], o)
+    ]))
+    error_message = "Synchrony configuration is not valid."
+  }
+}
+
 variable "local_home_size" {
   description = "The storage capacity to allocate to local home"
   type        = string

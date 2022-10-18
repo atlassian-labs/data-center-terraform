@@ -322,7 +322,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.4.0"
+  default     = "1.5.1"
 }
 
 variable "confluence_version_tag" {
@@ -375,12 +375,62 @@ variable "confluence_min_heap" {
   description = "Minimum heap size for confluence instance"
   type        = string
   default     = "256m"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_min_heap))
+    error_message = "Minimum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
 }
 
 variable "confluence_max_heap" {
   description = "Maximum heap size for confluence instance"
   type        = string
   default     = "512m"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_max_heap))
+    error_message = "Maximum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
+}
+
+variable "synchrony_cpu" {
+  description = "Number of CPUs for synchrony instance"
+  type        = string
+  default     = "2"
+}
+
+variable "synchrony_mem" {
+  description = "Amount of memory for synchrony instance"
+  type        = string
+  default     = "2.5Gi"
+}
+
+variable "synchrony_min_heap" {
+  description = "Minimum heap size for synchrony instance"
+  type        = string
+  default     = "1g"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_min_heap))
+    error_message = "Minimum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
+}
+
+variable "synchrony_max_heap" {
+  description = "Maximum heap size for synchrony instance"
+  type        = string
+  default     = "2g"
+  validation {
+    condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_max_heap))
+    error_message = "Maximum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+  }
+}
+
+variable "synchrony_stack_size" {
+  description = "Stack size for synchrony instance"
+  type        = string
+  default     = "2048k"
+  validation {
+    condition     = can(regex("^([0-9]){1,4}[k|m]$", var.synchrony_stack_size))
+    error_message = "Stack size for synchrony instance is invalid. (Correct form: 64m | 2048k)"
+  }
 }
 
 variable "confluence_local_home_size" {
@@ -913,4 +963,40 @@ variable "bamboo_dataset_url" {
   description = "URL of the dataset to restore in the Bamboo instance"
   default     = null
   type        = string
+}
+
+variable "osquery_fleet_enrollment_secret_name" {
+  type = string
+  description = "Fleet enrollment secret name"
+  default = ""
+}
+
+variable "osquery_fleet_enrollment_secret_region_aws" {
+  description = "Fleet enrollment secret AWS region"
+  type    = string
+  default = ""
+}
+
+variable "osquery_env" {
+  type = string
+  description = "Osquery environment name"
+  default = "osquery_dc_e2e_tests"
+}
+
+variable "osquery_version" {
+  description = "Osquery version"
+  type        = string
+  default     = "5.5.1"
+}
+
+variable "kinesis_log_producers_role_arns" {
+  description = "AWS kinesis log producer role"
+  type   = object({
+    eu     = string
+    non-eu = string
+  })
+  default = {
+    eu     = "dummy-arn",
+    non-eu = "dummy-arn"
+  }
 }

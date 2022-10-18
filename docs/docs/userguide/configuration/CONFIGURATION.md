@@ -11,8 +11,8 @@ The content of the configuration file is divided into two groups:
     The configuration file is an ASCII text file with the `.tfvars` extension.
     The config file must contain all mandatory configuration items with valid values.
     If any optional items are missing, the default values will be applied.
-   
-The [mandatory configuration](#mandatory-configuration) items are those you should define once before the first installation. Mandatory values cannot be changed during the entire environment lifecycle. 
+
+The [mandatory configuration](#mandatory-configuration) items are those you should define once before the first installation. Mandatory values cannot be changed during the entire environment lifecycle.
 
 The [optional configuration](#optional-configuration) items are not required for installation by default. Optional values may change at any point in the environment lifecycle.
 Terraform will retain the latest state of the environment and keep track of any configuration changes made later.
@@ -48,8 +48,8 @@ Environmental properties common to all deployments.
 environment_name = "<your-environment-name>" # e.g. "my-terraform-env"
 ```
 
-!!! info "Format" 
-    
+!!! info "Format"
+
     Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 24 characters.
 
 
@@ -79,11 +79,11 @@ products = ["jira", "confluence"]
 
 ### Whitelist IP blocks
 
-`whitelist_cidr` defines a set of CIDRs that are allowed to run the applications. 
+`whitelist_cidr` defines a set of CIDRs that are allowed to run the applications.
 
-By default, the deployed applications are publicly accessible. You can restrict this access by changing the default value to your desired CIDR blocks that are allowed to run the applications. 
+By default, the deployed applications are publicly accessible. You can restrict this access by changing the default value to your desired CIDR blocks that are allowed to run the applications.
 
-```terraform 
+```terraform
 whitelist_cidr = ["199.0.0.0/8", "119.81.0.0/16"]
 ```
 
@@ -100,7 +100,7 @@ domain="<DOMAIN_NAME>" # e.g. "mydomain.com"
 A fully qualified domain name uses the following format: `<product>.<environment-name>.<domain-name>`. For example `bamboo.staging.mydomain.com`.
 
 !!! tip "Ingress controller"
-    
+
     If a domain name is defined, Terraform will create a [nginx-ingress controller](https://kubernetes.github.io/ingress-nginx/) in the EKS cluster that will provide access to the application via the domain name.
 
     Terraform will also create an [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) to provide secure connections over HTTPS.
@@ -150,9 +150,36 @@ instance_disk_size = 50
 
     Both properties cannot be changed once the infrastructure has been provisioned.
 
+### EKS Node Launch Template
+
+When Terraform creates a node group for the EKS cluster, the default launch template is created behind the scenes. However, if you need to install any additional tooling/software in the worker node EC2 instances, you may provide your own template in `data-center-terraform/modules/AWS/eks/nodegroup_launch_template/templates`.
+This needs to be a file with `.tlp` extension. See: [Amazon EC2 user data](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-user-data). Here's an example:
+
+```
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+echo "Running custom user data script"
+
+--==MYBOUNDARY==--
+```
+Templates in `data-center-terraform/modules/AWS/eks/nodegroup_launch_template/templates` will be merged with the default launch template.
+If you need to use environment variables in your custom scripts, make sure you escape them with an additional dollar sign, otherwise `templatefile` function will complain about a missing env var:
+
+```
+foo="bar"
+echo $${foo}
+```
+Environment variables passed to `templatefile` function are not configurable (defined in `data-center-terraform/modules/AWS/eks/nodegroup_launch_template/locals.tf`), thus
+it makes sense to generate template outside terraform and pull it before installing/upgrading.
+
 ### Cluster size
 
-EKS cluster creates an [Autoscaling Group (ASG)](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html) 
+EKS cluster creates an [Autoscaling Group (ASG)](https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html)
 that has defined minimum and maximum capacity. You are able to set these values in the config file:
 
 * Minimum values are `1` and maximum is `20`.
@@ -187,7 +214,7 @@ eks_additional_roles = [
 
 !!! info "Permissions in AWS EKS"
 
-    For additional information regarding the authorisation in EKS cluster, follow the official 
+    For additional information regarding the authorisation in EKS cluster, follow the official
     [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html){.external}.
 
 ### Logging S3 bucket name
@@ -217,20 +244,20 @@ logging_bucket = <LOGGING_S3_BUCKET_NAME>  # default is null
     [Jira specific configuration](JIRA_CONFIGURATION.md)
 
 
-    
+
 ## Sensitive Data
 
 Sensitive input data will eventually be stored as [secrets within Kubernetes cluster](https://kubernetes.io/docs/concepts/configuration/secret/#security-properties).
 
-We use `config.tfvars` file to pass configuration values to Terraform stack. 
-The file itself is plain-text on local machine, and will not be stored in remote backend 
-where all the Terraform state files will be stored encrypted. 
+We use `config.tfvars` file to pass configuration values to Terraform stack.
+The file itself is plain-text on local machine, and will not be stored in remote backend
+where all the Terraform state files will be stored encrypted.
 More info regarding sensitive data in Terraform state can be found [here](https://www.terraform.io/docs/language/state/sensitive-data.html).
 
 To avoid storing sensitive data in a plain-text file like `config.tfvars`, we recommend storing them in environment variables
 prefixed with [`TF_VAR_`](https://www.terraform.io/docs/cli/config/environment-variables.html#tf_var_name).
 
-Take`bamboo_admin_password` for example, for Linux-like sytems, run the following command to write bamboo admin password to environment variable: 
+Take`bamboo_admin_password` for example, for Linux-like sytems, run the following command to write bamboo admin password to environment variable:
 
 ```shell
 export TF_VAR_bamboo_admin_password=<password>

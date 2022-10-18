@@ -33,10 +33,34 @@ var VpcDefaultModuleVariable = map[string]interface{}{
 // EKS
 
 var EksWithValidValues = map[string]interface{}{
-	"cluster_name": "dummy-cluster-name",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
+
+	"instance_types":       []string{"instance_type1", "instance_type2"},
+	"min_cluster_capacity": 1,
+	"max_cluster_capacity": 10,
+	"additional_roles":     []string{},
+}
+
+var EksWithUnsupportedKinesisRegion = map[string]interface{}{
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "eu-north-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "eu-west-2",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -45,10 +69,16 @@ var EksWithValidValues = map[string]interface{}{
 }
 
 var EksWithInvalidClusterName = map[string]interface{}{
-	"cluster_name": "cluster name with invalid spaces",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "cluster name with invalid spaces",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -57,10 +87,16 @@ var EksWithInvalidClusterName = map[string]interface{}{
 }
 
 var EksWithMaxCapacityOverLimit = map[string]interface{}{
-	"cluster_name": "dummy-cluster-name",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -69,10 +105,16 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 }
 
 var EksWithMaxCapacityUnderLimit = map[string]interface{}{
-	"cluster_name": "dummy-cluster-name",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -81,10 +123,16 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 }
 
 var EksWithMinCapacityUnderLimit = map[string]interface{}{
-	"cluster_name": "dummy-cluster-name",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 0,
@@ -93,10 +141,16 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 }
 
 var EksWithMinCapacityOverLimit = map[string]interface{}{
-	"cluster_name": "dummy-cluster-name",
-	"vpc_id":       "dummy_vpc_id",
-	"subnets":      []string{"subnet1", "subnet2"},
-	"region":       "us-east-1",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster-name",
+	"vpc_id":                          "dummy_vpc_id",
+	"subnets":                         []string{"subnet1", "subnet2"},
+	"region":                          "us-east-1",
+	"tags":                            "{}",
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 21,
@@ -105,9 +159,14 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 }
 
 var EksDefaultModuleVariable = map[string]interface{}{
-	"cluster_name":            "dummy-cluster",
-	"cluster_id":              "dummy-cluster-id",
-	"cluster_oidc_issuer_url": "http://dummy-oidc.aws.com",
+	"osquery_secret_name":             "dummy_secret",
+	"osquery_env":                     "dummy_env",
+	"osquery_secret_region":           "us-east-1",
+	"osquery_version":                 "5.5.1",
+	"kinesis_log_producers_role_arns": "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
+	"cluster_name":                    "dummy-cluster",
+	"cluster_id":                      "dummy-cluster-id",
+	"cluster_oidc_issuer_url":         "http://dummy-oidc.aws.com",
 	"kubernetes_provider_config": map[string]interface{}{
 		"host":                   "dummy-host",
 		"token":                  "dummy-token",
@@ -360,6 +419,13 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"min_heap":     "256m",
 		"max_heap":     "512m",
 		"license_abc":  "dummy_license", //invalid var name
+	},
+	"synchrony_configuration": map[string]interface{}{
+		"cpu":          "1",
+		"mem":          "1Gi",
+		"min_heap":     "256m",
+		"max_heap":     "512m",
+		"unknown_var":  "dummy_license", //invalid var name
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",

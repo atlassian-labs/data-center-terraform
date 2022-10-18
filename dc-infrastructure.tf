@@ -1,19 +1,25 @@
 module "base-infrastructure" {
   source = "./modules/common"
 
-  region_name      = var.region
-  environment_name = var.environment_name
-
-  instance_types       = var.instance_types
-  instance_disk_size   = var.instance_disk_size
-  max_cluster_capacity = var.max_cluster_capacity
-  min_cluster_capacity = var.min_cluster_capacity
-  domain               = var.domain
-  namespace            = local.namespace
-  eks_additional_roles = var.eks_additional_roles
-  whitelist_cidr       = var.whitelist_cidr
+  region_name           = var.region
+  environment_name      = var.environment_name
+  tags                  = var.resource_tags
+  instance_types        = var.instance_types
+  instance_disk_size    = var.instance_disk_size
+  max_cluster_capacity  = var.max_cluster_capacity
+  min_cluster_capacity  = var.min_cluster_capacity
+  domain                = var.domain
+  namespace             = local.namespace
+  eks_additional_roles  = var.eks_additional_roles
+  whitelist_cidr        = var.whitelist_cidr
   enable_https_ingress = var.enable_https_ingress
-  enable_ssh_tcp       = local.install_bitbucket
+
+  enable_ssh_tcp        = local.install_bitbucket
+  osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
+  osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
+  osquery_env           = var.osquery_env
+  osquery_version        = var.osquery_version
+  kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
 }
 
 module "bamboo" {
@@ -161,6 +167,14 @@ module "confluence" {
     min_heap     = var.confluence_min_heap
     max_heap     = var.confluence_max_heap
     license      = var.confluence_license
+  }
+
+  synchrony_configuration = {
+    cpu        = var.synchrony_cpu
+    mem        = var.synchrony_mem
+    min_heap   = var.synchrony_min_heap
+    max_heap   = var.synchrony_max_heap
+    stack_size = var.synchrony_stack_size
   }
 
   local_home_size  = var.confluence_local_home_size
