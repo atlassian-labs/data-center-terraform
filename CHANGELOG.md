@@ -2,9 +2,12 @@
 
 ## 2.0.7
 
-**Release date:** TBD
+**Release date:** 2022-10-24
 
 * Introduced configuration for Synchrony instance for Confluence.
+* Improved stability by adding product termination grace period 
+* Introduced option for enabling osquery on EC2 worker nodes
+* Added an option to disable 443 port for nginx ingress
 
 ## 2.0.6
 
@@ -12,6 +15,7 @@
 
 * Fixed end-to-end test by skipping resuming Bamboo server if it's already running.
 * Added script to collecting k8s logs and events to help debugging 
+* Default version of confluence Helm chart is updated to 1.5.1
 
 ## 2.0.5
 
