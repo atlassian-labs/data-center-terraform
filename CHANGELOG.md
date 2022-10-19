@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.0.7
+## 2.1.0
 
 **Release date:** 2022-10-24
 
