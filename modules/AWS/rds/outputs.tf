@@ -8,7 +8,7 @@ output "rds_master_username" {
 }
 
 output "rds_master_password" {
-  value     = module.db.db_master_password
+  value     = module.db.db_instance_password
   sensitive = true
 }
 
