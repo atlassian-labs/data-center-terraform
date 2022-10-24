@@ -43,6 +43,7 @@ module "db" {
   db_name                     = var.db_name
   username                    = local.db_master_username
   password                    = local.db_master_password
+  create_random_password      = false
   port                        = 5432
 
   create_db_subnet_group      = true
@@ -51,7 +52,7 @@ module "db" {
 
   maintenance_window          = "Mon:00:00-Mon:03:00"
   backup_window               = "03:00-06:00"
-
+  storage_encrypted           = false
   # Snapshot settings
   snapshot_identifier         = var.snapshot_identifier
   allow_major_version_upgrade = var.snapshot_identifier != null
