@@ -25,6 +25,10 @@ resource "kubernetes_persistent_volume" "nfs_shared_home" {
         volume_id = aws_ebs_volume.shared_home.id
       }
     }
+    claim_ref {
+      name      = "${local.nfs_name}-pvc"
+      namespace = var.namespace
+    }
   }
 }
 
