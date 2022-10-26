@@ -52,7 +52,7 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planDbSnapshotIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
 	planUserName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["username"]
 	planEngine := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine"]
-	planDbName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["name"]
+	planDbName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["db_name"]
 	planInstanceClass := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["instance_class"]
 	planAllocatedStorage := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["allocated_storage"]
 	planIops := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["iops"]
@@ -66,12 +66,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 	assert.EqualValues(t, true, planApplyImmediately)
-
-	// when db_master_password is not set
-	randomPwdKey := "random_password.password"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, randomPwdKey)
-	keyLength := plan.ResourcePlannedValuesMap[randomPwdKey].AttributeValues["length"]
-	assert.Equal(t, float64(12), keyLength)
 }
 
 func TestDbPostgresVersionMap(t *testing.T) {
