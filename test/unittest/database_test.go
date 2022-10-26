@@ -66,12 +66,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 	assert.EqualValues(t, true, planApplyImmediately)
-
-	// when db_master_password is not set
-	randomPwdKey := "random_password.password"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, randomPwdKey)
-	keyLength := plan.ResourcePlannedValuesMap[randomPwdKey].AttributeValues["length"]
-	assert.Equal(t, float64(12), keyLength)
 }
 
 func TestDbPostgresVersionMap(t *testing.T) {
