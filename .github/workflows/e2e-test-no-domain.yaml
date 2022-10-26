@@ -33,12 +33,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Pin Kubectl version
-        uses: azure/setup-kubectl@v2.0
+        uses: azure/setup-kubectl@v3.0
         with:
           version: 'v1.24.0'
 
@@ -61,13 +61,13 @@ jobs:
         run: |
           go version
           go get -v -t -d ./... && go mod tidy
-          echo ::set-output name=exit_code::$?
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
 
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
 
       - name: Add private SSH key for Bitbucket tests
-        uses: shimataro/ssh-key-action@v2
+        uses: shimataro/ssh-key-action@v2.3.1
         with:
           key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
           name: bitbucket-e2e # optional
@@ -88,7 +88,7 @@ jobs:
 
       - name: Upload test log files
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: e2e-test-artifacts
           path: test/e2etest/artifacts/
