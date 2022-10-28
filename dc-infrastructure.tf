@@ -8,6 +8,8 @@ module "base-infrastructure" {
   instance_disk_size    = var.instance_disk_size
   max_cluster_capacity  = var.max_cluster_capacity
   min_cluster_capacity  = var.min_cluster_capacity
+  k8s_ca                = var.k8s_ca
+  api_server_endpoint   = var.api_server_endpoint
   domain                = var.domain
   namespace             = local.namespace
   eks_additional_roles  = var.eks_additional_roles
@@ -20,6 +22,8 @@ module "base-infrastructure" {
   osquery_env           = var.osquery_env
   osquery_version        = var.osquery_version
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
+  vpc_security_group_ids = var.vpc_security_group_ids
+  aws_iam_instance_profile = var.aws_iam_instance_profile
 }
 
 module "bamboo" {

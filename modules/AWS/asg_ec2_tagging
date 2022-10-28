@@ -1,0 +1,8 @@
+# This is a generated file **DO NOT MODIFY THE CONTENT**
+
+locals {
+    # Terraform state settings
+    dynamodb_name = "atlassian_data_center_us_east_1_887764444972_tf_lock"
+    bucket_name   = "atlassian-data-center-us-east-1-887764444972-tf-state"
+    bucket_key    = "eugenetest/terraform.tfstate"
+}

@@ -28,6 +28,16 @@ variable "instance_types" {
   type        = list(string)
 }
 
+variable "vpc_security_group_ids" {
+  description = "Security group ID attached to workers"
+  type        = list(string)
+}
+
+variable "aws_iam_instance_profile" {
+  type = string
+  description = "IAM instance profile"
+}
+
 variable "min_cluster_capacity" {
   description = "Minimum number of EC2 instances."
   type        = number
@@ -36,6 +46,16 @@ variable "min_cluster_capacity" {
 variable "max_cluster_capacity" {
   description = "Maximum number of EC2 nodes that cluster can scale up to."
   type        = number
+}
+
+variable "k8s_ca" {
+  type = string
+  description = "K8s cluster ca"
+}
+
+variable "api_server_endpoint" {
+  type = string
+  description = "K8s cluster API endpoint"
 }
 
 variable "domain" {

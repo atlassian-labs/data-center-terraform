@@ -1,14 +1,3 @@
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
---==MYBOUNDARY==
-Content-Type: text/x-shellscript; charset="us-ascii"
-
-#!/bin/bash
-
-
-### OSQUERY INSTALLATION
-
 # This script is taken from https://hello.atlassian.net/wiki/spaces/SECURITY/pages/380804774/Osquery+AWS+Server+Deployment+Guide
 
 sudo yum install -y yum-utils unzip jq
@@ -68,13 +57,3 @@ systemctl status osqueryd.service
 echo "Begin checking Fleet server availability"
 curl -v https://fleet-server.services.atlassian.com/api/v1/osquery/enroll
 echo "End checking fleet server availability"
-
-### /OSQUERY INSTALLATION
-
-set -xe
-
-echo "Node is joining ${cluster_name} cluster"
-
-/etc/eks/bootstrap.sh ${cluster_name} --b64-cluster-ca ${k8s_ca} --apiserver-endpoint ${api_server_endpoint}
-
---==MYBOUNDARY==--

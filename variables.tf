@@ -45,6 +45,12 @@ variable "instance_types" {
   type        = list(string)
 }
 
+variable "vpc_security_group_ids" {
+  description = "Security group ID attached to workers"
+  type        = list(string)
+  default = []
+}
+
 variable "instance_disk_size" {
   description = "Size of the disk attached to the cluster instance."
   default     = 50
@@ -69,6 +75,24 @@ variable "max_cluster_capacity" {
     condition     = var.max_cluster_capacity > 0 && var.max_cluster_capacity <= 20
     error_message = "Maximum cluster capacity must be between 1 and 20 (included)."
   }
+}
+
+variable "k8s_ca" {
+  type = string
+  description = "K8s cluster ca"
+  default = ""
+}
+
+variable "api_server_endpoint" {
+  type = string
+  description = "K8s cluster API endpoint"
+  default = ""
+}
+
+variable "aws_iam_instance_profile" {
+  type = string
+  description = "IAM instance profile"
+  default = ""
 }
 
 variable "domain" {

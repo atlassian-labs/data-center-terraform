@@ -17,6 +17,32 @@ variable "tags" {
   type = map(string)
 }
 
+variable "instance_types" {
+  description = "Instance types that is preferred for node group."
+  type        = list(string)
+}
+
+variable "vpc_security_group_ids" {
+  description = "Security group ID attached to workers"
+  type        = list(string)
+}
+
+variable "k8s_ca" {
+  type = string
+  description = "K8s cluster ca"
+}
+
+variable "aws_iam_instance_profile" {
+  type = string
+  description = "IAM instance profile"
+}
+
+
+variable "api_server_endpoint" {
+  type = string
+  description = "K8s cluster API endpoint"
+}
+
 variable "osquery_secret_name" {
   description = "Fleet enrollment secret name"
   type = string
