@@ -42,7 +42,7 @@ variable "resource_tags" {
 variable "instance_types" {
   description = "Instance types that is preferred for node group."
   type        = list(string)
-  default = ["m5.xlarge"]
+  default     = ["m5.xlarge"]
 }
 
 variable "instance_disk_size" {
