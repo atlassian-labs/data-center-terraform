@@ -26,8 +26,6 @@ locals {
 
   user_content              = [ for tpl in local.templates_all : templatefile("${path.module}/templates/${tpl}", {
     cluster_name                    = var.cluster_name
-    k8s_ca                          = var.k8s_ca
-    api_server_endpoint             = var.api_server_endpoint
     account_id                      = data.aws_caller_identity.current.account_id
     aws_sts_region                  = local.aws_sts_region
     osquery_secret_name             = var.osquery_secret_name

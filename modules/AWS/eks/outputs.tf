@@ -10,14 +10,6 @@ output "cluster_oidc_issuer_url" {
   value = module.eks.cluster_oidc_issuer_url
 }
 
-# output "kubeconfig_filename" {
-#   value = module.eks.kubeconfig_filename
-# }
-
-output "vpc_security_group_ids" {
-    value = [module.eks.self_managed_node_groups.appNodes.security_group_id]
-}
-
 output "cluster_certificate_authority_data" {
   value = module.eks.cluster_certificate_authority_data
 }
@@ -42,14 +34,6 @@ output "cluster_security_group" {
 output "cluster_asg_name" {
   value = local.cluster_asg_name
 }
-
-# output "max_cluster_size" {
-#   value = module.eks.self_managed_node_groups["appNodes"]["scaling_config"][0]["max_size"]
-# }
-#
-# output "min_cluster_size" {
-#   value = module.eks.self_managed_node_groups["appNodes"]["scaling_config"][0]["min_size"]
-# }
 
 output "availability_zone" {
   # TODO we are assuming the used availability zone is always aws-region"a"

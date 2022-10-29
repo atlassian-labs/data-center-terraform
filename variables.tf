@@ -39,18 +39,6 @@ variable "resource_tags" {
   type = map(string)
 }
 
-variable "instance_types" {
-  description = "Instance types that is preferred for node group."
-  default     = ["m5.xlarge"]
-  type        = list(string)
-}
-
-variable "vpc_security_group_ids" {
-  description = "Security group ID attached to workers"
-  type        = list(string)
-  default = []
-}
-
 variable "instance_disk_size" {
   description = "Size of the disk attached to the cluster instance."
   default     = 50
@@ -77,22 +65,10 @@ variable "max_cluster_capacity" {
   }
 }
 
-variable "k8s_ca" {
-  type = string
-  description = "K8s cluster ca"
-  default = ""
-}
-
-variable "api_server_endpoint" {
-  type = string
-  description = "K8s cluster API endpoint"
-  default = ""
-}
-
-variable "aws_iam_instance_profile" {
-  type = string
-  description = "IAM instance profile"
-  default = ""
+variable "instance_types" {
+  description = "Instance types that is preferred for node group."
+  type        = list(string)
+  default = []
 }
 
 variable "domain" {

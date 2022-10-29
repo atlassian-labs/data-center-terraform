@@ -71,10 +71,4 @@ echo "End checking fleet server availability"
 
 ### /OSQUERY INSTALLATION
 
-set -xe
-
-echo "Node is joining ${cluster_name} cluster"
-
-/etc/eks/bootstrap.sh ${cluster_name} --b64-cluster-ca ${k8s_ca} --apiserver-endpoint ${api_server_endpoint}
-
 --==MYBOUNDARY==--

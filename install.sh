@@ -206,6 +206,8 @@ set_current_context_k8s() {
   local EKS_CLUSTER="${EKS_CLUSTER_NAME:0:38}"
   CONTEXT_FILE="${ROOT_PATH}/kubeconfig_${EKS_CLUSTER}"
 
+  aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}" --kubeconfig ${CONTEXT_FILE}
+
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
@@ -335,4 +337,3 @@ enable_ssh_tcp_protocol_on_lb_listener
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian
-
