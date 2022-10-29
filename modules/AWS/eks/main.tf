@@ -3,12 +3,14 @@ data "aws_caller_identity" "current" {}
 # iam_role_additional_policies can have objects which arns need to be computed,
 # thus attaching policies to worker node roles outside of eks
 resource "aws_iam_role_policy_attachment" "laas" {
+  count       = var.osquery_secret_name != "" ? 1 : 0
   for_each   = module.eks.eks_managed_node_groups
   policy_arn = aws_iam_policy.laas[0].arn
   role       = each.value.iam_role_name
 }
 
 resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
+  count       = var.osquery_secret_name != "" ? 1 : 0
   for_each   = module.eks.eks_managed_node_groups
   policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
   role       = each.value.iam_role_name
@@ -35,6 +37,7 @@ module "eks" {
   cluster_version = "1.21"
   cluster_name    = var.cluster_name
   create_iam_role = true
+  create_cloudwatch_log_group = false
 
   # add-ons need to be explicitly declared: kube-proxy and vpc-cni are must-have ones
   cluster_addons = {
