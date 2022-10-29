@@ -47,7 +47,7 @@ module "eks" {
   # We're creating eks managed nodegroup, hence aws-auth it handled by EKS
   manage_aws_auth_configmap = true
 
-  # Enables IAM roles for service accounts - required for autoscaler
+  # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa = true
 

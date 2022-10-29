@@ -6,7 +6,6 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 #!/bin/bash
 
-
 ### OSQUERY INSTALLATION
 
 # This script is taken from https://hello.atlassian.net/wiki/spaces/SECURITY/pages/380804774/Osquery+AWS+Server+Deployment+Guide
