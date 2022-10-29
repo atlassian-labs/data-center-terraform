@@ -56,36 +56,6 @@ module "eks" {
   subnet_ids                = var.subnets
   cluster_service_ipv4_cidr = local.cluster_service_ipv4_cidr
 
-  # See: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1748
-  # Need to open 8443 port. We open a wider range for now.
-  # node_security_group_additional_rules = {
-  #   ingress_admission_webhook = {
-  #     description                = "Nginx ingress controller admission webhook from master to nodes"
-  #     protocol                   = "tcp"
-  #     from_port                  = 8443
-  #     to_port                    = 8443
-  #     type                       = "ingress"
-  #     source_cluster_security_group = true
-  #   }
-  #   ingress_self_all = {
-  #     description = "Node to node all ports/protocols"
-  #     protocol    = "-1"
-  #     from_port   = 0
-  #     to_port     = 0
-  #     type        = "ingress"
-  #     self        = true
-  #   }
-  #   egress_all = {
-  #     description      = "Node all egress"
-  #     protocol         = "-1"
-  #     from_port        = 0
-  #     to_port          = 0
-  #     type             = "egress"
-  #     cidr_blocks      = ["0.0.0.0/0"]
-  #     ipv6_cidr_blocks = ["::/0"]
-  #   }
-  # }
-
   # Managed node group defaults
   eks_managed_node_group_defaults = {
     ami_type  = local.ami_type

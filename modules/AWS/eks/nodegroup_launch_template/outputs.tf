@@ -7,7 +7,3 @@ output "version" {
 output "arn" {
   value = aws_launch_template.nodegroup.arn
 }
-
-# output "name" {
-#   value = aws_launch_template.nodegroup.arn
-# }

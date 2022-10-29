@@ -39,6 +39,12 @@ variable "resource_tags" {
   type = map(string)
 }
 
+variable "instance_types" {
+  description = "Instance types that is preferred for node group."
+  type        = list(string)
+  default = []
+}
+
 variable "instance_disk_size" {
   description = "Size of the disk attached to the cluster instance."
   default     = 50
@@ -63,12 +69,6 @@ variable "max_cluster_capacity" {
     condition     = var.max_cluster_capacity > 0 && var.max_cluster_capacity <= 20
     error_message = "Maximum cluster capacity must be between 1 and 20 (included)."
   }
-}
-
-variable "instance_types" {
-  description = "Instance types that is preferred for node group."
-  type        = list(string)
-  default = []
 }
 
 variable "domain" {
