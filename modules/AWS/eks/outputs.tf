@@ -27,6 +27,11 @@ output "cluster_asg_name" {
   value = local.cluster_asg_name
 }
 
+output "worker_nodes_iam_role_name" {
+
+  value = module.eks.eks_managed_node_groups.appNodes.iam_role_name
+}
+
 output "availability_zone" {
   # TODO we are assuming the used availability zone is always aws-region"a"
   # Fetching this value dynamically from ASG subnet brings additional challenges

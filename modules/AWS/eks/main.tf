@@ -5,7 +5,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_iam_role_policy_attachment" "laas" {
   count      = var.osquery_secret_name != "" ? 1 : 0
   policy_arn = aws_iam_policy.laas[0].arn
-  role       = module.eks.eks_managed_node_groups.appNodes.iam_role_name
+  role       = module.eks.worker_nodes_iam_role_name
 }
 
 resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
