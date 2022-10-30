@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 # iam_role_additional_policies can't have objects which arns need to be computed,
-# thus attaching policies to worker node roles outside of eks
+# thus attaching policies to worker node roles outside of eks https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1891
 resource "aws_iam_role_policy_attachment" "laas" {
   count      = var.osquery_secret_name != "" ? 1 : 0
   policy_arn = aws_iam_policy.laas[0].arn
@@ -78,7 +78,7 @@ module "eks" {
       create_launch_template       = false
       launch_template_name         = "${var.cluster_name}-launch-template"
       launch_template_version      = module.nodegroup_launch_template.version
-      iam_role_name                = "${var.cluster_name}-nodegroup-role"
+      iam_role_name                = "${var.cluster_name}-nodegroup"
       iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
     }
   }
