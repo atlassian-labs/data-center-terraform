@@ -205,10 +205,10 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 	return testConfig
 }
 
-func getKubectlOptions(testConfig TestConfig) *k8s.KubectlOptions {
-	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
-	//kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
-	kubeConfigPath := "/home/runner/.kube/config"
+func getKubectlOptions(t *testing.T, testConfig TestConfig) *k8s.KubectlOptions {
+	accountID := aws.GetAccountId(t)
+	contextName := fmt.Sprintf("arn:aws:eks:%s:%s:cluster/atlas-%s-cluster", testConfig.AwsRegion, accountID, testConfig.EnvironmentName)
+	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
 	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
 	return kubectlOptions
 }

@@ -12,7 +12,7 @@ import (
 func clusterHealthTests(t *testing.T, testConfig TestConfig) {
 	printTestBanner("Cluster", "Tests")
 
-	config := getKubectlOptions(testConfig)
+	config := getKubectlOptions(t, testConfig)
 	nodes := k8s.GetNodes(t, config)
 
 	// kubectl describe deployments cluster-autoscaler-aws-cluster-autoscaler -n kube-system
