@@ -1,17 +1,17 @@
 data "aws_caller_identity" "current" {}
 
-# iam_role_additional_policies can have objects which arns need to be computed,
+# iam_role_additional_policies can't have objects which arns need to be computed,
 # thus attaching policies to worker node roles outside of eks
 resource "aws_iam_role_policy_attachment" "laas" {
-  for_each   = module.eks.eks_managed_node_groups
+  count      = var.osquery_secret_name != "" ? 1 : 0
   policy_arn = aws_iam_policy.laas[0].arn
-  role       = each.value.iam_role_name
+  role       = module.eks.eks_managed_node_groups.iam_role_name
 }
 
 resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
-  for_each   = module.eks.eks_managed_node_groups
+  count      = var.osquery_secret_name != "" ? 1 : 0
   policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
-  role       = each.value.iam_role_name
+  role       = module.eks.eks_managed_node_groups.iam_role_name
 }
 
 module "nodegroup_launch_template" {
@@ -43,6 +43,7 @@ module "eks" {
     vpc-cni = {
       resolve_conflicts = "OVERWRITE"
     }
+
   }
 
   # We're creating eks managed nodegroup, hence aws-auth it handled by EKS
@@ -71,7 +72,7 @@ module "eks" {
       max_size                     = var.max_cluster_capacity
       desired_size                 = var.min_cluster_capacity
       min_size                     = var.min_cluster_capacity
-      subnets                      = slice(var.subnets, 0, 1)
+      subnet_ids                   = slice(var.subnets, 0, 1)
       capacity_type                = "ON_DEMAND"
       autoscaling_group_tags       = var.tags
       create_launch_template       = false
