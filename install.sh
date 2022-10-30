@@ -207,7 +207,8 @@ set_current_context_k8s() {
   CONTEXT_FILE="${ROOT_PATH}/kubeconfig_${EKS_CLUSTER}"
 
   aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}" --kubeconfig ${CONTEXT_FILE}
-
+  aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}"
+  
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
