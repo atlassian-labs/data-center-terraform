@@ -3,15 +3,15 @@ data "aws_caller_identity" "current" {}
 # iam_role_additional_policies can't have objects which arns need to be computed,
 # thus attaching policies to worker node roles outside of eks
 resource "aws_iam_role_policy_attachment" "laas" {
-  count      = var.osquery_secret_name != "" ? 1 : 0
+  for_each   = module.eks.eks_managed_node_groups
   policy_arn = aws_iam_policy.laas[0].arn
-  role       = module.eks.worker_nodes_iam_role_name
+  role       = each.value.iam_role_name
 }
 
 resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
-  count      = var.osquery_secret_name != "" ? 1 : 0
+  for_each   = module.eks.eks_managed_node_groups
   policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
-  role       = module.eks.eks_managed_node_groups.appNodes.iam_role_name
+  role       = each.value.iam_role_name
 }
 
 module "nodegroup_launch_template" {
