@@ -2,17 +2,17 @@ data "aws_caller_identity" "current" {}
 
 # iam_role_additional_policies can't have objects which arns need to be computed,
 # thus attaching policies to worker node roles outside of eks
-resource "aws_iam_role_policy_attachment" "laas" {
-  for_each   = module.eks.eks_managed_node_groups
-  policy_arn = aws_iam_policy.laas[0].arn
-  role       = each.value.iam_role_name
-}
-
-resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
-  for_each   = module.eks.eks_managed_node_groups
-  policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
-  role       = each.value.iam_role_name
-}
+# resource "aws_iam_role_policy_attachment" "laas" {
+#   count      = var.osquery_secret_name != "" ? 1 : 0
+#   policy_arn = aws_iam_policy.laas[0].arn
+#   role       = module.eks.eks_managed_node_groups.appNodes.iam_role_name
+# }
+#
+# resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
+#   count      = var.osquery_secret_name != "" ? 1 : 0
+#   policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
+#   role       = module.eks.eks_managed_node_groups.appNodes.iam_role_name
+# }
 
 module "nodegroup_launch_template" {
   cluster_name                    = var.cluster_name
@@ -48,6 +48,7 @@ module "eks" {
 
   # We're creating eks managed nodegroup, hence aws-auth it handled by EKS
   manage_aws_auth_configmap = true
+  aws_auth_roles            = var.additional_roles
 
   # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
@@ -74,11 +75,23 @@ module "eks" {
       min_size                     = var.min_cluster_capacity
       subnet_ids                   = slice(var.subnets, 0, 1)
       capacity_type                = "ON_DEMAND"
-      autoscaling_group_tags       = var.tags
       create_launch_template       = false
       launch_template_name         = "${var.cluster_name}-launch-template"
       launch_template_version      = module.nodegroup_launch_template.version
-      iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+      iam_role_additional_policies = local.workers_additional_policies
     }
   }
+}
+
+resource "aws_autoscaling_group_tag" "this" {
+  for_each               = var.tags
+  autoscaling_group_name = module.eks.eks_managed_node_groups.appNodes.node_group_resources[0].autoscaling_groups[0].name
+  tag {
+    key                 = each.key
+    value               = each.value
+    propagate_at_launch = true
+  }
+  depends_on = [
+    module.eks
+  ]
 }
