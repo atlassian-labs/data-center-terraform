@@ -207,7 +207,8 @@ func createConfig(t *testing.T, productList []string, useDomain bool) TestConfig
 
 func getKubectlOptions(testConfig TestConfig) *k8s.KubectlOptions {
 	contextName := fmt.Sprintf("eks_atlas-%s-cluster", testConfig.EnvironmentName)
-	kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
+	//kubeConfigPath := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
+	kubeConfigPath := "/home/runner/.kube/config"
 	kubectlOptions := k8s.NewKubectlOptions(contextName, kubeConfigPath, "atlassian")
 	return kubectlOptions
 }
