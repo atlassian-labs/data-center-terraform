@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.2.0
+
+**Release date:** 2022-10-31
+
+* PV binding are now bidirectional
+* Update and/or pin some dependency versions
+
 ## 2.1.0
 
 **Release date:** 2022-10-24
