@@ -52,6 +52,7 @@ module "db" {
 
   maintenance_window          = "Mon:00:00-Mon:03:00"
   backup_window               = "03:00-06:00"
+  auto_minor_version_upgrade  = false
   storage_encrypted           = false
 
   # Snapshot settings
