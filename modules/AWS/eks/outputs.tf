@@ -10,10 +10,6 @@ output "cluster_oidc_issuer_url" {
   value = module.eks.cluster_oidc_issuer_url
 }
 
-output "kubeconfig_filename" {
-  value = module.eks.kubeconfig_filename
-}
-
 output "kubernetes_provider_config" {
   value = {
     host                   = data.aws_eks_cluster.cluster.endpoint
@@ -29,14 +25,6 @@ output "cluster_security_group" {
 
 output "cluster_asg_name" {
   value = local.cluster_asg_name
-}
-
-output "max_cluster_size" {
-  value = module.eks.node_groups["appNodes"]["scaling_config"][0]["max_size"]
-}
-
-output "min_cluster_size" {
-  value = module.eks.node_groups["appNodes"]["scaling_config"][0]["min_size"]
 }
 
 output "availability_zone" {

@@ -17,6 +17,11 @@ variable "tags" {
   type = map(string)
 }
 
+variable "instance_types" {
+  description = "Instance types that is preferred for node group."
+  type        = list(string)
+}
+
 variable "osquery_secret_name" {
   description = "Fleet enrollment secret name"
   type = string

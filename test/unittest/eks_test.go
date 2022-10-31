@@ -137,7 +137,7 @@ func TestEksNodeGroupIsOnlyInOneSubnet(t *testing.T) {
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
 	// verify that the EKS node group is only using one subnet
-	nodeGroupKey := "module.eks.module.node_groups.aws_eks_node_group.workers[\"appNodes\"]"
+	nodeGroupKey := "module.eks.module.eks_managed_node_group[\"appNodes\"].aws_eks_node_group.this[0]"
 
 	terraform.AssertPlannedValuesMapKeyExists(t, plan, nodeGroupKey)
 	nodeGroup := plan.ResourcePlannedValuesMap[nodeGroupKey]
