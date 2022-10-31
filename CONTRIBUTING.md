@@ -32,7 +32,7 @@ releases as part of this process.
 
 1. Create a branch for the release, containing a DC Clipper ticket number.
 1. Update the files `CHANGELOG.md` with the new version and a list of changes.
-1. Update `INSTALLATION.md` with the new version where appropriate.
+1. Update `docs/docs/userguide/INSTALLATION.md` with the new version where appropriate.
 1. Raise a PR for this branch.
 1. On merge, create a release in the [Github releases page](https://github.com/atlassian-labs/data-center-terraform/releases)
 1. (Optional) If the release contains significant or critical changes, create a
