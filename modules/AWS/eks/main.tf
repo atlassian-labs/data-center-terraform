@@ -32,7 +32,7 @@ module "eks" {
 
   }
 
-  # We're creating eks managed nodegroup, hence aws-auth it handled by EKS
+  # We're creating eks managed nodegroup, hence aws-auth is handled by EKS
   manage_aws_auth_configmap = true
   aws_auth_roles            = var.additional_roles
 
