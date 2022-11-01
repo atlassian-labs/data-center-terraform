@@ -4,6 +4,8 @@ Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 --==MYBOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 
+#!/bin/bash
+
 ### OSQUERY INSTALLATION
 
 # This script is taken from https://hello.atlassian.net/wiki/spaces/SECURITY/pages/380804774/Osquery+AWS+Server+Deployment+Guide
@@ -66,6 +68,6 @@ echo "Begin checking Fleet server availability"
 curl -v https://fleet-server.services.atlassian.com/api/v1/osquery/enroll
 echo "End checking fleet server availability"
 
-
 ### /OSQUERY INSTALLATION
+
 --==MYBOUNDARY==--

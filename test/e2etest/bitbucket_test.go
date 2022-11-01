@@ -35,7 +35,7 @@ func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
 func assertBitbucketNfsConnectivity(t *testing.T, testConfig TestConfig) {
 	println("Asserting Bitbucket NFS connectivity ...")
 
-	kubectlOptions := getKubectlOptions(testConfig)
+	kubectlOptions := getKubectlOptions(t, testConfig)
 
 	// Write a file to the NFS server
 	output, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,

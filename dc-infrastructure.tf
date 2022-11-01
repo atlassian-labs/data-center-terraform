@@ -12,13 +12,13 @@ module "base-infrastructure" {
   namespace             = local.namespace
   eks_additional_roles  = var.eks_additional_roles
   whitelist_cidr        = var.whitelist_cidr
-  enable_https_ingress = var.enable_https_ingress
+  enable_https_ingress  = var.enable_https_ingress
 
   enable_ssh_tcp        = local.install_bitbucket
   osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
   osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
   osquery_env           = var.osquery_env
-  osquery_version        = var.osquery_version
+  osquery_version       = var.osquery_version
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
 }
 

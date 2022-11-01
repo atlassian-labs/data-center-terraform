@@ -5,6 +5,7 @@ module "nodegroup_launch_template" {
   source                          = "./nodegroup_launch_template"
   region                          = var.region
   tags                            = var.tags
+  instance_types                  = var.instance_types
   osquery_secret_name             = var.osquery_secret_name
   osquery_secret_region           = local.osquery_secret_region
   osquery_env                     = var.osquery_env
@@ -14,58 +15,65 @@ module "nodegroup_launch_template" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "17.24.0"
+  version = "18.30.2"
 
   # Configure cluster
-  cluster_version              = "1.21"
-  cluster_name                 = var.cluster_name
-  manage_cluster_iam_resources = true
+  cluster_version = "1.21"
+  cluster_name    = var.cluster_name
+  create_iam_role = true
+  create_cloudwatch_log_group = false
 
-  # Enables IAM roles for service accounts - required for autoscaler
+  # add-ons need to be explicitly declared: kube-proxy and vpc-cni are must-have ones
+  cluster_addons = {
+    kube-proxy = {}
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
+    }
+
+  }
+
+  # We're creating eks managed nodegroup, hence aws-auth is handled by EKS
+  manage_aws_auth_configmap = true
+  aws_auth_roles            = var.additional_roles
+
+  # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa = true
 
   # Networking
   vpc_id                    = var.vpc_id
-  subnets                   = var.subnets
+  subnet_ids                = var.subnets
   cluster_service_ipv4_cidr = local.cluster_service_ipv4_cidr
 
-  # These 2 properties below will be deprecated in v18 of the AWS EKS module:
-  # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/UPGRADE-18.0.md
-  # If upgrading this module to v18 be sure that this deprecation is taken into account.
-  kubeconfig_aws_authenticator_command      = "aws"
-  kubeconfig_aws_authenticator_command_args = ["eks", "get-token", "--cluster-name", var.cluster_name]
-
-  workers_additional_policies = local.workers_additional_policies
-
-  # Managed Node Groups
-  node_groups_defaults = {
-    ami_type        = local.ami_type
-    disk_size       = var.instance_disk_size
+  # Managed node group defaults
+  eks_managed_node_group_defaults = {
+    ami_type  = local.ami_type
+    disk_size = var.instance_disk_size
   }
 
-  node_groups = {
+  # Self-managed node group. We explicitly disable automatic launch template creation
+  # to use a custom launch template with user data and resource_tags
+  eks_managed_node_groups = {
     appNodes = {
-      name                    = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
-      max_capacity            = var.max_cluster_capacity
-      desired_capacity        = var.min_cluster_capacity
-      min_capacity            = var.min_cluster_capacity
-      launch_template_id      = module.nodegroup_launch_template.id
-      launch_template_version = module.nodegroup_launch_template.version
-      subnets                 = slice(var.subnets, 0, 1)
-      instance_types          = var.instance_types
-      capacity_type           = "ON_DEMAND"
+      name                         = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
+      max_size                     = var.max_cluster_capacity
+      desired_size                 = var.min_cluster_capacity
+      min_size                     = var.min_cluster_capacity
+      subnet_ids                   = slice(var.subnets, 0, 1)
+      capacity_type                = "ON_DEMAND"
+      create_launch_template       = false
+      launch_template_name         = "${var.cluster_name}-launch-template"
+      launch_template_version      = module.nodegroup_launch_template.version
+      create_iam_role              = false
+      iam_role_arn                 = aws_iam_role.node_group.arn
+      iam_role_use_name_prefix     = false
     }
   }
-
-  map_roles = var.additional_roles
 }
-
 
 resource "aws_autoscaling_group_tag" "this" {
   for_each               = var.tags
-  autoscaling_group_name = module.eks.node_groups["appNodes"].resources[0].autoscaling_groups[0].name
-
+  autoscaling_group_name = module.eks.eks_managed_node_groups.appNodes.node_group_resources[0].autoscaling_groups[0].name
   tag {
     key                 = each.key
     value               = each.value

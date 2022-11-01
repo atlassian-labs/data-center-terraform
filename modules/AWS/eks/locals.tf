@@ -13,9 +13,12 @@ locals {
 
   cluster_service_ipv4_cidr = "172.20.0.0/16"
 
-  workers_additional_policies = var.osquery_secret_name != "" ? [aws_iam_policy.laas[0].arn,aws_iam_policy.fleet_enrollment_secret[0].arn] : []
-
   osquery_secret_region = var.osquery_secret_region != "" ? var.osquery_secret_region : var.region
 
   account_id = data.aws_caller_identity.current.account_id
+
+  eks_node_policies = [ "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+                        "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+                        "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+                        "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" ]
 }
