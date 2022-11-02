@@ -109,8 +109,8 @@ jira_replica_count = 1
 
 # Termination grace period
 # Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value
 #jira_termination_grace_period = 0
 
 # By default, Jira Software will use the version defined in the Helm chart. If you wish to override the version, uncomment
@@ -194,8 +194,8 @@ confluence_replica_count = 1
 
 # Termination grace period
 # Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue.
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value
 # confluence_termination_grace_period = 0
 
 # By default, Confluence will use the version defined in the Helm chart. If you wish to override the version, uncomment
@@ -286,8 +286,8 @@ bitbucket_replica_count = 1
 
 # Termination grace period
 # Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value
 #bitbucket_termination_grace_period = 0
 
 # By default, Bitbucket will use the version defined in the Bitbucket Helm chart:
@@ -460,6 +460,7 @@ bamboo_db_name                 = "bamboo"
 
 # Termination grace period
 # Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
-# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
-# if you encounter such an issue. This will apply to both Bamboo server and agent pods.
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC).
+# Termination grace period is 0 by default. You can override it if for some reason you need a different value.
+# This will apply to both Bamboo server and agent pods.
 #bamboo_termination_grace_period = 0

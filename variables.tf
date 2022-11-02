@@ -159,7 +159,7 @@ variable "jira_replica_count" {
 variable "jira_termination_grace_period" {
   description = "Termination grace period in seconds"
   type        = number
-  default     = 30
+  default     = 0
 }
 
 variable "jira_installation_timeout" {
@@ -344,7 +344,7 @@ variable "confluence_replica_count" {
 variable "confluence_termination_grace_period" {
   description = "Termination grace period in seconds"
   type        = number
-  default     = 30
+  default     = 0
 }
 
 variable "confluence_installation_timeout" {
@@ -564,7 +564,7 @@ variable "bitbucket_replica_count" {
 variable "bitbucket_termination_grace_period" {
   description = "Termination grace period in seconds"
   type        = number
-  default     = 30
+  default     = 0
 }
 
 variable "bitbucket_installation_timeout" {
@@ -842,7 +842,7 @@ variable "bamboo_installation_timeout" {
 variable "bamboo_termination_grace_period" {
   description = "Termination grace period in seconds"
   type        = number
-  default     = 30
+  default     = 0
 }
 
 variable "bamboo_agent_version_tag" {
