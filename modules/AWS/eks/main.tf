@@ -39,6 +39,7 @@ module "eks" {
   # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa = true
+  iam_role_use_name_prefix = false
 
   # Networking
   vpc_id                    = var.vpc_id
