@@ -67,7 +67,7 @@ jobs:
         run: mkdir test/e2etest/artifacts
 
       - name: Add private SSH key for Bitbucket tests
-        uses: shimataro/ssh-key-action@v2.3.1
+        uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.BITBUCKET_E2E_TEST_PRIV_SSH_KEY }}
           name: bitbucket-e2e # optional
