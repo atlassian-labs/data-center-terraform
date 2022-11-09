@@ -1,7 +1,11 @@
 # Install Helm chart for Bitbucket Data Center.
 
 resource "helm_release" "bitbucket" {
-  depends_on = [kubernetes_job.pre_install]
+  depends_on = [
+    kubernetes_job.pre_install,
+    module.nfs,
+    time_sleep.wait_bitbucket_termination
+  ]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
@@ -70,6 +74,13 @@ resource "helm_release" "bitbucket" {
     local.version_tag,
     local.display_name,
   ]
+}
+
+# Helm chart destruction will return immediately, we need to wait until the pods are fully evicted
+# https://github.com/hashicorp/terraform-provider-helm/issues/593
+resource "time_sleep" "wait_bitbucket_termination" {
+  destroy_duration = "${var.termination_grace_period}s"
+  depends_on       = [module.nfs]
 }
 
 data "kubernetes_service" "bitbucket" {

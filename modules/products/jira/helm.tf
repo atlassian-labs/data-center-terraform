@@ -1,7 +1,11 @@
 # Install helm chart for Jira Data Center.
 
 resource "helm_release" "jira" {
-  depends_on = [kubernetes_job.pre_install]
+  depends_on = [
+    kubernetes_job.pre_install,
+    module.nfs,
+    time_sleep.wait_jira_termination
+  ]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
@@ -69,6 +73,13 @@ resource "helm_release" "jira" {
     local.context_path_settings,
     local.version_tag,
   ]
+}
+
+# Helm chart destruction will return immediately, we need to wait until the pods are fully evicted
+# https://github.com/hashicorp/terraform-provider-helm/issues/593
+resource "time_sleep" "wait_jira_termination" {
+  destroy_duration = "${var.termination_grace_period}s"
+  depends_on       = [module.nfs]
 }
 
 data "kubernetes_service" "jira" {

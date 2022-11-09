@@ -65,7 +65,7 @@ number_of_bamboo_agents = 3
 bamboo_dataset_url = "https://bamboo-test-datasets.s3.amazonaws.com/testing_dataset_minimal.zip"
 
 # To fix "pvc still exists with finalizers" error while uninstalling
-bamboo_termination_grace_period = 0
+bamboo_termination_grace_period = 30
 
 ################################################################################
 # Jira Settings
@@ -95,7 +95,7 @@ jira_db_allocated_storage    = 100
 jira_db_iops                 = 1000
 jira_db_name                 = "jira"
 
-jira_termination_grace_period = 0
+jira_termination_grace_period = 30
 
 ################################################################################
 # Confluence Settings
@@ -109,7 +109,7 @@ confluence_nfs_requests_memory = "256Mi"
 confluence_nfs_limits_cpu      = "0.25"
 confluence_nfs_limits_memory   = "256Mi"
 
-confluence_termination_grace_period = 0
+confluence_termination_grace_period = 30
 
 ################################################################################
 # Bitbucket Settings
@@ -129,4 +129,4 @@ bitbucket_nfs_requests_memory = "256Mi"
 bitbucket_nfs_limits_cpu      = "0.25"
 bitbucket_nfs_limits_memory   = "256Mi"
 
-bitbucket_termination_grace_period = 0
+bitbucket_termination_grace_period = 30
