@@ -986,7 +986,7 @@ variable "osquery_env" {
 variable "osquery_version" {
   description = "Osquery version"
   type        = string
-  default     = "5.5.1"
+  default     = "5.4.0"
 }
 
 variable "kinesis_log_producers_role_arns" {
