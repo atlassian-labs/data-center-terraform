@@ -40,8 +40,6 @@ cat <<'EOF' >> /etc/osquery/osquery.flags
 --disable_audit=false
 --disable_events=false
 --audit_allow_config
---verbose
---tls_dump
 --logger_plugin=aws_kinesis
 EOF
 
