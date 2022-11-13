@@ -66,3 +66,6 @@ outputs.json
 
 # go packages
 test/pkg
+
+# File created by tagging resource
+modules/AWS/asg_ec2_tagging
