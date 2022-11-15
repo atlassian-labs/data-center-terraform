@@ -75,6 +75,16 @@ variable "installation_timeout" {
   }
 }
 
+variable "local_jira_chart_path" {
+  description = "Path to local Helm charts to install local Jira software"
+  type        = string
+  default     = ""
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_jira_chart_path))
+    error_message = "Invalid local Jira Helm chart path."
+  }
+}
+
 variable "jira_configuration" {
   description = "Jira resource spec and chart version"
   type        = map(any)

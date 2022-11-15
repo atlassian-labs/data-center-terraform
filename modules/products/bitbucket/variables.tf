@@ -75,6 +75,16 @@ variable "installation_timeout" {
   }
 }
 
+variable "local_bitbucket_chart_path" {
+  description = "Path to local Helm charts to install local bitbucket software"
+  type        = string
+  default     = ""
+  validation {
+    condition     = can(regex("^[.?\\/?[a-zA-Z0-9|\\-|_]*]*$", var.local_bitbucket_chart_path))
+    error_message = "Invalid local Bitbucket Helm chart path."
+  }
+}
+
 variable "bitbucket_configuration" {
   description = "Bitbucket resource spec and chart version"
   type        = map(any)

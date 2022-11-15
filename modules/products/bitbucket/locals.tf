@@ -1,8 +1,12 @@
 locals {
   product_name = "bitbucket"
 
-  helm_chart_repository        = "https://atlassian.github.io/data-center-helm-charts"
-  bitbucket_helm_chart_version = var.bitbucket_configuration["helm_version"]
+  # Install local bitbucket helm charts if local path is provided
+  use_local_chart              = fileexists("${var.local_bitbucket_chart_path}/Chart.yaml")
+  helm_chart_repository        = local.use_local_chart ? null : "https://atlassian.github.io/data-center-helm-charts"
+  bitbucket_helm_chart_name    = local.use_local_chart ? var.local_bitbucket_chart_path : local.product_name
+  bitbucket_helm_chart_version = local.use_local_chart ? null : var.bitbucket_configuration["helm_version"]
+
 
   bitbucket_software_resources = {
     "minHeap" : var.bitbucket_configuration["min_heap"]

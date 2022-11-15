@@ -131,7 +131,7 @@ variable "enable_https_ingress" {
 variable "jira_helm_chart_version" {
   description = "Version of Jira Helm chart"
   type        = string
-  default     = "1.5.0"
+  default     = ""
 }
 
 variable "jira_image_repository" {
@@ -308,6 +308,12 @@ variable "jira_shared_home_snapshot_id" {
   }
 }
 
+variable "jira_install_local_chart" {
+  description = "If true installs Jira using local Helm charts located in local_helm_charts_path"
+  default     = false
+  type        = bool
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################
@@ -322,7 +328,7 @@ variable "confluence_license" {
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
   type        = string
-  default     = "1.5.1"
+  default     = ""
 }
 
 variable "confluence_version_tag" {
@@ -542,7 +548,7 @@ variable "confluence_shared_home_snapshot_id" {
 variable "bitbucket_helm_chart_version" {
   description = "Version of Bitbucket Helm chart"
   type        = string
-  default     = "1.5.0"
+  default     = ""
 }
 
 variable "bitbucket_version_tag" {
@@ -769,6 +775,12 @@ variable "bitbucket_db_master_password" {
   }
 }
 
+variable "bitbucket_install_local_chart" {
+  description = "If true installs Bitbucket using local Helm charts located in local_helm_charts_path"
+  default     = false
+  type        = bool
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################
@@ -817,14 +829,14 @@ variable "number_of_bamboo_agents" {
 
 variable "bamboo_helm_chart_version" {
   description = "Version of Bamboo Helm chart"
-  default     = "1.5.0"
+  default     = ""
   type        = string
 }
 
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
   type        = string
-  default     = "1.5.0"
+  default     = ""
 }
 
 variable "bamboo_version_tag" {

@@ -5,7 +5,7 @@ resource "helm_release" "bitbucket" {
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
-  chart      = local.product_name
+  chart      = local.bitbucket_helm_chart_name
   version    = local.bitbucket_helm_chart_version
   timeout    = var.installation_timeout * 60
 

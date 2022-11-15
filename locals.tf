@@ -11,6 +11,8 @@ locals {
   shared_home_size = length(var.products) == 0 || (local.install_bitbucket && length(var.products) == 1) ? null : "5Gi"
 
   local_confluence_chart_path = var.local_helm_charts_path != "" && var.confluence_install_local_chart ? "${var.local_helm_charts_path}/confluence" : ""
+  local_bitbucket_chart_path  = var.local_helm_charts_path != "" && var.bitbucket_install_local_chart ? "${var.local_helm_charts_path}/bitbucket" : ""
+  local_jira_chart_path       = var.local_helm_charts_path != "" && var.jira_install_local_chart ? "${var.local_helm_charts_path}/jira" : ""
   local_bamboo_chart_path     = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo" : ""
   local_agent_chart_path      = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo-agent" : ""
 }

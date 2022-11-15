@@ -128,6 +128,9 @@ module "jira" {
   nfs_limits_memory   = var.jira_nfs_limits_memory
 
   shared_home_snapshot_id = var.jira_shared_home_snapshot_id
+
+  # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
+  local_jira_chart_path   = local.local_jira_chart_path
 }
 
 module "confluence" {
@@ -249,4 +252,7 @@ module "bitbucket" {
   elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
 
   shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
+
+  # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
+  local_bitbucket_chart_path = local.local_bitbucket_chart_path
 }
