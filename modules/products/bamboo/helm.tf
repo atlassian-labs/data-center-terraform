@@ -3,7 +3,6 @@
 resource "helm_release" "bamboo" {
   depends_on = [
     kubernetes_job.import_dataset,
-    module.nfs,
     time_sleep.wait_bamboo_termination
   ]
   name       = local.product_name

@@ -4,7 +4,6 @@
 resource "helm_release" "confluence" {
   depends_on = [
     kubernetes_job.pre_install,
-    module.nfs,
     time_sleep.wait_confluence_termination
   ]
   name       = local.product_name

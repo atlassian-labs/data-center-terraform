@@ -3,7 +3,6 @@
 resource "helm_release" "bitbucket" {
   depends_on = [
     kubernetes_job.pre_install,
-    module.nfs,
     time_sleep.wait_bitbucket_termination
   ]
   name       = local.product_name

@@ -3,7 +3,6 @@
 resource "helm_release" "jira" {
   depends_on = [
     kubernetes_job.pre_install,
-    module.nfs,
     time_sleep.wait_jira_termination
   ]
   name       = local.product_name
