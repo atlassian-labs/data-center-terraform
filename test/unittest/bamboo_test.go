@@ -17,6 +17,7 @@ func TestBambooVariablesPopulatedWithValidValues(t *testing.T) {
 	bambooKey := "helm_release.bamboo"
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, bambooKey)
 	bamboo := plan.ResourcePlannedValuesMap[bambooKey]
+	assert.NotNil(t, bamboo.AttributeValues["version"])
 	assert.Equal(t, "deployed", bamboo.AttributeValues["status"])
 	assert.Equal(t, "bamboo", bamboo.AttributeValues["chart"])
 	assert.Equal(t, float64(testTimeout*60), bamboo.AttributeValues["timeout"])
@@ -76,7 +77,7 @@ var BambooCorrectVariables = map[string]interface{}{
 	"dataset_url":          nil,
 	"installation_timeout": testTimeout,
 	"bamboo_configuration": map[string]interface{}{
-		"helm_version": "1.0.0",
+		"helm_version": "",
 		"cpu":          "1",
 		"mem":          "1Gi",
 		"min_heap":     "256m",

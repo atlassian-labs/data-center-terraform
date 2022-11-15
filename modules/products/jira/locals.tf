@@ -1,8 +1,10 @@
 locals {
   product_name = "jira"
 
-  helm_chart_repository   = "https://atlassian.github.io/data-center-helm-charts"
-  jira_helm_chart_version = var.jira_configuration["helm_version"]
+  use_local_chart         = fileexists("${var.local_jira_chart_path}/Chart.yaml")
+  helm_chart_repository   = local.use_local_chart ? null : "https://atlassian.github.io/data-center-helm-charts"
+  jira_helm_chart_name    = local.use_local_chart ? var.local_jira_chart_path : local.product_name
+  jira_helm_chart_version = local.use_local_chart ? null : var.jira_configuration["helm_version"]
 
   jira_software_resources = {
     "minHeap" : var.jira_configuration["min_heap"]
