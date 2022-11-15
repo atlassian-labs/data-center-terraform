@@ -25,9 +25,7 @@ func TestInstaller(t *testing.T) {
 	runInstallScript(testConfig.ConfigPath)
 
 	// run again with same config. This is to assure that the `re-apply` action finishes without any issue.
-	if !useDomain {
-		runInstallScript(testConfig.ConfigPath)
-	}
+	runInstallScript(testConfig.ConfigPath)
 
 	clusterHealthTests(t, testConfig)
 	checkAGSAndEC2Tags(t, testConfig)
