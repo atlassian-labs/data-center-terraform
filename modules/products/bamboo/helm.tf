@@ -1,7 +1,10 @@
 # Install helm chart for Bamboo Data Center.
 
 resource "helm_release" "bamboo" {
-  depends_on = [kubernetes_job.import_dataset]
+  depends_on = [
+    kubernetes_job.import_dataset,
+    time_sleep.wait_bamboo_termination
+  ]
   name       = local.product_name
   namespace  = var.namespace
   repository = local.helm_chart_repository
@@ -74,6 +77,14 @@ data "kubernetes_service" "bamboo" {
     name      = local.product_name
     namespace = var.namespace
   }
+}
+
+
+# Helm chart destruction will return immediately, we need to wait until the pods are fully evicted
+# https://github.com/hashicorp/terraform-provider-helm/issues/593
+resource "time_sleep" "wait_bamboo_termination" {
+  destroy_duration = "${var.termination_grace_period}s"
+  depends_on       = [module.nfs]
 }
 
 resource "helm_release" "bamboo_agent" {
