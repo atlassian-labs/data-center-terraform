@@ -130,3 +130,16 @@ bitbucket_nfs_limits_cpu      = "0.25"
 bitbucket_nfs_limits_memory   = "256Mi"
 
 bitbucket_termination_grace_period = 0
+
+{{if .additional_role != ""}}
+# Enable access to additional role
+eks_additional_roles = [
+  {
+    rolearn  = "{{ .additional_role }}"
+    username = "additional_role"
+    groups = [
+      "system:masters"
+    ]
+  }
+]
+{{end}}
