@@ -24,6 +24,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       SLACK_WEBHOOK_URL_ALERTS: ${{ secrets.SLACK_WEBHOOK_URL_ALERTS }}
       SLACK_WEBHOOK_URL_NOTIFICATIONS: ${{ secrets.SLACK_WEBHOOK_URL_NOTIFICATIONS }}
+      AWS_ADDITIONAL_ROLE: ${{ secrets.AWS_ADDITIONAL_ROLE }}
       TF_VAR_bamboo_license: ${{ secrets.TF_VAR_BAMBOO_LICENSE }}
       TF_VAR_confluence_license: ${{ secrets.TF_VAR_CONFLUENCE_LICENSE }}
       TF_VAR_bitbucket_license: ${{ secrets.TF_VAR_BITBUCKET_LICENSE }}

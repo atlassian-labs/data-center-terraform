@@ -47,7 +47,10 @@ var EksWithValidValues = map[string]interface{}{
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles": []interface{}{map[string]interface{}{
+		"rolearn":  "dcdarn",
+		"username": "additional_role",
+		"groups":   []interface{}{"system:masters"}}},
 }
 
 var EksWithUnsupportedKinesisRegion = map[string]interface{}{
@@ -421,11 +424,11 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		"license_abc":  "dummy_license", //invalid var name
 	},
 	"synchrony_configuration": map[string]interface{}{
-		"cpu":          "1",
-		"mem":          "1Gi",
-		"min_heap":     "256m",
-		"max_heap":     "512m",
-		"unknown_var":  "dummy_license", //invalid var name
+		"cpu":         "1",
+		"mem":         "1Gi",
+		"min_heap":    "256m",
+		"max_heap":    "512m",
+		"unknown_var": "dummy_license", //invalid var name
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",
