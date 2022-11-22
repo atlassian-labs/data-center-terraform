@@ -177,7 +177,7 @@ func assertEsIndexes(t *testing.T, testConfig TestConfig) {
 		docCount, err := getEsIndexByName(t, kubectlOptions, index)
 		assert.NoError(t, err)
 		if docCount != expectedDocCount {
-			println("DocCount in %s index is %s, expecting %s. Trying again in 20 seconds", index, docCount, expectedDocCount)
+			fmt.Printf("DocCount in %s index is %s, expecting %s. Trying again in 20 seconds", index, docCount, expectedDocCount)
 			time.Sleep(20 * time.Second)
 			docCount, _ = getEsIndexByName(t, kubectlOptions, index)
 		}
