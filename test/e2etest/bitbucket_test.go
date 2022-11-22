@@ -22,6 +22,8 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketStatusEndpoint(t, productUrl)
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
+	// give Bitbucket enough time to create project and repo indexes
+	time.Sleep(15 * time.Second)
 	assertEsIndexes(t, testConfig)
 }
 
