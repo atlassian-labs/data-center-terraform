@@ -18,7 +18,7 @@ module "eks" {
   version = "18.30.2"
 
   # Configure cluster
-  cluster_version = "1.21"
+  cluster_version = var.eks_version
   cluster_name    = var.cluster_name
   create_iam_role = true
   create_cloudwatch_log_group = false
@@ -29,7 +29,9 @@ module "eks" {
     vpc-cni = {
       resolve_conflicts = "OVERWRITE"
     }
-
+    aws-ebs-csi-driver = {
+      resolve_conflicts = "OVERWRITE"
+    }
   }
 
   # We're creating eks managed nodegroup, hence aws-auth is handled by EKS

@@ -12,6 +12,15 @@ variable "environment_name" {
   }
 }
 
+variable "eks_version" {
+  description   = "EKS K8s version"
+  type          = number
+  validation {
+    condition     = can(regex("^1\\.2[1-4]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24"
+  }
+}
+
 variable "tags" {
   description = "Additional tags for all resources to be created."
   type = map(string)

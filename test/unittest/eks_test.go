@@ -64,6 +64,17 @@ func TestEksClusterNameInvalid(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid EKS cluster name.")
 }
 
+func TestEksClusterVersionInvalid(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(EksWithInvalidClusterVersion, t, eksModule)
+
+	_, err := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid EKS K8S version.")
+}
+
 func TestEksMinCapacityOverLimit(t *testing.T) {
 	t.Parallel()
 
