@@ -1,6 +1,6 @@
 # Support boundaries
 
-!!! warning "Officially support warning"
+!!! warning "Official support warning"
 **This project is designed for Atlassian vendors to run [DCAPT performance toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
 
     We don't recommend using the scripts to deploy production instances but they can be used for inspiration and to deploy testing stacks.
