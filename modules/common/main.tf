@@ -9,6 +9,7 @@ module "eks" {
 
   region                          = var.region_name
   cluster_name                    = local.cluster_name
+  eks_version                     = var.eks_version
   tags                            = var.tags
   vpc_id                          = module.vpc.vpc_id
   subnets                         = module.vpc.private_subnets

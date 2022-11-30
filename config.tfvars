@@ -13,6 +13,10 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
+# EKS K8S API version. Defaults to 1.24. Allowed values are from 1.21 to 1.24.
+# See: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
+# eks_version = <EKS_VERSION>
+
 # (optional) List of the products to be installed.
 # Supported products are jira, confluence, bitbucket, and bamboo.
 # e.g.: products = ["jira", "confluence"]

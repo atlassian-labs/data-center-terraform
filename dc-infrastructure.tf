@@ -3,6 +3,7 @@ module "base-infrastructure" {
 
   region_name           = var.region
   environment_name      = var.environment_name
+  eks_version           = var.eks_version
   tags                  = var.resource_tags
   instance_types        = var.instance_types
   instance_disk_size    = var.instance_disk_size

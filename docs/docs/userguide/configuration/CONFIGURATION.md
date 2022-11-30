@@ -52,6 +52,12 @@ environment_name = "<your-environment-name>" # e.g. "my-terraform-env"
 
     Environment names should start with a letter and can contain letters, numbers, and dashes (`-`). The maximum value length is 24 characters.
 
+### EKS K8S API version
+
+`eks_version` is the supported EKS K8S API version. It must be a valid [EKS version](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html).
+!!! tip "Latest EKS version"
+
+  It is recommended to use the default value, however it is possible to override it to try a different (the latest) EKS version for experimental purposes.
 
 ### Region
 
