@@ -4,16 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
 	"testing"
-
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
-	"github.com/gruntwork-io/terratest/modules/k8s"
-	"github.com/stretchr/testify/assert"
+	"time"
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
@@ -22,6 +22,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketStatusEndpoint(t, productUrl)
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
+	assertEsIndexes(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
@@ -168,6 +169,61 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Equal(t, "remote repository is empty", err.Error())
 }
 
+func assertEsIndexes(t *testing.T, testConfig TestConfig) {
+	println("Asserting ElasticSearch indexes ...")
+	// give Bitbucket enough time to create project and repo indexes
+	time.Sleep(15 * time.Second)
+	kubectlOptions := getKubectlOptions(t, testConfig)
+	expectedDocCount := "1"
+	for _, index := range []string{"bitbucket-project", "bitbucket-repository"} {
+		docCount, err := getEsIndexByName(t, kubectlOptions, index)
+		assert.NoError(t, err)
+		if docCount != expectedDocCount {
+			fmt.Printf("DocCount in %s index is %s, expecting %s. Trying again in 20 seconds", index, docCount, expectedDocCount)
+			time.Sleep(20 * time.Second)
+			docCount, _ = getEsIndexByName(t, kubectlOptions, index)
+		}
+		assert.Equal(t, expectedDocCount, docCount)
+	}
+}
+
 func getHostFrom(productUrl string) string {
 	return strings.Split(productUrl, "/")[2]
+}
+
+type ESIndex []struct {
+	Health       string `json:"health"`
+	Status       string `json:"status"`
+	Index        string `json:"index"`
+	UUID         string `json:"uuid"`
+	Pri          string `json:"pri"`
+	Rep          string `json:"rep"`
+	DocsCount    string `json:"docs.count"`
+	DocsDeleted  string `json:"docs.deleted"`
+	StoreSize    string `json:"store.size"`
+	PriStoreSize string `json:"pri.store.size"`
+}
+
+func getEsIndexByName(t *testing.T, kubectlOptions *k8s.KubectlOptions, index string) (docCount string, err error) {
+	esOutput, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+		"exec", "elasticsearch-master-0", "-c", "elasticsearch",
+		"--", "/bin/bash",
+		"-c", "curl -s http://localhost:9200/_cat/indices?format=json")
+	if err != nil {
+		return "0", err
+	} else {
+		var esIndex ESIndex
+		err := json.Unmarshal([]byte(esOutput), &esIndex)
+		if err != nil {
+			return "0", err
+		} else {
+			for _, v := range esIndex {
+				if v.Index == index {
+					assert.Equal(t, v.Health, "green")
+					return v.DocsCount, nil
+				}
+			}
+			return "Index not found", nil
+		}
+	}
 }
