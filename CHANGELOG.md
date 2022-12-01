@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.2.0
+
+**Release date:** 2022-12-01
+
+* Update EKS version to 1.24 [#288](https://github.com/atlassian-labs/data-center-terraform/pull/288)
+* Add Elasticsearch e2e tests [#287](https://github.com/atlassian-labs/data-center-terraform/pull/287)
+* Fix use of local Helm chart for all products [#284](https://github.com/atlassian-labs/data-center-terraform/pull/284)
+* Fix resources termination order to avoid pods stuck in Terminating [#282](https://github.com/atlassian-labs/data-center-terraform/pull/282)
+* Update EKS Terraform module to 18.20.2 [#277](https://github.com/atlassian-labs/data-center-terraform/pull/277)
+* Disable automatic DB updates during maintenance window [#276](https://github.com/atlassian-labs/data-center-terraform/pull/276)
+
 ## 2.1.1
 
 **Release date:** 2022-11-01
