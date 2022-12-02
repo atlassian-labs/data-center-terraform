@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.2.1
+
+**Release date:** 2022-12-02
+
+* Fix terraform destroy [#489](https://github.com/atlassian/data-center-helm-charts/pull/489)
+
 ## 2.2.0
 
 **Release date:** 2022-12-01
