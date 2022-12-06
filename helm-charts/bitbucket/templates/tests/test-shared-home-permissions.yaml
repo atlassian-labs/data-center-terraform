@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "common.names.fullname" . }}-shared-home-permissions-test"
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+    {{- include "bitbucket.podAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "common.labels.commonLabels" . | nindent 4 }}
+spec:
+  containers:
+    - name: test
+      image: debian:stable-slim
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        # We assume that the UID and GID used by the product images are the same, which in practice they are
+        {{- with .Values.bitbucket.securityContext }}
+        {{- if and .enabled .gid }}
+        runAsUser: {{ .gid }}
+        runAsGroup: {{ .gid }}
+        {{- else if .fsGroup }}
+        runAsUser: {{ .fsGroup }}
+        runAsGroup: {{ .fsGroup }}
+        {{- else }}
+        runAsUser: {{ 2003 }}
+        runAsGroup: {{ 2003 }}
+        {{- end }}
+        {{- end }}
+      volumeMounts:
+        {{- if or .Values.volumes.sharedHome.persistentVolumeClaim.create .Values.volumes.sharedHome.customVolume }}
+        - name: shared-home
+          mountPath: /shared-home
+          {{- if .Values.volumes.sharedHome.subPath }}
+          subPath: {{ .Values.volumes.sharedHome.subPath | quote }}
+          {{- end }}
+        {{- else }}
+        - name: local-home
+          mountPath: /shared-home
+          subPath: shared
+        {{- end }}
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          ls -ld /shared-home
+          echo "Creating temporary file in shared home as user $(id -u):$(id -g)"
+          touch /shared-home/permissions-test
+          ls -l /shared-home/permissions-test
+          rm /shared-home/permissions-test
+  volumes:
+    {{- if or .Values.volumes.sharedHome.persistentVolumeClaim.create .Values.volumes.sharedHome.customVolume }}
+    {{ include "bitbucket.volumes.sharedHome" . | nindent 4 }}
+    {{- else }}
+    {{ include "bitbucket.volumes.localHome" . | nindent 4 }}
+    {{- end }}
+  restartPolicy: Never

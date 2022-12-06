@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
@@ -23,6 +24,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
 	assertEsIndexes(t, testConfig)
+	assertBitbucketMesh(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
@@ -167,6 +169,60 @@ func cloneRepo(t *testing.T, host string) {
 	})
 	assert.Error(t, err)
 	assert.Equal(t, "remote repository is empty", err.Error())
+}
+
+func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
+	commit, err := pushToRemote()
+	assert.NoError(t, err)
+	time.Sleep(10 * time.Second)
+	kubectlOptions := getKubectlOptions(t, testConfig)
+	for _, pod := range []string{"bitbucket-mesh-0", "bitbucket-mesh-1", "bitbucket-mesh-2"} {
+		gitOutput, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+			"exec", pod,
+			"--", "/bin/sh",
+			"-c", "runuser -l bitbucket -c 'cd /var/atlassian/application-data/mesh/store/data/*/*/repos/1 && git show-ref refs/heads/master'")
+		assert.NoError(t, err)
+		assert.Equal(t, gitOutput, commit+" refs/heads/master")
+	}
+}
+func pushToRemote() (commit string, err error) {
+	println("Committing and pushing to remote ...")
+	repository, err := git.PlainOpen("/tmp/cloned")
+	testFileName := "helloworld"
+	if err != nil {
+		return "", err
+	}
+	worktree, _ := repository.Worktree()
+	fileContent := []byte("hello\nworld\n")
+	err = os.WriteFile("/tmp/cloned/"+testFileName, fileContent, 0644)
+	_, err = worktree.Add(testFileName)
+	if err != nil {
+		return "", err
+	}
+	gitCommitOptions := git.CommitOptions{
+		All: true,
+		Author: &object.Signature{
+			Name:  bitbucket,
+			Email: "example@example.com",
+			When:  time.Now(),
+		}}
+	commitHash, err := worktree.Commit("This is the first commit", &gitCommitOptions)
+	if err != nil {
+		return "", err
+	}
+	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
+	sshKey, _ := os.ReadFile(sshKeyPath)
+	publicKey, _ := ssh.NewPublicKeys("git", sshKey, "")
+	commit = commitHash.String()
+	auth := publicKey
+	err = repository.Push(&git.PushOptions{
+		RemoteName: "origin",
+		Auth:       auth,
+	})
+	if err != nil {
+		return "", err
+	}
+	return commit, nil
 }
 
 func assertEsIndexes(t *testing.T, testConfig TestConfig) {

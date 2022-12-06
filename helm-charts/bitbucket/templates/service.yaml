@@ -1,0 +1,31 @@
+{{/*This describes a K8s service for comunicating with the statefulset*/}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  labels:
+    {{- include "common.labels.commonLabels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.bitbucket.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.bitbucket.service.type }}
+  {{- if and (eq .Values.bitbucket.service.type "LoadBalancer") (not (empty .Values.bitbucket.service.loadBalancerIP)) }}
+  loadBalancerIP: {{ .Values.bitbucket.service.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.bitbucket.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.bitbucket.ports.ssh }}
+      targetPort: ssh
+      protocol: TCP
+      name: ssh
+    - port: {{ .Values.bitbucket.ports.hazelcast }}
+      targetPort: hazelcast
+      protocol: TCP
+      name: hazelcast
+  selector:
+    {{- include "common.labels.selectorLabels" . | nindent 4 }}
