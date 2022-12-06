@@ -28,7 +28,7 @@ func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 	printTestBanner("Check EC2 Instances", "Tags")
 	// get all instances with tag Name=$e2e_env_name and ensure there are 2 of them
 	ec2Instances := aws.GetEc2InstanceIdsByTag(t, testConfig.AwsRegion, "Name", testConfig.EnvironmentName)
-	assert.Equal(t, 2, len(ec2Instances))
+	assert.GreaterOrEqual(t, 2, len(ec2Instances))
 
 	// describe ASGs and filter them by tag Name=$e2e_env_name and ensure there's 1 such ASG
 	asgClient := aws.NewAsgClient(t, testConfig.AwsRegion)

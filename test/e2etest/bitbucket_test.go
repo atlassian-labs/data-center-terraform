@@ -182,7 +182,7 @@ func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
 			"--", "/bin/sh",
 			"-c", "runuser -l bitbucket -c 'cd /var/atlassian/application-data/mesh/store/data/*/*/repos/1 && git show-ref refs/heads/master'")
 		assert.NoError(t, err)
-		assert.Equal(t, gitOutput, commit+" refs/heads/master")
+		assert.Equal(t, commit+" refs/heads/master", gitOutput)
 	}
 }
 func pushToRemote() (commit string, err error) {
@@ -190,6 +190,7 @@ func pushToRemote() (commit string, err error) {
 	repository, err := git.PlainOpen("/tmp/cloned")
 	testFileName := "helloworld"
 	if err != nil {
+		println("Cannot open git repository")
 		return "", err
 	}
 	worktree, _ := repository.Worktree()
@@ -208,6 +209,8 @@ func pushToRemote() (commit string, err error) {
 		}}
 	commitHash, err := worktree.Commit("This is the first commit", &gitCommitOptions)
 	if err != nil {
+		println("Cannot commit")
+
 		return "", err
 	}
 	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
@@ -220,6 +223,7 @@ func pushToRemote() (commit string, err error) {
 		Auth:       auth,
 	})
 	if err != nil {
+		println("Cannot push to remote")
 		return "", err
 	}
 	return commit, nil
