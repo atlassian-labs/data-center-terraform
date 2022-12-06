@@ -162,7 +162,7 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Nil(t, keyError)
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 
-	_, err := git.PlainClone("/tmp/cloned", false, &git.CloneOptions{
+	_, err := git.PlainClone("/tmp", false, &git.CloneOptions{
 		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
@@ -186,8 +186,9 @@ func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
 	}
 }
 func pushToRemote() (commit string, err error) {
+	dir := "/tmp"
 	println("Committing and pushing to remote ...")
-	repository, err := git.PlainOpen("/tmp/cloned")
+	repository, err := git.PlainOpen(dir)
 	testFileName := "helloworld"
 	if err != nil {
 		println("Cannot open git repository")
@@ -195,7 +196,7 @@ func pushToRemote() (commit string, err error) {
 	}
 	worktree, _ := repository.Worktree()
 	fileContent := []byte("hello\nworld\n")
-	err = os.WriteFile("/tmp/cloned/"+testFileName, fileContent, 0644)
+	err = os.WriteFile(dir+"/"+testFileName, fileContent, 0644)
 	_, err = worktree.Add(testFileName)
 	if err != nil {
 		return "", err

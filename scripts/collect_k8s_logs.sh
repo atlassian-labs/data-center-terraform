@@ -60,6 +60,6 @@ done
 echo "[INFO]: Describing nodes"
 kubectl describe nodes > "${DEBUG_FOLDER}"/nodes.log 2>&1
 
-ls -la /tmp/cloned > "${DEBUG_FOLDER}"/repos.log 2>&1
+ls -la /tmp > "${DEBUG_FOLDER}"/repos.log 2>&1
 echo "[INFO]: Logs and events saved to ${DEBUG_FOLDER}"
 ls -la "${DEBUG_FOLDER}"
