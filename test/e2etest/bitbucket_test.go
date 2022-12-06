@@ -189,27 +189,32 @@ func assertBitbucketMesh(t *testing.T, testConfig TestConfig, productUrl string)
 	}
 }
 func pushToRemote(host string) (commit string, err error) {
+	println("Cloning repo, committing and pushing to remote...")
 	storer := memory.NewStorage()
 	fs := memfs.New()
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
 	sshKey, _ := ioutil.ReadFile(sshKeyPath)
 	publicKey, _ := ssh.NewPublicKeys("git", sshKey, "")
-	// ignore error because it's an empty repository
-	repository, _ := git.Clone(storer, fs, &git.CloneOptions{
+	println("Cloning repository...")
+	// returning no error because it's an empty repository and an error is expected here
+	repository, err := git.Clone(storer, fs, &git.CloneOptions{
 		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
 	})
-	println("Committing and pushing to remote ...")
+	if err != nil {
+		println("Failed to clone the repository", err)
+	}
 	testFileName := "helloworld"
 	worktree, _ := repository.Worktree()
 	newFile, err := fs.Create(testFileName)
 	_, _ = newFile.Write([]byte("Hello World"))
 	_ = newFile.Close()
+	println("Adding changes to index...")
 	_, err = worktree.Add(testFileName)
 	if err != nil {
-		println("Failed to add to index")
+		println("Failed to add to index", err)
 		return "", err
 	}
 	gitCommitOptions := git.CommitOptions{
@@ -219,18 +224,20 @@ func pushToRemote(host string) (commit string, err error) {
 			Email: "example@example.com",
 			When:  time.Now(),
 		}}
+	println("Committing changes...")
 	commitHash, err := worktree.Commit("This is the first commit", &gitCommitOptions)
 	if err != nil {
-		println("Failed to commit")
+		println("Failed to commit changes", err)
 		return "", err
 	}
 	commit = commitHash.String()
+	println("Pushing to a remote...")
 	err = repository.Push(&git.PushOptions{
 		RemoteName: "origin",
 		Auth:       publicKey,
 	})
 	if err != nil {
-		println("Failed to push to remote")
+		println("Failed to push to remote", err)
 		return "", err
 	}
 	return commit, nil
