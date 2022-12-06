@@ -162,7 +162,7 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Nil(t, keyError)
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 
-	_, err := git.PlainClone("/tmp", false, &git.CloneOptions{
+	_, err := git.PlainClone("/home/runner/work/data-center-terraform/data-center-terraform/scripts", false, &git.CloneOptions{
 		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
@@ -186,7 +186,7 @@ func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
 	}
 }
 func pushToRemote() (commit string, err error) {
-	dir := "/tmp"
+	dir := "/home/runner/work/data-center-terraform/data-center-terraform/scripts"
 	println("Committing and pushing to remote ...")
 	repository, err := git.PlainOpen(dir)
 	testFileName := "helloworld"

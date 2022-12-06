@@ -21,7 +21,7 @@ func clusterHealthTests(t *testing.T, testConfig TestConfig) {
 	assert.NoError(t, err)
 	assert.Contains(t, output, "1 available")
 
-	assert.Equal(t, expectedNumberOfNodes, len(nodes), "Expected 2 nodes in the cluster")
+	assert.GreaterOrEqual(t, expectedNumberOfNodes, len(nodes), "Expected 2 nodes in the cluster")
 }
 
 func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
