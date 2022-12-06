@@ -21,14 +21,14 @@ func clusterHealthTests(t *testing.T, testConfig TestConfig) {
 	assert.NoError(t, err)
 	assert.Contains(t, output, "1 available")
 
-	assert.GreaterOrEqual(t, expectedNumberOfNodes, len(nodes), "Expected 2 nodes in the cluster")
+	assert.GreaterOrEqual(t, len(nodes), expectedNumberOfNodes, "Expected 2 nodes in the cluster")
 }
 
 func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 	printTestBanner("Check EC2 Instances", "Tags")
 	// get all instances with tag Name=$e2e_env_name and ensure there are 2 of them
 	ec2Instances := aws.GetEc2InstanceIdsByTag(t, testConfig.AwsRegion, "Name", testConfig.EnvironmentName)
-	assert.GreaterOrEqual(t, 2, len(ec2Instances))
+	assert.GreaterOrEqual(t, len(ec2Instances), 2)
 
 	// describe ASGs and filter them by tag Name=$e2e_env_name and ensure there's 1 such ASG
 	asgClient := aws.NewAsgClient(t, testConfig.AwsRegion)
