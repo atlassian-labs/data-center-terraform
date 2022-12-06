@@ -204,7 +204,7 @@ func pushToRemote(host string) (commit string, err error) {
 		Auth:     publicKey,
 	})
 	if err != nil {
-		println("Failed to clone the repository", err)
+		println("Failed to clone the repository. This is expected when cloning an empty repository")
 	}
 	testFileName := "helloworld"
 	worktree, _ := repository.Worktree()
@@ -214,7 +214,7 @@ func pushToRemote(host string) (commit string, err error) {
 	println("Adding changes to index...")
 	_, err = worktree.Add(testFileName)
 	if err != nil {
-		println("Failed to add to index", err)
+		println("Failed to add to index")
 		return "", err
 	}
 	gitCommitOptions := git.CommitOptions{
@@ -227,7 +227,7 @@ func pushToRemote(host string) (commit string, err error) {
 	println("Committing changes...")
 	commitHash, err := worktree.Commit("This is the first commit", &gitCommitOptions)
 	if err != nil {
-		println("Failed to commit changes", err)
+		println("Failed to commit changes")
 		return "", err
 	}
 	commit = commitHash.String()
@@ -237,7 +237,7 @@ func pushToRemote(host string) (commit string, err error) {
 		Auth:       publicKey,
 	})
 	if err != nil {
-		println("Failed to push to remote", err)
+		println("Failed to push to remote")
 		return "", err
 	}
 	return commit, nil
