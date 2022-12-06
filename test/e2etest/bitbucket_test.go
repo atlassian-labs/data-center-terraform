@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -24,7 +26,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
 	assertEsIndexes(t, testConfig)
-	assertBitbucketMesh(t, testConfig)
+	assertBitbucketMesh(t, testConfig, productUrl)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
@@ -162,7 +164,7 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Nil(t, keyError)
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
 
-	_, err := git.PlainClone("/home/runner/work/data-center-terraform/data-center-terraform/scripts", false, &git.CloneOptions{
+	_, err := git.PlainClone("/tmp/cloned", false, &git.CloneOptions{
 		URL:      cloneUrl,
 		Progress: os.Stdout,
 		Auth:     publicKey,
@@ -171,8 +173,9 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Equal(t, "remote repository is empty", err.Error())
 }
 
-func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
-	commit, err := pushToRemote()
+func assertBitbucketMesh(t *testing.T, testConfig TestConfig, productUrl string) {
+	host := getHostFrom(productUrl)
+	commit, err := pushToRemote(host)
 	assert.NoError(t, err)
 	time.Sleep(10 * time.Second)
 	kubectlOptions := getKubectlOptions(t, testConfig)
@@ -185,20 +188,28 @@ func assertBitbucketMesh(t *testing.T, testConfig TestConfig) {
 		assert.Equal(t, commit+" refs/heads/master", gitOutput)
 	}
 }
-func pushToRemote() (commit string, err error) {
-	dir := "/home/runner/work/data-center-terraform/data-center-terraform/scripts"
+func pushToRemote(host string) (commit string, err error) {
+	storer := memory.NewStorage()
+	fs := memfs.New()
+	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)
+	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
+	sshKey, _ := ioutil.ReadFile(sshKeyPath)
+	publicKey, _ := ssh.NewPublicKeys("git", sshKey, "")
+	// ignore error because it's an empty repository
+	repository, _ := git.Clone(storer, fs, &git.CloneOptions{
+		URL:      cloneUrl,
+		Progress: os.Stdout,
+		Auth:     publicKey,
+	})
 	println("Committing and pushing to remote ...")
-	repository, err := git.PlainOpen(dir)
 	testFileName := "helloworld"
-	if err != nil {
-		println("Cannot open git repository")
-		return "", err
-	}
 	worktree, _ := repository.Worktree()
-	fileContent := []byte("hello\nworld\n")
-	err = os.WriteFile(dir+"/"+testFileName, fileContent, 0644)
+	newFile, err := fs.Create(testFileName)
+	_, _ = newFile.Write([]byte("Hello World"))
+	_ = newFile.Close()
 	_, err = worktree.Add(testFileName)
 	if err != nil {
+		println("Failed to add to index")
 		return "", err
 	}
 	gitCommitOptions := git.CommitOptions{
@@ -210,21 +221,16 @@ func pushToRemote() (commit string, err error) {
 		}}
 	commitHash, err := worktree.Commit("This is the first commit", &gitCommitOptions)
 	if err != nil {
-		println("Cannot commit")
-
+		println("Failed to commit")
 		return "", err
 	}
-	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
-	sshKey, _ := os.ReadFile(sshKeyPath)
-	publicKey, _ := ssh.NewPublicKeys("git", sshKey, "")
 	commit = commitHash.String()
-	auth := publicKey
 	err = repository.Push(&git.PushOptions{
 		RemoteName: "origin",
-		Auth:       auth,
+		Auth:       publicKey,
 	})
 	if err != nil {
-		println("Cannot push to remote")
+		println("Failed to push to remote")
 		return "", err
 	}
 	return commit, nil
