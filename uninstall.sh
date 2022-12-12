@@ -41,12 +41,14 @@ EOF
   HELP_FLAG=
   CLEAN_TFSTATE=
   FORCE_FLAG=
-  while getopts thf?c: name ; do
+  SKIP_REFRESH=
+  while getopts thfs?c: name ; do
       case $name in
       t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
       c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
       f)  FORCE_FLAG="-f";;         # Force uninstall - Auto-approve
+      s)  SKIP_REFRESH="-s";;
       ?)  log "Invalid arguments." "ERROR"; show_help
       esac
   done
@@ -76,6 +78,10 @@ process_arguments() {
   fi
 
   ENVIRONMENT_NAME=$(get_variable 'environment_name' ${CONFIG_ABS_PATH})
+  
+  if [ "${SKIP_REFRESH}" ]; then
+    SKIP_REFRESH="-refresh=false"
+  fi
 }
 
 # Ask user confirmation for destroying the environment
@@ -118,7 +124,7 @@ destroy_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve -refresh=false -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve ${SKIP_REFRESH} -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
@@ -208,4 +214,3 @@ destroy_infrastructure
 
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
-

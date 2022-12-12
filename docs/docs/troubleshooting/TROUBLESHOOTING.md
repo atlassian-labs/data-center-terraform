@@ -2,15 +2,15 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
-??? tip "How do I uninstall an environment using a different Terraform configuration file?" 
-  
+??? tip "How do I uninstall an environment using a different Terraform configuration file?"
+
     **Symptom**
 
     If you try to uninstall an environment by using a different configuration file than the one you used to install it or by using a different version of the code, you may encounter some issues during uninstallation. In most cases, Terraform reports that the resource cannot be removed because it's in use.
-    
+
     **Solution**
 
-    Identify the resource and delete it manually from the AWS console, and then restart the uninstallation process. Make sure to always use the same configuration file that was used to install the environment. 
+    Identify the resource and delete it manually from the AWS console, and then restart the uninstallation process. Make sure to always use the same configuration file that was used to install the environment.
 
 
 
@@ -20,66 +20,66 @@ This guide contains general tips on how to investigate an application deployment
     Uninstall fails to remove the persistent volume.
     ```shell
     Error: Persistent volume atlassian-dc-share-home-pv still exists (Bound)
-    
+
     Error: context deadline exceeded
-    
-    Error: Persistent volume claim atlassian-dc-share-home-pvc still exists with 
+
+    Error: Persistent volume claim atlassian-dc-share-home-pvc still exists with
     ```
     **Solution**
 
-    If a pod termination stalls, it will block pvc and pv deletion. 
+    If a pod termination stalls, it will block pvc and pv deletion.
     To fix this problem we need to terminate product pod first and run uninstall command again.
     ```shell
     kubectl delete pod <stalled-pod> -n atlassian --force
     ```
     To see the stalled pod name you can run the following command:
     ```shell
-    kubectl get pods -n atlassian 
+    kubectl get pods -n atlassian
     ```
 
 ??? tip "How do I deal with suspended AWS Auto Scaling Groups during Terraform uninstallation?"
 
     **Symptom**
-    
+
     If for any reason Auto Scaling Group gets suspended, AWS does not allow Terraform to delete the node group. In cases like this the uninstall process gets interrupted with the following error:
-    
+
     ```shell
     Error: error waiting for EKS Node Group (atlas-<environment_name>-cluster:appNode) to delete: unexpected state 'DELETE_FAILED', wanted target ''. last error: 2 errors occurred:
         * i-06a4b4afc9e7a76b0: NodeCreationFailure: Instances failed to join the kubernetes cluster
         * eks-appNode-3ebedddc-2d97-ff10-6c23-4900d1d79599: AutoScalingGroupInvalidConfiguration: Couldn't terminate instances in ASG as Terminate process is suspended
     ```
-    
+
     **Solution**
-    
-    Delete the reported Auto Scaling Group in AWS console and run uninstall command again. 
+
+    Delete the reported Auto Scaling Group in AWS console and run uninstall command again.
 
 ??? tip "How do I deal with Terraform AWS authentication issues during installation?"
 
     **Symptom**
-    
+
     The following error is thrown:
-    
+
     ```shell
     An error occurred (ExpiredToken) when calling the GetCallerIdentity operation: The security token included in the request is expired
     ```
-    
+
     **Solution**
-    
+
     Terraform cannot deploy resources to AWS if your security token has expired. Renew your token and retry.
 
 ??? tip "How do I deal with Terraform state lock acquisition errors?"
 
     If user interrupts the installation or uninstallation process, Terraform won't be able to unlock resources. In this case, Terraform is unable to acquire state lock in the next attempt.
-       
+
     **Symptom**
-    
+
     The following error is thrown:
-    
+
     ```shell
     Acquiring state lock. This may take a few moments...
-    
+
      Error: Error acquiring the state lock
-    
+
      Error message: ConditionalCheckFailedException: The conditional request failed
      Lock Info:
        ID:        26f7b9a8-1bef-0674-669b-1d60800dea4d
@@ -90,27 +90,27 @@ This guide contains general tips on how to investigate an application deployment
        Created:   2021-11-04 00:50:34.736134 +0000 UTC
        Info:
     ```
-    
+
     **Solution**
-    
+
     Forcibly unlock the state by running the following command:
-    
-    ```shell 
+
+    ```shell
     terraform force-unlock <ID>
     ```
-    
+
     Where `<ID>` is the value that appears in the error message.
-    
+
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
 ??? tip "How do I deal with state data in S3 that does not have the expected content?"
 
     If Terraform state is locked and users forcefully unlock it using `terraform force-unlock <id>`, it may not get a chance to update the Digest value in DynamoDB. This prevents Terraform from reading the state data.       
-    
+
     **Symptom**
-    
+
     The following error is thrown:
-    
+
     ```shell
     Error refreshing state: state data in S3 does not have the expected content.
 
@@ -120,71 +120,71 @@ This guide contains general tips on how to investigate an application deployment
     to manually verify the remote state and update the Digest value stored in the
     DynamoDB table to the following value: 531ca9bce76bbe0262f610cfc27bbf0b
     ```
-    
+
     **Solution**
-    
+
     1. Open DynamoDB page in AWS console and find the table named `atlassian_data_center_<region>_<aws_account_id>_tf_lock` in the same region as the cluster.
-    
-    2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`. 
-     
+
+    2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`.
+
     3. Click on the item and replace the `Digest` value with the given value in the error message.
 
 ??? tip "How do I deal with pre-existing state in multiple environment?"
 
-    If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state. 
-    
+    If you start installing a new environment while you already have an active environment installed before, you should *NOT* use the pre-existing state.
+
     The same scenario when you want to uninstall a non-active environment.     
-    
+
     !!! help "What is active environment?"
          Active environment is the latest environment you installed or uninstalled.
-            
+
     !!! tip "Tip"
         Answer '**NO**' when you get a similar message during installation or uninstallation:
         ```shellscript
-        Do you want to copy existing state to the new backend? Pre-existing state was found while migrating 
-        the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already 
-        exists in the new backend. The two states have been saved to temporary files that will be removed 
-        after responding to this query. 
-        
-        Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy 
+        Do you want to copy existing state to the new backend? Pre-existing state was found while migrating
+        the previous "s3" backend to the newly configured "s3" backend. An existing non-empty state already
+        exists in the new backend. The two states have been saved to temporary files that will be removed
+        after responding to this query.
+
+        Do you want to overwrite the state in the new backend with the previous state? Enter "yes" to copy
         and "no" to start with the existing state in the newly configured "s3" backend.
-        
+
         Enter a value:
         ```
-         
+
     **Symptom**
-    
-    Installation or uninstallation break after you chose to use pre-existing state. 
-    
-    
+
+    Installation or uninstallation break after you chose to use pre-existing state.
+
+
     **Solution**
-    
+
     1. Clean up the project before proceed. In root directory of the project run:
     ```shell
     ./scripts/cleanup.sh -s -t -x -r .
     terraform init -var-file=<config file>
     ```
     3. Then re-run the install/uninstall script.
-    
+
 
 ??? tip "How do I deal with `Module not installed` error during uninstallation?"
 
-    There are some Terraform specific modules that are required when performing an uninstall. These modules are generated by Terraform during the install process and are stored in the `.terraform` folder. If Terraform cannot find these modules, then it won't be able perform an uninstall of the infrastructure. 
+    There are some Terraform specific modules that are required when performing an uninstall. These modules are generated by Terraform during the install process and are stored in the `.terraform` folder. If Terraform cannot find these modules, then it won't be able perform an uninstall of the infrastructure.
 
     **Symptom**
-    
+
     ```shell
     Error: Module not installed
-    
+
       on main.tf line 7:
        7: module "tfstate-bucket" {
-    
+
     This module is not yet installed. Run "terraform init" to install all modules required by this configuration.
     ```
-    
-    
+
+
     **Solution**
-    
+
     1. In the root directory of the project run:
     ```shell
     ./scripts/cleanup.sh -s -t -x -r .
@@ -192,12 +192,12 @@ This guide contains general tips on how to investigate an application deployment
     terraform init -var-file=<config file>
     ```
     2. Go back to the root of the project and re-run the `uninstall.sh` script.
-    
+
 
 ??? tip "How to deal with `getting credentials: exec: executable aws failed with exit code 2` error?"
-       
+
     **Symptom**
-    
+
     After performing an `install.sh` the following error is encountered:
 
     ```shell
@@ -207,9 +207,9 @@ This guide contains general tips on how to investigate an application deployment
     on modules/common/main.tf line 39, in resource "kubernetes_namespace" "products":
     39: resource "kubernetes_namespace" "products" {
     ```
-       
+
     **Solution**
-    
+
     Ensure you are using a version of the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) that is at least >= `2` The version can be checked by running:
 
     ```shell
@@ -244,7 +244,7 @@ This guide contains general tips on how to investigate an application deployment
     ```shell
     kubectl get pods -n atlassian
     ```
-    
+
     However, another approach to see the full log files produced by the application would be to `ssh` to the application pod and access directly the log folder.
 
     ```shell  
@@ -264,24 +264,52 @@ This guide contains general tips on how to investigate an application deployment
 
 ??? tip "How to deal with persistent volume claim destroy failed error?"
 
-    The PVC cannot be destroyed when bound to a pod. Overcome this by scaling down to `0` pods first before deleting PVC. 
-    
+    The PVC cannot be destroyed when bound to a pod. Overcome this by scaling down to `0` pods first before deleting PVC.
+
     `helm upgrade PRODUCT atlassian-data-center/PRODUCT --set replicaCount=0 --reuse-values -n atlassian`
 
 ??? tip "How to manually clean up resources when uninstall has failed?"
 
-    Sometimes Terraform is unable to destroy resources for various reasons. This normally happens at EKS level. 
-    One quick solution is to manually delete the EKS cluster, and re-run uninstall, so that Terraform will pick up from there. 
+    Sometimes Terraform is unable to destroy resources for various reasons. This normally happens at EKS level.
+    One quick solution is to manually delete the EKS cluster, and re-run uninstall, so that Terraform will pick up from there.
 
-    To delete EKS cluster, go to AWS console > EKS service > the cluster you're deploying. 
+    To delete EKS cluster, go to AWS console > EKS service > the cluster you're deploying.
     You'll need to go to 'Configuration' tab > 'Compute' tab > click into node group.
     Then in node group screen > Details > click into Autoscaling group.
     It'll then direct you to EC2 > Auto Scaling Group screen with the ASG selected > 'Delete' the chosen ASG.
     Wait for the ASG to be deleted, then go back to EKS cluster > Delete.
 
+??? tip "How to deal with `This object does not have an attribute named` error when running uninstall.sh"
+
+    It is possible that if the installation has failed, the uninstall script will return an error like:
+
+    ```
+    module.base-infrastructure.module.eks.aws_autoscaling_group_tag.this["Name"]: Refreshing state... [id=eks-appNode-t3_xlarge-50c26268-ea57-5aee-4523-68f33af7dd71,Name]
+    Error: Unsupported attribute
+    on dc-infrastructure.tf line 142, in module "confluence":
+    142: ingress = module.base-infrastructure.ingress
+    ├────────────────
+    │ module.base-infrastructure is object with 5 attributes
+    This object does not have an attribute named "ingress".
+    Error: Unsupported attribute
+    ```
+    This happens because some of the modules failed to be installed. To fix the error, run the uninstall script with `-s` argument.
+    This will add `-refresh=false` to terraform destroy command.
+
+??? tip "How to deal with `Error: Kubernetes cluster unreachable: the server has asked for the client to provide credentials` error"
+
+    It is possible that you see such an error when running uninstall script with `-s` argument. If it's not possible to destroy infrastructure without it, delete the offending module from tfstate, for example:
+
+    ```
+    terraform state rm module.base-infrastructure.module.eks.helm_release.cluster-autoscaler
+    ```
+
+    Once done, re-run the uninstall script.
+
+
 ??? tip "How to deal with EIP AddressLimitExceeded error"
 
-    If you encounter the below error during installation stage, it means VPC is successfully created, but no Elastic IP addresses available. 
+    If you encounter the below error during installation stage, it means VPC is successfully created, but no Elastic IP addresses available.
 
     ```shell
     Error: Error creating EIP: AddressLimitExceeded: The maximum number of addresses has been reached.
@@ -292,10 +320,10 @@ This guide contains general tips on how to investigate an application deployment
     1078: resource "aws_eip" "nat" {
     ```
 
-    It happens when an old VPC was deleted but associated Elastic IPs were not released. Refer to AWS documentation on 
+    It happens when an old VPC was deleted but associated Elastic IPs were not released. Refer to AWS documentation on
     [how to release an Elastic IP address](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html#release-eip){.external}.  
 
-    Another option is to [increase the Elastic UP address limit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-limit){.external}. 
+    Another option is to [increase the Elastic UP address limit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-limit){.external}.
 ??? tip "How to deal with Nginx Ingress Helm deployment error"
 
     If you encounter the below error when providing 25+ cidrs in `whitelist_cidr` variable, it may be caused by the service controller being unable to create a Load Balancer due to exceeding the inbound rules quota in a security group:
