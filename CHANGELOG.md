@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.2.2
+
+**Release date:** 2022-12-14
+
+* Make skipping refresh optional on destroy [#293](https://github.com/atlassian-labs/data-center-terraform/pull/293)
+
 ## 2.2.1
 
 **Release date:** 2022-12-02
