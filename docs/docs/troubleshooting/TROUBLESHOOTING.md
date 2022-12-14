@@ -279,6 +279,31 @@ This guide contains general tips on how to investigate an application deployment
     It'll then direct you to EC2 > Auto Scaling Group screen with the ASG selected > 'Delete' the chosen ASG.
     Wait for the ASG to be deleted, then go back to EKS cluster > Delete.
 
+??? tip "How to deal with `This object does not have an attribute named` error when running uninstall.sh"
+
+    It is possible that if the installation has failed, the uninstall script will return an error like:
+    ```
+    module.base-infrastructure.module.eks.aws_autoscaling_group_tag.this["Name"]: Refreshing state... [id=eks-appNode-t3_xlarge-50c26268-ea57-5aee-4523-68f33af7dd71,Name]
+    Error: Unsupported attribute
+    on dc-infrastructure.tf line 142, in module "confluence":
+    142: ingress = module.base-infrastructure.ingress
+    ├────────────────
+    │ module.base-infrastructure is object with 5 attributes
+    This object does not have an attribute named "ingress".
+    Error: Unsupported attribute
+    ```
+    This happens because some of the modules failed to be installed. To fix the error, run the uninstall script with `-s` argument.
+    This will add `-refresh=false` to terraform destroy command.
+
+??? tip "How to deal with `Error: Kubernetes cluster unreachable: the server has asked for the client to provide credentials` error"
+
+    It is possible that you see such an error when running uninstall script with `-s` argument.
+    If it's not possible to destroy infrastructure without it, delete the offending module from tfstate, for example:
+    ```
+    terraform state rm module.base-infrastructure.module.eks.helm_release.cluster-autoscaler
+    ```
+    Once done, re-run the uninstall script.
+
 ??? tip "How to deal with EIP AddressLimitExceeded error"
 
     If you encounter the below error during installation stage, it means VPC is successfully created, but no Elastic IP addresses available. 
