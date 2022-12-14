@@ -124,7 +124,7 @@ destroy_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
   set +e
-  terraform -chdir="${ROOT_PATH}" destroy -auto-approve "${SKIP_REFRESH}" -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" destroy -auto-approve ${SKIP_REFRESH} -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
     set -e
   else
