@@ -1,5 +1,12 @@
 # Change Log
 
+
+## 2.2.3
+
+**Release date:** 2022-12-15
+
+* Fix uninstall script [#294](https://github.com/atlassian-labs/data-center-terraform/pull/294)
+
 ## 2.2.2
 
 **Release date:** 2022-12-14
