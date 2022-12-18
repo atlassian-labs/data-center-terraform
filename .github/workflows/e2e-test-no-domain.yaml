@@ -41,6 +41,11 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Pin Kubectl version
+        uses: azure/setup-kubectl@v3.0
+        with:
+          version: 'v1.24.0'
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@master
         with:
@@ -48,16 +53,11 @@ jobs:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           role-session-name: DCTerraformSession
 
-      - name: Pin Kubectl version
-        uses: azure/setup-kubectl@v3.0
-        with:
-          version: 'v1.24.0'
-      
       - name: Setup Go environment
         uses: actions/setup-go@v3
         with:
           go-version: '1.18'
-      
+
       - name: Setup Python environment
         uses: actions/setup-python@v4
         with:
@@ -65,7 +65,7 @@ jobs:
       - run: |
           python -m pip install --upgrade pip
           pip install boto3
-      
+
       - name: Setup dependencies
         id: setup-dependencies
         working-directory: test/
@@ -73,10 +73,10 @@ jobs:
           go version
           go get -v -t -d ./... && go mod tidy
           echo "exit_code=$?" >> $GITHUB_OUTPUT
-      
+
       - name: Create test output directory
         run: mkdir test/e2etest/artifacts
-      
+
       - name: Add private SSH key for Bitbucket tests
         uses: shimataro/ssh-key-action@v2
         with:
@@ -84,11 +84,11 @@ jobs:
           name: bitbucket-e2e # optional
           known_hosts: dummy-entry
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-      
+
       - name: Add public SSH key for Bitbucket tests
         run: |
           echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} > /home/runner/.ssh/bitbucket-e2e.pub
-      
+
       - name: E2E Testing with no domain
         id: e2e-test
         working-directory: test/
@@ -98,14 +98,14 @@ jobs:
           mkdir -p ~/.aws
           echo -e "[default]\naws_access_key_id = ${AWS_ACCESS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}\naws_session_token = ${AWS_SESSION_TOKEN}" > ~/.aws/credentials
           go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
-      
+
       - name: Upload test log files
         if: always()
         uses: actions/upload-artifact@v3.1.1
         with:
           name: e2e-test-artifacts
           path: test/e2etest/artifacts/
-      
+
       - name: Send slack notification
         if: always()
         run: |
