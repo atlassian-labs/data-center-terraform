@@ -1,7 +1,6 @@
 import logging
 import sys
 from argparse import ArgumentParser
-import time
 from time import sleep
 import boto3
 from boto3.exceptions import Boto3Error

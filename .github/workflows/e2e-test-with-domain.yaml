@@ -20,8 +20,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_DEFAULT_REGION: us-east-1
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       SLACK_WEBHOOK_URL_ALERTS: ${{ secrets.SLACK_WEBHOOK_URL_ALERTS }}
       SLACK_WEBHOOK_URL_NOTIFICATIONS: ${{ secrets.SLACK_WEBHOOK_URL_NOTIFICATIONS }}
       AWS_ADDITIONAL_ROLE: ${{ secrets.AWS_ADDITIONAL_ROLE }}
@@ -39,6 +37,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          role-session-name: DCTerraformSession
 
       - name: Pin Kubectl version
         uses: azure/setup-kubectl@v2.0
@@ -87,7 +92,8 @@ jobs:
         run: |
           set -o pipefail
           # boto3 ignores AWS creds env vars for some reason
-          aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" --profile default && aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" --profile default && aws configure set region "$AWS_DEFAULT_REGION" --profile default
+          mkdir -p ~/.aws
+          echo -e "[default]\naws_access_key_id = ${AWS_ACCESS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}\naws_session_token = ${AWS_SESSION_TOKEN}" > ~/.aws/credentials
           go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files

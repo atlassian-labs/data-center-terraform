@@ -59,6 +59,7 @@ func runInstallScript(configPath string) {
 		Stderr: os.Stdout,
 		Dir:    "../../",
 	}
+
 	// run `cmd` in background
 	_ = cmd.Start()
 
@@ -84,15 +85,13 @@ func runUninstallScript(configPath string) {
 
 func gatherK8sLogs(testConfig TestConfig) {
 	printTestBanner("Gathering K8s logs and events from environment ", testConfig.EnvironmentName)
-	//kubeconfig := fmt.Sprintf("../../kubeconfig_atlas-%s-cluster", testConfig.EnvironmentName)
 
 	cmd := &exec.Cmd{
 		Path:   "collect_k8s_logs.sh",
 		Args:   []string{"collect_k8s_logs.sh", "atlas-" + testConfig.EnvironmentName + "-cluster", testConfig.AwsRegion},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
-		//Env:    []string{"KUBECONFIG=" + kubeconfig},
-		Dir: "../../scripts",
+		Dir:    "../../scripts",
 	}
 
 	// run `cmd` in background
