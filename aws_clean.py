@@ -350,6 +350,32 @@ def delete_volumes(service_name, aws_region):
                         vol.delete()
 
 
+def delete_certificates(service_name, aws_region):
+    logging.info('Deleting unused certificates')
+    client = boto3.client('acm', region_name=aws_region)
+    response = client.list_certificates(CertificateStatuses=['ISSUED'])
+    for crt in response['CertificateSummaryList']:
+        if not (crt['InUse']) and (service_name in crt['DomainName']):
+            logging.info('Deleting unused certificate ' + crt['CertificateArn'])
+            client.delete_certificate(CertificateArn=crt['CertificateArn'])
+
+
+def delete_hosted_zones(service_name):
+    logging.info('Deleting unused hosted zones')
+    client = boto3.client('route53')
+    response = client.list_hosted_zones()
+    for hz in response['HostedZones']:
+        if service_name in hz['Name']:
+            hosted_zone_records = client.list_resource_record_sets(HostedZoneId=hz['Id'])
+            for hzr in hosted_zone_records['ResourceRecordSets']:
+                if (hzr['Type'] == 'CNAME') or (hzr['Type'] == 'A'):
+                    logging.info('Deleting record: ' + hzr['Name'])
+                    client.change_resource_record_sets(HostedZoneId=hz['Id'], ChangeBatch={"Changes": [
+                        {"Action": "DELETE", "ResourceRecordSet": hzr}]})
+            logging.info('Deleting hosted zone: ' + hz['Name'])
+            client.delete_hosted_zone(Id=hz['Id'])
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--service_name")
@@ -381,6 +407,8 @@ def main():
     terminate_open_id_providers(service_name)
     logging.info("Delete unused EBS volumes")
     delete_volumes(service_name, aws_region)
+    delete_certificates(service_name, aws_region)
+    delete_hosted_zones(service_name)
 
 
 if __name__ == '__main__':
