@@ -41,13 +41,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          aws-region: us-east-1
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          role-session-name: DCTerraformSession
-
       - name: Pin Kubectl version
         uses: azure/setup-kubectl@v2.0
         with:
@@ -88,6 +81,14 @@ jobs:
       - name: Add public SSH key for Bitbucket tests
         run: |
           echo ${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }} > /home/runner/.ssh/bitbucket-e2e.pub
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          role-session-name: DCTerraformSession
+          role-duration-seconds: 7200
 
       - name: E2E Testing with domain
         id: e2e-test
