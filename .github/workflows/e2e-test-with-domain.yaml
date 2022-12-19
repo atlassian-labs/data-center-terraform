@@ -44,6 +44,7 @@ jobs:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           role-session-name: DCTerraformSession
+          role-duration-seconds: 7200
 
       - name: Pin Kubectl version
         uses: azure/setup-kubectl@v2.0
