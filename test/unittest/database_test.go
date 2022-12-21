@@ -49,7 +49,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.module.db_instance.aws_db_instance.this[0]")
 	planDbIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["identifier"]
-	planDbSnapshotIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
 	planUserName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["username"]
 	planEngine := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["engine"]
 	planDbName := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["db_name"]
@@ -58,7 +57,6 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planIops := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["iops"]
 	planApplyImmediately := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["apply_immediately"]
 	assert.Equal(t, inputRdsInstanceId, planDbIdentifier)
-	assert.Equal(t, inputRdsSnapshotId, planDbSnapshotIdentifier)
 	assert.Equal(t, "postgres", planUserName)
 	assert.Equal(t, "postgres", planEngine)
 	assert.Equal(t, dbName, planDbName)
@@ -66,6 +64,16 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.EqualValues(t, inputAllocatedStorage, planAllocatedStorage)
 	assert.EqualValues(t, inputIops, planIops)
 	assert.EqualValues(t, true, planApplyImmediately)
+}
+
+func TestDbVariablesWithoutSnapshot(t *testing.T) {
+	t.Parallel()
+
+	tfOptions := GenerateTFOptions(DbValidVariable, t, databaseModule)
+
+	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
+
+	assert.Nil(t, plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"])
 }
 
 func TestDbPostgresVersionMap(t *testing.T) {

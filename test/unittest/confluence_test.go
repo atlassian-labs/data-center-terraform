@@ -27,12 +27,8 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	dbModuleKey := "module.database.module.db.module.db_instance.aws_db_instance.this[0]"
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, dbModuleKey)
 	dbModule := plan.ResourcePlannedValuesMap[dbModuleKey]
-	assert.Equal(t, "dummy-snapshot-id", dbModule.AttributeValues["snapshot_identifier"])
 	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
 	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
-
-	jobKey := "kubernetes_job.pre_install[0]" // if we have snapshot, we need to run the pre-install job as well
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, jobKey)
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -112,16 +108,15 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"license":      "dummy_license",
 	},
 	"synchrony_configuration": map[string]interface{}{
-		"cpu":          "1",
-		"mem":          "1Gi",
-		"min_heap":     "512m",
-		"max_heap":     "1024m",
-		"stack_size":   "1024k",
+		"cpu":        "1",
+		"mem":        "1Gi",
+		"min_heap":   "512m",
+		"max_heap":   "1024m",
+		"stack_size": "1024k",
 	},
 	"enable_synchrony":         false,
-	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_master_username":       "dummyUsername",
 	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",
-	 "termination_grace_period": 0,
+	"termination_grace_period": 0,
 }

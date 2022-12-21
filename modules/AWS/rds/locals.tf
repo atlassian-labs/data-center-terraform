@@ -10,7 +10,8 @@ locals {
       "10" = "10.19",
       "11" = "11.14",
       "12" = "12.9",
-      "13" = "13.7"
+      "13" = "13.7",
+      "14" = "14.5"
   }, var.major_engine_version, "11.14")
 
   family = lookup(
@@ -18,6 +19,10 @@ locals {
       "10" = "postgres10",
       "11" = "postgres11",
       "12" = "postgres12",
-      "13" = "postgres13"
+      "13" = "postgres13",
+      "14" = "postgres14"
   }, var.major_engine_version, "postgres11")
+
+  db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.confluence_db_snapshot[0].engine_version : null
+  db_snapshot_major_engine_version = var.snapshot_identifier != null ? element(split(".", data.aws_db_snapshot.confluence_db_snapshot[0].engine_version),0) : null
 }
