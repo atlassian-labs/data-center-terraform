@@ -33,7 +33,7 @@ module "ingress" {
   # inputs
   ingress_domain              = local.ingress_domain
   enable_ssh_tcp              = var.enable_ssh_tcp
-  load_balancer_access_ranges = var.whitelist_cidr
+  load_balancer_access_ranges = concat(var.whitelist_cidr, local.nat_ip_cidr)
   enable_https_ingress        = var.enable_https_ingress
 }
 
