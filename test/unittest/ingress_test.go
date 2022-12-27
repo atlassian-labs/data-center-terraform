@@ -58,6 +58,9 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc": map[string]interface{}{
+			"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+		},
 		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 		"enable_https_ingress":        bool(false),
 	}, t, ingressModule)
