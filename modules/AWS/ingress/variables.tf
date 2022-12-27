@@ -24,3 +24,8 @@ variable "load_balancer_access_ranges" {
     error_message = "Invalid CIDR. Valid format is a list of '<IPv4>/[0-32]' e.g: [\"10.0.0.0/18\"]."
   }
 }
+
+variable "vpc" {
+  description = "VPC module that hosts the products."
+  type        = any
+}

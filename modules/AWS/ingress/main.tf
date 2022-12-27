@@ -50,6 +50,14 @@ resource "helm_release" "ingress" {
   # wait for the certificate validation - https://kubernetes.github.io/ingress-nginx/deploy/#certificate-generation
   wait             = true
   create_namespace = true
+  
+  # We need to merge the list of cidrs provided in config.tfvars with the list of nat elastic IPs
+  # to make sure ingresses are available when accessed from within pods and nodes of the cluster
+
+  set {
+    name  = "controller.service.loadBalancerSourceRanges"
+    value = "{${join(",", concat(var.load_balancer_access_ranges, local.nat_ip_cidr))}}"
+  }
 
   values = [
     yamlencode({
@@ -64,8 +72,6 @@ resource "helm_release" "ingress" {
           # The value "Local" preserves the client source IP.
           # https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
           externalTrafficPolicy = "Local"
-
-          loadBalancerSourceRanges = var.load_balancer_access_ranges
 
           enableHttps = local.enable_https_ingress
 
