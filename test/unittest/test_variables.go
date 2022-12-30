@@ -344,6 +344,9 @@ var IngressInvalidVariablesValue = map[string]interface{}{
 		"10.13.1.1/32",
 	},
 	"enable_https_ingress": bool(false),
+	"vpc": map[string]interface{}{
+		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+	},
 }
 
 var IngressValidVariablesValue = map[string]interface{}{
@@ -352,6 +355,9 @@ var IngressValidVariablesValue = map[string]interface{}{
 		"10.13.1.1/32",
 	},
 	"enable_https_ingress": bool(false),
+	"vpc": map[string]interface{}{
+		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+	},
 }
 
 // Bitbucket

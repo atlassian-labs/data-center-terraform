@@ -1,6 +1,7 @@
 package unittest
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -13,6 +14,9 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc": map[string]interface{}{
+			"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+		},
 		"ingress_domain":              "test.deplops.com",
 		"enable_ssh_tcp":              true,
 		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
@@ -23,6 +27,11 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 
 	// verify the input variable
 	assert.Equal(t, "test.deplops.com", plan.RawPlan.Variables["ingress_domain"].Value)
+
+	// verify NAT public IPs are in controller.service.loadBalancerSourceRanges values in helm_release
+	expectedCidrs := plan.ResourcePlannedValuesMap["helm_release.ingress"].AttributeValues["set"].([]interface{})
+	assert.Contains(t, fmt.Sprintf("%v", expectedCidrs[0]), "0.0.0.0/0,1.1.1.1/32,2.2.2.2/32")
+
 
 	// verify ingress is created
 	ingressKey := "helm_release.ingress"
@@ -49,6 +58,9 @@ func TestIngressIsCreatedWithoutDomain(t *testing.T) {
 	t.Parallel()
 
 	tfOptions := GenerateTFOptions(map[string]interface{}{
+		"vpc": map[string]interface{}{
+			"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+		},
 		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 		"enable_https_ingress":        bool(false),
 	}, t, ingressModule)

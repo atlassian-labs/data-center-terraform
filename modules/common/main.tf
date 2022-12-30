@@ -33,8 +33,11 @@ module "ingress" {
   # inputs
   ingress_domain              = local.ingress_domain
   enable_ssh_tcp              = var.enable_ssh_tcp
+  # we need to merge the list of cidrs provided in config.tfvars with the list of nat elastic IPs
+  # to make sure ingresses are available when accessed from within pods and nodes of the cluster
   load_balancer_access_ranges = var.whitelist_cidr
   enable_https_ingress        = var.enable_https_ingress
+  vpc                         = module.vpc
 }
 
 resource "kubernetes_namespace" "products" {
