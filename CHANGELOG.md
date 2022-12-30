@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.2.4
+
+**Release date:** 2022-12-30
+
+* Add NAT EIP to whitelisted CIDRs in Nginx svc [#298](https://github.com/atlassian-labs/data-center-terraform/pull/298)
 
 ## 2.2.3
 
