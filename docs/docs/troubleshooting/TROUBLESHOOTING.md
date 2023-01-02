@@ -55,6 +55,37 @@ This guide contains general tips on how to investigate an application deployment
     
     Typically, if the pod is running but not marked as ready, it's the application itself that failed to start, i.e. it isn't an infrastructure issue.
 
+??? tip "How to fix 'exec plugin is configured to use API version' error?"
+ 
+    **Symptom**
+    
+    When running `install.sh` script the installation fails with an error:
+    
+    ```
+    module.base-infrastructure.kubernetes_namespace.products: Creating...
+    module.base-infrastructure.module.ingress.helm_release.ingress: Creating...
+
+    Error: Post "https://1D2E0AC7AE5EC290740D816BD53A68AB.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces": getting credentials: exec plugin is configured to use API version client.authentication.k8s.io/v1beta1, plugin returned version client.authentication.k8s.io/v1alpha1
+
+      with module.base-infrastructure.kubernetes_namespace.products,
+      on modules/common/main.tf line 43, in resource "kubernetes_namespace" "products":
+      43: resource "kubernetes_namespace" "products" {
+
+
+    Error: Kubernetes cluster unreachable: Get "https://1D2E0AC7AE5EC290740D816BD53A68AB.gr7.us-east-1.eks.amazonaws.com/version": getting credentials: decoding stdout: no kind "ExecCredential" is registered for version "client.authentication.k8s.io/v1alpha1" in scheme "pkg/runtime/scheme.go:100"
+
+      with module.base-infrastructure.module.ingress.helm_release.ingress,
+      on modules/AWS/ingress/main.tf line 44, in resource "helm_release" "ingress":
+      44: resource "helm_release" "ingress" {
+    ```
+    
+    The error is caused by API version mismatch. AWS CLI and Kubernetes and Helm providers use `v1alpha1` and `v1beta1` respectively.
+
+    **Solution**
+    
+    Update aws cli to the most recent version.
+    
+
 ??? tip "How do I uninstall an environment using a different Terraform configuration file?" 
   
     **Symptom**
