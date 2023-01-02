@@ -2,6 +2,59 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
+??? tip "How to troubleshoot a failed helm release"
+
+    **Symptom**
+    
+    Install script fails due failure to install Helm release. This applies to all DC products. You will see the following error:
+    
+    ```
+    module.confluence[0].helm_release.confluence: Still creating... [20m10s elapsed]
+    Warning: Helm release "confluence" was created but has a failed status. Use the `helm` command to investigate the error, correct it, then run Terraform again.
+      with module.confluence[0].helm_release.confluence,
+      on modules/products/confluence/helm.tf line 4, in resource "helm_release" "confluence":
+      
+      4: resource "helm_release" "confluence" {
+    
+    Error: timed out waiting for the condition
+      with module.confluence[0].helm_release.confluence,
+      on modules/products/confluence/helm.tf line 4, in resource "helm_release" "confluence":
+   
+   4: resource "helm_release" "confluence" {
+    Releasing state lock. This may take a few moments...
+    ```
+    
+    Helm gives up waiting for a successful release, Usually, it means that Confluence (or any other product) pod failed to pass its readiness probe,
+    or the pod has been stuck in a Pending state.
+    
+    **Solution**
+    
+    To troubleshoot the error, run the following script:
+    
+    ```
+    scripts/collect_k8s_logs.sh atlas-dcapt-confluence-small-cluster us-west-2 /path/to/local/directory
+    ```
+    
+    Cluster name and region may differ (look at environment name and region in your `config.tfvars`). The last argument is a destination path for a tar.gz with logs that the script will produce.
+    
+    Share the archive in Slack [#data-center-app-performance-toolkit](http://bit.ly/dcapt_slack){.external} channel along with your support request.
+    You can also look at the pod and its logs, e.g.:
+    
+    ```
+    confluence-0_log.log
+    confluence-0_describe.log
+    ```
+    
+    Odds are that logs may shed some light on why the pod isn't ready. Describe file will contain K8S events that may also help understand why the pod isn't in a Running state.
+    
+    It's also a good idea to get logs not sent to stdout/err:
+    
+    ```
+    kubectl exec confluence-0 -n atlassian -i -t -- cat /var/atlassian/application-data/confluence/logs/atlassian-confluence.log
+    ```
+    
+    Typically, if the pod is running but not marked as ready, it's the application itself that failed to start, i.e. it isn't an infrastructure issue.
+
 ??? tip "How do I uninstall an environment using a different Terraform configuration file?" 
   
     **Symptom**
