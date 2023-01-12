@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.3.0
+
+**Release date:** 2022-01-13
+
+* Read engine_version from snapshot. Support Postgres 14 [#297](https://github.com/atlassian-labs/data-center-terraform/pull/297)
+
 ## 2.2.4
 
 **Release date:** 2022-12-30
