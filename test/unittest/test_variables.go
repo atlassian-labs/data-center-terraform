@@ -238,7 +238,6 @@ var inputSubnets = []interface{}{"subnet1", "subnet2"}
 const inputSourceSgId = "dummy-source-sg"
 const inputProduct = "bamboo"
 const inputRdsInstanceId = "dummy-rds-instance-id"
-const inputRdsSnapshotId = "dummy-rds-snapshot-id"
 const inputInstanceClass = "dummy.instance.class"
 const inputAllocatedStorage = 100
 const inputIops = 1000
@@ -268,7 +267,6 @@ var DbValidVariable = map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
 	},
-	"snapshot_identifier": inputRdsSnapshotId,
 }
 
 var DbVariableWithDBMasterPassword = map[string]interface{}{
@@ -290,8 +288,7 @@ var DbVariableWithDBMasterPassword = map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
 	},
-	"snapshot_identifier": inputRdsSnapshotId,
-	"db_master_password":  masterPwd,
+	"db_master_password": masterPwd,
 }
 
 var DbInvalidVariable = map[string]interface{}{
@@ -332,8 +329,7 @@ var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
 	},
-	"snapshot_identifier": inputRdsSnapshotId,
-	"db_master_password":  "123@",
+	"db_master_password": "123@",
 }
 
 // Ingress
@@ -512,7 +508,6 @@ var JiraCorrectVariables = map[string]interface{}{
 	},
 	"db_master_password": "dummy_password",
 	"db_master_username": "dummy_username",
-	"db_snapshot_id":     "dummy-rds-snapshot-id",
 
 	"termination_grace_period": 0,
 }

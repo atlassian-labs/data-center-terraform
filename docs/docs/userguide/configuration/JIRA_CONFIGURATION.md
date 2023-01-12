@@ -90,12 +90,16 @@ jira_reserved_code_cache = "512m"
 `jira_db_major_engine_version` sets the PostgeSQL engine version that will be used.
 
 ```terraform
-jira_db_major_engine_version = "12" 
+jira_db_major_engine_version = "14" 
 ```
 
 !!! info "Supported DB versions"
 
-    Be sure to use a [DB engine version that is supported by Jira](https://confluence.atlassian.com/adminjiraserver/supported-platforms-938846830.html#Supportedplatforms-Databases){.external} 
+    Be sure to use a [DB engine version that is supported by Jira](https://confluence.atlassian.com/adminjiraserver/supported-platforms-938846830.html#Supportedplatforms-Databases){.external}
+
+!!! info "Restore from snapshot"
+
+    This value is ignored if RDS snaphost is provided with `jira_db_snapshot_id`.
 
 ### Database Instance Class
 

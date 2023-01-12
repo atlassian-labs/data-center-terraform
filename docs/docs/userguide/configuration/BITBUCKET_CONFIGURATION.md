@@ -101,12 +101,16 @@ bitbucket_max_heap = "512m"
 `bitbucket_db_major_engine_version` sets the PostgeSQL engine version that will be used.
 
 ```terraform
-bitbucket_db_major_engine_version = "13" 
+bitbucket_db_major_engine_version = "14" 
 ```
 
 !!! info "Supported DB versions"
 
-    Be sure to use a [DB engine version that is supported by Bitbucket](https://confluence.atlassian.com/bitbucketserver/supported-platforms-776640981.html){.external} 
+    Be sure to use a [DB engine version that is supported by Bitbucket](https://confluence.atlassian.com/bitbucketserver/supported-platforms-776640981.html){.external}
+
+!!! info "Restore from snapshot"
+
+    This value is ignored if RDS snaphost is provided with `bitbucket_db_snapshot_id`.
 
 
 ### Database Instance Class

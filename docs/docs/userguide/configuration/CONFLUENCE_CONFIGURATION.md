@@ -101,12 +101,16 @@ confluence_collaborative_editing_enabled = true
 `confluence_db_major_engine_version` sets the PostgeSQL engine version that will be used.
 
 ```terraform
-confluence_db_major_engine_version = "11" 
+confluence_db_major_engine_version = "14" 
 ```
 
 !!! info "Supported DB versions"
 
     Be sure to use a [DB engine version that is supported by Confluence](https://confluence.atlassian.com/doc/supported-platforms-207488198.html#SupportedPlatforms-Databases){.external} 
+
+!!! info "Restore from snapshot"
+
+    This value is ignored if RDS snaphost is provided with `confluence_db_snapshot_id`.
 
 ### Database Instance Class
 

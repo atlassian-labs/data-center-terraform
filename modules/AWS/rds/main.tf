@@ -21,6 +21,12 @@ module "security_group" {
   ]
 }
 
+data "aws_db_snapshot" "confluence_db_snapshot" {
+  count                  = var.snapshot_identifier != null ? 1 : 0
+  db_snapshot_identifier = var.snapshot_identifier
+  most_recent            = true
+}
+
 module "db" {
   source                      = "terraform-aws-modules/rds/aws"
   version                     = "~> 5.1"
@@ -32,9 +38,9 @@ module "db" {
 
   # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
   engine                      = "postgres"
-  engine_version              = local.engine_version
+  engine_version              = var.snapshot_identifier != null ? local.db_snapshot_engine_version : local.engine_version
   family                      = local.family             # DB parameter group
-  major_engine_version        = var.major_engine_version # DB option group
+  major_engine_version        = var.snapshot_identifier != null ? local.db_snapshot_major_engine_version : var.major_engine_version # DB option group
   instance_class              = var.instance_class
 
   allocated_storage           = var.allocated_storage
