@@ -168,7 +168,7 @@ jira_db_name = "jira"
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
 # This will restore the database from the snapshot and will not create a new database.
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
-# You must provide Jira license if you wish to retore the database from a snapshot.
+# You must provide Jira license if you wish to restore the database from a snapshot.
 # You must provide jira_db_master_username and jira_db_master_password that matches the ones in snapshot
 #jira_db_snapshot_id = "<DB_SNAPSHOT_ID>"
 #jira_license = "<LICENSE_KEY>"

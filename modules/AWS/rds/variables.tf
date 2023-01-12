@@ -48,7 +48,7 @@ variable "vpc" {
 }
 
 variable "major_engine_version" {
-  description = "RDS Major engine version for the product."
+  description = "RDS Major engine version for the product. If RDS snapshot is provided, this value is ignored."
   default     = "11"
   type        = string
   validation {

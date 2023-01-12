@@ -135,7 +135,7 @@ bamboo_db_major_engine_version = "13"
 
 !!! info "Supported DB versions"
 
-    Be sure to use a [DB engine version that is supported by Bamboo](https://confluence.atlassian.com/bamboo/supported-platforms-289276764.html#Supportedplatforms-Databases){.external} 
+    Be sure to use a [DB engine version that is supported by Bamboo](https://confluence.atlassian.com/bamboo/supported-platforms-289276764.html#Supportedplatforms-Databases){.external}
 
 ### Database Instance Class
 
