@@ -2,11 +2,11 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
-??? tip "How to troubleshoot a failed helm release"
+??? tip "How to troubleshoot a failed Helm release installation"
 
     **Symptom**
     
-    Install script fails due failure to install Helm release. This applies to all DC products. You will see the following error:
+    Install script fails due to failure when installing Helm release. This applies to all DC products. You will see the following error:
     
     ```
     module.confluence[0].helm_release.confluence: Still creating... [20m10s elapsed]
@@ -25,7 +25,7 @@ This guide contains general tips on how to investigate an application deployment
     ```
     
     Helm gives up waiting for a successful release, Usually, it means that Confluence (or any other product) pod failed to pass its readiness probe,
-    or the pod has been stuck in a Pending state.
+    or the pod is stuck in a Pending state.
     
     **Solution**
     
@@ -45,15 +45,15 @@ This guide contains general tips on how to investigate an application deployment
     confluence-0_describe.log
     ```
     
-    Odds are that logs may shed some light on why the pod isn't ready. Describe file will contain K8S events that may also help understand why the pod isn't in a Running state.
+    Odds are that logs may shed some light on why the pod isn't ready. The `product_describe.log` file will contain K8S events that may also help understand why the pod isn't in a `Running` state.
     
-    It's also a good idea to get logs not sent to stdout/err:
+    It's also a good idea to get logs that are not sent to stdout/err:
     
     ```
     kubectl exec confluence-0 -n atlassian -i -t -- cat /var/atlassian/application-data/confluence/logs/atlassian-confluence.log
     ```
     
-    Typically, if the pod is running but not marked as ready, it's the application itself that failed to start, i.e. it isn't an infrastructure issue.
+    Typically, if the pod is `Running` but not marked as `Ready`, it's the application that failed to start, i.e. it isn't an infrastructure issue.
 
 ??? tip "How to fix 'exec plugin is configured to use API version' error?"
  
@@ -83,7 +83,7 @@ This guide contains general tips on how to investigate an application deployment
 
     **Solution**
     
-    Update aws cli to the most recent version.
+    Update AWS CLI to the most recent version.
     
 
 ??? tip "How do I uninstall an environment using a different Terraform configuration file?" 
