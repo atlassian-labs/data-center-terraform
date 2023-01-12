@@ -2,6 +2,90 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
+??? tip "How to troubleshoot a failed Helm release installation"
+
+    **Symptom**
+    
+    Install script fails due to failure when installing Helm release. This applies to all DC products. You will see the following error:
+    
+    ```
+    module.confluence[0].helm_release.confluence: Still creating... [20m10s elapsed]
+    Warning: Helm release "confluence" was created but has a failed status. Use the `helm` command to investigate the error, correct it, then run Terraform again.
+      with module.confluence[0].helm_release.confluence,
+      on modules/products/confluence/helm.tf line 4, in resource "helm_release" "confluence":
+      
+      4: resource "helm_release" "confluence" {
+    
+    Error: timed out waiting for the condition
+      with module.confluence[0].helm_release.confluence,
+      on modules/products/confluence/helm.tf line 4, in resource "helm_release" "confluence":
+   
+   4: resource "helm_release" "confluence" {
+    Releasing state lock. This may take a few moments...
+    ```
+    
+    Helm gives up waiting for a successful release, Usually, it means that Confluence (or any other product) pod failed to pass its readiness probe,
+    or the pod is stuck in a Pending state.
+    
+    **Solution**
+    
+    To troubleshoot the error, run the following script:
+    
+    ```
+    scripts/collect_k8s_logs.sh atlas-dcapt-confluence-small-cluster us-west-2 /path/to/local/directory
+    ```
+    
+    Cluster name and region may differ (look at environment name and region in your `config.tfvars`). The last argument is a destination path for a tar.gz with logs that the script will produce.
+    
+    Share the archive in Slack [#data-center-app-performance-toolkit](http://bit.ly/dcapt_slack){.external} channel along with your support request.
+    You can also look at the pod and its logs, e.g.:
+    
+    ```
+    confluence-0_log.log
+    confluence-0_describe.log
+    ```
+    
+    Odds are that logs may shed some light on why the pod isn't ready. The `product_describe.log` file will contain K8S events that may also help understand why the pod isn't in a `Running` state.
+    
+    It's also a good idea to get logs that are not sent to stdout/err:
+    
+    ```
+    kubectl exec confluence-0 -n atlassian -i -t -- cat /var/atlassian/application-data/confluence/logs/atlassian-confluence.log
+    ```
+    
+    Typically, if the pod is `Running` but not marked as `Ready`, it's the application that failed to start, i.e. it isn't an infrastructure issue.
+
+??? tip "How to fix 'exec plugin is configured to use API version' error?"
+ 
+    **Symptom**
+    
+    When running `install.sh` script the installation fails with an error:
+    
+    ```
+    module.base-infrastructure.kubernetes_namespace.products: Creating...
+    module.base-infrastructure.module.ingress.helm_release.ingress: Creating...
+
+    Error: Post "https://1D2E0AC7AE5EC290740D816BD53A68AB.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces": getting credentials: exec plugin is configured to use API version client.authentication.k8s.io/v1beta1, plugin returned version client.authentication.k8s.io/v1alpha1
+
+      with module.base-infrastructure.kubernetes_namespace.products,
+      on modules/common/main.tf line 43, in resource "kubernetes_namespace" "products":
+      43: resource "kubernetes_namespace" "products" {
+
+
+    Error: Kubernetes cluster unreachable: Get "https://1D2E0AC7AE5EC290740D816BD53A68AB.gr7.us-east-1.eks.amazonaws.com/version": getting credentials: decoding stdout: no kind "ExecCredential" is registered for version "client.authentication.k8s.io/v1alpha1" in scheme "pkg/runtime/scheme.go:100"
+
+      with module.base-infrastructure.module.ingress.helm_release.ingress,
+      on modules/AWS/ingress/main.tf line 44, in resource "helm_release" "ingress":
+      44: resource "helm_release" "ingress" {
+    ```
+    
+    The error is caused by API version mismatch. AWS CLI and Kubernetes and Helm providers use `v1alpha1` and `v1beta1` respectively.
+
+    **Solution**
+    
+    Update AWS CLI to the most recent version.
+    
+
 ??? tip "How do I uninstall an environment using a different Terraform configuration file?" 
   
     **Symptom**
