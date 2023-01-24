@@ -1,5 +1,5 @@
 locals {
-  osquery_version = "5.5.1"
+  osquery_version = "5.7.0"
   # https://hello.atlassian.net/wiki/spaces/OBSERVABILITY/pages/140624694/Logging+pipeline+-+Sending+logs+to+Splunk#Kinesis-Stream-Details
   # e2e are deployed to almost a dozen of AWS regions, and we need to identify the closest available kinesis region.
   # If the region is found in any of the supported regions lists, it will be used as kinesis region in osquery flags.
