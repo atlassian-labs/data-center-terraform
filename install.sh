@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to deploy the infrastructure for the Atlassian Data Center products
 #
-# Usage:  install.sh [-c <config_file>] [-h]
+# Usage:  install.sh [-c <config_file>] [-f] [-h]
 # -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -f : Auto-approve
 # -h : provides help to how executing this script.

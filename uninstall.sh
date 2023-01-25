@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script manages to destroy the infrastructure of the Atlassian Data Center products
 #
-# Usage:  uninstall [-c <config_file>] [-s] [-h]
+# Usage:  uninstall [-c <config_file>] [-t] [-f] [-h]
 # -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided.
 # -t : clean up the terraform state
 # -f : Auto-approve
