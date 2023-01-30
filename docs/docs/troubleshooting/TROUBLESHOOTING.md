@@ -2,7 +2,7 @@
 
 This guide contains general tips on how to investigate an application deployment that doesn't work correctly.
 
-??? tip "How to troubleshoot a failed Helm release installation"
+??? tip "How to troubleshoot a failed Helm release installation?"
 
     **Symptom**
     
@@ -20,7 +20,7 @@ This guide contains general tips on how to investigate an application deployment
       with module.confluence[0].helm_release.confluence,
       on modules/products/confluence/helm.tf line 4, in resource "helm_release" "confluence":
    
-   4: resource "helm_release" "confluence" {
+    4: resource "helm_release" "confluence" {
     Releasing state lock. This may take a few moments...
     ```
     
@@ -54,6 +54,8 @@ This guide contains general tips on how to investigate an application deployment
     ```
     
     Typically, if the pod is `Running` but not marked as `Ready`, it's the application that failed to start, i.e. it isn't an infrastructure issue.
+
+
 
 ??? tip "How to fix 'exec plugin is configured to use API version' error?"
  
