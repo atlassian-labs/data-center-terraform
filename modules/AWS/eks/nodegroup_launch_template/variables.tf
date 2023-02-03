@@ -22,6 +22,11 @@ variable "instance_types" {
   type        = list(string)
 }
 
+variable "instance_disk_size" {
+  description = "Size of the disk attached to the cluster instance."
+  type        = number
+}
+
 variable "osquery_secret_name" {
   description = "Fleet enrollment secret name"
   type = string

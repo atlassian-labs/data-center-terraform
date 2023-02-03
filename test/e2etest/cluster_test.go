@@ -2,6 +2,8 @@ package e2etest
 
 import (
 	"github.com/aws/aws-sdk-go/service/autoscaling"
+	"github.com/aws/aws-sdk-go/service/ec2"
+	"strconv"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
@@ -47,4 +49,23 @@ func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 	autoScalingGroups, err := asgClient.DescribeAutoScalingGroups(input)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(autoScalingGroups.AutoScalingGroups))
+}
+
+func checkEbsVolumes(t *testing.T, testConfig TestConfig) {
+	printTestBanner("Check EBS Volume", "Size")
+	expectedDefaultVolumeSize := "50"
+	ec2Client := aws.NewEc2Client(t, testConfig.AwsRegion)
+	tagName := "tag:Name"
+	tagValue := testConfig.EnvironmentName
+	input := &ec2.DescribeVolumesInput{
+		Filters: []*ec2.Filter{
+			{
+				Name: &tagName,
+				Values: []*string{
+					&tagValue,
+				},
+			},
+		}}
+	result, _ := ec2Client.DescribeVolumes(input)
+	assert.Equal(t, expectedDefaultVolumeSize, strconv.FormatInt(*result.Volumes[0].Size, 10))
 }
