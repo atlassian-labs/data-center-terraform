@@ -6,6 +6,7 @@ module "nodegroup_launch_template" {
   region                          = var.region
   tags                            = var.tags
   instance_types                  = var.instance_types
+  instance_disk_size              = var.instance_disk_size
   osquery_secret_name             = var.osquery_secret_name
   osquery_secret_region           = local.osquery_secret_region
   osquery_env                     = var.osquery_env
@@ -51,7 +52,6 @@ module "eks" {
   # Managed node group defaults
   eks_managed_node_group_defaults = {
     ami_type  = local.ami_type
-    disk_size = var.instance_disk_size
   }
 
   # Self-managed node group. We explicitly disable automatic launch template creation
