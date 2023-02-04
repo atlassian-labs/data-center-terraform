@@ -51,7 +51,7 @@ OSQUERY_SERVICE_ENV=ci
 OSQUERY_ENV=${env}
 EOF
 
-/usr/local/bin/aws --region ${osquery_secret_region} secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:${osquery_secret_region}:${account_id}:secret:${osquery_secret_name} | jq -r '.SecretString' > /etc/osquery/fleet.enrollment_secret
+aws --region ${osquery_secret_region} secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:${osquery_secret_region}:${account_id}:secret:${osquery_secret_name} | jq -r '.SecretString' > /etc/osquery/fleet.enrollment_secret
 
 # osquery doesn't work with auditd service
 service auditd stop
