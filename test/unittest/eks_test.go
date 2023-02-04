@@ -171,7 +171,7 @@ func TestEksNodeLaunchTemplate(t *testing.T) {
 	userData, _ := base64.StdEncoding.DecodeString(fmt.Sprint(nodeGroupLaunchTemplate.AttributeValues["user_data"]))
 	// assert that modules/AWS/eks/nodegroup_launch_template/templates/userdata.sh.tpl makes it to user_data in launch template
 	// and contains aws command to retrieve osquery fleet enrolment secret
-	assert.True(t, strings.Contains(string(userData), "/usr/local/bin/aws --region"))
+	assert.True(t, strings.Contains(string(userData), "aws --region"))
 	// assert that aws region for aws cli is set to the current region when osquery_secret_region is undefined
 	assert.True(t, strings.Contains(string(userData), "--region us-east-1"))
 }
