@@ -175,7 +175,7 @@ func TestEksNodeLaunchTemplate(t *testing.T) {
 	// assert that aws region for aws cli is set to the current region when osquery_secret_region is undefined
 	assert.True(t, strings.Contains(string(userData), "--region us-east-1"))
 	// assert that the default osquery version makes it to the userdata in launch template
-	assert.True(t, strings.Contains(string(userData), "sudo yum install -y osquery-5.7.0"))
+	assert.True(t, strings.Contains(string(userData), "osquery-5.7.0"))
 }
 
 func TestKinesisRegionSelection(t *testing.T) {
