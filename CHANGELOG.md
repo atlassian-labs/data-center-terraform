@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.3.1
+
+**Release date:** 2022-02-07
+
+* Fix instance disk size override [#303](https://github.com/atlassian-labs/data-center-terraform/pull/303)
+* Update nfs-server image tag to address performance/stability issues [#305](https://github.com/atlassian-labs/data-center-terraform/pull/305)
+* Fix osquery installation and version upgrade [#304](https://github.com/atlassian-labs/data-center-terraform/pull/304)
+
 ## 2.3.0
 
 **Release date:** 2022-01-13
