@@ -36,13 +36,34 @@ for POD in ${PODS[@]}; do
   kubectl describe pod ${POD} -n atlassian > "${DEBUG_FOLDER}"/${POD}_describe.log 2>&1
 done
 
+echo "[INFO]: Extracting log files from pods"
+
+PRODUCTS=(bamboo-agent bamboo bitbucket confluence confluence-synchrony jira)
+for PRODUCT in ${PRODUCTS[@]}; do
+  LOGS_DIR="logs"
+  CONTAINER=${PRODUCT}
+  if [ ${PRODUCT} == "jira" ] || [ ${PRODUCT} == "bitbucket" ]; then
+    LOGS_DIR="log"
+  fi
+  if [ ${PRODUCT} == "confluence-synchrony" ]; then
+    LOGS_DIR="./"
+    CONTAINER="synchrony"
+  fi
+  PRODUCT_PODS=$(kubectl get pods -n atlassian -l=app.kubernetes.io/name=${PRODUCT} --no-headers -o custom-columns=":metadata.name")
+  for POD in ${PRODUCT_PODS[@]}; do
+    echo "[INFO]: Copying logs from ${POD}:/var/atlassian/application-data"
+    mkdir -p "${DEBUG_FOLDER}"/app-logs/${POD}
+    kubectl cp ${POD}:${LOGS_DIR} "${DEBUG_FOLDER}"/app-logs/${POD}/ -n atlassian -c ${CONTAINER}
+  done
+done
+
 NGINX_PODS=$(kubectl get pods -n ingress-nginx --no-headers -o custom-columns=":metadata.name")
 for POD in ${NGINX_PODS[@]}; do
   kubectl logs ${POD} -n ingress-nginx > "${DEBUG_FOLDER}"/${POD}_log.log 2>&1
   kubectl describe pod ${POD} -n ingress-nginx > "${DEBUG_FOLDER}"/${POD}_describe.log 2>&1
 done
 
-# checking status of Nginx ingress is important to troubleshoot any LOadBalancer issues
+# checking status of Nginx ingress is important to troubleshoot any LoadBalancer issues
 kubectl describe svc -n ingress-nginx > "${DEBUG_FOLDER}"/nginx_svc_describe.log 2>&1
 
 echo "[INFO]: Getting namespaces pods and events"
