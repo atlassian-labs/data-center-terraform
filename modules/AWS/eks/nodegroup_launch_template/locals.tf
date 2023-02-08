@@ -31,7 +31,6 @@ locals {
     osquery_version                 = var.osquery_version
     env                             = var.osquery_env
     aws_sts_arn_role                = local.aws_sts_arn_role
-    kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
     })]
 
   user_data = local.user_content != null ? base64encode(join("\n",local.user_content)) : null
