@@ -99,6 +99,10 @@ variable "osquery_version" {
   type = string
 }
 
+variable "osquery_fleet_entrollment_host" {
+  type = string
+}
+
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
   type   = object({

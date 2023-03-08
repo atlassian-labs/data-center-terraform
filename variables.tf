@@ -1011,6 +1011,11 @@ variable "osquery_version" {
   default     = "5.7.0"
 }
 
+variable "osquery_fleet_entrollment_host" {
+  type = string
+  default = "dummy-host"
+}
+
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
   type   = object({

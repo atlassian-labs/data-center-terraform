@@ -31,6 +31,7 @@ locals {
     osquery_version                 = var.osquery_version
     env                             = var.osquery_env
     aws_sts_arn_role                = local.aws_sts_arn_role
+    osquery_fleet_entrollment_host  = var.osquery_fleet_entrollment_host
     })]
 
   user_data = local.user_content != null ? base64encode(join("\n",local.user_content)) : null
