@@ -60,7 +60,7 @@ locals {
 
   synchrony_settings_stanza = yamlencode({
     synchrony = {
-      enabled    = true
+      enabled = true
     }
   })
 

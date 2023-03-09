@@ -6,7 +6,7 @@ resource "aws_launch_template" "nodegroup" {
   update_default_version = true
   user_data              = local.user_data
   instance_type          = var.instance_types[0]
-  
+
   block_device_mappings {
     device_name = "/dev/xvda"
 
@@ -19,11 +19,11 @@ resource "aws_launch_template" "nodegroup" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = var.tags
+    tags          = var.tags
   }
   tag_specifications {
     resource_type = "volume"
-    tags = var.tags
+    tags          = var.tags
   }
   lifecycle {
     create_before_destroy = true

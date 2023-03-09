@@ -1,25 +1,25 @@
 module "base-infrastructure" {
   source = "./modules/common"
 
-  region_name           = var.region
-  environment_name      = var.environment_name
-  eks_version           = var.eks_version
-  tags                  = var.resource_tags
-  instance_types        = var.instance_types
-  instance_disk_size    = var.instance_disk_size
-  max_cluster_capacity  = var.max_cluster_capacity
-  min_cluster_capacity  = var.min_cluster_capacity
-  domain                = var.domain
-  namespace             = local.namespace
-  eks_additional_roles  = var.eks_additional_roles
-  whitelist_cidr        = var.whitelist_cidr
-  enable_https_ingress  = var.enable_https_ingress
+  region_name          = var.region
+  environment_name     = var.environment_name
+  eks_version          = var.eks_version
+  tags                 = var.resource_tags
+  instance_types       = var.instance_types
+  instance_disk_size   = var.instance_disk_size
+  max_cluster_capacity = var.max_cluster_capacity
+  min_cluster_capacity = var.min_cluster_capacity
+  domain               = var.domain
+  namespace            = local.namespace
+  eks_additional_roles = var.eks_additional_roles
+  whitelist_cidr       = var.whitelist_cidr
+  enable_https_ingress = var.enable_https_ingress
 
-  enable_ssh_tcp        = local.install_bitbucket
-  osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
-  osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
-  osquery_env           = var.osquery_env
-  osquery_version       = var.osquery_version
+  enable_ssh_tcp                  = local.install_bitbucket
+  osquery_secret_name             = var.osquery_fleet_enrollment_secret_name
+  osquery_secret_region           = var.osquery_fleet_enrollment_secret_region_aws
+  osquery_env                     = var.osquery_env
+  osquery_version                 = var.osquery_version
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
 }
 
@@ -49,8 +49,8 @@ module "bamboo" {
     db_name              = var.bamboo_db_name
   }
 
-  installation_timeout = var.bamboo_installation_timeout
-  termination_grace_period  = var.bamboo_termination_grace_period
+  installation_timeout     = var.bamboo_installation_timeout
+  termination_grace_period = var.bamboo_termination_grace_period
 
   bamboo_configuration = {
     helm_version = var.bamboo_helm_chart_version
@@ -104,9 +104,9 @@ module "jira" {
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
-  replica_count             = var.jira_replica_count
-  installation_timeout      = var.jira_installation_timeout
-  termination_grace_period  = var.jira_termination_grace_period
+  replica_count            = var.jira_replica_count
+  installation_timeout     = var.jira_installation_timeout
+  termination_grace_period = var.jira_termination_grace_period
 
   jira_configuration = {
     helm_version        = var.jira_helm_chart_version
@@ -131,7 +131,7 @@ module "jira" {
   shared_home_snapshot_id = var.jira_shared_home_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
-  local_jira_chart_path   = local.local_jira_chart_path
+  local_jira_chart_path = local.local_jira_chart_path
 }
 
 module "confluence" {
@@ -158,11 +158,11 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count             = var.confluence_replica_count
-  installation_timeout      = var.confluence_installation_timeout
-  version_tag               = var.confluence_version_tag
-  enable_synchrony          = var.confluence_collaborative_editing_enabled
-  termination_grace_period  = var.confluence_termination_grace_period
+  replica_count            = var.confluence_replica_count
+  installation_timeout     = var.confluence_installation_timeout
+  version_tag              = var.confluence_version_tag
+  enable_synchrony         = var.confluence_collaborative_editing_enabled
+  termination_grace_period = var.confluence_termination_grace_period
 
   confluence_configuration = {
     helm_version = var.confluence_helm_chart_version
@@ -214,9 +214,9 @@ module "bitbucket" {
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
-  replica_count             = var.bitbucket_replica_count
-  installation_timeout      = var.bitbucket_installation_timeout
-  termination_grace_period  = var.bitbucket_termination_grace_period
+  replica_count            = var.bitbucket_replica_count
+  installation_timeout     = var.bitbucket_installation_timeout
+  termination_grace_period = var.bitbucket_termination_grace_period
 
   bitbucket_configuration = {
     helm_version = var.bitbucket_helm_chart_version
