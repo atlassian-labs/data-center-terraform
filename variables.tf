@@ -24,10 +24,10 @@ variable "environment_name" {
 
 variable "eks_version" {
   description   = "EKS K8s version"
-  default       = 1.24
+  default       = 1.25
   type          = number
   validation {
-    condition     = can(regex("^1\\.2[1-4]", var.eks_version))
+    condition     = can(regex("^1\\.2[1-5]", var.eks_version))
     error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24"
   }
 }

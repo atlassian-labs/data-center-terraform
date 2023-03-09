@@ -7,7 +7,7 @@ locals {
   autoscaler_service_account_namespace = "kube-system"
   autoscaler_service_account_name      = "cluster-autoscaler-aws-cluster-autoscaler-chart"
 
-  autoscaler_version = "9.16.0"
+  autoscaler_version = "9.25.0"
 
   ami_type = "AL2_x86_64"
 
