@@ -17,7 +17,7 @@ resource "aws_iam_role" "node_group" {
 }
 
 resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
-  for_each = toset(local.eks_node_policies)
+  for_each   = toset(local.eks_node_policies)
   policy_arn = each.value
   role       = aws_iam_role.node_group.name
 }

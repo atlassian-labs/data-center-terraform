@@ -1,7 +1,7 @@
 locals {
-  db_master_username = var.db_master_username == null ? "postgres" : var.db_master_username
+  db_master_username     = var.db_master_username == null ? "postgres" : var.db_master_username
   create_random_password = var.db_master_password == null ? true : false
-  db_jdbc_connection = "jdbc:postgresql://${module.db.db_instance_endpoint}/${var.product}"
+  db_jdbc_connection     = "jdbc:postgresql://${module.db.db_instance_endpoint}/${var.product}"
 
   # RDS major version is mapped to the lastest minor version for more details.
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.version13
@@ -24,5 +24,5 @@ locals {
   }, var.major_engine_version, "postgres11")
 
   db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.confluence_db_snapshot[0].engine_version : null
-  db_snapshot_major_engine_version = var.snapshot_identifier != null ? element(split(".", data.aws_db_snapshot.confluence_db_snapshot[0].engine_version),0) : null
+  db_snapshot_major_engine_version = var.snapshot_identifier != null ? element(split(".", data.aws_db_snapshot.confluence_db_snapshot[0].engine_version), 0) : null
 }

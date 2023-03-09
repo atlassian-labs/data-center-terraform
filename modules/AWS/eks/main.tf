@@ -19,9 +19,9 @@ module "eks" {
   version = "18.30.2"
 
   # Configure cluster
-  cluster_version = var.eks_version
-  cluster_name    = var.cluster_name
-  create_iam_role = true
+  cluster_version             = var.eks_version
+  cluster_name                = var.cluster_name
+  create_iam_role             = true
   create_cloudwatch_log_group = false
 
   # add-ons need to be explicitly declared: kube-proxy and vpc-cni are must-have ones
@@ -41,7 +41,7 @@ module "eks" {
 
   # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
-  enable_irsa = true
+  enable_irsa              = true
   iam_role_use_name_prefix = false
 
   # Networking
@@ -51,25 +51,25 @@ module "eks" {
 
   # Managed node group defaults
   eks_managed_node_group_defaults = {
-    ami_type  = local.ami_type
+    ami_type = local.ami_type
   }
 
   # Self-managed node group. We explicitly disable automatic launch template creation
   # to use a custom launch template with user data and resource_tags
   eks_managed_node_groups = {
     appNodes = {
-      name                         = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
-      max_size                     = var.max_cluster_capacity
-      desired_size                 = var.min_cluster_capacity
-      min_size                     = var.min_cluster_capacity
-      subnet_ids                   = slice(var.subnets, 0, 1)
-      capacity_type                = "ON_DEMAND"
-      create_launch_template       = false
-      launch_template_name         = "${var.cluster_name}-launch-template"
-      launch_template_version      = module.nodegroup_launch_template.version
-      create_iam_role              = false
-      iam_role_arn                 = aws_iam_role.node_group.arn
-      iam_role_use_name_prefix     = false
+      name                     = "appNode-${replace(join("-", var.instance_types), ".", "_")}"
+      max_size                 = var.max_cluster_capacity
+      desired_size             = var.min_cluster_capacity
+      min_size                 = var.min_cluster_capacity
+      subnet_ids               = slice(var.subnets, 0, 1)
+      capacity_type            = "ON_DEMAND"
+      create_launch_template   = false
+      launch_template_name     = "${var.cluster_name}-launch-template"
+      launch_template_version  = module.nodegroup_launch_template.version
+      create_iam_role          = false
+      iam_role_arn             = aws_iam_role.node_group.arn
+      iam_role_use_name_prefix = false
     }
   }
 }

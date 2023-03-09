@@ -219,10 +219,10 @@ confluence_min_heap = "1024m"
 confluence_max_heap = "2048m"
 
 # Synchrony instance resource configuration
-synchrony_cpu       = "2"
-synchrony_mem       = "2.5Gi"
-synchrony_min_heap  = "1024m"
-synchrony_max_heap  = "2048m"
+synchrony_cpu        = "2"
+synchrony_mem        = "2.5Gi"
+synchrony_min_heap   = "1024m"
+synchrony_max_heap   = "2048m"
 synchrony_stack_size = "2048k"
 
 

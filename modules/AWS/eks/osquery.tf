@@ -3,7 +3,7 @@
 
 # See: https://hello.atlassian.net/wiki/spaces/OBSERVABILITY/pages/140624694/Logging+pipeline+-+Sending+logs+to+Splunk#Kinesis-Stream-Details
 data "aws_iam_policy_document" "laas" {
-  count       = var.osquery_secret_name != "" ? 1 : 0
+  count = var.osquery_secret_name != "" ? 1 : 0
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
@@ -24,7 +24,7 @@ resource "aws_iam_policy" "laas" {
 }
 
 data "aws_iam_policy_document" "fleet_enrollment_secret" {
-  count       = var.osquery_secret_name != "" ? 1 : 0
+  count = var.osquery_secret_name != "" ? 1 : 0
   statement {
     effect    = "Allow"
     actions   = ["secretsmanager:GetSecretValue"]

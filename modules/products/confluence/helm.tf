@@ -39,18 +39,18 @@ resource "helm_release" "confluence" {
       }
       synchrony = {
         resources = {
-            jvm = {
-              maxHeap    = local.synchrony_resources.maxHeap
-              minHeap    = local.synchrony_resources.minHeap
-              stack_size = local.synchrony_resources.stackSize
-            }
-            container = {
-              requests = {
-                cpu    = local.synchrony_resources.cpu
-                memory = local.synchrony_resources.mem
-              }
+          jvm = {
+            maxHeap    = local.synchrony_resources.maxHeap
+            minHeap    = local.synchrony_resources.minHeap
+            stack_size = local.synchrony_resources.stackSize
+          }
+          container = {
+            requests = {
+              cpu    = local.synchrony_resources.cpu
+              memory = local.synchrony_resources.mem
             }
           }
+        }
       }
       database = {
         type = "postgresql"
