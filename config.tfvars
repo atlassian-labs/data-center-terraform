@@ -467,3 +467,75 @@ bamboo_db_name                 = "bamboo"
 # in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
 # if you encounter such an issue. This will apply to both Bamboo server and agent pods.
 #bamboo_termination_grace_period = 0
+
+################################################################################
+# Crowd Settings
+################################################################################
+
+# Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
+# crowd_helm_chart_version       = "<helm_chart_version>"
+
+# By default, Crowd will use the versions defined in their respective Helm charts:
+# https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/crowd/Chart.yaml
+# If you wish to override these versions, uncomment the following lines and set the crowd_version_tag to any of the versions published on Docker Hub:
+# https://hub.docker.com/r/atlassian/crowd/tags
+#crowd_version_tag       = "<BAMBOO_VERSION_TAG>"
+
+# Installation timeout
+# Different variables can influence how long it takes the application from installation to ready state. These
+# can be dataset restoration, resource requirements, number of replicas and others.
+#crowd_installation_timeout = <MINUTES>
+
+# Crowd instance resource configuration
+crowd_cpu      = "1"
+crowd_mem      = "1Gi"
+crowd_min_heap = "256m"
+crowd_max_heap = "512m"
+
+# Storage
+crowd_local_home_size  = "10Gi"
+crowd_shared_home_size = "10Gi"
+
+# Crowd NFS instance resource configuration
+#crowd_nfs_requests_cpu    = "<REQUESTS_CPU>"
+#crowd_nfs_requests_memory = "<REQUESTS_MEMORY>"
+#crowd_nfs_limits_cpu      = "<LIMITS_CPU>"
+#crowd_nfs_limits_memory   = "<LIMITS_MEMORY>"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+crowd_db_major_engine_version = "13"
+crowd_db_instance_class       = "db.t3.micro"
+crowd_db_allocated_storage    = 100
+crowd_db_iops                 = 1000
+crowd_db_name                 = "crowd"
+
+# Termination grace period
+# Under certain conditions, pods may be stuck in a Terminating state which forces shared-home pvc to be stuck
+# in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
+# if you encounter such an issue. This will apply to Crowd pods.
+#crowd_termination_grace_period = 0
+
+# Dataset Restore
+
+# Database restore configuration
+# If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
+# This will restore the database from the snapshot and will not create a new database.
+# The snapshot should be in the same AWS account and region as the environment to be deployed.
+# Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
+#crowd_db_snapshot_id = "<DB_SNAPSHOT_ID>"
+
+# The master user credential for the database instance.
+# If username is not provided, it'll be default to "postgres".
+# If password is not provided, a random password will be generated.
+#crowd_db_master_username     = "<DB_MASTER_USERNAME>"
+#crowd_db_master_password     = "<DB_MASTER_PASSWORD>"
+
+# Shared home restore configuration
+# To restore shared home dataset, you can provide EBS snapshot ID that contains content of the shared home volume.
+# This volume will be mounted to the NFS server and used when the product is started.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#crowd_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
