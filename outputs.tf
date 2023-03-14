@@ -74,6 +74,18 @@ output "bamboo_database" {
   } : null
 }
 
+output "crowd_database" {
+  description = "Crowd Database information"
+
+  value = local.install_crowd && length(module.crowd) == 1 ? {
+    rds_instance_id        = module.crowd[0].rds_instance_id
+    db_name                = module.crowd[0].db_name
+    kubernetes_secret_name = module.crowd[0].kubernetes_rds_secret_name
+    jdbc_connection        = module.crowd[0].rds_jdbc_connection
+  } : null
+}
+
+
 output "product_urls" {
   description = "URLs to access the deployed Atlassian products"
 
@@ -82,6 +94,7 @@ output "product_urls" {
     bitbucket  = local.install_bitbucket && length(module.bitbucket) == 1 ? module.bitbucket[0].product_domain_name : null
     bamboo     = local.install_bamboo && length(module.bamboo) == 1 ? module.bamboo[0].product_domain_name : null
     confluence = local.install_confluence && length(module.confluence) == 1 ? module.confluence[0].product_domain_name : null
+    crowd      = local.install_crowd && length(module.crowd) == 1 ? module.crowd[0].product_domain_name : null
   }
 }
 

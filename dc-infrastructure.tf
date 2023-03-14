@@ -257,3 +257,51 @@ module "bitbucket" {
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bitbucket_chart_path = local.local_bitbucket_chart_path
 }
+
+module "crowd" {
+  source     = "./modules/products/crowd"
+  count      = local.install_crowd ? 1 : 0
+  depends_on = [module.base-infrastructure]
+
+  environment_name        = var.environment_name
+  namespace               = module.base-infrastructure.namespace
+  vpc                     = module.base-infrastructure.vpc
+  eks                     = module.base-infrastructure.eks
+  ingress                 = module.base-infrastructure.ingress
+  db_major_engine_version = var.crowd_db_major_engine_version
+  db_allocated_storage    = var.crowd_db_allocated_storage
+  db_instance_class       = var.crowd_db_instance_class
+  db_iops                 = var.crowd_db_iops
+  db_name                 = var.crowd_db_name
+  db_master_username      = var.crowd_db_master_username
+  db_master_password      = var.crowd_db_master_password
+  db_snapshot_id          = var.crowd_db_snapshot_id
+
+
+  replica_count            = var.crowd_replica_count
+  installation_timeout     = var.crowd_installation_timeout
+  termination_grace_period = var.crowd_termination_grace_period
+
+  crowd_configuration = {
+    helm_version = var.crowd_helm_chart_version
+    cpu          = var.crowd_cpu
+    mem          = var.crowd_mem
+    min_heap     = var.crowd_min_heap
+    max_heap     = var.crowd_max_heap
+  }
+  image_repository = var.crowd_image_repository
+  version_tag      = var.crowd_version_tag
+
+  local_home_size  = var.crowd_local_home_size
+  shared_home_size = var.crowd_shared_home_size
+
+  nfs_requests_cpu    = var.crowd_nfs_requests_cpu
+  nfs_requests_memory = var.crowd_nfs_requests_memory
+  nfs_limits_cpu      = var.crowd_nfs_limits_cpu
+  nfs_limits_memory   = var.crowd_nfs_limits_memory
+
+  shared_home_snapshot_id = var.crowd_shared_home_snapshot_id
+
+  # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
+  local_crowd_chart_path = local.local_crowd_chart_path
+}
