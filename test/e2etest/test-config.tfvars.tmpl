@@ -143,3 +143,19 @@ eks_additional_roles = [
   }
 ]
 {{end}}
+
+################################################################################
+# Crowd Settings
+################################################################################
+
+crowd_cpu      = "1"
+crowd_mem      = "1Gi"
+crowd_min_heap = "256m"
+crowd_max_heap = "512m"
+
+crowd_nfs_requests_cpu    = "0.25"
+crowd_nfs_requests_memory = "256Mi"
+crowd_nfs_limits_cpu      = "0.25"
+crowd_nfs_limits_memory   = "256Mi"
+
+crowd_termination_grace_period = 0
