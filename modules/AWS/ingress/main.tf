@@ -50,7 +50,7 @@ resource "helm_release" "ingress" {
   # wait for the certificate validation - https://kubernetes.github.io/ingress-nginx/deploy/#certificate-generation
   wait             = true
   create_namespace = true
-  
+
   # We need to merge the list of cidrs provided in config.tfvars with the list of nat elastic IPs
   # to make sure ingresses are available when accessed from within pods and nodes of the cluster
 

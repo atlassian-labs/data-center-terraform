@@ -14,7 +14,7 @@ variable "region" {
 
 variable "tags" {
   description = "Additional tags for all resources to be created."
-  type = map(string)
+  type        = map(string)
 }
 
 variable "instance_types" {
@@ -29,22 +29,22 @@ variable "instance_disk_size" {
 
 variable "osquery_secret_name" {
   description = "Fleet enrollment secret name"
-  type = string
+  type        = string
 }
 
 variable "osquery_secret_region" {
   description = "Fleet enrollment secret AWS region"
-  type = string
+  type        = string
 }
 
 variable "osquery_env" {
   description = "Osquery environment name"
-  type = string
+  type        = string
 }
 
 variable "osquery_version" {
   description = "Osquery version"
-  type = string
+  type        = string
 }
 
 variable "osquery_fleet_entrollment_host" {
@@ -53,7 +53,7 @@ variable "osquery_fleet_entrollment_host" {
 
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
-  type   = object({
+  type = object({
     eu     = string
     non-eu = string
   })

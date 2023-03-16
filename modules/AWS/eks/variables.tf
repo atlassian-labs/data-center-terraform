@@ -8,11 +8,11 @@ variable "cluster_name" {
 }
 
 variable "eks_version" {
-  description   = "EKS K8s version"
-  type          = number
+  description = "EKS K8s version"
+  type        = number
   validation {
-    condition     = can(regex("^1\\.2[1-4]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24"
+    condition     = can(regex("^1\\.2[1-5]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.25."
   }
 }
 
@@ -23,7 +23,7 @@ variable "region" {
 
 variable "tags" {
   description = "Additional tags for all resources to be created."
-  type = map(string)
+  type        = map(string)
 }
 
 variable "vpc_id" {
@@ -81,22 +81,22 @@ variable "resource_tags" {
 
 variable "osquery_secret_name" {
   description = "Fleet enrollment secret name"
-  type = string
+  type        = string
 }
 
 variable "osquery_secret_region" {
   description = "Fleet enrollment secret AWS region"
-  type = string
+  type        = string
 }
 
 variable "osquery_env" {
   description = "Osquery environment name"
-  type = string
+  type        = string
 }
 
 variable "osquery_version" {
   description = "Osquery version"
-  type = string
+  type        = string
 }
 
 variable "osquery_fleet_entrollment_host" {
@@ -105,7 +105,7 @@ variable "osquery_fleet_entrollment_host" {
 
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
-  type   = object({
+  type = object({
     eu     = string
     non-eu = string
   })

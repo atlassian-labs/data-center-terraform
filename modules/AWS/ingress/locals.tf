@@ -1,11 +1,11 @@
 locals {
-  ingress_version   = "4.0.6"
-  ingress_name      = "ingress-nginx"
-  ingress_namespace = "ingress-nginx"
-  domain_supplied   = var.ingress_domain != null ? true : false
+  ingress_version      = "4.0.6"
+  ingress_name         = "ingress-nginx"
+  ingress_namespace    = "ingress-nginx"
+  domain_supplied      = var.ingress_domain != null ? true : false
   enable_https_ingress = var.enable_https_ingress
-  nat_ip_cidr            = var.load_balancer_access_ranges == ["0.0.0.0/0"] ? [] : formatlist("%s/32", var.vpc.nat_public_ips)
-  
+  nat_ip_cidr          = var.load_balancer_access_ranges == ["0.0.0.0/0"] ? [] : formatlist("%s/32", var.vpc.nat_public_ips)
+
   ssh_tcp_setting = var.enable_ssh_tcp ? yamlencode({
     tcp = {
       7999 : "atlassian/bitbucket:ssh"

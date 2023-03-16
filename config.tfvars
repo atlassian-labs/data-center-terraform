@@ -13,7 +13,7 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
-# EKS K8S API version. Defaults to 1.24. Allowed values are from 1.21 to 1.24.
+# EKS K8S API version. Defaults to 1.25. Allowed values are from 1.21 to 1.25.
 # See: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 # eks_version = <EKS_VERSION>
 
@@ -219,10 +219,10 @@ confluence_min_heap = "1024m"
 confluence_max_heap = "2048m"
 
 # Synchrony instance resource configuration
-synchrony_cpu       = "2"
-synchrony_mem       = "2.5Gi"
-synchrony_min_heap  = "1024m"
-synchrony_max_heap  = "2048m"
+synchrony_cpu        = "2"
+synchrony_mem        = "2.5Gi"
+synchrony_min_heap   = "1024m"
+synchrony_max_heap   = "2048m"
 synchrony_stack_size = "2048k"
 
 

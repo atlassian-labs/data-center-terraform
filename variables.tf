@@ -23,12 +23,12 @@ variable "environment_name" {
 }
 
 variable "eks_version" {
-  description   = "EKS K8s version"
-  default       = 1.24
-  type          = number
+  description = "EKS K8s version"
+  default     = 1.25
+  type        = number
   validation {
-    condition     = can(regex("^1\\.2[1-4]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24"
+    condition     = can(regex("^1\\.2[1-5]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24."
   }
 }
 
@@ -393,7 +393,7 @@ variable "confluence_min_heap" {
   default     = "256m"
   validation {
     condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_min_heap))
-    error_message = "Minimum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+    error_message = "Minimum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)."
   }
 }
 
@@ -403,7 +403,7 @@ variable "confluence_max_heap" {
   default     = "512m"
   validation {
     condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.confluence_max_heap))
-    error_message = "Maximum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+    error_message = "Maximum heap size for confluence instance is invalid. (Correct form: 1g | 1024m | 2048k)."
   }
 }
 
@@ -425,7 +425,7 @@ variable "synchrony_min_heap" {
   default     = "1g"
   validation {
     condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_min_heap))
-    error_message = "Minimum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+    error_message = "Minimum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)."
   }
 }
 
@@ -435,7 +435,7 @@ variable "synchrony_max_heap" {
   default     = "2g"
   validation {
     condition     = can(regex("^([0-9]){1,5}[k|m|g]$", var.synchrony_max_heap))
-    error_message = "Maximum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)"
+    error_message = "Maximum heap size for synchrony instance is invalid. (Correct form: 1g | 1024m | 2048k)."
   }
 }
 
@@ -445,7 +445,7 @@ variable "synchrony_stack_size" {
   default     = "2048k"
   validation {
     condition     = can(regex("^([0-9]){1,4}[k|m]$", var.synchrony_stack_size))
-    error_message = "Stack size for synchrony instance is invalid. (Correct form: 64m | 2048k)"
+    error_message = "Stack size for synchrony instance is invalid. (Correct form: 64m | 2048k)."
   }
 }
 
@@ -988,21 +988,21 @@ variable "bamboo_dataset_url" {
 }
 
 variable "osquery_fleet_enrollment_secret_name" {
-  type = string
+  type        = string
   description = "Fleet enrollment secret name"
-  default = ""
+  default     = ""
 }
 
 variable "osquery_fleet_enrollment_secret_region_aws" {
   description = "Fleet enrollment secret AWS region"
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "osquery_env" {
-  type = string
+  type        = string
   description = "Osquery environment name"
-  default = "osquery_dc_e2e_tests"
+  default     = "osquery_dc_e2e_tests"
 }
 
 variable "osquery_version" {
@@ -1018,7 +1018,7 @@ variable "osquery_fleet_entrollment_host" {
 
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
-  type   = object({
+  type = object({
     eu     = string
     non-eu = string
   })
