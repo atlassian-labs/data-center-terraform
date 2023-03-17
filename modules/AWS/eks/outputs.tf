@@ -24,7 +24,7 @@ output "cluster_security_group" {
 }
 
 output "cluster_asg_name" {
-  value = local.cluster_asg_name
+  value = module.eks.eks_managed_node_groups_autoscaling_group_names[0]
 }
 
 output "availability_zone" {
