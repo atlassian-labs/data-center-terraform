@@ -8,7 +8,7 @@ output "vpc" {
   }
 }
 
-output "eks" {
+output "cluster_details" {
   description = "EKS cluster information"
 
   value = {
