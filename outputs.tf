@@ -13,7 +13,6 @@ output "eks" {
 
   value = {
     cluster_name     = local.cluster_name
-    cluster_asg_name = nonsensitive(module.base-infrastructure.eks.cluster_asg_name)
   }
 }
 
