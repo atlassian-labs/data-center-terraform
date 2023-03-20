@@ -1198,3 +1198,10 @@ variable "crowd_install_local_chart" {
   default     = false
   type        = bool
 }
+
+variable "crowd_license" {
+  description = "Crowd license."
+  type        = string
+  sensitive   = true
+  default     = ""
+}

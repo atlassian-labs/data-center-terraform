@@ -89,8 +89,8 @@ variable "crowd_configuration" {
   description = "Crowd resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.crowd_configuration) == 5 &&
-    alltrue([for o in keys(var.crowd_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap"], o)]))
+    condition = (length(var.crowd_configuration) == 6 &&
+    alltrue([for o in keys(var.crowd_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "license"], o)]))
     error_message = "Crowd configuration is not valid."
   }
 }

@@ -539,3 +539,4 @@ crowd_db_name                 = "crowd"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #crowd_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+#crowd_license = "<LICENSE_KEY>"

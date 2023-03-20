@@ -288,6 +288,7 @@ module "crowd" {
     mem          = var.crowd_mem
     min_heap     = var.crowd_min_heap
     max_heap     = var.crowd_max_heap
+    license      = var.crowd_license
   }
   image_repository = var.crowd_image_repository
   version_tag      = var.crowd_version_tag
