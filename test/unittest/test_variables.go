@@ -554,3 +554,83 @@ var JiraInvalidVariables = map[string]interface{}{
 
 	"termination_grace_period": 0,
 }
+
+// Crowd
+
+var CrowdCorrectVariables = map[string]interface{}{
+	"environment_name": "dummy-environment",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+		"availability_zone":      "dummy-az",
+	},
+	"vpc":                     VpcDefaultModuleVariable,
+	"db_major_engine_version": "12",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"db_name":                 "jira",
+	"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
+	"replica_count":        1,
+	"installation_timeout": testTimeout,
+	"crowd_configuration": map[string]interface{}{
+		"helm_version": "1.0.0",
+		"cpu":          "2",
+		"mem":          "2Gi",
+		"min_heap":     "384m",
+		"max_heap":     "786m",
+	},
+	"termination_grace_period": 0,
+}
+
+var CrowdInvalidVariables = map[string]interface{}{
+	"environment_name": "invalid?environment",
+	"namespace":        "dummy-namespace",
+	"eks": map[string]interface{}{
+		"kubernetes_provider_config": map[string]interface{}{
+			"host":                   "dummy-host",
+			"token":                  "dummy-token",
+			"cluster_ca_certificate": "dummy-certificate",
+		},
+		"cluster_security_group": "dummy-sg",
+	},
+	"vpc":                     VpcDefaultModuleVariable,
+	"db_major_engine_version": "12",
+	"db_allocated_storage":    5,
+	"db_instance_class":       "dummy_db_instance_class",
+	"db_iops":                 1000,
+	"db_name":                 "jira",
+	"ingress": map[string]interface{}{
+		"outputs": map[string]interface{}{
+			"r53_zone":        "dummy_r53_zone",
+			"domain":          "dummy.domain.com",
+			"certificate_arn": "dummy_arn",
+			"lb_hostname":     "dummy.hostname.com.au",
+			"lb_zone_id":      "dummy_zone_id",
+		},
+	},
+	"replica_count":        1,
+	"installation_timeout": invalidTestTimeout,
+	"crowd_configuration": map[string]interface{}{
+		"cpu":      "2",
+		"mem":      "2Gi",
+		"min_heap": "384m",
+		"max_heap": "786m",
+	},
+	"db_master_password":       "dummy_password",
+	"db_master_username":       "dummy_username",
+	"termination_grace_period": 0,
+}

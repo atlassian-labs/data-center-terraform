@@ -38,7 +38,7 @@ done
 
 echo "[INFO]: Extracting log files from pods"
 
-PRODUCTS=(bamboo-agent bamboo bitbucket confluence confluence-synchrony jira)
+PRODUCTS=(bamboo-agent bamboo bitbucket confluence confluence-synchrony jira crowd)
 for PRODUCT in ${PRODUCTS[@]}; do
   LOGS_DIR="logs"
   CONTAINER=${PRODUCT}

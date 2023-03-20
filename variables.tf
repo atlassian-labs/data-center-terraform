@@ -36,8 +36,8 @@ variable "products" {
   description = "List of the products to be installed."
   type        = list(string)
   validation {
-    condition     = alltrue([for o in var.products : contains(["jira", "bitbucket", "confluence", "bamboo"], lower(o))])
-    error_message = "Non-supported product is provided. Only 'jira', 'bitbucket', 'confluence',  and 'bamboo' are supported."
+    condition     = alltrue([for o in var.products : contains(["jira", "bitbucket", "confluence", "bamboo", "crowd"], lower(o))])
+    error_message = "Non-supported product is provided. Only 'jira', 'bitbucket', 'confluence', 'bamboo', and 'crowd' are supported."
   }
 }
 
@@ -1021,4 +1021,180 @@ variable "kinesis_log_producers_role_arns" {
     eu     = "dummy-arn",
     non-eu = "dummy-arn"
   }
+}
+
+################################################################################
+# Crowd Settings
+################################################################################
+
+variable "crowd_helm_chart_version" {
+  description = "Version of Crowd Helm chart"
+  type        = string
+  default     = ""
+}
+
+variable "crowd_image_repository" {
+  description = "Crowd image repository"
+  type        = string
+  default     = "atlassian/crowd"
+}
+
+variable "crowd_version_tag" {
+  description = "Version of Crowd"
+  type        = string
+  default     = null
+}
+
+variable "crowd_replica_count" {
+  description = "Number of Crowd application nodes"
+  type        = number
+  default     = 1
+  validation {
+    condition     = var.crowd_replica_count >= 0
+    error_message = "Number of nodes must be greater than or equal to 0."
+  }
+}
+
+variable "crowd_termination_grace_period" {
+  description = "Termination grace period in seconds"
+  type        = number
+  default     = 30
+}
+
+variable "crowd_installation_timeout" {
+  description = "Timeout for helm chart installation in minutes"
+  type        = number
+  default     = 15
+}
+
+variable "crowd_cpu" {
+  description = "Number of CPUs for Crowd instance"
+  type        = string
+  default     = "1"
+}
+
+variable "crowd_mem" {
+  description = "Amount of memory for Crowd instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "crowd_min_heap" {
+  description = "Minimum heap size for Crowd instance"
+  type        = string
+  default     = "384m"
+}
+
+variable "crowd_max_heap" {
+  description = "Maximum heap size for Crowd instance"
+  type        = string
+  default     = "768m"
+}
+
+variable "crowd_local_home_size" {
+  description = "Storage size for Crowd local home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "crowd_db_major_engine_version" {
+  description = "The database major version to use for Crowd."
+  default     = "12"
+  type        = string
+}
+
+variable "crowd_db_allocated_storage" {
+  description = "Allocated storage for database instance in GiB."
+  default     = 100
+  type        = number
+}
+
+variable "crowd_db_instance_class" {
+  description = "Instance class of the RDS instance."
+  default     = "db.t3.micro"
+  type        = string
+}
+
+variable "crowd_db_iops" {
+  description = "The requested number of I/O operations per second that the DB instance can support."
+  default     = 1000
+  type        = number
+}
+
+variable "crowd_db_name" {
+  description = "The default DB name of the DB instance."
+  default     = "crowd"
+  type        = string
+}
+
+variable "crowd_db_snapshot_id" {
+  description = "The identifier for the DB snapshot to restore from. The snapshot should be in the same AWS region as the DB instance."
+  default     = null
+  type        = string
+}
+
+variable "crowd_db_master_username" {
+  description = "Master username for the Crowd RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^[a-zA-Z_]([a-zA-Z0-9_]).{5,30}$", var.crowd_db_master_username)) || var.crowd_db_master_username == null
+    error_message = "Master username must be set. It must be between 6 and 31 characters long and start with a letter/underscore and contain combination of numbers, letters, and underscore."
+  }
+}
+
+variable "crowd_db_master_password" {
+  description = "Master password for the Crowd RDS instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!#$%^&*(){}?<>,.]).{8,}$", var.crowd_db_master_password)) || var.crowd_db_master_password == null
+    error_message = "Master password must be set. It must be at least 8 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
+variable "crowd_shared_home_size" {
+  description = "Storage size for Crowd shared home"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "crowd_nfs_requests_cpu" {
+  description = "The minimum CPU compute to request for the NFS instance"
+  type        = string
+  default     = "1"
+}
+
+variable "crowd_nfs_requests_memory" {
+  description = "The minimum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "crowd_nfs_limits_cpu" {
+  description = "The maximum CPU compute to allocate to the NFS instance"
+  type        = string
+  default     = "2"
+}
+
+variable "crowd_nfs_limits_memory" {
+  description = "The maximum amount of memory to allocate to the NFS instance"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "crowd_shared_home_snapshot_id" {
+  description = "EBS Snapshot ID with shared home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.crowd_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.crowd_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
+variable "crowd_install_local_chart" {
+  description = "If true installs Crowd using local Helm charts located in local_helm_charts_path"
+  default     = false
+  type        = bool
 }
