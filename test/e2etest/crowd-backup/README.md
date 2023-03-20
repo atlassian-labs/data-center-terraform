@@ -21,7 +21,11 @@ docker run -ti --link postgres -p 8095:9085 atlassian/crowd:$version
 
 Go to `http://localhost:8095` and complete Crowd installation. DB hostname will be `postgres`.
 
-Exec into postgres container to dump the db:
+Go to Applications -> **crowd-openid-server**, change password, save it to `TF_VAR_CROWD_ADMIN_PASSWORD` secret in GitHub actions. Update this secret in https://github.com/atlassian/data-center-helm-charts repository as well.
+
+Then, go to Remote addresses and add 0.0.0.0/0 to allow connections from all IPs.
+
+Once done, exec into postgres container to dump the db:
 
 ```
 docker exec postgres sh -c "export PGPASSWORD=crowd; pg_dump -U postgres crowd >/opt/crowd.sql"
