@@ -479,7 +479,7 @@ bamboo_db_name                 = "bamboo"
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/crowd/Chart.yaml
 # If you wish to override these versions, uncomment the following lines and set the crowd_version_tag to any of the versions published on Docker Hub:
 # https://hub.docker.com/r/atlassian/crowd/tags
-#crowd_version_tag       = "<BAMBOO_VERSION_TAG>"
+#crowd_version_tag       = "<CROWD_VERSION_TAG>"
 
 # Installation timeout
 # Different variables can influence how long it takes the application from installation to ready state. These

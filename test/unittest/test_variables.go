@@ -601,6 +601,7 @@ var CrowdCorrectVariables = map[string]interface{}{
 		"mem":          "2Gi",
 		"min_heap":     "384m",
 		"max_heap":     "786m",
+		"license":      "dummy-license",
 	},
 	"termination_grace_period": 0,
 }
