@@ -23,6 +23,8 @@ module "eks" {
   osquery_env                     = var.osquery_env
   osquery_version                 = var.osquery_version
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
+  osquery_fleet_entrollment_host  = var.osquery_fleet_entrollment_host
+
 }
 
 

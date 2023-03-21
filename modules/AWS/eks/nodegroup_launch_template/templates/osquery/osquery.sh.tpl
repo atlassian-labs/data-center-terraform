@@ -8,8 +8,6 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 ### OSQUERY INSTALLATION
 
-# This script is taken from https://hello.atlassian.net/wiki/spaces/SECURITY/pages/380804774/Osquery+AWS+Server+Deployment+Guide
-
 sudo yum install -y yum-utils unzip jq
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -20,12 +18,10 @@ sudo yum-config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.rep
 sudo yum-config-manager --enable osquery-s3-rpm
 sudo yum install -y osquery-${osquery_version}
 
-# https://hello.atlassian.net/wiki/spaces/OBSERVABILITY/pages/140624694/Logging+pipeline+-+Sending+logs+to+Splunk#Kinesis-Stream-Details
-
 cat <<'EOF' >> /etc/osquery/osquery.flags
 --force=true
 --host_identifier=hostname
---tls_hostname=fleet-server.services.atlassian.com
+--tls_hostname=${osquery_fleet_entrollment_host}
 --config_plugin=tls
 --config_tls_refresh=300
 --enroll_tls_endpoint=/api/v1/osquery/enroll
@@ -43,8 +39,6 @@ cat <<'EOF' >> /etc/osquery/osquery.flags
 --logger_plugin=aws_kinesis
 EOF
 
-# OSQUERY_SERVICE is set to https://microscope.prod.atl-paas.net/services/${env}
-# It has to be created if it does not exist
 cat <<'EOF' >> /etc/sysconfig/osqueryd
 OSQUERY_SERVICE=${env}
 OSQUERY_SERVICE_ENV=ci
@@ -61,10 +55,6 @@ chkconfig auditd off
 systemctl start osqueryd
 systemctl enable osqueryd
 systemctl status osqueryd.service
-
-echo "Begin checking Fleet server availability"
-curl -v https://fleet-server.services.atlassian.com/api/v1/osquery/enroll
-echo "End checking fleet server availability"
 
 ### /OSQUERY INSTALLATION
 
