@@ -12,7 +12,7 @@ crowd_helm_chart_version = "1.10.0"
 
 ### Crowd version tag
 
-Crowd will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/crowd/Chart.yaml#L6). If you want to install a specific version of Bamboo, you can set the `crowd_version_tag` to the version you want to install.
+Crowd will be installed with the default version defined in its [Helm chart](https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/crowd/Chart.yaml#L6). If you want to install a specific version of Crowd, you can set the `crowd_version_tag` to the version you want to install.
 
 For more information, see [Crowd Version Tags](https://hub.docker.com/r/atlassian/crowd/tags){.external}.
 
