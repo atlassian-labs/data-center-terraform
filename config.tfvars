@@ -526,7 +526,7 @@ crowd_db_name                 = "crowd"
 # This will restore the database from the snapshot and will not create a new database.
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
-#crowd_db_snapshot_id = "<DB_SNAPSHOT_ID>"
+#crowd_db_snapshot_id           = "<DB_SNAPSHOT_ID>"
 #crowd_db_snapshot_build_number = "<BUILD_NUMBER>"
 
 # The master user credential for the database instance.
@@ -540,4 +540,7 @@ crowd_db_name                 = "crowd"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #crowd_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+# Crowd license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_crowd_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #crowd_license = "<LICENSE_KEY>"

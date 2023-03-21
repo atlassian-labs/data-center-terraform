@@ -12,10 +12,9 @@ output "eks" {
   description = "EKS cluster information"
 
   value = {
-    cluster_name     = module.base-infrastructure.eks.cluster_name
-    cluster_id       = module.base-infrastructure.eks.cluster_id
-    cluster_asg_name = module.base-infrastructure.eks.cluster_asg_name
+    cluster_name = local.cluster_name
   }
+  sensitive = true
 }
 
 output "ingress" {

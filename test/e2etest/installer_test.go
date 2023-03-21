@@ -10,7 +10,7 @@ import (
 
 func TestInstaller(t *testing.T) {
 
-	productList := []string{jira, confluence, bamboo, bitbucket}
+	productList := []string{jira, confluence, bamboo, bitbucket, crowd}
 	useDomain, _ := strconv.ParseBool(os.Getenv("USE_DOMAIN"))
 	additionalRole := os.Getenv("AWS_ADDITIONAL_ROLE")
 	testConfig := createConfig(t, productList, useDomain, additionalRole)
@@ -33,6 +33,7 @@ func TestInstaller(t *testing.T) {
 	checkEbsVolumes(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
+	crowdDbInfo := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "crowd_database")
 	synchronyUrl := terraform.Output(t, &terraform.Options{TerraformDir: "../../"}, "synchrony_url")
 
 	if contains(productList, bamboo) {
@@ -49,6 +50,10 @@ func TestInstaller(t *testing.T) {
 
 	if contains(productList, bitbucket) {
 		bitbucketHealthTests(t, testConfig, productUrls[bitbucket])
+	}
+
+	if contains(productList, crowd) {
+		crowdTests(t, testConfig, productUrls[bitbucket], productUrls[crowd], crowdDbInfo["jdbc_connection"], useDomain)
 	}
 }
 
@@ -71,7 +76,7 @@ func runInstallScript(configPath string) {
 func runUninstallScript(configPath string) {
 	cmd := &exec.Cmd{
 		Path:   "uninstall.sh",
-		Args:   []string{"uninstall.sh", "-c", configPath, "-f", "-s"},
+		Args:   []string{"uninstall.sh", "-c", configPath, "-f"},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 		Dir:    "../../",

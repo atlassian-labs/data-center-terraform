@@ -29,6 +29,7 @@ const (
 	confluence = "confluence"
 	bitbucket  = "bitbucket"
 	bamboo     = "bamboo"
+	crowd      = "crowd"
 
 	// License for the products
 	confluenceLicense = ""
@@ -48,8 +49,10 @@ type TestConfig struct {
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
+	CrowdLicense      string
 	BambooPassword    string
 	BitbucketPassword string
+	CrowdPassword     string
 }
 
 func EnvironmentName() string {
@@ -164,8 +167,10 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 		ConfluenceLicense: getLicense(productList, confluence),
 		BitbucketLicense:  getLicense(productList, bitbucket),
 		BambooLicense:     getLicense(productList, bamboo),
+		CrowdLicense:      getLicense(productList, crowd),
 		BambooPassword:    getPassword(productList, bamboo),
 		BitbucketPassword: getPassword(productList, bitbucket),
+		CrowdPassword:     getPassword(productList, crowd),
 	}
 
 	// Product list

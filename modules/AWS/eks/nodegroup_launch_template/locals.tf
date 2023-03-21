@@ -24,13 +24,14 @@ locals {
   templates_all = var.osquery_secret_name != "" ? concat(tolist(local.templates), ["osquery/osquery.sh.tpl"]) : local.templates
 
   user_content = [for tpl in local.templates_all : templatefile("${path.module}/templates/${tpl}", {
-    account_id            = data.aws_caller_identity.current.account_id
-    aws_sts_region        = local.aws_sts_region
-    osquery_secret_name   = var.osquery_secret_name
-    osquery_secret_region = var.osquery_secret_region
-    osquery_version       = var.osquery_version
-    env                   = var.osquery_env
-    aws_sts_arn_role      = local.aws_sts_arn_role
+    account_id                     = data.aws_caller_identity.current.account_id
+    aws_sts_region                 = local.aws_sts_region
+    osquery_secret_name            = var.osquery_secret_name
+    osquery_secret_region          = var.osquery_secret_region
+    osquery_version                = var.osquery_version
+    env                            = var.osquery_env
+    aws_sts_arn_role               = local.aws_sts_arn_role
+    osquery_fleet_entrollment_host = var.osquery_fleet_entrollment_host
   })]
 
   user_data = local.user_content != null ? base64encode(join("\n", local.user_content)) : null
