@@ -71,7 +71,7 @@ crowd_db_major_engine_version = "13"
 
 !!! info "Supported DB versions"
 
-    Be sure to use a [DB engine version that is supported by crowd](https://confluence.atlassian.com/doc/supported-platforms-207488198.html#SupportedPlatforms-Databases){.external} 
+    Be sure to use a [DB engine version that is supported by crowd](https://confluence.atlassian.com/crowd/supported-platforms-191851.html){.external} 
 
 !!! info "Restore from snapshot"
 
