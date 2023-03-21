@@ -1138,6 +1138,12 @@ variable "crowd_db_snapshot_id" {
   type        = string
 }
 
+variable "crowd_db_snapshot_build_number" {
+  description = "Crowd build number of the database snapshot."
+  type        = string
+  default     = null
+}
+
 variable "crowd_db_master_username" {
   description = "Master username for the Crowd RDS instance."
   type        = string

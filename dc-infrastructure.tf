@@ -265,19 +265,20 @@ module "crowd" {
   count      = local.install_crowd ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name        = var.environment_name
-  namespace               = module.base-infrastructure.namespace
-  vpc                     = module.base-infrastructure.vpc
-  eks                     = module.base-infrastructure.eks
-  ingress                 = module.base-infrastructure.ingress
-  db_major_engine_version = var.crowd_db_major_engine_version
-  db_allocated_storage    = var.crowd_db_allocated_storage
-  db_instance_class       = var.crowd_db_instance_class
-  db_iops                 = var.crowd_db_iops
-  db_name                 = var.crowd_db_name
-  db_master_username      = var.crowd_db_master_username
-  db_master_password      = var.crowd_db_master_password
-  db_snapshot_id          = var.crowd_db_snapshot_id
+  environment_name         = var.environment_name
+  namespace                = module.base-infrastructure.namespace
+  vpc                      = module.base-infrastructure.vpc
+  eks                      = module.base-infrastructure.eks
+  ingress                  = module.base-infrastructure.ingress
+  db_major_engine_version  = var.crowd_db_major_engine_version
+  db_allocated_storage     = var.crowd_db_allocated_storage
+  db_instance_class        = var.crowd_db_instance_class
+  db_iops                  = var.crowd_db_iops
+  db_name                  = var.crowd_db_name
+  db_master_username       = var.crowd_db_master_username
+  db_master_password       = var.crowd_db_master_password
+  db_snapshot_id           = var.crowd_db_snapshot_id
+  db_snapshot_build_number = var.crowd_db_snapshot_build_number
 
 
   replica_count            = var.crowd_replica_count

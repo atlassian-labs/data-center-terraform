@@ -159,6 +159,16 @@ variable "db_snapshot_id" {
   default     = null
 }
 
+variable "db_snapshot_build_number" {
+  description = "Crowd build number of the database snapshot."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4}$", var.db_snapshot_build_number))
+    error_message = "Invalid build number. Valid build number will be a 4-digit string."
+  }
+}
+
 variable "db_master_username" {
   description = "Master username for the RDS instance."
   type        = string
