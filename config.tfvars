@@ -527,6 +527,7 @@ crowd_db_name                 = "crowd"
 # The snapshot should be in the same AWS account and region as the environment to be deployed.
 # Please also provide crowd_db_master_username and crowd_db_master_password that matches the ones in snapshot
 #crowd_db_snapshot_id = "<DB_SNAPSHOT_ID>"
+#crowd_db_snapshot_build_number = "<BUILD_NUMBER>"
 
 # The master user credential for the database instance.
 # If username is not provided, it'll be default to "postgres".
