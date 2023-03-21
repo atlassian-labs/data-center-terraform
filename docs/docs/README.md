@@ -23,6 +23,7 @@
     * [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external}
     * [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external}
     * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external}
+    * [Crowd](https://confluence.atlassian.com/crowd/crowd-5-1-release-notes-1189774315.html){.external}
 
 This project can be used for bootstrapping Atlassian DC products in a Kubernetes cluster. This tool will create a Kubernetes cluster and all the required infrastructure. It will also install Atlassian DC products into this pre-provisioned cluster using the [Data Center Helm Charts](https://atlassian.github.io/data-center-helm-charts/){.external}.
 
