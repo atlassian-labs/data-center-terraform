@@ -1012,7 +1012,7 @@ variable "osquery_version" {
 }
 
 variable "osquery_fleet_entrollment_host" {
-  type = string
+  type    = string
   default = "dummy-host"
 }
 
@@ -1138,6 +1138,12 @@ variable "crowd_db_snapshot_id" {
   type        = string
 }
 
+variable "crowd_db_snapshot_build_number" {
+  description = "Crowd build number of the database snapshot."
+  type        = string
+  default     = null
+}
+
 variable "crowd_db_master_username" {
   description = "Master username for the Crowd RDS instance."
   type        = string
@@ -1202,4 +1208,11 @@ variable "crowd_install_local_chart" {
   description = "If true installs Crowd using local Helm charts located in local_helm_charts_path"
   default     = false
   type        = bool
+}
+
+variable "crowd_license" {
+  description = "Crowd license."
+  type        = string
+  sensitive   = true
+  default     = ""
 }

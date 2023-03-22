@@ -1,18 +1,18 @@
 data "aws_caller_identity" "current" {}
 
 module "nodegroup_launch_template" {
-  cluster_name                       = var.cluster_name
-  source                             = "./nodegroup_launch_template"
-  region                             = var.region
-  tags                               = var.tags
-  instance_types                     = var.instance_types
-  instance_disk_size                 = var.instance_disk_size
-  osquery_secret_name                = var.osquery_secret_name
-  osquery_secret_region              = local.osquery_secret_region
-  osquery_env                        = var.osquery_env
-  osquery_version                    = var.osquery_version
-  kinesis_log_producers_role_arns    = var.kinesis_log_producers_role_arns
-  osquery_fleet_entrollment_host     = var.osquery_fleet_entrollment_host
+  cluster_name                    = var.cluster_name
+  source                          = "./nodegroup_launch_template"
+  region                          = var.region
+  tags                            = var.tags
+  instance_types                  = var.instance_types
+  instance_disk_size              = var.instance_disk_size
+  osquery_secret_name             = var.osquery_secret_name
+  osquery_secret_region           = local.osquery_secret_region
+  osquery_env                     = var.osquery_env
+  osquery_version                 = var.osquery_version
+  kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
+  osquery_fleet_entrollment_host  = var.osquery_fleet_entrollment_host
 }
 
 module "eks" {

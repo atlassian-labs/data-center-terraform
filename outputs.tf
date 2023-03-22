@@ -12,7 +12,7 @@ output "eks" {
   description = "EKS cluster information"
 
   value = {
-    cluster_name     = local.cluster_name
+    cluster_name = local.cluster_name
   }
   sensitive = true
 }
