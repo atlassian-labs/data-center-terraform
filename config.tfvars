@@ -72,7 +72,7 @@ max_cluster_capacity = 5
 ################################################################################
 
 # OSquery Fleet Enrollment Host
-#osquery_fleet_enrollment_host = "fleet-server.services.atlassian.com"
+# osquery_fleet_enrollment_host = "fleet-server.services.atlassian.com"
 
 # The secret needs to be available in Secrets Manager. Terraform DOES NOT
 # create the secret. It should be just the secret name, not the full ARN.
