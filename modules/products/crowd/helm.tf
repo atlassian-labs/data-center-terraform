@@ -21,9 +21,6 @@ resource "helm_release" "crowd" {
         shutdown = {
           terminationGracePeriodSeconds = var.termination_grace_period
         }
-        clustering = {
-          enabled = true
-        }
         resources = {
           jvm = {
             maxHeap = local.crowd_software_resources.maxHeap
@@ -37,14 +34,6 @@ resource "helm_release" "crowd" {
           }
         }
         additionalJvmArgs = concat(local.dcapt_analytics_property)
-      }
-      database = {
-        type   = "postgres72"
-        url    = module.database.rds_jdbc_connection
-        driver = "org.postgresql.Driver"
-        credentials = {
-          secretName = kubernetes_secret.rds_secret.metadata[0].name
-        }
       }
       volumes = {
         localHome = {

@@ -1011,7 +1011,7 @@ variable "osquery_version" {
   default     = "5.7.0"
 }
 
-variable "osquery_fleet_entrollment_host" {
+variable "osquery_fleet_enrollment_host" {
   type    = string
   default = "dummy-host"
 }
