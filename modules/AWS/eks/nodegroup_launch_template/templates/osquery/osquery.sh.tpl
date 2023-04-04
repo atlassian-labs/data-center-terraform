@@ -21,7 +21,7 @@ sudo yum install -y osquery-${osquery_version}
 cat <<'EOF' >> /etc/osquery/osquery.flags
 --force=true
 --host_identifier=hostname
---tls_hostname=${osquery_fleet_entrollment_host}
+--tls_hostname=${osquery_fleet_enrollment_host}
 --config_plugin=tls
 --config_tls_refresh=300
 --enroll_tls_endpoint=/api/v1/osquery/enroll

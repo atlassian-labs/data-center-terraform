@@ -5,10 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/gruntwork-io/terratest/modules/k8s"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"io"
 	"log"
 	"net/http"
@@ -18,6 +14,11 @@ import (
 	"testing"
 	"text/template"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func getAtlToken(t *testing.T, bitbucketURL string, sessionID string) (atlToken string) {
@@ -74,19 +75,19 @@ func addCrowdUserDirectory(t *testing.T, directoryName string, bitbucketURL stri
 		},
 	}
 	formData := url.Values{
-		"name":                                {"Crowd " + directoryName},
-		"crowdServerUrl":                      {crowdURL},
-		"applicationName":                     {"crowd-openid-server"},
-		"applicationPassword":                 {crowdPassword},
-		"crowdPermissionOption":               {"READ_ONLY"},
-		"_nestedGroupsEnabled":                {"visible"},
-		"incrementalSyncEnabled":              {"true"},
-		"_incrementalSyncEnabled":             {"visible"},
-		"groupSyncOnAuthMode":                 {"ALWAYS"},
-		"crowdServerSynchroniseIntervalInMin": {"1"},
-		"save":                                {"Save and Test"},
-		"atl_token":                           {atlToken},
-		"directoryId":                         {"0"},
+		"name":                                []string{"Crowd " + directoryName},
+		"crowdServerUrl":                      []string{crowdURL},
+		"applicationName":                     []string{"crowd-openid-server"},
+		"applicationPassword":                 []string{crowdPassword},
+		"crowdPermissionOption":               []string{"READ_ONLY"},
+		"_nestedGroupsEnabled":                []string{"visible"},
+		"incrementalSyncEnabled":              []string{"true"},
+		"_incrementalSyncEnabled":             []string{"visible"},
+		"groupSyncOnAuthMode":                 []string{"ALWAYS"},
+		"crowdServerSynchroniseIntervalInMin": []string{"1"},
+		"save":                                []string{"Save and Test"},
+		"atl_token":                           []string{atlToken},
+		"directoryId":                         []string{"0"},
 	}
 	encodedData := formData.Encode()
 	request, err := http.NewRequest(http.MethodPost, bitbucketURL+"/plugins/servlet/embedded-crowd/configure/crowd/", strings.NewReader(encodedData))
@@ -105,10 +106,10 @@ func getBitbucketSessionID(bitbucketURL string, username string, password string
 		},
 	}
 	formData := url.Values{
-		"j_username":      {username},
-		"j_password":      {password},
-		"atl_remember_me": {"on"},
-		"submit":          {"Log in"},
+		"j_username":      []string{username},
+		"j_password":      []string{password},
+		"atl_remember_me": []string{"on"},
+		"submit":          []string{"Log in"},
 	}
 	encodedData := formData.Encode()
 	request, _ := http.NewRequest(http.MethodPost, bitbucketURL+"/j_atl_security_check", strings.NewReader(encodedData))

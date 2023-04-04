@@ -47,7 +47,7 @@ variable "osquery_version" {
   type        = string
 }
 
-variable "osquery_fleet_entrollment_host" {
+variable "osquery_fleet_enrollment_host" {
   type = string
 }
 
