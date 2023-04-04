@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.4.0
+
+**Release date:** 2022-04-04
+
+* Support Crowd DB and EBS snapshot restoration [#317](https://github.com/atlassian-labs/data-center-terraform/pull/317)
+* Update EKS output [#316](https://github.com/atlassian-labs/data-center-terraform/pull/316)
+* Crowd Module added [#315](https://github.com/atlassian-labs/data-center-terraform/pull/315)
+* Update EKS to 1.25 [#311](https://github.com/atlassian-labs/data-center-terraform/pull/311)
+
 ## 2.3.1
 
 **Release date:** 2022-02-07

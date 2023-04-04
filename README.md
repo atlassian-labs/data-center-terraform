@@ -12,7 +12,7 @@ At this stage the project is providing the AWS infrastructure for:
 * [Confluence](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html)
 * [Bitbucket](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html)
 * [Bamboo](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html)
-
+* [Crowd](https://confluence.atlassian.com/crowd/crowd-5-1-release-notes-1189774315.html)
 
 ## Get started
 
