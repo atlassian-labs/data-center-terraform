@@ -1,7 +1,7 @@
 .PHONY: help doc-docker doc-build doc-serve
 
 help:
-	    @echo "Atlassian Terraform for Bamboo DC on Kubernetes"
+	    @echo "Atlassian Terraform for Data Center on Kubernetes"
 	    @echo ""
 	    @echo "Commands:"
 	    @echo "docs - starts live server with documentation"

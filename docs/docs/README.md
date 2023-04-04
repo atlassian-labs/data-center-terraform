@@ -55,6 +55,12 @@ The diagram below provides a high level overview of what a typical deployment wi
 
     ![architecture](assets/images/bamboo/Terraform.png "Deployment")
 
+=== "Crowd"
+
+    !!! info "Architectural overview for Crowd"
+
+    ![architecture](assets/images/crowd/Terraform.png "Deployment")
+
 !!! tip "Cluster size and cost"
 
     [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) is provisioned as part of the deployment.
@@ -76,9 +82,9 @@ The diagram below provides a high level overview of what a typical deployment wi
 
 The minimum versions that we support for each product are:
 
-| Jira DC                                                                                                             | Jira Service Management DC                                                                                                         | Confluence DC                                                                                         | Bitbucket DC                                                                                                                            | Bamboo DC                                                                                          |
-|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} | [4.20](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external} | [8.17](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external} | [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} |  
+| Jira DC                                                                                                             | Jira Service Management DC                                                                                                         | Confluence DC                                                                                         | Bitbucket DC                                                                                                                            | Bamboo DC                                                                                          | Crowd DC                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| [8.19](https://confluence.atlassian.com/jirasoftware/jira-software-8-19-x-release-notes-1082526044.html){.external} | [4.20](https://confluence.atlassian.com/servicemanagement/jira-service-management-4-20-x-release-notes-1085202556.html){.external} | [7.13](https://confluence.atlassian.com/doc/confluence-7-13-release-notes-1044114085.html){.external} | [8.17](https://confluence.atlassian.com/bitbucketserver/bitbucket-data-center-and-server-7-17-release-notes-1086401305.html){.external} | [8.1](https://confluence.atlassian.com/bamboo/bamboo-8-1-release-notes-1103070461.html){.external} | [5.1](https://confluence.atlassian.com/crowd/crowd-5-1-release-notes-1189774315.html){.external} |  
 
 ## Feedback
 
