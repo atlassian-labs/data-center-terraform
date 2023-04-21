@@ -107,5 +107,17 @@ locals {
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
+  irsa_properties = var.confluence_s3_attachments_storage ? ["-Daws.webIdentityTokenFile=/var/run/secrets/eks.amazonaws.com/serviceaccount/token",
+    "-Dconfluence.filestore.attachments.s3.bucket.name=${var.eks.confluence_s3_bucket_name}",
+    "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"] : []
+
+  service_account_annotations = var.confluence_s3_attachments_storage ? yamlencode({
+    serviceAccount = {
+      annotations = {
+        "eks.amazonaws.com/role-arn" = var.eks.confluence_s3_role_arn
+      }
+    }
+  }) : yamlencode({})
+
   nfs_cluster_service_ipv4 = "172.20.2.4"
 }

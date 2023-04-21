@@ -45,6 +45,7 @@ var EksWithValidValues = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": true,
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -68,6 +69,7 @@ var EksWithUnsupportedKinesisRegion = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "eu-west-2",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -88,6 +90,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -108,6 +111,7 @@ var EksWithInvalidClusterVersion = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -128,6 +132,8 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
+
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -148,6 +154,8 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
+
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 1,
@@ -168,6 +176,8 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
+
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 0,
@@ -188,6 +198,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 	"subnets":                         []string{"subnet1", "subnet2"},
 	"region":                          "us-east-1",
 	"tags":                            "{}",
+	"confluence_s3_attachments_storage": false,
 
 	"instance_types":       []string{"instance_type1", "instance_type2"},
 	"min_cluster_capacity": 21,
@@ -198,6 +209,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 var EksDefaultModuleVariable = map[string]interface{}{
 	"osquery_secret_name":             "dummy_secret",
 	"osquery_env":                     "dummy_env",
+	"namespace":                       "dummy-namespace",
 	"osquery_secret_region":           "us-east-1",
 	"osquery_version":                 "5.7.0",
 	"osquery_fleet_enrollment_host":  "dummy-host",
@@ -425,6 +437,7 @@ var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
 var ConfluenceInvalidVariables = map[string]interface{}{
 	"environment_name": "invalid?environment",
 	"namespace":        "dummy-namespace",
+	"region_name":      "us-east-1",
 	"eks": map[string]interface{}{
 		"kubernetes_provider_config": map[string]interface{}{
 			"host":                   "dummy-host",
@@ -433,6 +446,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
+	"confluence_s3_attachments_storage": false,
 	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{

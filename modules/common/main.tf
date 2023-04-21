@@ -22,7 +22,9 @@ module "eks" {
   osquery_secret_region           = var.osquery_secret_region
   osquery_env                     = var.osquery_env
   osquery_version                 = var.osquery_version
+  namespace                       = var.namespace
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
+  confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
 
 }

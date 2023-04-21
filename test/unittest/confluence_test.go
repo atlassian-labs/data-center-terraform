@@ -79,7 +79,11 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 		"availability_zone":      "dummy-az",
+		"confluence_s3_bucket_name": "dummy-bucket",
+		"confluence_s3_role_arn":    "arn:dummy_arn",
 	},
+	"confluence_s3_attachments_storage": true,
+	"region_name":                       "us-east-1",
 	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{

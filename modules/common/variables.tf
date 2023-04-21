@@ -121,3 +121,8 @@ variable "kinesis_log_producers_role_arns" {
     non-eu = string
   })
 }
+
+variable "confluence_s3_attachments_storage" {
+  description = "Use S3 as attachment storage"
+  type = bool
+}
