@@ -16,6 +16,7 @@ output "cluster_name" {
 output "eks" {
   value       = module.eks
   description = "EKS Module"
+  sensitive   = true
 }
 
 output "ingress" {
