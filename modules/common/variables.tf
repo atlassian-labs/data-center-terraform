@@ -121,3 +121,13 @@ variable "kinesis_log_producers_role_arns" {
     non-eu = string
   })
 }
+
+variable "monitoring_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "monitoring_grafana_expose_lb" {
+  type    = bool
+  default = false
+}

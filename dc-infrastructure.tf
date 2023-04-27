@@ -23,6 +23,9 @@ module "base-infrastructure" {
 
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
+
+  monitoring_enabled           = var.monitoring_enabled
+  monitoring_grafana_expose_lb = var.monitoring_grafana_expose_lb
 }
 
 module "bamboo" {

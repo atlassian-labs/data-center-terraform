@@ -134,6 +134,17 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+
+variable "monitoring_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "monitoring_grafana_expose_lb" {
+  type    = bool
+  default = false
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################
