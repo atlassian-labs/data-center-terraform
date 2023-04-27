@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "monitoring" {
 
 resource "helm_release" "prometheus_monitoring_stack" {
   count      = var.monitoring_enabled == true ? 1 : 0
-  depends_on = [module.eks]
+  depends_on = [module.eks, module.vpc]
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
