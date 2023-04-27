@@ -47,7 +47,7 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "dummy-cluster-name", clusterName)
 	assert.Equal(t, "dummy_vpc_id", vpcId)
 	assert.Equal(t, []interface{}{"subnet1", "subnet2"}, subnets)
-	assert.Equal(t, []interface{}{"instance_type1", "instance_type2"}, instanceTypes)
+	assert.Equal(t, []interface{}{"a", "b"}, instanceTypes)
 	assert.Equal(t, []interface{}{map[string]interface{}{"rolearn": "dcdarn", "username": "additional_role", "groups": []interface{}{"system:masters"}}}, additionalRoles)
 	assert.Equal(t, "1", minClusterCapacity)
 	assert.Equal(t, "10", maxClusterCapacity)
