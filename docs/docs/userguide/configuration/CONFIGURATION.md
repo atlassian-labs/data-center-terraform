@@ -235,6 +235,38 @@ logging_bucket = <LOGGING_S3_BUCKET_NAME>  # default is null
 
     Providing `logging_bucket` will not guarantee the creation of the S3 Bucket. You will need to create one as part of the prerequisites.
 
+
+### Monitoring
+
+If you want to deploy a monitoring stack to the cluster, use the following variable in config.tfvars file:
+
+```
+monitoring_enabled = true
+```
+
+When enabled, Terraform will deploy [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack){.external} Helm chart
+with Prometheus, AlertManager, Node Exporter and Grafana.
+
+By default, Grafana service isn't exposed, and you can login to Grafana at `http://localhost:3000` after running:
+
+```
+kubectl port-forward $grafana-pod 3000:3000 -n kube-monitoring
+```
+
+If you want to expose Grafana service, set `monitoring_grafana_expose_lb` to `true`:
+
+```
+monitoring_grafana_expose_lb = true
+```
+
+Run the following command to get Grafana service hostname:
+
+```
+kubectl get svc -n kube-monitoring
+```
+
+Out of the box Grafana is shipped with a dozen of Kubernetes dashboards which you can use to monitor pods health.
+
 ## Product specific configuration
 
 === "Bamboo"
