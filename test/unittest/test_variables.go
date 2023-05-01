@@ -46,7 +46,7 @@ var EksWithValidValues = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
 	"additional_roles": []interface{}{map[string]interface{}{
@@ -69,7 +69,7 @@ var EksWithUnsupportedKinesisRegion = map[string]interface{}{
 	"region":                          "eu-west-2",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
 	"additional_roles":     []string{},
@@ -89,7 +89,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
 	"additional_roles":     []string{},
@@ -109,7 +109,7 @@ var EksWithInvalidClusterVersion = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
 	"additional_roles":     []string{},
@@ -129,7 +129,7 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 21,
 	"additional_roles":     []string{},
@@ -149,7 +149,7 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 0,
 	"additional_roles":     []string{},
@@ -169,7 +169,7 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 0,
 	"max_cluster_capacity": 10,
 	"additional_roles":     []string{},
@@ -189,7 +189,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 	"region":                          "us-east-1",
 	"tags":                            "{}",
 
-	"instance_types": []string{"a", "b"},,
+	"instance_types": []string{"a", "b"},
 	"min_cluster_capacity": 21,
 	"max_cluster_capacity": 10,
 	"additional_roles":     []string{},
