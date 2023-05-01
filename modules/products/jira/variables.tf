@@ -89,8 +89,8 @@ variable "jira_configuration" {
   description = "Jira resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.jira_configuration) == 7 &&
-    alltrue([for o in keys(var.jira_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "reserved_code_cache", "license"], o)]))
+    condition = (length(var.jira_configuration) == 8 &&
+    alltrue([for o in keys(var.jira_configuration) : contains(["helm_version", "cpu", "mem", "min_heap", "max_heap", "reserved_code_cache", "license", "custom_values_file"], o)]))
     error_message = "Jira configuration is not valid."
   }
 }

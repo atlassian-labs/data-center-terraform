@@ -77,11 +77,12 @@ var BambooCorrectVariables = map[string]interface{}{
 	"dataset_url":          nil,
 	"installation_timeout": testTimeout,
 	"bamboo_configuration": map[string]interface{}{
-		"helm_version": "",
-		"cpu":          "1",
-		"mem":          "1Gi",
-		"min_heap":     "256m",
-		"max_heap":     "512m",
+		"helm_version":       "",
+		"cpu":                "1",
+		"mem":                "1Gi",
+		"min_heap":           "256m",
+		"max_heap":           "512m",
+		"custom_values_file": "",
 	},
 	"db_configuration": map[string]interface{}{
 		"db_allocated_storage": 5,

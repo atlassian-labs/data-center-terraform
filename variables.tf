@@ -144,6 +144,12 @@ variable "jira_helm_chart_version" {
   default     = ""
 }
 
+variable "jira_custom_values_file" {
+  description = "Path to a custom values file"
+  type        = string
+  default     = ""
+}
+
 variable "jira_image_repository" {
   description = "Jira image repository"
   type        = string
@@ -337,6 +343,13 @@ variable "confluence_license" {
 
 variable "confluence_helm_chart_version" {
   description = "Version of confluence Helm chart"
+  type        = string
+  default     = ""
+}
+
+
+variable "confluence_custom_values_file" {
+  description = "Path to a custom values file"
   type        = string
   default     = ""
 }
@@ -557,6 +570,12 @@ variable "confluence_shared_home_snapshot_id" {
 
 variable "bitbucket_helm_chart_version" {
   description = "Version of Bitbucket Helm chart"
+  type        = string
+  default     = ""
+}
+
+variable "bitbucket_custom_values_file" {
+  description = "Path to a custom values file"
   type        = string
   default     = ""
 }
@@ -843,6 +862,12 @@ variable "bamboo_helm_chart_version" {
   type        = string
 }
 
+variable "bamboo_custom_values_file" {
+  description = "Path to a custom values file"
+  type        = string
+  default     = ""
+}
+
 variable "bamboo_agent_helm_chart_version" {
   description = "Version of Bamboo agent Helm chart"
   type        = string
@@ -1034,6 +1059,12 @@ variable "kinesis_log_producers_role_arns" {
 
 variable "crowd_helm_chart_version" {
   description = "Version of Crowd Helm chart"
+  type        = string
+  default     = ""
+}
+
+variable "crowd_custom_values_file" {
+  description = "Path to a custom values file"
   type        = string
   default     = ""
 }

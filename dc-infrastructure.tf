@@ -55,11 +55,12 @@ module "bamboo" {
   termination_grace_period = var.bamboo_termination_grace_period
 
   bamboo_configuration = {
-    helm_version = var.bamboo_helm_chart_version
-    cpu          = var.bamboo_cpu
-    mem          = var.bamboo_mem
-    min_heap     = var.bamboo_min_heap
-    max_heap     = var.bamboo_max_heap
+    helm_version       = var.bamboo_helm_chart_version
+    custom_values_file = var.bamboo_custom_values_file
+    cpu                = var.bamboo_cpu
+    mem                = var.bamboo_mem
+    min_heap           = var.bamboo_min_heap
+    max_heap           = var.bamboo_max_heap
   }
 
   license = var.bamboo_license
@@ -112,6 +113,7 @@ module "jira" {
 
   jira_configuration = {
     helm_version        = var.jira_helm_chart_version
+    custom_values_file  = var.jira_custom_values_file
     cpu                 = var.jira_cpu
     mem                 = var.jira_mem
     min_heap            = var.jira_min_heap
@@ -167,12 +169,13 @@ module "confluence" {
   termination_grace_period = var.confluence_termination_grace_period
 
   confluence_configuration = {
-    helm_version = var.confluence_helm_chart_version
-    cpu          = var.confluence_cpu
-    mem          = var.confluence_mem
-    min_heap     = var.confluence_min_heap
-    max_heap     = var.confluence_max_heap
-    license      = var.confluence_license
+    helm_version       = var.confluence_helm_chart_version
+    custom_values_file = var.confluence_custom_values_file
+    cpu                = var.confluence_cpu
+    mem                = var.confluence_mem
+    min_heap           = var.confluence_min_heap
+    max_heap           = var.confluence_max_heap
+    license            = var.confluence_license
   }
 
   synchrony_configuration = {
@@ -221,12 +224,13 @@ module "bitbucket" {
   termination_grace_period = var.bitbucket_termination_grace_period
 
   bitbucket_configuration = {
-    helm_version = var.bitbucket_helm_chart_version
-    cpu          = var.bitbucket_cpu
-    mem          = var.bitbucket_mem
-    min_heap     = var.bitbucket_min_heap
-    max_heap     = var.bitbucket_max_heap
-    license      = var.bitbucket_license
+    helm_version       = var.bitbucket_helm_chart_version
+    custom_values_file = var.bitbucket_custom_values_file
+    cpu                = var.bitbucket_cpu
+    mem                = var.bitbucket_mem
+    min_heap           = var.bitbucket_min_heap
+    max_heap           = var.bitbucket_max_heap
+    license            = var.bitbucket_license
   }
 
   local_home_size  = var.bitbucket_local_home_size
@@ -286,12 +290,13 @@ module "crowd" {
   termination_grace_period = var.crowd_termination_grace_period
 
   crowd_configuration = {
-    helm_version = var.crowd_helm_chart_version
-    cpu          = var.crowd_cpu
-    mem          = var.crowd_mem
-    min_heap     = var.crowd_min_heap
-    max_heap     = var.crowd_max_heap
-    license      = var.crowd_license
+    helm_version       = var.crowd_helm_chart_version
+    custom_values_file = var.crowd_custom_values_file
+    cpu                = var.crowd_cpu
+    mem                = var.crowd_mem
+    min_heap           = var.crowd_min_heap
+    max_heap           = var.crowd_max_heap
+    license            = var.crowd_license
   }
   image_repository = var.crowd_image_repository
   version_tag      = var.crowd_version_tag
