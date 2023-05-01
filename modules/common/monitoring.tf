@@ -25,6 +25,13 @@ resource "helm_release" "prometheus_monitoring_stack" {
         persistence = {
           enabled = true
           size    = "10Gi"
+        },
+        sidecar = {
+          dashboards = {
+            enabled    = true,
+            label      = "grafana_dashboard",
+            labelValue = "dc_monitoring"
+          }
         }
       },
       prometheus = {

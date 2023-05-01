@@ -265,7 +265,7 @@ Run the following command to get Grafana service hostname:
 kubectl get svc -n kube-monitoring
 ```
 
-Out of the box Grafana is shipped with a dozen of Kubernetes dashboards which you can use to monitor pods health.
+Out of the box Grafana is shipped with a dozen of Kubernetes dashboards which you can use to monitor pods health. You can also create own custom configmaps labeled `grafana_dashboard=dc_monitoring`, and Grafana sidecar will automatically import them.
 
 ## Product specific configuration
 
