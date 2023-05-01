@@ -32,7 +32,6 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 	expectedCidrs := plan.ResourcePlannedValuesMap["helm_release.ingress"].AttributeValues["set"].([]interface{})
 	assert.Contains(t, fmt.Sprintf("%v", expectedCidrs[0]), "0.0.0.0/0,1.1.1.1/32,2.2.2.2/32")
 
-
 	// verify ingress is created
 	ingressKey := "helm_release.ingress"
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, ingressKey)
