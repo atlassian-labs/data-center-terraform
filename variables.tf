@@ -141,6 +141,7 @@ variable "monitoring_enabled" {
 }
 
 variable "monitoring_grafana_expose_lb" {
+  description = "Expose Loadbalancer for Grafana."
   type    = bool
   default = false
 }
