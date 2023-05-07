@@ -253,7 +253,7 @@ By default, Grafana service isn't exposed, and you can login to Grafana at `http
 kubectl port-forward $grafana-pod 3000:3000 -n kube-monitoring
 ```
 
-If you want to expose Grafana service, set `monitoring_grafana_expose_lb` to `true`:
+If you want to expose Grafana service as `LoadBalancer`, set `monitoring_grafana_expose_lb` to `true`:
 
 ```
 monitoring_grafana_expose_lb = true
