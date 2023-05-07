@@ -45,6 +45,8 @@ func TestMonitoringEnabled(t *testing.T) {
 		"osquery_fleet_enrollment_host": "example.com",
 		"monitoring_enabled":            true,
 		"monitoring_grafana_expose_lb":  true,
+		"prometheus_pvc_disk_size": 		 "10Gi",
+		"grafana_pvc_disk_size": 		 		 "10Gi",
 	}, t, commonModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)

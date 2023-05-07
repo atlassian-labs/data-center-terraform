@@ -24,7 +24,7 @@ resource "helm_release" "prometheus_monitoring_stack" {
         },
         persistence = {
           enabled = true
-          size    = "10Gi"
+          size    = var.prometheus_pvc_disk_size
         },
         sidecar = {
           dashboards = {
@@ -42,7 +42,7 @@ resource "helm_release" "prometheus_monitoring_stack" {
                 accessModes = ["ReadWriteOnce"],
                 resources = {
                   requests = {
-                    storage = "10Gi"
+                    storage = var.grafana_pvc_disk_size
                   }
                 }
               }

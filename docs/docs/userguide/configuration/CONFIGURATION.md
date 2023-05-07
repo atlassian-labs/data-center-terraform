@@ -265,7 +265,21 @@ Run the following command to get Grafana service hostname:
 kubectl get svc -n kube-monitoring
 ```
 
-Out of the box Grafana is shipped with a dozen of Kubernetes dashboards which you can use to monitor pods health. You can also create own custom configmaps labeled `grafana_dashboard=dc_monitoring`, and Grafana sidecar will automatically import them.
+Out of the box Grafana is shipped with default Kubernetes dashboards which you can use to monitor pods health. You can also create own custom configmaps labeled `grafana_dashboard=dc_monitoring`, and Grafana sidecar will automatically import them.
+
+By default, both Prometheus and Grafana claim 10Gi of persistent storage. You can override the default values by setting:
+
+```
+prometheus_pvc_disk_size = "50Gi"
+grafana_pvc_disk_size = "20Gi"
+```
+
+!!! info "Volume Expansion"
+
+    Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+    i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+    to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+    [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/storage-classes.html){.external}.
 
 ## Product specific configuration
 

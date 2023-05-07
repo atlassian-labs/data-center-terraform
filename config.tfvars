@@ -110,6 +110,16 @@ max_cluster_capacity = 5
 # the list of CIRDs from whitelist_cidr will be automatically applied.
 # monitoring_grafana_expose_lb = true
 
+# Prometheus Persistent Volume Claim size. Defaults to 10Gi.
+# Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+# i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+# to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+# prometheus_pvc_disk_size = "100Gi"
+
+# Grafana Persistent Volume Claim size. Defaults to 10Gi.
+# grafana_pvc_disk_size = "20Gi"
+
+
 ################################################################################
 # Jira Settings
 ################################################################################
