@@ -136,7 +136,9 @@ variable "enable_https_ingress" {
 
 
 variable "monitoring_enabled" {
+  description = "Enable kube-prometheus-stack for product node monitoring."
   type    = bool
+  
   default = false
 }
 
