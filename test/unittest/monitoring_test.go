@@ -47,7 +47,7 @@ func TestMonitoringEnabled(t *testing.T) {
 		"monitoring_grafana_expose_lb":  true,
 		"prometheus_pvc_disk_size": 		 "10Gi",
 		"grafana_pvc_disk_size": 		 		 "10Gi",
-		"monitoring_custom_values_file": "/path/to/values.yaml",
+		"monitoring_custom_values_file": "",
 	}, t, commonModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
