@@ -24,10 +24,11 @@ module "base-infrastructure" {
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
 
-  monitoring_enabled           = var.monitoring_enabled
-  prometheus_pvc_disk_size     = var.prometheus_pvc_disk_size
-  grafana_pvc_disk_size        = var.grafana_pvc_disk_size
-  monitoring_grafana_expose_lb = var.monitoring_grafana_expose_lb
+  monitoring_enabled            = var.monitoring_enabled
+  prometheus_pvc_disk_size      = var.prometheus_pvc_disk_size
+  grafana_pvc_disk_size         = var.grafana_pvc_disk_size
+  monitoring_custom_values_file = var.monitoring_custom_values_file
+  monitoring_grafana_expose_lb  = var.monitoring_grafana_expose_lb
 }
 
 module "bamboo" {

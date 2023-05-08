@@ -16,6 +16,7 @@ resource "helm_release" "prometheus_monitoring_stack" {
   namespace  = kubernetes_namespace.monitoring[count.index].metadata[0].name
 
   values = [
+    var.monitoring_custom_values_file != "" ? "${file(var.monitoring_custom_values_file)}" : "",
     yamlencode({
       grafana = {
         service = {

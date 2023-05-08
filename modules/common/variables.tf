@@ -143,3 +143,9 @@ variable "grafana_pvc_disk_size" {
   default     = "10Gi"
   type        = string
 }
+
+variable "monitoring_custom_values_file" {
+  description = "Path to monitoring stack custom values file"
+  type        = string
+  default     = ""
+}
