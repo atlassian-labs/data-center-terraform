@@ -97,6 +97,32 @@ max_cluster_capacity = 5
 #   "non-eu" = "arn:aws:iam::111111111111:role/pipeline-prod-log-producers-all"
 # }
 
+
+################################################################################
+# Monitoring settings
+################################################################################
+
+# Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
+# to kube-monitoring namespace. Defaults to false.
+# monitoring_enabled = true
+
+# Create Grafana service of LoadBalancer type. Defaults to false. To restric access to LB URL
+# the list of CIRDs from whitelist_cidr will be automatically applied.
+# monitoring_grafana_expose_lb = true
+
+# Prometheus Persistent Volume Claim size. Defaults to 10Gi.
+# Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+# i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+# to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+# prometheus_pvc_disk_size = "100Gi"
+
+# Grafana Persistent Volume Claim size. Defaults to 10Gi.
+# grafana_pvc_disk_size = "20Gi"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# monitoring_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Jira Settings
 ################################################################################

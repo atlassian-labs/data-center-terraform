@@ -121,3 +121,31 @@ variable "kinesis_log_producers_role_arns" {
     non-eu = string
   })
 }
+
+variable "monitoring_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "monitoring_grafana_expose_lb" {
+  type    = bool
+  default = false
+}
+
+variable "prometheus_pvc_disk_size" {
+  description = "Size of prometheus PVC."
+  default     = "10Gi"
+  type        = string
+}
+
+variable "grafana_pvc_disk_size" {
+  description = "Size of Grafana PVC."
+  default     = "10Gi"
+  type        = string
+}
+
+variable "monitoring_custom_values_file" {
+  description = "Path to monitoring stack custom values file"
+  type        = string
+  default     = ""
+}

@@ -134,6 +134,38 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+
+variable "monitoring_enabled" {
+  description = "Enable kube-prometheus-stack for product node monitoring."
+  type        = bool
+
+  default = false
+}
+
+variable "monitoring_grafana_expose_lb" {
+  description = "Expose Loadbalancer for Grafana."
+  type        = bool
+  default     = false
+}
+
+variable "prometheus_pvc_disk_size" {
+  description = "Size of prometheus PVC."
+  default     = "10Gi"
+  type        = string
+}
+
+variable "grafana_pvc_disk_size" {
+  description = "Size of Grafana PVC."
+  default     = "10Gi"
+  type        = string
+}
+
+variable "monitoring_custom_values_file" {
+  description = "Path to monitoring stack custom values file"
+  type        = string
+  default     = ""
+}
+
 ################################################################################
 # Jira Settings
 ################################################################################
