@@ -45,8 +45,8 @@ func TestMonitoringEnabled(t *testing.T) {
 		"osquery_fleet_enrollment_host": "example.com",
 		"monitoring_enabled":            true,
 		"monitoring_grafana_expose_lb":  true,
-		"prometheus_pvc_disk_size": 		 "10Gi",
-		"grafana_pvc_disk_size": 		 		 "10Gi",
+		"prometheus_pvc_disk_size":      "10Gi",
+		"grafana_pvc_disk_size":         "10Gi",
 		"monitoring_custom_values_file": "",
 	}, t, commonModule)
 
@@ -54,7 +54,7 @@ func TestMonitoringEnabled(t *testing.T) {
 
 	// verify NAT public IPs are in controller.service.loadBalancerSourceRanges values in helm_release
 	expectedCidrs := plan.ResourcePlannedValuesMap["helm_release.prometheus_monitoring_stack[0]"].AttributeValues["values"].([]interface{})
-	assert.Contains(t, fmt.Sprintf("%v", expectedCidrs[0]), "10.0.0.0/16")
+	assert.Contains(t, fmt.Sprintf("%v", expectedCidrs[1]), "10.0.0.0/16")
 
 	// verify prometheus Helm chart is created
 	prometheusKey := "helm_release.prometheus_monitoring_stack[0]"
