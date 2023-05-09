@@ -13,6 +13,7 @@ resource "helm_release" "jira" {
   timeout    = var.installation_timeout * 60
 
   values = [
+    var.jira_configuration["custom_values_file"] != "" ? "${file(var.jira_configuration["custom_values_file"])}" : "",
     yamlencode({
       replicaCount = var.replica_count,
       image = {

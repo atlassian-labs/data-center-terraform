@@ -13,6 +13,7 @@ resource "helm_release" "bamboo" {
   timeout    = var.installation_timeout * 60
 
   values = [
+    var.bamboo_configuration["custom_values_file"] != "" ? "${file(var.bamboo_configuration["custom_values_file"])}" : "",
     yamlencode({
       bamboo = {
         shutdown = {

@@ -14,6 +14,7 @@ resource "helm_release" "confluence" {
   timeout    = var.installation_timeout * 60
 
   values = [
+    var.confluence_configuration["custom_values_file"] != "" ? "${file(var.confluence_configuration["custom_values_file"])}" : "",
     yamlencode({
       replicaCount = var.replica_count,
       confluence = {
