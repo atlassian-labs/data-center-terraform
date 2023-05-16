@@ -56,7 +56,7 @@ EOF
 
 # Clean up before installation
 if [[ ! -f "${CLEAN_UP_FLAG}" ]]; then
-  bash "${SCRIPT_PATH}/scleanup.sh" -s -t -x -r .
+  bash "${SCRIPT_PATH}/cleanup.sh" -s -t -x -r .
 fi
 
 # Check for prerequisite tooling
