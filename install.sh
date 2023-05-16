@@ -46,12 +46,18 @@ EOF
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
+      d)    CLEAN_UP_FLAG="-d";;       # Run cleanup script before install
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
 
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
+
+# Clean up before installation
+if [[ ! -f "${CLEAN_UP_FLAG}" ]]; then
+  bash "${SCRIPT_PATH}/scleanup.sh" -s -t -x -r .
+fi
 
 # Check for prerequisite tooling
 # https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/
