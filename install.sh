@@ -41,12 +41,13 @@ EOF
   CONFIG_FILE=
   HELP_FLAG=
   FORCE_FLAG=
-  while getopts hf?c: name ; do
+  CLEAN_UP_FLAG=
+  while getopts hfd?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
-      d)    CLEAN_UP_FLAG="-d";;       # Run cleanup script before install
+      d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -55,7 +56,7 @@ EOF
   UNKNOWN_ARGS="$*"
 
 # Clean up before installation
-if [[ ! -f "${CLEAN_UP_FLAG}" ]]; then
+if [ ! -z "${CLEAN_UP_FLAG}" ]; then
   bash "${SCRIPT_PATH}/cleanup.sh" -s -t -x -r .
 fi
 
