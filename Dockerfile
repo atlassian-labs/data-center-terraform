@@ -1,5 +1,9 @@
 # Example docker command to run install script executed from root dir of the repository
-# docker run --env-file aws_envs -v "$PWD:/data-center-terraform/" -it localtfdocker ./install.sh -f -c dcapt.tfvars
+# docker run --env-file aws_envs \
+# -v "$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
+# -v "$PWD/logs:/data-center-terraform/logs" \
+# -v "$PWD/dcapt.tfvars:/data-center-terraform/dcapt.tfvars" \
+# -it localtf ./scripts/collect_k8s_logs.sh atlas-jira-946-dock-scale-cluster us-east-2 k8s_logs
 # In this example aws_envs should contains AWS variables needed for authorization like:
 # AWS_SECRET_ACCESS_KEY="asd123asd123"
 # AWS_ACCESS_KEY_ID="123dsa321asd"
@@ -22,5 +26,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+COPY . /data-center-terraform
 
 WORKDIR /data-center-terraform
