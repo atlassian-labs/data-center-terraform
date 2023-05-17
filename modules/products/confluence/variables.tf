@@ -73,10 +73,10 @@ variable "confluence_configuration" {
   description = "Confluence resource spec and chart version"
   type        = map(any)
   validation {
-    condition = (length(var.confluence_configuration) == 6 &&
+    condition = (length(var.confluence_configuration) == 7 &&
       alltrue([
         for o in keys(var.confluence_configuration) : contains([
-          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license"
+          "helm_version", "cpu", "mem", "min_heap", "max_heap", "license", "custom_values_file"
         ], o)
     ]))
     error_message = "Confluence configuration is not valid."

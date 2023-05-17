@@ -97,12 +97,42 @@ max_cluster_capacity = 5
 #   "non-eu" = "arn:aws:iam::111111111111:role/pipeline-prod-log-producers-all"
 # }
 
+
+################################################################################
+# Monitoring settings
+################################################################################
+
+# Deploy https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack Helm chart
+# to kube-monitoring namespace. Defaults to false.
+# monitoring_enabled = true
+
+# Create Grafana service of LoadBalancer type. Defaults to false. To restric access to LB URL
+# the list of CIRDs from whitelist_cidr will be automatically applied.
+# monitoring_grafana_expose_lb = true
+
+# Prometheus Persistent Volume Claim size. Defaults to 10Gi.
+# Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+# i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+# to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+# prometheus_pvc_disk_size = "100Gi"
+
+# Grafana Persistent Volume Claim size. Defaults to 10Gi.
+# grafana_pvc_disk_size = "20Gi"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# monitoring_custom_values_file = "/path/to/values.yaml"
+
 ################################################################################
 # Jira Settings
 ################################################################################
 
 # Helm chart version of Jira. By default the latest version is installed.
 # jira_helm_chart_version = "<helm_chart_version>"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# jira_custom_values_file = "/path/to/values.yaml"
 
 # Number of Jira application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Jira is fully
@@ -188,6 +218,10 @@ jira_db_name = "jira"
 
 # Helm chart version of Confluence. By default the latest version is installed.
 # confluence_helm_chart_version = "<helm_chart_version>"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# confluence_custom_values_file = "/path/to/values.yaml"
 
 # Number of Confluence application nodes
 # Note: For initial installation this value needs to be set to 1 and it can be changed only after Confluence is fully
@@ -282,6 +316,10 @@ confluence_collaborative_editing_enabled = true
 
 # Helm chart version of Bitbucket. By default the latest version is installed.
 # bitbucket_helm_chart_version = "<helm_chart_version>"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bitbucket_custom_values_file = "/path/to/values.yaml"
 
 # Number of Bitbucket application nodes
 bitbucket_replica_count = 1
@@ -389,6 +427,10 @@ bitbucket_db_name = "bitbucket"
 # bamboo_helm_chart_version       = "<helm_chart_version>"
 # bamboo_agent_helm_chart_version = "<helm_chart_version>"
 
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# bamboo_custom_values_file = "/path/to/values.yaml"
+
 # By default, Bamboo and the Bamboo Agent will use the versions defined in their respective Helm charts:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo/Chart.yaml
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/bamboo-agent/Chart.yaml
@@ -477,6 +519,10 @@ bamboo_db_name                 = "bamboo"
 
 # Helm chart version of Crowd and Crowd agent instances. By default the latest version is installed.
 # crowd_helm_chart_version       = "<helm_chart_version>"
+
+# Custom values file location. Defaults to an empty string which means only values from config.tfvars
+# are passed to Helm chart. Variables from config.tfvars take precedence over those defined in a custom values.yaml.
+# crowd_custom_values_file = "/path/to/values.yaml"
 
 # By default, Crowd will use the versions defined in their respective Helm charts:
 # https://github.com/atlassian/data-center-helm-charts/blob/main/src/main/charts/crowd/Chart.yaml

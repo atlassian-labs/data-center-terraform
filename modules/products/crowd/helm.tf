@@ -12,6 +12,7 @@ resource "helm_release" "crowd" {
   timeout    = var.installation_timeout * 60
 
   values = [
+    var.crowd_configuration["custom_values_file"] != "" ? "${file(var.crowd_configuration["custom_values_file"])}" : "",
     yamlencode({
       replicaCount = var.replica_count,
       image = {

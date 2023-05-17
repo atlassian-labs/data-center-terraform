@@ -235,6 +235,52 @@ logging_bucket = <LOGGING_S3_BUCKET_NAME>  # default is null
 
     Providing `logging_bucket` will not guarantee the creation of the S3 Bucket. You will need to create one as part of the prerequisites.
 
+
+### Monitoring
+
+If you want to deploy a monitoring stack to the cluster, use the following variable in config.tfvars file:
+
+```
+monitoring_enabled = true
+```
+
+When enabled, Terraform will deploy [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack){.external} Helm chart
+with Prometheus, AlertManager, Node Exporter and Grafana.
+
+By default, Grafana service isn't exposed, and you can login to Grafana at `http://localhost:3000` after running:
+
+```
+kubectl port-forward $grafana-pod 3000:3000 -n kube-monitoring
+```
+
+If you want to expose Grafana service as `LoadBalancer`, set `monitoring_grafana_expose_lb` to `true`:
+
+```
+monitoring_grafana_expose_lb = true
+```
+
+Run the following command to get Grafana service hostname:
+
+```
+kubectl get svc -n kube-monitoring
+```
+
+Out of the box Grafana is shipped with default Kubernetes dashboards which you can use to monitor pods health. You can also create own custom configmaps labeled `grafana_dashboard=dc_monitoring`, and Grafana sidecar will automatically import them.
+
+By default, both Prometheus and Grafana claim 10Gi of persistent storage. You can override the default values by setting:
+
+```
+prometheus_pvc_disk_size = "50Gi"
+grafana_pvc_disk_size = "20Gi"
+```
+
+!!! info "Volume Expansion"
+
+    Out of the box EKS cluster is created with gp2 storage class which does not allow volume expansion,
+    i.e. if you expect a high volume of metrics or metrics with high cardinality it is recommended
+    to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
+    [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/storage-classes.html){.external}.
+
 ## Product specific configuration
 
 === "Bamboo"

@@ -13,6 +13,7 @@ resource "helm_release" "bitbucket" {
   timeout    = var.installation_timeout * 60
 
   values = [
+    var.bitbucket_configuration["custom_values_file"] != "" ? "${file(var.bitbucket_configuration["custom_values_file"])}" : "",
     yamlencode({
       replicaCount = var.replica_count,
       bitbucket = {
