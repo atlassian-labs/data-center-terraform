@@ -32,6 +32,7 @@ EOF
   echo
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
+  echo "   -d : run cleanup.sh script at the beginning."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
