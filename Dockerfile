@@ -3,13 +3,13 @@
 # -v "$PWD/.terraform:/data-center-terraform/.terraform \
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
-# -it localtf ./install.sh -c config.tfvars
+# -it atlassianlabs/terraform:main ./install.sh -c config.tfvars
 #
 # Example docker command to collect k8s logs
 # docker run --env-file aws_envs \
 # -v "$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 # -v "$PWD/logs:/data-center-terraform/logs" \
-# -it localtf ./scripts/collect_k8s_logs.sh atlas-cluster-name-cluster us-east-2 k8s_logs
+# -it atlassianlabs/terraform:main ./scripts/collect_k8s_logs.sh atlas-cluster-name-cluster us-east-2 k8s_logs
 
 # In those example aws_envs should contain AWS variables needed for authorization like:
 # AWS_SECRET_ACCESS_KEY="asd123asd123"
