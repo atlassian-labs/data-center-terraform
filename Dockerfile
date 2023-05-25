@@ -16,7 +16,7 @@
 # -v "$PWD/.terraform:/data-center-terraform/.terraform \
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
-# -it atlassianlabs/terraform ./uninstall.sh -c config.tfvars
+# -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
 
 # In those example aws_envs should contain AWS variables needed for authorization without quotes like:
 # AWS_ACCESS_KEY_ID=123dsa321asd
