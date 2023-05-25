@@ -11,9 +11,9 @@
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh atlas-cluster-name-cluster us-east-2 k8s_logs
 
-# In those example aws_envs should contain AWS variables needed for authorization like:
-# AWS_SECRET_ACCESS_KEY="asd123asd123"
-# AWS_ACCESS_KEY_ID="123dsa321asd"
+# In those example aws_envs should contain AWS variables needed for authorization without quotes like:
+# AWS_ACCESS_KEY_ID=123dsa321asd
+# AWS_SECRET_ACCESS_KEY=asd123asd123
 
 FROM ubuntu:22.04
 
