@@ -417,6 +417,24 @@ def delete_iam_policies(service_name):
         client.delete_policy(PolicyArn=policy_arn)
 
 
+def delete_launch_templates(service_name, aws_region):
+    logging.info('Deleting launch templates')
+    client = boto3.client('ec2', region_name=aws_region)
+    response = client.describe_launch_templates(
+        Filters=[
+            {
+                'Name': 'tag:' + 'service_name',
+                'Values': [service_name]
+            }
+        ]
+    )
+    launch_templates = response['LaunchTemplates']
+    for launch_template in launch_templates:
+        template_id = launch_template['LaunchTemplateId']
+        print(f"Deleting Launch Template: {template_id}")
+        client.delete_launch_template(LaunchTemplateId=template_id)
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--service_name")
@@ -447,6 +465,7 @@ def main():
     terminate_open_id_providers(service_name)
     logging.info("Delete unused EBS volumes")
     delete_volumes(service_name, aws_region)
+    delete_launch_templates(service_name, aws_region)
     delete_certificates(service_name, aws_region)
     delete_hosted_zones(service_name)
     delete_iam_policies(service_name)
