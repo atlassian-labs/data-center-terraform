@@ -22,7 +22,8 @@
 # AWS_ACCESS_KEY_ID=123dsa321asd
 # AWS_SECRET_ACCESS_KEY=asd123asd123
 
-FROM ubuntu:22.04
+ARG BASE_IMAGE=ubuntu:22.04
+FROM $BASE_IMAGE
 
 RUN apt-get update \
     && apt-get install -y gnupg software-properties-common curl unzip \
