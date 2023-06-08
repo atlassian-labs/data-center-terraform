@@ -176,9 +176,8 @@ destroy_tfstate() {
             * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit 1;;
         esac
       fi
-      if ! test -d ".terraform" ; then
-        terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
-      fi
+      # always init as cluster could be in a broken state
+      terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
       terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
       if [ $? -eq 0 ]; then
         set -e
