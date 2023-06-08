@@ -379,20 +379,23 @@ def delete_hosted_zones(service_name):
 def delete_iam_roles(service_name):
     logging.info('Deleting IAM roles')
     client = boto3.client('iam')
-    response = client.list_roles(MaxItems=1000)
-    matching_roles = [role['RoleName'] for role in response['Roles'] if
-                      role['RoleName'].startswith('atlas-' + service_name)]
+    paginator = client.get_paginator('list_roles')
+    response_iterator = paginator.paginate()
 
-    for role_name in matching_roles:
-        # Detach policies from the role
-        attached_policies = client.list_attached_role_policies(RoleName=role_name)['AttachedPolicies']
-        for policy in attached_policies:
-            policy_arn = policy['PolicyArn']
-            logging.info(f'Detaching IAM policy {policy_arn} from role {role_name}')
-            client.detach_role_policy(RoleName=role_name, PolicyArn=policy_arn)
+    for response in response_iterator:
+        matching_roles = [role['RoleName'] for role in response['Roles'] if
+                          role['RoleName'].startswith('atlas-' + service_name)]
 
-        logging.info('Deleting IAM role: ' + role_name)
-        client.delete_role(RoleName=role_name)
+        for role_name in matching_roles:
+            # Detach policies from the role
+            attached_policies = client.list_attached_role_policies(RoleName=role_name)['AttachedPolicies']
+            for policy in attached_policies:
+                policy_arn = policy['PolicyArn']
+                logging.info(f'Detaching IAM policy {policy_arn} from role {role_name}')
+                client.detach_role_policy(RoleName=role_name, PolicyArn=policy_arn)
+
+            logging.info('Deleting IAM role: ' + role_name)
+            client.delete_role(RoleName=role_name)
 
 
 def delete_iam_policies(service_name):
