@@ -1,6 +1,6 @@
 # Example docker command to run install script
 # docker run --env-file aws_envs \
-# -v "$PWD/.terraform:/data-center-terraform/.terraform \
+# -v "$PWD/.terraform:/data-center-terraform/.terraform" \
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
 # -it atlassianlabs/terraform ./install.sh -c config.tfvars
@@ -13,7 +13,7 @@
 
 # Example docker command to run uninstall script
 # docker run --env-file aws_envs \
-# -v "$PWD/.terraform:/data-center-terraform/.terraform \
+# -v "$PWD/.terraform:/data-center-terraform/.terraform" \
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
 # -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
