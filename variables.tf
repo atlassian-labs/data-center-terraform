@@ -81,6 +81,24 @@ variable "max_cluster_capacity" {
   }
 }
 
+variable "cluster_downtime_start" {
+  description = "Time to scale down the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_stop" {
+  description = "Time to scale up the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_timezone" {
+  description = "Time zone for a cron expression. Valid values are the canonical names of the IANA time zones (such as Etc/GMT+9 or Pacific/Tahiti)."
+  default     = "Etc/UTC"
+  type        = string
+}
+
 variable "domain" {
   description = "Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)"
   default     = null
@@ -134,6 +152,14 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+variable "additional_namespaces" {
+  description = "List of additional namespaces to create."
+  type        = list(string)
+}
+
+################################################################################
+# Monitoring Variables
+################################################################################
 
 variable "monitoring_enabled" {
   description = "Enable kube-prometheus-stack for product node monitoring."
@@ -254,7 +280,7 @@ variable "jira_local_home_size" {
 
 variable "jira_db_major_engine_version" {
   description = "The database major version to use for Jira."
-  default     = "12"
+  default     = "14"
   type        = string
 }
 
@@ -503,7 +529,7 @@ variable "confluence_local_home_size" {
 variable "confluence_db_major_engine_version" {
   description = "The database major version to use for Confluence."
   type        = string
-  default     = "11"
+  default     = "14"
 }
 
 variable "confluence_db_allocated_storage" {
@@ -674,7 +700,7 @@ variable "bitbucket_admin_email_address" {
 
 variable "bitbucket_db_major_engine_version" {
   description = "The database major version to use."
-  default     = "13"
+  default     = "14"
   type        = string
 }
 
@@ -1011,7 +1037,7 @@ variable "bamboo_install_local_chart" {
 variable "bamboo_db_major_engine_version" {
   description = "The database major version to use for Bamboo."
   type        = string
-  default     = "13"
+  default     = "14"
 }
 
 variable "bamboo_db_allocated_storage" {
@@ -1167,7 +1193,7 @@ variable "crowd_local_home_size" {
 
 variable "crowd_db_major_engine_version" {
   description = "The database major version to use for Crowd."
-  default     = "12"
+  default     = "14"
   type        = string
 }
 

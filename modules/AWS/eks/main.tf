@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_launch_template" "nodes" {
+  id = module.nodegroup_launch_template.id
+}
+
 module "nodegroup_launch_template" {
   cluster_name                    = var.cluster_name
   source                          = "./nodegroup_launch_template"
@@ -66,7 +70,7 @@ module "eks" {
       subnet_ids               = slice(var.subnets, 0, 1)
       capacity_type            = "ON_DEMAND"
       create_launch_template   = false
-      launch_template_name     = "${var.cluster_name}-launch-template"
+      launch_template_name     = data.aws_launch_template.nodes.name
       launch_template_version  = module.nodegroup_launch_template.version
       create_iam_role          = false
       iam_role_arn             = aws_iam_role.node_group.arn
@@ -86,4 +90,32 @@ resource "aws_autoscaling_group_tag" "this" {
   depends_on = [
     module.eks
   ]
+}
+
+resource "aws_autoscaling_schedule" "downtime" {
+  count                  = local.use_downtime ? 1 : 0
+  scheduled_action_name  = "downtime"
+  min_size               = 0
+  max_size               = 0
+  desired_capacity       = 0
+  autoscaling_group_name = module.eks.eks_managed_node_groups.appNodes.node_group_resources[0].autoscaling_groups[0].name
+  recurrence             = "0 ${var.cluster_downtime_start} * * *"
+  time_zone              = var.cluster_downtime_timezone
+  lifecycle {
+    ignore_changes = [start_time]
+  }
+}
+
+resource "aws_autoscaling_schedule" "business_hours" {
+  count                  = local.use_downtime ? 1 : 0
+  scheduled_action_name  = "business-hours"
+  min_size               = var.min_cluster_capacity
+  max_size               = var.max_cluster_capacity
+  desired_capacity       = var.min_cluster_capacity
+  autoscaling_group_name = module.eks.eks_managed_node_groups.appNodes.node_group_resources[0].autoscaling_groups[0].name
+  recurrence             = "0 ${var.cluster_downtime_stop} * * MON-FRI"
+  time_zone              = var.cluster_downtime_timezone
+  lifecycle {
+    ignore_changes = [start_time]
+  }
 }

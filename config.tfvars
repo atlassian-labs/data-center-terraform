@@ -67,6 +67,9 @@ max_cluster_capacity = 5
 #  }
 #]
 
+# List of addtional namespaces to be created in the cluster
+#additional_namespaces = ["extra_namespace"]
+
 ################################################################################
 # Osquery settings. Atlassian only!
 ################################################################################

@@ -17,6 +17,9 @@ module "eks" {
   instance_disk_size              = var.instance_disk_size
   max_cluster_capacity            = var.max_cluster_capacity
   min_cluster_capacity            = var.min_cluster_capacity
+  cluster_downtime_start          = var.cluster_downtime_start
+  cluster_downtime_stop           = var.cluster_downtime_stop
+  cluster_downtime_timezone       = var.cluster_downtime_timezone
   additional_roles                = var.eks_additional_roles
   osquery_secret_name             = var.osquery_secret_name
   osquery_secret_region           = var.osquery_secret_region
@@ -40,6 +43,16 @@ module "ingress" {
   load_balancer_access_ranges = var.whitelist_cidr
   enable_https_ingress        = var.enable_https_ingress
   vpc                         = module.vpc
+  additional_namespaces       = var.additional_namespaces
+}
+
+module "external_dns" {
+  source                  = "../AWS/external-dns"
+  cluster_name            = local.cluster_name
+  create_external_dns     = true
+  cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
+  zone_id                 = module.ingress.outputs.r53_zone
+  ingress_domain          = local.ingress_domain
 }
 
 resource "kubernetes_namespace" "products" {

@@ -1,21 +1,29 @@
 # Example docker command to run install script
 # docker run --env-file aws_envs \
-# -v "$PWD/.terraform:/data-center-terraform/.terraform \
+# -v "$PWD/.terraform:/data-center-terraform/.terraform" \
 # -v "$PWD/logs:/data-center-terraform/logs" \
 # -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
-# -it localtf ./install.sh -c config.tfvars
+# -it atlassianlabs/terraform ./install.sh -c config.tfvars
 #
 # Example docker command to collect k8s logs
 # docker run --env-file aws_envs \
 # -v "$PWD/k8s_logs:/data-center-terraform/k8s_logs" \
 # -v "$PWD/logs:/data-center-terraform/logs" \
-# -it localtf ./scripts/collect_k8s_logs.sh atlas-cluster-name-cluster us-east-2 k8s_logs
+# -it atlassianlabs/terraform ./scripts/collect_k8s_logs.sh atlas-cluster-name-cluster us-east-2 k8s_logs
 
-# In those example aws_envs should contain AWS variables needed for authorization like:
-# AWS_SECRET_ACCESS_KEY="asd123asd123"
-# AWS_ACCESS_KEY_ID="123dsa321asd"
+# Example docker command to run uninstall script
+# docker run --env-file aws_envs \
+# -v "$PWD/.terraform:/data-center-terraform/.terraform" \
+# -v "$PWD/logs:/data-center-terraform/logs" \
+# -v "$PWD/config.tfvars:/data-center-terraform/config.tfvars" \
+# -it atlassianlabs/terraform ./uninstall.sh -t -c config.tfvars
 
-FROM ubuntu:22.04
+# In those example aws_envs should contain AWS variables needed for authorization without quotes like:
+# AWS_ACCESS_KEY_ID=123dsa321asd
+# AWS_SECRET_ACCESS_KEY=asd123asd123
+
+ARG BASE_IMAGE=ubuntu:22.04
+FROM $BASE_IMAGE
 
 RUN apt-get update \
     && apt-get install -y gnupg software-properties-common curl unzip \

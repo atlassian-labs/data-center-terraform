@@ -1,19 +1,23 @@
 module "base-infrastructure" {
   source = "./modules/common"
 
-  region_name          = var.region
-  environment_name     = var.environment_name
-  eks_version          = var.eks_version
-  tags                 = var.resource_tags
-  instance_types       = var.instance_types
-  instance_disk_size   = var.instance_disk_size
-  max_cluster_capacity = var.max_cluster_capacity
-  min_cluster_capacity = var.min_cluster_capacity
-  domain               = var.domain
-  namespace            = local.namespace
-  eks_additional_roles = var.eks_additional_roles
-  whitelist_cidr       = var.whitelist_cidr
-  enable_https_ingress = var.enable_https_ingress
+  region_name               = var.region
+  environment_name          = var.environment_name
+  eks_version               = var.eks_version
+  tags                      = var.resource_tags
+  instance_types            = var.instance_types
+  instance_disk_size        = var.instance_disk_size
+  max_cluster_capacity      = var.max_cluster_capacity
+  min_cluster_capacity      = var.min_cluster_capacity
+  cluster_downtime_start    = var.cluster_downtime_start
+  cluster_downtime_stop     = var.cluster_downtime_stop
+  cluster_downtime_timezone = var.cluster_downtime_timezone
+  domain                    = var.domain
+  namespace                 = local.namespace
+  eks_additional_roles      = var.eks_additional_roles
+  whitelist_cidr            = var.whitelist_cidr
+  enable_https_ingress      = var.enable_https_ingress
+  additional_namespaces     = var.additional_namespaces
 
   enable_ssh_tcp        = local.install_bitbucket
   osquery_secret_name   = var.osquery_fleet_enrollment_secret_name

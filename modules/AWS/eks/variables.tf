@@ -66,17 +66,27 @@ variable "min_cluster_capacity" {
   }
 }
 
+variable "cluster_downtime_start" {
+  description = "Time to scale down the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_stop" {
+  description = "Time to scale up the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_timezone" {
+  description = "Time zone for a cron expression. Valid values are the canonical names of the IANA time zones (such as Etc/GMT+9 or Pacific/Tahiti)."
+  default     = "Etc/UTC"
+  type        = string
+}
+
 variable "additional_roles" {
   description = "Additional roles that have access to the cluster."
   type        = list(object({ rolearn = string, username = string, groups = list(string) }))
-}
-
-variable "resource_tags" {
-  description = "Additional tags for all resources to be created."
-  default = {
-    Terraform = "true"
-  }
-  type = map(string)
 }
 
 variable "osquery_secret_name" {
