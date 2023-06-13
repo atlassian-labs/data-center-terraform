@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.5.0
+
+**Release date:** 2022-06-13
+
+* Add Prometheus monitoring stack [#320](https://github.com/atlassian-labs/data-center-terraform/pull/320)
+* Use name prefix when creating launch template [#328](https://github.com/atlassian-labs/data-center-terraform/pull/328)
+* Run terraform init when uninstalling infra [#330](https://github.com/atlassian-labs/data-center-terraform/pull/330)
+* Dockerize install and uninstall [#322](https://github.com/atlassian-labs/data-center-terraform/pull/322)
+
 ## 2.4.0
 
 **Release date:** 2022-04-04
