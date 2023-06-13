@@ -14,7 +14,7 @@ variable "zone_id" {
 
 variable "create_external_dns" {
   description = "Should create external dns"
-  default     = true
+  default     = false
   type        = bool
 }
 

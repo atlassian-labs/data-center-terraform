@@ -51,16 +51,18 @@ data "aws_iam_policy_document" "external_dns" {
 }
 
 resource "kubernetes_namespace" "external_dns" {
+  count = var.create_external_dns ? 1 : 0
   metadata {
     name = "external-dns"
   }
 }
 
 resource "helm_release" "external_dns" {
+  count      = var.create_external_dns ? 1 : 0
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "external-dns"
   name       = local.external_dns_name
-  namespace  = kubernetes_namespace.external_dns.metadata[0].name
+  namespace  = kubernetes_namespace.external_dns[count.index].metadata[0].name
   version    = local.external_dns_version
 
   values = [yamlencode({

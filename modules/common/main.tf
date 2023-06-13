@@ -49,7 +49,7 @@ module "ingress" {
 module "external_dns" {
   source                  = "../AWS/external-dns"
   cluster_name            = local.cluster_name
-  create_external_dns     = true
+  create_external_dns     = var.create_external_dns
   cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
   zone_id                 = module.ingress.outputs.r53_zone
   ingress_domain          = local.ingress_domain

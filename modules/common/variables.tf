@@ -100,6 +100,12 @@ variable "enable_https_ingress" {
   type        = bool
 }
 
+variable "create_external_dns" {
+  description = "Should create external dns"
+  default     = false
+  type        = bool
+}
+
 variable "additional_namespaces" {
   description = "List of additional namespaces to create."
   type        = list(string)

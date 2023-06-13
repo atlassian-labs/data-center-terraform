@@ -157,6 +157,12 @@ variable "additional_namespaces" {
   type        = list(string)
 }
 
+variable "create_external_dns" {
+  description = "Should create external dns"
+  default     = false
+  type        = bool
+}
+
 ################################################################################
 # Monitoring Variables
 ################################################################################
@@ -164,8 +170,7 @@ variable "additional_namespaces" {
 variable "monitoring_enabled" {
   description = "Enable kube-prometheus-stack for product node monitoring."
   type        = bool
-
-  default = false
+  default     = false
 }
 
 variable "monitoring_grafana_expose_lb" {

@@ -55,6 +55,21 @@ instance_disk_size = 50
 min_cluster_capacity = 1
 max_cluster_capacity = 5
 
+# Define a "go-to-sleep" window for EKS cluster nodes.
+# EKS nodegroup will be scaled down according to the following cron: '0 ${var.cluster_downtime_start} * * *'
+# and scaled up again as per '0 ${var.cluster_downtime_stop} * * MON-FRI' cron expression.
+# Uncomment both variables to activate "go-to-sleep" window. For example, you can instruct EKS nodegroup
+# to scale to 0 at 8PM every day, and back to desired count at 5AM on weekdays
+# cluster_downtime_start = 20
+# cluster_downtime_stop  = 5
+
+# Define a timezone for go-to-sleep window. Defaults to Etc/UTC
+# cluster_downtime_timezone = "Australia/Sydney"
+
+# Deploy external-dns Helm chart
+# See: https://bitnami.com/stack/external-dns/helm
+# create_external_dns = true
+
 # If you desire to access the cluster with additional roles other than the one used for cluster creation,
 # you can define them below.
 #eks_additional_roles = [
@@ -75,7 +90,7 @@ max_cluster_capacity = 5
 ################################################################################
 
 # OSquery Fleet Enrollment Host
-# osquery_fleet_enrollment_host = "fleet-server.services.atlassian.com"
+# osquery_fleet_enrollment_host = "<fleet-enrollment-host>"
 
 # The secret needs to be available in Secrets Manager. Terraform DOES NOT
 # create the secret. It should be just the secret name, not the full ARN.

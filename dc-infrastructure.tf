@@ -17,6 +17,7 @@ module "base-infrastructure" {
   eks_additional_roles      = var.eks_additional_roles
   whitelist_cidr            = var.whitelist_cidr
   enable_https_ingress      = var.enable_https_ingress
+  create_external_dns       = var.create_external_dns
   additional_namespaces     = var.additional_namespaces
 
   enable_ssh_tcp        = local.install_bitbucket
