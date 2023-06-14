@@ -2,10 +2,12 @@ data "aws_iam_policy_document" "s3_confluence_storage" {
   count = var.confluence_s3_attachments_storage ? 1 : 0
   statement {
     effect = "Allow"
-    actions = ["s3:GetObject",
+    actions = [
+      "s3:GetObject",
       "s3:DeleteObject",
       "s3:PutObject",
-    "s3:ListBucket"]
+      "s3:ListBucket"
+    ]
     resources = [aws_s3_bucket.confluence_storage_bucket[0].arn, format("%s/%s", aws_s3_bucket.confluence_storage_bucket[0].arn, "*")]
   }
 }

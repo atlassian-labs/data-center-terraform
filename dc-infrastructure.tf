@@ -294,7 +294,6 @@ module "crowd" {
   db_snapshot_id           = var.crowd_db_snapshot_id
   db_snapshot_build_number = var.crowd_db_snapshot_build_number
 
-
   replica_count            = var.crowd_replica_count
   installation_timeout     = var.crowd_installation_timeout
   termination_grace_period = var.crowd_termination_grace_period
