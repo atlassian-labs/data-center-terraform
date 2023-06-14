@@ -310,6 +310,10 @@ confluence_db_name = "confluence"
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
 
+# Use AWS S3 to store attachments. See: https://confluence.atlassian.com/doc/configuring-s3-object-storage-1206794554.html
+# Terraform will automatically create S3 bucket, IAM role and policy
+#confluence_s3_attachments_storage = true
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################
