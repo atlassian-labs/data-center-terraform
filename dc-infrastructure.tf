@@ -171,11 +171,11 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count            = var.confluence_replica_count
-  installation_timeout     = var.confluence_installation_timeout
-  version_tag              = var.confluence_version_tag
-  enable_synchrony         = var.confluence_collaborative_editing_enabled
-  termination_grace_period = var.confluence_termination_grace_period
+  replica_count                     = var.confluence_replica_count
+  installation_timeout              = var.confluence_installation_timeout
+  version_tag                       = var.confluence_version_tag
+  enable_synchrony                  = var.confluence_collaborative_editing_enabled
+  termination_grace_period          = var.confluence_termination_grace_period
   confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
 
   confluence_configuration = {

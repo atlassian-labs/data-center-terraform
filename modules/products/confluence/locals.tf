@@ -109,7 +109,7 @@ locals {
 
   irsa_properties = var.confluence_s3_attachments_storage ? ["-Daws.webIdentityTokenFile=/var/run/secrets/eks.amazonaws.com/serviceaccount/token",
     "-Dconfluence.filestore.attachments.s3.bucket.name=${var.eks.confluence_s3_bucket_name}",
-    "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"] : []
+  "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"] : []
 
   service_account_annotations = var.confluence_s3_attachments_storage ? yamlencode({
     serviceAccount = {

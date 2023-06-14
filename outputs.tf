@@ -109,5 +109,5 @@ output "elasticsearch_url" {
 
 output "confluence_s3_bucket" {
   description = "Confluence S3 bucket name"
-  value = var.confluence_s3_attachments_storage ? "${local.cluster_name}-confluence-storage" : null
+  value       = var.confluence_s3_attachments_storage ? "${local.cluster_name}-confluence-storage" : null
 }

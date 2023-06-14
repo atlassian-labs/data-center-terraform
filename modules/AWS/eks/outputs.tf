@@ -15,7 +15,7 @@ output "confluence_s3_role_arn" {
 }
 
 output "confluence_s3_bucket_name" {
-  value = var.confluence_s3_attachments_storage ? aws_s3_bucket.confluence_storage_bucket[0].id: null
+  value = var.confluence_s3_attachments_storage ? aws_s3_bucket.confluence_storage_bucket[0].id : null
 }
 
 output "kubernetes_provider_config" {

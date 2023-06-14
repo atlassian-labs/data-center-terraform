@@ -1,7 +1,7 @@
 
 locals {
 
-  oicd_provider = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+  oicd_provider                        = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   autoscaler_service_account_namespace = "kube-system"
   autoscaler_service_account_name      = "cluster-autoscaler-aws-cluster-autoscaler-chart"
 

@@ -118,5 +118,5 @@ variable "namespace" {
 
 variable "confluence_s3_attachments_storage" {
   description = "Use S3 as attachment storage"
-  type = bool
+  type        = bool
 }
