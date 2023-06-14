@@ -155,6 +155,7 @@ variable "enable_https_ingress" {
 variable "additional_namespaces" {
   description = "List of additional namespaces to create."
   type        = list(string)
+  default     = []
 }
 
 variable "create_external_dns" {

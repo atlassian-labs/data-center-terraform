@@ -9,7 +9,7 @@ module "external_dns_iam_role" {
   role_name    = "${var.cluster_name}-external-dns"
   provider_url = replace(var.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns = [
-    aws_iam_policy.external_dns[0].arn
+    var.create_external_dns ? aws_iam_policy.external_dns[0].arn : null
   ]
   oidc_fully_qualified_subjects = [
     "system:serviceaccount:${local.external_dns_namespace}:${local.external_dns_name}"
@@ -20,10 +20,11 @@ resource "aws_iam_policy" "external_dns" {
   count       = var.create_external_dns ? 1 : 0
   name        = "${var.cluster_name}_ExternalDNS"
   description = "External DNS policy for cluster ${var.cluster_name}"
-  policy      = data.aws_iam_policy_document.external_dns.json
+  policy      = data.aws_iam_policy_document.external_dns[count.index].json
 }
 
 data "aws_iam_policy_document" "external_dns" {
+  count = var.create_external_dns ? 1 : 0
   statement {
     effect = "Allow"
 
