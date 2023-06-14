@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_launch_template" "nodes" {
+  id = module.nodegroup_launch_template.id
+}
+
 module "nodegroup_launch_template" {
   cluster_name                    = var.cluster_name
   source                          = "./nodegroup_launch_template"
@@ -66,7 +70,7 @@ module "eks" {
       subnet_ids               = slice(var.subnets, 0, 1)
       capacity_type            = "ON_DEMAND"
       create_launch_template   = false
-      launch_template_name     = "${var.cluster_name}-launch-template"
+      launch_template_name     = data.aws_launch_template.nodes.name
       launch_template_version  = module.nodegroup_launch_template.version
       create_iam_role          = false
       iam_role_arn             = aws_iam_role.node_group.arn

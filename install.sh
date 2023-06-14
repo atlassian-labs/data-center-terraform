@@ -32,6 +32,7 @@ EOF
   echo
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
+  echo "   -d : run cleanup.sh script at the beginning."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -41,17 +42,24 @@ EOF
   CONFIG_FILE=
   HELP_FLAG=
   FORCE_FLAG=
-  while getopts hf?c: name ; do
+  CLEAN_UP_FLAG=
+  while getopts hfd?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
+      d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
 
   shift $((${OPTIND} - 1))
   UNKNOWN_ARGS="$*"
+
+# Clean up before installation
+if [ ! -z "${CLEAN_UP_FLAG}" ]; then
+  bash "${SCRIPT_PATH}/cleanup.sh" -s -t -x -r .
+fi
 
 # Check for prerequisite tooling
 # https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/

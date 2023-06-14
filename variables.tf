@@ -254,7 +254,7 @@ variable "jira_local_home_size" {
 
 variable "jira_db_major_engine_version" {
   description = "The database major version to use for Jira."
-  default     = "12"
+  default     = "14"
   type        = string
 }
 
@@ -503,7 +503,7 @@ variable "confluence_local_home_size" {
 variable "confluence_db_major_engine_version" {
   description = "The database major version to use for Confluence."
   type        = string
-  default     = "11"
+  default     = "14"
 }
 
 variable "confluence_db_allocated_storage" {
@@ -674,7 +674,7 @@ variable "bitbucket_admin_email_address" {
 
 variable "bitbucket_db_major_engine_version" {
   description = "The database major version to use."
-  default     = "13"
+  default     = "14"
   type        = string
 }
 
@@ -1011,7 +1011,7 @@ variable "bamboo_install_local_chart" {
 variable "bamboo_db_major_engine_version" {
   description = "The database major version to use for Bamboo."
   type        = string
-  default     = "13"
+  default     = "14"
 }
 
 variable "bamboo_db_allocated_storage" {
@@ -1167,7 +1167,7 @@ variable "crowd_local_home_size" {
 
 variable "crowd_db_major_engine_version" {
   description = "The database major version to use for Crowd."
-  default     = "12"
+  default     = "14"
   type        = string
 }
 

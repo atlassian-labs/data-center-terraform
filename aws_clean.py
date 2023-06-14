@@ -376,6 +376,68 @@ def delete_hosted_zones(service_name):
             client.delete_hosted_zone(Id=hz['Id'])
 
 
+def delete_iam_roles(service_name):
+    logging.info('Deleting IAM roles')
+    client = boto3.client('iam')
+    paginator = client.get_paginator('list_roles')
+    response_iterator = paginator.paginate()
+
+    for response in response_iterator:
+        matching_roles = [role['RoleName'] for role in response['Roles'] if
+                          role['RoleName'].startswith('atlas-' + service_name)]
+
+        for role_name in matching_roles:
+            # Detach policies from the role
+            attached_policies = client.list_attached_role_policies(RoleName=role_name)['AttachedPolicies']
+            for policy in attached_policies:
+                policy_arn = policy['PolicyArn']
+                logging.info(f'Detaching IAM policy {policy_arn} from role {role_name}')
+                client.detach_role_policy(RoleName=role_name, PolicyArn=policy_arn)
+
+            logging.info('Deleting IAM role: ' + role_name)
+            client.delete_role(RoleName=role_name)
+
+
+def delete_iam_policies(service_name):
+    logging.info('Deleting IAM policies')
+    client = boto3.client('iam')
+    response = client.list_policies(MaxItems=1000)
+    matching_policies = [{'PolicyName': policy['PolicyName'], 'PolicyArn': policy['Arn']} for policy in
+                         response['Policies'] if policy['PolicyName'].startswith('atlas-' + service_name)]
+
+    for policy in matching_policies:
+        policy_name = policy['PolicyName']
+        policy_arn = policy['PolicyArn']
+
+        # Detach the policy from its roles
+        roles = client.list_entities_for_policy(PolicyArn=policy_arn)['PolicyRoles']
+        for role in roles:
+            role_name = role['RoleName']
+            logging.info(f'Detaching IAM policy {policy_name} from role {role_name}')
+            client.detach_role_policy(RoleName=role_name, PolicyArn=policy_arn)
+
+        logging.info(f'Deleting IAM policy {policy_name}')
+        client.delete_policy(PolicyArn=policy_arn)
+
+
+def delete_launch_templates(service_name, aws_region):
+    logging.info('Deleting launch templates')
+    client = boto3.client('ec2', region_name=aws_region)
+    response = client.describe_launch_templates(
+        Filters=[
+            {
+                'Name': 'tag:' + 'service_name',
+                'Values': [service_name]
+            }
+        ]
+    )
+    launch_templates = response['LaunchTemplates']
+    for launch_template in launch_templates:
+        template_id = launch_template['LaunchTemplateId']
+        print(f"Deleting Launch Template: {template_id}")
+        client.delete_launch_template(LaunchTemplateId=template_id)
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--service_name")
@@ -387,7 +449,6 @@ def main():
         service_name = args.service_name
         aws_region = args.region
 
-    # delete_iam_roles(service_name)
     logging.info(f"Searching for resources to remove in {aws_region}.")
     cluster = get_clusters_to_terminate(service_name, aws_region)
     if cluster:
@@ -407,8 +468,11 @@ def main():
     terminate_open_id_providers(service_name)
     logging.info("Delete unused EBS volumes")
     delete_volumes(service_name, aws_region)
+    delete_launch_templates(service_name, aws_region)
     delete_certificates(service_name, aws_region)
     delete_hosted_zones(service_name)
+    delete_iam_policies(service_name)
+    delete_iam_roles(service_name)
 
 
 if __name__ == '__main__':
