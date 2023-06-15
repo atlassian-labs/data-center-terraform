@@ -24,6 +24,8 @@ module "base-infrastructure" {
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
 
+  confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
+
   monitoring_enabled            = var.monitoring_enabled
   prometheus_pvc_disk_size      = var.prometheus_pvc_disk_size
   grafana_pvc_disk_size         = var.grafana_pvc_disk_size
@@ -151,6 +153,7 @@ module "confluence" {
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
+  region_name      = var.region
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
   ingress          = module.base-infrastructure.ingress
@@ -168,11 +171,12 @@ module "confluence" {
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
-  replica_count            = var.confluence_replica_count
-  installation_timeout     = var.confluence_installation_timeout
-  version_tag              = var.confluence_version_tag
-  enable_synchrony         = var.confluence_collaborative_editing_enabled
-  termination_grace_period = var.confluence_termination_grace_period
+  replica_count                     = var.confluence_replica_count
+  installation_timeout              = var.confluence_installation_timeout
+  version_tag                       = var.confluence_version_tag
+  enable_synchrony                  = var.confluence_collaborative_editing_enabled
+  termination_grace_period          = var.confluence_termination_grace_period
+  confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
 
   confluence_configuration = {
     helm_version       = var.confluence_helm_chart_version
@@ -289,7 +293,6 @@ module "crowd" {
   db_master_password       = var.crowd_db_master_password
   db_snapshot_id           = var.crowd_db_snapshot_id
   db_snapshot_build_number = var.crowd_db_snapshot_build_number
-
 
   replica_count            = var.crowd_replica_count
   installation_timeout     = var.crowd_installation_timeout

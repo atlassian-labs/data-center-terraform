@@ -106,3 +106,8 @@ output "elasticsearch_url" {
   description = "URL to access the Bitbucket elasticsearch"
   value       = local.install_bitbucket && length(module.bitbucket) == 1 ? module.bitbucket[0].elasticsearch_endpoint : null
 }
+
+output "confluence_s3_bucket" {
+  description = "Confluence S3 bucket name"
+  value       = var.confluence_s3_attachments_storage ? "${local.cluster_name}-confluence-storage" : null
+}

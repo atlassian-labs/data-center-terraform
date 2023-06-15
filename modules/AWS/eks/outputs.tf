@@ -10,6 +10,14 @@ output "cluster_oidc_issuer_url" {
   value = module.eks.cluster_oidc_issuer_url
 }
 
+output "confluence_s3_role_arn" {
+  value = var.confluence_s3_attachments_storage ? aws_iam_role.s3_confluence_storage_role[0].arn : null
+}
+
+output "confluence_s3_bucket_name" {
+  value = var.confluence_s3_attachments_storage ? aws_s3_bucket.confluence_storage_bucket[0].id : null
+}
+
 output "kubernetes_provider_config" {
   value = {
     host                   = data.aws_eks_cluster.cluster.endpoint

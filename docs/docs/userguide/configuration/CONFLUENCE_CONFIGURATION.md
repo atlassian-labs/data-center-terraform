@@ -172,6 +172,19 @@ confluence_nfs_limits_cpu      = "2"
 confluence_nfs_limits_memory   = "2Gi"
 ```
 
+## S3 for attachment storage
+Since Confluence `8.1` [AWS S3 can be used](https://confluence.atlassian.com/docm/8.1/configuring-s3-object-storage-1189796977.html?permissionViolation=true&permissionViolation=true){.external} for storing and managing attachment data. 
+
+`confluence_s3_attachments_storage` enables AWS S3 attachment storage, where Terraform will automatically create an S3 bucket, IAM role and policy. By default, this property is commented out.
+
+```terraform
+confluence_s3_attachments_storage = true
+```
+
+!!! info "Shared home is still required."
+
+    S3 object storage is for attachment data only. You'll still need to use file system storage ([shared home](#shared-home-configuration)) for Confluence configuration data.
+
 ## Dataset restore configuration
 To restore the dataset into the newly created instance, configure all the parameters in this section.
 

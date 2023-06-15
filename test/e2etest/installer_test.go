@@ -45,7 +45,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	if contains(productList, confluence) {
-		confluenceHealthTests(t, productUrls[confluence], synchronyUrl)
+		confluenceHealthTests(t, testConfig, productUrls[confluence], synchronyUrl)
 	}
 
 	if contains(productList, bitbucket) {
