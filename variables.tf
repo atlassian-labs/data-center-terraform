@@ -1311,3 +1311,9 @@ variable "crowd_license" {
   sensitive   = true
   default     = ""
 }
+
+variable "confluence_s3_attachments_storage" {
+  description = "Use S3 as attachment storage"
+  type        = bool
+  default     = false
+}

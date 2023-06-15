@@ -7,27 +7,28 @@ module "vpc" {
 module "eks" {
   source = "../AWS/eks"
 
-  region                          = var.region_name
-  cluster_name                    = local.cluster_name
-  eks_version                     = var.eks_version
-  tags                            = var.tags
-  vpc_id                          = module.vpc.vpc_id
-  subnets                         = module.vpc.private_subnets
-  instance_types                  = var.instance_types
-  instance_disk_size              = var.instance_disk_size
-  max_cluster_capacity            = var.max_cluster_capacity
-  min_cluster_capacity            = var.min_cluster_capacity
-  cluster_downtime_start          = var.cluster_downtime_start
-  cluster_downtime_stop           = var.cluster_downtime_stop
-  cluster_downtime_timezone       = var.cluster_downtime_timezone
-  additional_roles                = var.eks_additional_roles
-  osquery_secret_name             = var.osquery_secret_name
-  osquery_secret_region           = var.osquery_secret_region
-  osquery_env                     = var.osquery_env
-  osquery_version                 = var.osquery_version
-  kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
-  osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
-
+  region                            = var.region_name
+  cluster_name                      = local.cluster_name
+  eks_version                       = var.eks_version
+  tags                              = var.tags
+  vpc_id                            = module.vpc.vpc_id
+  subnets                           = module.vpc.private_subnets
+  instance_types                    = var.instance_types
+  instance_disk_size                = var.instance_disk_size
+  max_cluster_capacity              = var.max_cluster_capacity
+  min_cluster_capacity              = var.min_cluster_capacity
+  cluster_downtime_start            = var.cluster_downtime_start
+  cluster_downtime_stop             = var.cluster_downtime_stop
+  cluster_downtime_timezone         = var.cluster_downtime_timezone
+  additional_roles                  = var.eks_additional_roles
+  osquery_secret_name               = var.osquery_secret_name
+  osquery_secret_region             = var.osquery_secret_region
+  osquery_env                       = var.osquery_env
+  osquery_version                   = var.osquery_version
+  namespace                         = var.namespace
+  kinesis_log_producers_role_arns   = var.kinesis_log_producers_role_arns
+  confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
+  osquery_fleet_enrollment_host     = var.osquery_fleet_enrollment_host
 }
 
 

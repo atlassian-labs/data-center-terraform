@@ -438,6 +438,22 @@ def delete_launch_templates(service_name, aws_region):
         client.delete_launch_template(LaunchTemplateId=template_id)
 
 
+def delete_s3_buckets(service_name):
+    client = boto3.client('s3')
+    response = client.list_buckets()
+    bucket_list = response['Buckets']
+    matching_buckets = [bucket['Name'] for bucket in bucket_list if bucket['Name'].startswith("atlas-" + service_name)]
+    for bucket in matching_buckets:
+        # Delete each object inside the bucket otherwise the bucket cannot be deleted
+        response = client.list_objects_v2(Bucket=bucket)
+        objects = response.get('Contents', [])
+        for obj in objects:
+            print(f"Deleting object: s3://{bucket}/{obj['Key']}")
+            client.delete_object(Bucket=bucket, Key=obj['Key'])
+        print(f"Deleting bucket: {bucket}")
+        client.delete_bucket(Bucket=bucket)
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--service_name")
@@ -473,6 +489,7 @@ def main():
     delete_hosted_zones(service_name)
     delete_iam_policies(service_name)
     delete_iam_roles(service_name)
+    delete_s3_buckets(service_name)
 
 
 if __name__ == '__main__':

@@ -187,3 +187,13 @@ variable "shared_home_snapshot_id" {
   type        = string
   default     = null
 }
+
+variable "confluence_s3_attachments_storage" {
+  description = "Use S3 as attachment storage"
+  type        = bool
+}
+
+variable "region_name" {
+  description = "Name of the AWS region"
+  type        = string
+}

@@ -42,13 +42,14 @@ func TestMonitoringEnabled(t *testing.T) {
 			"eu":     "arn:aws:iam::ACCOUNT_ID:role/KINESIS_LOG_PRODUCER_ROLE_EU",
 			"non-eu": "arn:aws:iam::ACCOUNT_ID:role/KINESIS_LOG_PRODUCER_ROLE_NON_EU",
 		},
-		"osquery_fleet_enrollment_host": "example.com",
-		"monitoring_enabled":            true,
-		"monitoring_grafana_expose_lb":  true,
-		"prometheus_pvc_disk_size":      "10Gi",
-		"grafana_pvc_disk_size":         "10Gi",
-		"monitoring_custom_values_file": "",
-		"additional_namespaces":         []string{"namespace1", "namespace2"},
+		"osquery_fleet_enrollment_host":     "example.com",
+		"monitoring_enabled":                true,
+		"monitoring_grafana_expose_lb":      true,
+		"prometheus_pvc_disk_size":          "10Gi",
+		"grafana_pvc_disk_size":             "10Gi",
+		"monitoring_custom_values_file":     "",
+		"additional_namespaces":             []string{"namespace1", "namespace2"},
+		"confluence_s3_attachments_storage": true,
 	}, t, commonModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
