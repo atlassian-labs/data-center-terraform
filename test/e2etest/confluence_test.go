@@ -40,7 +40,7 @@ func assertS3BucketPermissions(t *testing.T, testConfig TestConfig) {
 
 	// install aws cli
 	println("Installing AWS CLI ...")
-	command := []string{"apt-get update; apt-get install unzip -y; curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\";  unzip awscliv2.zip; ./aws/install"}
+	command := []string{"apt-get update; apt-get install unzip -y; curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\"; unzip awscliv2.zip; ./aws/install"}
 	_, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions, append(execArgs, command...)...)
 	assert.Nil(t, kubectlError)
 
