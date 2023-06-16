@@ -69,3 +69,6 @@ test/pkg
 
 # File created by tagging resource
 modules/AWS/asg_ec2_tagging
+
+# Password file created when the default password is reset
+*_password.*

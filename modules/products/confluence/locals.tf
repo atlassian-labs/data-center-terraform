@@ -104,6 +104,11 @@ locals {
   # updates license in shared home (in case we are restoring from snapshot)
   cmd_license_update = "sed -i 's|<property name=\"atlassian.license.message\">.*</property>|<property name=\"atlassian.license.message\">${var.confluence_configuration["license"]}</property>|g' /shared-home/confluence.cfg.xml"
 
+  cmd_change_password = templatefile("${path.module}/templates/change_passwd.sh.tpl", {
+    url         = local.confluence_ingress_url,
+    newPassword = random_password.confluence_secure_password.result
+  })
+
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
