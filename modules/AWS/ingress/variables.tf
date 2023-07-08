@@ -29,3 +29,9 @@ variable "vpc" {
   description = "VPC module that hosts the products."
   type        = any
 }
+
+variable "additional_namespaces" {
+  description = "List of additional namespaces to create."
+  type        = list(string)
+  default     = []
+}

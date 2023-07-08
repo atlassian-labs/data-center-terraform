@@ -20,4 +20,7 @@ locals {
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
   "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"]
+
+
+  use_downtime = var.cluster_downtime_start != null && var.cluster_downtime_stop != null ? true : false
 }

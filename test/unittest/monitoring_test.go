@@ -48,6 +48,7 @@ func TestMonitoringEnabled(t *testing.T) {
 		"prometheus_pvc_disk_size":          "10Gi",
 		"grafana_pvc_disk_size":             "10Gi",
 		"monitoring_custom_values_file":     "",
+		"additional_namespaces":             []string{"namespace1", "namespace2"},
 		"confluence_s3_attachments_storage": true,
 	}, t, commonModule)
 

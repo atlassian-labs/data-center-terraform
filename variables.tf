@@ -81,6 +81,24 @@ variable "max_cluster_capacity" {
   }
 }
 
+variable "cluster_downtime_start" {
+  description = "Time to scale down the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_stop" {
+  description = "Time to scale up the cluster"
+  default     = null
+  type        = number
+}
+
+variable "cluster_downtime_timezone" {
+  description = "Time zone for a cron expression. Valid values are the canonical names of the IANA time zones (such as Etc/GMT+9 or Pacific/Tahiti)."
+  default     = "Etc/UTC"
+  type        = string
+}
+
 variable "domain" {
   description = "Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)"
   default     = null
@@ -134,12 +152,26 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+variable "additional_namespaces" {
+  description = "List of additional namespaces to create."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_external_dns" {
+  description = "Should create external dns"
+  default     = false
+  type        = bool
+}
+
+################################################################################
+# Monitoring Variables
+################################################################################
 
 variable "monitoring_enabled" {
   description = "Enable kube-prometheus-stack for product node monitoring."
   type        = bool
-
-  default = false
+  default     = false
 }
 
 variable "monitoring_grafana_expose_lb" {

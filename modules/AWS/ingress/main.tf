@@ -34,9 +34,7 @@ module "ingress_certificate" {
   domain_name = "*.${var.ingress_domain}"
   zone_id     = aws_route53_zone.ingress[0].id
 
-  subject_alternative_names = [
-    var.ingress_domain,
-  ]
+  subject_alternative_names = concat([var.ingress_domain], formatlist("*.%s.${var.ingress_domain}", var.additional_namespaces))
 
   wait_for_validation = true
 }
