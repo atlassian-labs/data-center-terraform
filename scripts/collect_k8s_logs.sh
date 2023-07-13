@@ -28,6 +28,8 @@ fi
 
 mkdir -p "${DEBUG_FOLDER}"
 
+kubectl get cm aws-auth -n kube-system -o yaml > "${DEBUG_FOLDER}"/aws-auth.yaml 2>&1
+cp ../test/e2etest/test-config.tfvars "${DEBUG_FOLDER}"/test-config.tfvars
 echo "[INFO]: Getting pods logs"
 
 PODS=$(kubectl get pods -n atlassian --no-headers -o custom-columns=":metadata.name")
