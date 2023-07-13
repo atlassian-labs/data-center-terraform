@@ -45,7 +45,7 @@ type TestConfig struct {
 	EnvironmentName   string
 	ConfigPath        string
 	ResourceOwner     string
-	AdditionalRole    string
+	AdditionalRoles   string
 	ConfluenceLicense string
 	BitbucketLicense  string
 	BambooLicense     string
@@ -157,13 +157,13 @@ func getPassword(productList []string, product string) string {
 	return password
 }
 
-func createConfig(t *testing.T, productList []string, useDomain bool, additionalRole string) TestConfig {
+func createConfig(t *testing.T, productList []string, useDomain bool, additionalRoles string) TestConfig {
 
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
 		ResourceOwner:     resourceOwner,
-		AdditionalRole:    additionalRole,
+		AdditionalRoles:   additionalRoles,
 		ConfluenceLicense: getLicense(productList, confluence),
 		BitbucketLicense:  getLicense(productList, bitbucket),
 		BambooLicense:     getLicense(productList, bamboo),
@@ -182,7 +182,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 	// variables
 	vars := make(map[string]interface{})
 	vars["resource_owner"] = resourceOwner
-	vars["additional_role"] = testConfig.AdditionalRole
+	vars["eks_additional_roles"] = testConfig.AdditionalRoles
 	vars["environment_name"] = testConfig.EnvironmentName
 	vars["region"] = testConfig.AwsRegion
 	vars["products"] = products
