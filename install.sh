@@ -387,13 +387,13 @@ check_for_prerequisites
 # Process the arguments
 process_arguments
 
+# Verify the configuration file
+verify_configuration_file
+
 if [ ! -z "${PRE_FLIGHT_FLAG}" ]; then
   # verify snapshots if any
   pre_flight_checks
 fi
-
-# Verify the configuration file
-verify_configuration_file
 
 # Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf
 generate_terraform_backend_variables
