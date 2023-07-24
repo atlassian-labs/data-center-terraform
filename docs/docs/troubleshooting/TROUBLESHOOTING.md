@@ -33,10 +33,10 @@ This guide contains general tips on how to investigate an application deployment
     To troubleshoot the error, run the following script:
     
     ```
-    scripts/collect_k8s_logs.sh atlas-dcapt-confluence-small-cluster us-west-2 /path/to/local/directory
+    scripts/collect_k8s_logs.sh atlas-dcapt-confluence-small-cluster us-east-2 /path/to/local/directory
     ```
     
-    Cluster name and region may differ (look at environment name and region in your `config.tfvars`). The last argument is a destination path for a tar.gz with logs that the script will produce.
+    Cluster name and region may differ (look at environment name and region in your `config.tfvars`). For example, if your `environment_name` is `dcapt-confluence-small`, then your cluster name is `atlas-dcapt-confluence-small-cluster`. The last argument is a destination path for a tar.gz with logs that the script will produce.
     
     Share the archive in Slack [#data-center-app-performance-toolkit](http://bit.ly/dcapt_slack){.external} channel along with your support request.
     You can also look at the pod and its logs, e.g.:
