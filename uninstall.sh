@@ -145,7 +145,7 @@ destroy_tfstate() {
   echo
   TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
-    # extract S3 bucket and bucket key from tfstate-locals.tf
+    # extract S3 bucket name, bucket key and dynamodb table name from tfstate-locals.tf
     S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
     BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
     DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
@@ -158,7 +158,7 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]; then
       set +e
       # Get the bucket key list of all installed environments in this region
-      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
+      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --output text --query "Contents[].{Key: Key}"))
       if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
         log "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
         log "Here is the list of environments provisioned using this instance:"
@@ -183,9 +183,9 @@ destroy_tfstate() {
         set -e
         log "Cleaning all the terraform generated files."
         bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
-        log Terraform state is removed successfully.
+        log "Terraform state is removed successfully." "INFO"
       else
-        log "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
+        log "Couldn't destroy S3 bucket '${S3_BUCKET}' and/or dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
         exit 1
       fi
     else
