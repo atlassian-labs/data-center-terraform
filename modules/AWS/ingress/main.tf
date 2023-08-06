@@ -65,14 +65,14 @@ resource "helm_release" "ingress" {
           # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-forwarded-headers
           # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
           "use-forwarded-headers" : "true"
-          "http-snippet": "server {listen 2443; return 308 https://$host$request_uri;}"
-          "proxy-real-ip-cidr": var.vpc_cidr
-          "ssl-redirect": "false"
+          "http-snippet" : "server {listen 2443; return 308 https://$host$request_uri;}"
+          "proxy-real-ip-cidr" : var.vpc_cidr
+          "ssl-redirect" : "false"
         }
-        containerPort: {
-          "http": 80
-          "https": 80
-          "tohttps": 2443
+        containerPort : {
+          "http" : 80
+          "https" : 80
+          "tohttps" : 2443
         }
         service = {
           # The value "Local" preserves the client source IP.
@@ -85,7 +85,7 @@ resource "helm_release" "ingress" {
             # Set the HTTPS listener to accept HTTP connections only, as the AWS load
             # balancer is terminating TLS.
             https = "http"
-            http = local.http_port
+            http  = local.http_port
           }
           annotations = {
             # Whether the LB will be internet-facing or internal.
@@ -101,9 +101,9 @@ resource "helm_release" "ingress" {
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "tcp"
 
             # https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-            "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
-            "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
-            "service.beta.kubernetes.io/aws-load-balancer-name": local.lb_name
+            "service.beta.kubernetes.io/aws-load-balancer-type" : "nlb"
+            "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
+            "service.beta.kubernetes.io/aws-load-balancer-name" : local.lb_name
           }
         }
       }

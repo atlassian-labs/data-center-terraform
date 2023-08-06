@@ -6,7 +6,7 @@ resource "aws_iam_role_policy_attachment" "aws_loadbalancer_controller" {
 }
 
 resource "aws_iam_role" "aws_loadbalancer_controller" {
-  name  = "${var.cluster_name}-aws-lb-controller"
+  name = "${var.cluster_name}-aws-lb-controller"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement : [

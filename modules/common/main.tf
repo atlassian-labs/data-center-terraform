@@ -37,7 +37,7 @@ module "lb-controller" {
   source     = "../AWS/lb-controller"
   depends_on = [module.eks]
 
-  cluster_name = module.eks.cluster_name
+  cluster_name  = module.eks.cluster_name
   oicd_provider = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
 
 }

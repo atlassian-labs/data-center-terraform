@@ -6,7 +6,7 @@ locals {
   enable_https_ingress = var.enable_https_ingress
   nat_ip_cidr          = var.load_balancer_access_ranges == ["0.0.0.0/0"] ? [] : formatlist("%s/32", var.vpc.nat_public_ips)
   lb_name              = substr(var.cluster_name, 0, 32)
-  http_port            = local.domain_supplied ? "tohttps": "http"
+  http_port            = local.domain_supplied ? "tohttps" : "http"
 
   ssh_tcp_setting = var.enable_ssh_tcp ? yamlencode({
     tcp = {
@@ -21,7 +21,7 @@ locals {
       service = {
         annotations = {
           "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : module.ingress_certificate[0].this_acm_certificate_arn
-          "service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+          "service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy" : "ELBSecurityPolicy-TLS13-1-2-2021-06"
         }
       }
     }

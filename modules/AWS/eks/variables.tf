@@ -115,7 +115,7 @@ variable "osquery_fleet_enrollment_host" {
 
 variable "kinesis_log_producers_role_arns" {
   description = "AWS kinesis log producer role"
-  type        = object({
+  type = object({
     eu     = string
     non-eu = string
   })
