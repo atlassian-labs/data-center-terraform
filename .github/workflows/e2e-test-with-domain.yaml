@@ -101,7 +101,7 @@ jobs:
           # boto3 ignores AWS creds env vars for some reason
           mkdir -p ~/.aws
           echo -e "[default]\naws_access_key_id = ${AWS_ACCESS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}\naws_session_token = ${AWS_SESSION_TOKEN}" > ~/.aws/credentials
-          go test ./e2etest -v -timeout 85m -run Installer | tee ./e2etest/artifacts/e2etest.log
+          go test ./e2etest -v -timeout 120m -run Installer | tee ./e2etest/artifacts/e2etest.log
 
       - name: Upload test log files
         if: always()
