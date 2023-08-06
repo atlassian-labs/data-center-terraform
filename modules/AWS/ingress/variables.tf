@@ -35,3 +35,17 @@ variable "additional_namespaces" {
   type        = list(string)
   default     = []
 }
+
+variable "cluster_name" {
+  description = "Name of the EKS cluster."
+  type        = string
+  validation {
+    condition     = can(regex("^[A-Za-z][A-Za-z0-9\\-]{1,38}$", var.cluster_name))
+    error_message = "Invalid EKS cluster name. Valid name is up to 38 characters starting with an alphabet and followed by the combination of alphanumerics and '-'."
+  }
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block of the VPC"
+  type        = string
+}

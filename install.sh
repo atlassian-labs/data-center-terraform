@@ -411,7 +411,7 @@ resume_bamboo_server
 set_current_context_k8s
 
 # To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
-enable_ssh_tcp_protocol_on_lb_listener
+# enable_ssh_tcp_protocol_on_lb_listener
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian

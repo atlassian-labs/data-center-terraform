@@ -65,6 +65,14 @@ resource "helm_release" "ingress" {
           # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-forwarded-headers
           # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
           "use-forwarded-headers" : "true"
+          "http-snippet": "server {listen 2443; return 308 https://$host$request_uri;}"
+          "proxy-real-ip-cidr": var.vpc_cidr
+          "ssl-redirect": "false"
+        }
+        containerPort: {
+          "http": 80
+          "https": 80
+          "tohttps": 2443
         }
         service = {
           # The value "Local" preserves the client source IP.
@@ -77,20 +85,25 @@ resource "helm_release" "ingress" {
             # Set the HTTPS listener to accept HTTP connections only, as the AWS load
             # balancer is terminating TLS.
             https = "http"
+            http = local.http_port
           }
           annotations = {
             # Whether the LB will be internet-facing or internal.
             # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#lb-internal
             "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
 
-            # Specifies the IP address type, in this case "dualstack" will allow clients
-            # can access the load balancer using either IPv4 or IPv6.
+            # Specifies the IP address type, in this case "ipv4" as subnets aren't created with ipv6 support
             # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/service/annotations/#ip-address-type
-            "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
+            "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "ipv4"
 
             # The protocol to use for backend traffic between the load balancer and the k8s pods.
             # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#backend-protocol
-            "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
+            "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "tcp"
+
+            # https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+            "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+            "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
+            "service.beta.kubernetes.io/aws-load-balancer-name": local.lb_name
           }
         }
       }
@@ -129,7 +142,7 @@ data "kubernetes_service" "ingress_nginx" {
   }
 }
 
-data "aws_elb" "ingress_elb" {
+data "aws_lb" "ingress_nlb" {
   depends_on = [helm_release.ingress]
-  name       = regex("(^[^-]+)", data.kubernetes_service.ingress_nginx.status[0].load_balancer[0].ingress[0].hostname)[0]
+  name       = var.cluster_name
 }

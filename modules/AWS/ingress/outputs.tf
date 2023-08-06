@@ -4,6 +4,6 @@ output "outputs" {
     domain          = var.ingress_domain
     certificate_arn = local.domain_supplied ? module.ingress_certificate[0].this_acm_certificate_arn : null
     lb_hostname     = data.kubernetes_service.ingress_nginx.status[0].load_balancer[0].ingress[0].hostname
-    lb_zone_id      = data.aws_elb.ingress_elb.zone_id
+    lb_zone_id      = data.aws_lb.ingress_nlb.zone_id
   }
 }

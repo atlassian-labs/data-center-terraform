@@ -28,3 +28,8 @@ output "nat_public_ips" {
   value       = module.vpc.nat_public_ips
   description = "List of allocation ID of Elastic IPs created for AWS NAT Gateway"
 }
+
+output "vpc_cidr" {
+  value       = module.vpc.vpc_cidr_block
+  description = "The CIDR block of the VPC"
+}

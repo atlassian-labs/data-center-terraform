@@ -1,7 +1,9 @@
 module "vpc" {
   source = "../AWS/vpc"
 
-  vpc_name = local.vpc_name
+  vpc_name     = local.vpc_name
+  cluster_name = module.eks.cluster_name
+
 }
 
 module "eks" {
@@ -31,10 +33,18 @@ module "eks" {
   osquery_fleet_enrollment_host     = var.osquery_fleet_enrollment_host
 }
 
+module "lb-controller" {
+  source     = "../AWS/lb-controller"
+  depends_on = [module.eks]
+
+  cluster_name = module.eks.cluster_name
+  oicd_provider = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+
+}
 
 module "ingress" {
   source     = "../AWS/ingress"
-  depends_on = [module.eks]
+  depends_on = [module.eks, module.lb-controller]
 
   # inputs
   ingress_domain = local.ingress_domain
@@ -45,6 +55,8 @@ module "ingress" {
   enable_https_ingress        = var.enable_https_ingress
   vpc                         = module.vpc
   additional_namespaces       = var.additional_namespaces
+  cluster_name                = module.eks.cluster_name
+  vpc_cidr                    = module.vpc.vpc_cidr
 }
 
 module "external_dns" {
