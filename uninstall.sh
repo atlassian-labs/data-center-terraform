@@ -148,6 +148,7 @@ destroy_tfstate() {
     S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
     BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
     DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
+    AWS_REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
@@ -196,7 +197,7 @@ destroy_tfstate() {
       fi
 
       log "Deleting DynamoDB table ${DYNAMODB_TABLE}..."
-      aws dynamodb delete-table --table-name "${DYNAMODB_TABLE}" --region eu-north-1 >/dev/null
+      aws dynamodb delete-table --table-name "${DYNAMODB_TABLE}" --region "${AWS_REGION}" >/dev/null
       if [ $? -ne 0 ]; then
         ERROR="true"
       fi
