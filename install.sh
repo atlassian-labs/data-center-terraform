@@ -114,7 +114,7 @@ pre_flight_checks() {
     PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
     MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
     EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    if [ ! -z ${EBS_SNAPSHOT_ID+x} ]; then
+    if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
       log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
       EBS_SNAPSHOT_DESCRIPTION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description')
       if [ -z ${EBS_SNAPSHOT_DESCRIPTION} ]; then
@@ -147,7 +147,7 @@ pre_flight_checks() {
       fi
     fi
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    if [ ! -z ${RDS_SNAPSHOT_ID+x} ]; then
+    if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
       log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
       RDS_SNAPSHOT_VERSION=$(echo "${RDS_SNAPSHOT_ID}" | sed 's/.*dcapt-\(.*\)/\1/' | sed 's/-/./g' | cut -d '.' -f 2-)
       if [[ "$RDS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
