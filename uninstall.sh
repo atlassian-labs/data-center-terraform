@@ -134,7 +134,6 @@ destroy_infrastructure() {
   log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
 }
 
-
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ -z "${CLEAN_TFSTATE}" ]; then
@@ -149,7 +148,6 @@ destroy_tfstate() {
     S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
     BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
     DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
-
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
@@ -177,21 +175,33 @@ destroy_tfstate() {
         esac
       fi
 
-      log "Deleting objects in ${S3_BUCKET} S3 bucket..."
+      ERROR="false"
+      log "Deleting object versions in ${S3_BUCKET} S3 bucket..."
       OBJECT_VERSIONS=$(aws s3api list-object-versions --bucket "${S3_BUCKET}")
-      if [ ! -z ${OBJECT_VERSIONS} ]; then
+      if [ -z "${OBJECT_VERSIONS}" ]; then
+        log "No object versions found"
+      else
         aws s3api delete-objects \
           --bucket ${S3_BUCKET} \
           --delete "$(aws s3api list-object-versions --bucket "${S3_BUCKET}" --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" >/dev/null
-      else
-        log "No object versions found"
+        if [ $? -ne 0 ]; then
+          ERROR="true"
+        fi
       fi
 
-      exit 0
       log "Deleting S3 bucket ${S3_BUCKET}..."
       aws s3api delete-bucket --bucket "${S3_BUCKET}" >/dev/null
+      if [ $? -ne 0 ]; then
+        ERROR="true"
+      fi
 
-      if [ $? -eq 0 ]; then
+      log "Deleting DynamoDB table ${DYNAMODB_TABLE}..."
+      aws dynamodb delete-table --table-name "${DYNAMODB_TABLE}" --region eu-north-1 >/dev/null
+      if [ $? -ne 0 ]; then
+        ERROR="true"
+      fi
+
+      if [ ${ERROR} == "false" ]; then
         set -e
         log "Cleaning all the terraform generated files."
         bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
@@ -221,7 +231,7 @@ confirm_action
 regenerate_environment_variables
 
 # Destroy the infrastructure for the given product
-# destroy_infrastructure
+destroy_infrastructure
 
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
