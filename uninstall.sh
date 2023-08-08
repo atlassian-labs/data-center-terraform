@@ -176,9 +176,21 @@ destroy_tfstate() {
             * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit 1;;
         esac
       fi
-      # always init as cluster could be in a broken state
-      terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+
+      log "Deleting objects in ${S3_BUCKET} S3 bucket..."
+      OBJECT_VERSIONS=$(aws s3api list-object-versions --bucket "${S3_BUCKET}")
+      if [ ! -z ${OBJECT_VERSIONS} ]; then
+        aws s3api delete-objects \
+          --bucket ${S3_BUCKET} \
+          --delete "$(aws s3api list-object-versions --bucket "${S3_BUCKET}" --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" >/dev/null
+      else
+        log "No object versions found"
+      fi
+
+      exit 0
+      log "Deleting S3 bucket ${S3_BUCKET}..."
+      aws s3api delete-bucket --bucket "${S3_BUCKET}" >/dev/null
+
       if [ $? -eq 0 ]; then
         set -e
         log "Cleaning all the terraform generated files."
@@ -209,7 +221,7 @@ confirm_action
 regenerate_environment_variables
 
 # Destroy the infrastructure for the given product
-destroy_infrastructure
+# destroy_infrastructure
 
 # Destroy tfstate (S3 bucket key and dynamodb table) of the product
 destroy_tfstate
