@@ -206,7 +206,7 @@ destroy_tfstate() {
         set -e
         log "Cleaning all the terraform generated files."
         bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
-        log "Terraform state is removed successfully." "INFO"
+        log "Terraform state is removed successfully."
       else
         log "Couldn't destroy S3 bucket '${S3_BUCKET}' and/or dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
         exit 1
