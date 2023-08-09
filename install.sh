@@ -33,7 +33,7 @@ EOF
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -d : run cleanup.sh script at the beginning."
-  echo "   -p : run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
+  echo "   -p : skip run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -51,7 +51,7 @@ EOF
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
       d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
-      p)    PRE_FLIGHT_FLAG="-p";;    # Run pre-flight checks to test compatibility of EBS and RDS snapshots if any
+      p)    PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -391,7 +391,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-if [ ! -z "${PRE_FLIGHT_FLAG}" ]; then
+if [ "${PRE_FLIGHT_FLAG}" == "" ]; then
   # verify snapshots if any
   pre_flight_checks
 fi
