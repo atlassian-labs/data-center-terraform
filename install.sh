@@ -33,7 +33,7 @@ EOF
   echo "Usage:  ./install.sh [-c <config_file>] [-h]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -d : run cleanup.sh script at the beginning."
-  echo "   -p : run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
+  echo "   -p : skip run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -51,7 +51,7 @@ EOF
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
       d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
-      p)    PRE_FLIGHT_FLAG="-p";;    # Run pre-flight checks to test compatibility of EBS and RDS snapshots if any
+      p)    PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -114,25 +114,26 @@ pre_flight_checks() {
     PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
     MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
     EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    if [[ -v EBS_SNAPSHOT_ID ]]; then
+    if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
       log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
-      EBS_SNAPSHOT_VERSION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description' | sed 's/-/./g' | sed 's/"//g' | cut -d '.' -f3-)
-      if [[ ! $EBS_SNAPSHOT_VERSION == *"dcapt"* ]]; then
-        log "****************FAILED TO GET EBS DESCRIPTION***************" "ERROR"
-        log "Failed to identify EBS snapshot defined in ${SHARED_HOME_SNAPSHOT_VAR} as the one used for DCAPT" "ERROR"
-        log "Please check if '${SHARED_HOME_SNAPSHOT_VAR}' variable has the correct value in tfvars config file" "ERROR"
-        log "****************FAILED TO GET EBS DESCRIPTION***************" "ERROR"
-        log "EBS snapshot '${EBS_SNAPSHOT_ID}' defined by ${SHARED_HOME_SNAPSHOT_VAR} has the following description:" "ERROR"
-        aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description'
-        exit 1
-      fi
-      if [ -z ${EBS_SNAPSHOT_VERSION} ]; then
+      EBS_SNAPSHOT_DESCRIPTION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description')
+      if [ -z ${EBS_SNAPSHOT_DESCRIPTION} ]; then
         log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
         log "Failed to describe EBS snapshot defined by $SHARED_HOME_SNAPSHOT_VAR" "ERROR"
         log "Please check if correct '${SHARED_HOME_SNAPSHOT_VAR}' variable is defined in tfvars config file" "ERROR"
         log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
         exit 1
       fi
+      if [[ ! $EBS_SNAPSHOT_DESCRIPTION == *"dcapt"* ]]; then
+        log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
+        log "Failed to identify EBS snapshot defined in ${SHARED_HOME_SNAPSHOT_VAR} as the one created for 'DCAPT'" "ERROR"
+        log "Please check if '${SHARED_HOME_SNAPSHOT_VAR}' variable has the correct value in tfvars config file" "ERROR"
+        log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
+        log "EBS snapshot '${EBS_SNAPSHOT_ID}' defined by ${SHARED_HOME_SNAPSHOT_VAR} has the following description:" "ERROR"
+        aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description'
+        exit 1
+      fi
+      EBS_SNAPSHOT_VERSION=$(echo ${EBS_SNAPSHOT_DESCRIPTION} | sed 's/-/./g' | sed 's/"//g' | cut -d '.' -f3-)
       if [[ "$EBS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
         log "EBS snapshot ${EBS_SNAPSHOT_ID} version ${EBS_SNAPSHOT_VERSION} is compatible with ${PRODUCT} version ${PRODUCT_VERSION}"
       else
@@ -146,7 +147,7 @@ pre_flight_checks() {
       fi
     fi
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    if [[ -v RDS_SNAPSHOT_ID ]]; then
+    if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
       log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
       RDS_SNAPSHOT_VERSION=$(echo "${RDS_SNAPSHOT_ID}" | sed 's/.*dcapt-\(.*\)/\1/' | sed 's/-/./g' | cut -d '.' -f 2-)
       if [[ "$RDS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
@@ -390,7 +391,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-if [ ! -z "${PRE_FLIGHT_FLAG}" ]; then
+if [ "${PRE_FLIGHT_FLAG}" == "" ]; then
   # verify snapshots if any
   pre_flight_checks
 fi
