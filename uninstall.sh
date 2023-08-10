@@ -134,7 +134,6 @@ destroy_infrastructure() {
   log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
 }
 
-
 destroy_tfstate() {
   # Check if the user passed '-s' parameter to skip removing tfstate
   if [ -z "${CLEAN_TFSTATE}" ]; then
@@ -145,11 +144,11 @@ destroy_tfstate() {
   echo
   TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
-    # extract S3 bucket and bucket key from tfstate-locals.tf
+    # extract S3 bucket name, bucket key and dynamodb table name from tfstate-locals.tf
     S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
     BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
     DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
-
+    AWS_REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
@@ -158,7 +157,7 @@ destroy_tfstate() {
     if [ ${S3_BUCKET_EXISTS} -eq 0 ]; then
       set +e
       # Get the bucket key list of all installed environments in this region
-      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --prefix "n" --output text --query "Contents[].{Key: Key}"))
+      ALL_BUCKET_KEYS=$(cut -d 'E' -f2 <<< $(aws s3api list-objects --bucket "${S3_BUCKET}" --output text --query "Contents[].{Key: Key}"))
       if [ "${ALL_BUCKET_KEYS}" != "${BUCKET_KEY}" ]; then
         log "Terraform is going to delete the S3 bucket contains the state for all environments provisioned in the region."
         log "Here is the list of environments provisioned using this instance:"
@@ -176,16 +175,40 @@ destroy_tfstate() {
             * ) log "Please answer 'Yes' to confirm deleting the terraform state." "ERROR"; exit 1;;
         esac
       fi
-      # always init as cluster could be in a broken state
-      terraform -chdir="${TFSTATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
-      terraform -chdir="${TFSTATE_FOLDER}" destroy -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
-      if [ $? -eq 0 ]; then
+
+      ERROR="false"
+      log "Deleting object versions in ${S3_BUCKET} S3 bucket..."
+      OBJECT_VERSIONS=$(aws s3api list-object-versions --bucket "${S3_BUCKET}")
+      if [ -z "${OBJECT_VERSIONS}" ]; then
+        log "No object versions found"
+      else
+        aws s3api delete-objects \
+          --bucket ${S3_BUCKET} \
+          --delete "$(aws s3api list-object-versions --bucket "${S3_BUCKET}" --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" >/dev/null
+        if [ $? -ne 0 ]; then
+          ERROR="true"
+        fi
+      fi
+
+      log "Deleting S3 bucket ${S3_BUCKET}..."
+      aws s3api delete-bucket --bucket "${S3_BUCKET}" >/dev/null
+      if [ $? -ne 0 ]; then
+        ERROR="true"
+      fi
+
+      log "Deleting DynamoDB table ${DYNAMODB_TABLE}..."
+      aws dynamodb delete-table --table-name "${DYNAMODB_TABLE}" --region "${AWS_REGION}" >/dev/null
+      if [ $? -ne 0 ]; then
+        ERROR="true"
+      fi
+
+      if [ ${ERROR} == "false" ]; then
         set -e
         log "Cleaning all the terraform generated files."
         bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
-        log Terraform state is removed successfully.
+        log "Terraform state is removed successfully."
       else
-        log "Couldn't destroy dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
+        log "Couldn't destroy S3 bucket '${S3_BUCKET}' and/or dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
         exit 1
       fi
     else
