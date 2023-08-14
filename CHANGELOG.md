@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.6.0
+
+**Release date:** 2022-08-14
+
+* Add go-to-sleep nodes and external dns [#333](https://github.com/atlassian-labs/data-center-terraform/pull/333)
+* Fix Crowd dependency issues [#334](https://github.com/atlassian-labs/data-center-terraform/pull/334)
+* Add EBS and RDS snapshots checks [#336](https://github.com/atlassian-labs/data-center-terraform/pull/336)
+* Fix S3 and DynamoDB deletion [#338](https://github.com/atlassian-labs/data-center-terraform/pull/338)
+
 ## 2.5.0
 
 **Release date:** 2022-06-13
