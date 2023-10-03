@@ -65,6 +65,7 @@ resource "helm_release" "ingress" {
           # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-forwarded-headers
           # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
           "use-forwarded-headers" : "true"
+          allow-snippet-annotations: "true"
           "http-snippet" : "server {listen 2443; return 308 https://$host$request_uri;}"
           "proxy-real-ip-cidr" : var.vpc_cidr
           "ssl-redirect" : "false"
