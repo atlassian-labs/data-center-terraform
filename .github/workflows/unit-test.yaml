@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Setup Go environment
         uses: actions/setup-go@v3
         with:
@@ -48,5 +48,10 @@ jobs:
           role-duration-seconds: 7200
 
       - name: Unit tests
-        working-directory: test/
-        run: go test ./unittest/... -v
+        working-directory: test/unittest
+        run: |
+          TESTS=$(go test -list . | grep -v 'ok\s\+github.com/atlassian-labs/data-center-terraform/test/unittest')
+          for test in ${TESTS[@]}; do
+            go test -run ${test} -v
+            rm -rf /tmp/*  >/dev/null 2>&1 || true
+          done

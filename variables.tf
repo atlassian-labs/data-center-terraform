@@ -199,6 +199,16 @@ variable "monitoring_custom_values_file" {
 }
 
 ################################################################################
+# Snapshot Settings
+################################################################################
+
+variable "snapshots_json_file_path" {
+  description = "Absolute path to dcapt-snapshots.json"
+  type        = string
+  default     = ""
+}
+
+################################################################################
 # Jira Settings
 ################################################################################
 
@@ -392,6 +402,16 @@ variable "jira_install_local_chart" {
   description = "If true installs Jira using local Helm charts located in local_helm_charts_path"
   default     = false
   type        = bool
+}
+
+variable "jira_dataset_size" {
+  description = "The size of the dataset to restore from"
+  type        = string
+  default     = "large"
+  validation {
+    condition     = var.jira_dataset_size == null || can(regex("large|small", var.jira_dataset_size))
+    error_message = "Invalid dataset size. Expected values are: small, large"
+  }
 }
 
 ################################################################################
@@ -626,6 +646,16 @@ variable "confluence_shared_home_snapshot_id" {
   description = "EBS Snapshot ID with shared home content."
   type        = string
   default     = null
+}
+
+variable "confluence_dataset_size" {
+  description = "The size of the dataset to restore from"
+  type        = string
+  default     = "large"
+  validation {
+    condition     = var.confluence_dataset_size == null || can(regex("large|small", var.confluence_dataset_size))
+    error_message = "Invalid dataset size. Expected values are: small, large"
+  }
 }
 
 ################################################################################
@@ -872,6 +902,16 @@ variable "bitbucket_install_local_chart" {
   description = "If true installs Bitbucket using local Helm charts located in local_helm_charts_path"
   default     = false
   type        = bool
+}
+
+variable "bitbucket_dataset_size" {
+  description = "The size of the dataset to restore from"
+  type        = string
+  default     = "large"
+  validation {
+    condition     = var.bitbucket_dataset_size == null || can(regex("large|small", var.bitbucket_dataset_size))
+    error_message = "Invalid dataset size. Expected values are: small, large"
+  }
 }
 
 ################################################################################
@@ -1310,6 +1350,16 @@ variable "crowd_license" {
   type        = string
   sensitive   = true
   default     = ""
+}
+
+variable "crowd_dataset_size" {
+  description = "The size of the dataset to restore from"
+  type        = string
+  default     = "large"
+  validation {
+    condition     = var.crowd_dataset_size == null || can(regex("large|small", var.crowd_dataset_size))
+    error_message = "Invalid dataset size. Expected values are: small, large"
+  }
 }
 
 variable "confluence_s3_attachments_storage" {

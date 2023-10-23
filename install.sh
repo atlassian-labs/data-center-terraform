@@ -114,6 +114,10 @@ pre_flight_checks() {
     PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
     MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
     EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
+    SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
+    if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+      EBS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"large\" and .type == \"ebs\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
+    fi
     if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
       log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
       EBS_SNAPSHOT_DESCRIPTION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description')
@@ -147,6 +151,9 @@ pre_flight_checks() {
       fi
     fi
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
+    if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+      RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"large\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
+    fi
     if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
       log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
       RDS_SNAPSHOT_VERSION=$(echo "${RDS_SNAPSHOT_ID}" | sed 's/.*dcapt-\(.*\)/\1/' | sed 's/-/./g' | cut -d '.' -f 2-)
@@ -179,6 +186,15 @@ verify_configuration_file() {
     log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
     log "Please make sure your environment name is less than 24 characters."
     HAS_VALIDATION_ERR=1
+  fi
+
+  SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
+  if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+    if [ ! -e "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+      log "Snapshots json file not found at ${SNAPSHOTS_JSON_FILE_PATH}"
+      log "Please make sure 'snapshots_json_file_path' in ${CONFIG_ABS_PATH} points to an existing valid json file"
+      HAS_VALIDATION_ERR=1
+    fi
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then

@@ -116,7 +116,7 @@ module "jira" {
   db_instance_class       = var.jira_db_instance_class
   db_iops                 = var.jira_db_iops
   db_name                 = var.jira_db_name
-  db_snapshot_id          = var.jira_db_snapshot_id
+  db_snapshot_id          = local.jira_rds_snapshot_id
   db_master_username      = var.jira_db_master_username
   db_master_password      = var.jira_db_master_password
 
@@ -145,7 +145,7 @@ module "jira" {
   nfs_limits_cpu      = var.jira_nfs_limits_cpu
   nfs_limits_memory   = var.jira_nfs_limits_memory
 
-  shared_home_snapshot_id = var.jira_shared_home_snapshot_id
+  shared_home_snapshot_id = local.jira_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_jira_chart_path = local.local_jira_chart_path
@@ -171,8 +171,8 @@ module "confluence" {
     db_name              = var.confluence_db_name
   }
 
-  db_snapshot_id           = var.confluence_db_snapshot_id
-  db_snapshot_build_number = var.confluence_db_snapshot_build_number
+  db_snapshot_id           = local.confluence_rds_snapshot_id
+  db_snapshot_build_number = local.confluence_db_snapshot_build_number
   db_master_username       = var.confluence_db_master_username
   db_master_password       = var.confluence_db_master_password
 
@@ -209,7 +209,7 @@ module "confluence" {
   nfs_limits_cpu      = var.confluence_nfs_limits_cpu
   nfs_limits_memory   = var.confluence_nfs_limits_memory
 
-  shared_home_snapshot_id = var.confluence_shared_home_snapshot_id
+  shared_home_snapshot_id = local.confluence_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
@@ -230,7 +230,7 @@ module "bitbucket" {
   db_instance_class       = var.bitbucket_db_instance_class
   db_iops                 = var.bitbucket_db_iops
   db_name                 = var.bitbucket_db_name
-  db_snapshot_id          = var.bitbucket_db_snapshot_id
+  db_snapshot_id          = local.bitbucket_rds_snapshot_id
   db_master_username      = var.bitbucket_db_master_username
   db_master_password      = var.bitbucket_db_master_password
 
@@ -273,7 +273,7 @@ module "bitbucket" {
   elasticsearch_storage         = var.bitbucket_elasticsearch_storage
   elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
 
-  shared_home_snapshot_id = var.bitbucket_shared_home_snapshot_id
+  shared_home_snapshot_id = local.bitbucket_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bitbucket_chart_path = local.local_bitbucket_chart_path
@@ -296,8 +296,8 @@ module "crowd" {
   db_name                  = var.crowd_db_name
   db_master_username       = var.crowd_db_master_username
   db_master_password       = var.crowd_db_master_password
-  db_snapshot_id           = var.crowd_db_snapshot_id
-  db_snapshot_build_number = var.crowd_db_snapshot_build_number
+  db_snapshot_id           = local.crowd_rds_snapshot_id
+  db_snapshot_build_number = local.crowd_db_snapshot_build_number
 
   replica_count            = var.crowd_replica_count
   installation_timeout     = var.crowd_installation_timeout
@@ -323,7 +323,7 @@ module "crowd" {
   nfs_limits_cpu      = var.crowd_nfs_limits_cpu
   nfs_limits_memory   = var.crowd_nfs_limits_memory
 
-  shared_home_snapshot_id = var.crowd_shared_home_snapshot_id
+  shared_home_snapshot_id = local.crowd_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_crowd_chart_path = local.local_crowd_chart_path
