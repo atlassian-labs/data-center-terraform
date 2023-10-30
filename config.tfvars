@@ -86,7 +86,7 @@ max_cluster_capacity = 5
 #additional_namespaces = ["extra_namespace"]
 
 # Path to a JSON file with EBS and RDS snapshot IDs
-#snapshots_json_file_path = "test/dcapt-snapshots.json"
+# snapshots_json_file_path = "test/dcapt-snapshots.json"
 
 ################################################################################
 # Osquery settings. Atlassian only!
@@ -219,7 +219,7 @@ jira_db_iops                 = 1000
 jira_db_name = "jira"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-# jira_dataset_size = "small"
+# jira_dataset_size = "large"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
@@ -317,7 +317,7 @@ confluence_db_iops                 = 1000
 confluence_db_name = "confluence"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-# confluence_dataset_size = "small"
+# confluence_dataset_size = "large"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following lines and provide the snapshot identifier.
@@ -430,7 +430,7 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-# bitbucket_dataset_size = "small"
+# bitbucket_dataset_size = "large"
 
 # Dataset Restore
 
@@ -603,7 +603,7 @@ crowd_db_name                 = "crowd"
 #crowd_termination_grace_period = 0
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
-# crowd_dataset_size = "small"
+# crowd_dataset_size = "large"
 
 # Dataset Restore
 

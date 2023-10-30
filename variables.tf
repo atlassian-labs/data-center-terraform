@@ -409,7 +409,7 @@ variable "jira_dataset_size" {
   type        = string
   default     = "large"
   validation {
-    condition     = var.jira_dataset_size == null || can(regex("large|small", var.jira_dataset_size))
+    condition     = var.jira_dataset_size == null || contains(["large", "small"], var.jira_dataset_size)
     error_message = "Invalid dataset size. Expected values are: small, large"
   }
 }
@@ -653,7 +653,7 @@ variable "confluence_dataset_size" {
   type        = string
   default     = "large"
   validation {
-    condition     = var.confluence_dataset_size == null || can(regex("large|small", var.confluence_dataset_size))
+    condition     = var.confluence_dataset_size == null || contains(["large", "small"], var.confluence_dataset_size)
     error_message = "Invalid dataset size. Expected values are: small, large"
   }
 }
@@ -909,7 +909,7 @@ variable "bitbucket_dataset_size" {
   type        = string
   default     = "large"
   validation {
-    condition     = var.bitbucket_dataset_size == null || can(regex("large|small", var.bitbucket_dataset_size))
+    condition     = var.bitbucket_dataset_size == null || contains(["large", "small"], var.bitbucket_dataset_size)
     error_message = "Invalid dataset size. Expected values are: small, large"
   }
 }
@@ -1357,7 +1357,7 @@ variable "crowd_dataset_size" {
   type        = string
   default     = "large"
   validation {
-    condition     = var.crowd_dataset_size == null || can(regex("large|small", var.crowd_dataset_size))
+    condition     = var.crowd_dataset_size == null || contains(["large", "small"], var.crowd_dataset_size)
     error_message = "Invalid dataset size. Expected values are: small, large"
   }
 }

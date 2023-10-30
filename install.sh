@@ -114,9 +114,14 @@ pre_flight_checks() {
     PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
     MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
     EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
+    DATASET_SIZE=$(get_variable ${PRODUCT}_dataset_size "${CONFIG_ABS_PATH}")
+    if [ -z "$DATASET_SIZE" ]; then
+      DATASET_SIZE="large"
+    fi
+    log "Dataset size is ${DATASET_SIZE}"
     SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
     if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
-      EBS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"large\" and .type == \"ebs\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
+      EBS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"ebs\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
     fi
     if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
       log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
@@ -152,7 +157,7 @@ pre_flight_checks() {
     fi
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
     if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
-      RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"large\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
+      RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
     fi
     if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
       log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
