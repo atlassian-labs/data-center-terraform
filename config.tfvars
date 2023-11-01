@@ -85,6 +85,9 @@ max_cluster_capacity = 5
 # List of addtional namespaces to be created in the cluster
 #additional_namespaces = ["extra_namespace"]
 
+# Path to a JSON file with EBS and RDS snapshot IDs
+# snapshots_json_file_path = "test/dcapt-snapshots.json"
+
 ################################################################################
 # Osquery settings. Atlassian only!
 ################################################################################
@@ -215,6 +218,9 @@ jira_db_iops                 = 1000
 # Set `null` if the snapshot does not have a default db name.
 jira_db_name = "jira"
 
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+# jira_dataset_size = "large"
+
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following line and provide the snapshot identifier.
 # This will restore the database from the snapshot and will not create a new database.
@@ -309,6 +315,9 @@ confluence_db_iops                 = 1000
 # If you restore the database, make sure `confluence_db_name' is set to the db name from the snapshot.
 # Set `null` if the snapshot does not have a default db name.
 confluence_db_name = "confluence"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+# confluence_dataset_size = "large"
 
 # Database restore configuration
 # If you want to restore the database from a snapshot, uncomment the following lines and provide the snapshot identifier.
@@ -419,6 +428,9 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_elasticsearch_limits_memory   = "<LIMITS_MEMORY>"
 #bitbucket_elasticsearch_storage         = "<REQUESTS_STORAGE>"
 #bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+# bitbucket_dataset_size = "large"
 
 # Dataset Restore
 
@@ -589,6 +601,9 @@ crowd_db_name                 = "crowd"
 # in Terminating too causing Terraform destroy error (timing out waiting for a deleted PVC). Set termination graceful period to 0
 # if you encounter such an issue. This will apply to Crowd pods.
 #crowd_termination_grace_period = 0
+
+# Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
+# crowd_dataset_size = "large"
 
 # Dataset Restore
 

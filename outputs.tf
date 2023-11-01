@@ -111,3 +111,43 @@ output "confluence_s3_bucket" {
   description = "Confluence S3 bucket name"
   value       = var.confluence_s3_attachments_storage ? "${local.cluster_name}-confluence-storage" : null
 }
+
+output "jira_rds_snapshot" {
+  value = local.jira_rds_snapshot_id
+}
+
+output "jira_ebs_snapshot" {
+  value = local.jira_ebs_snapshot_id
+}
+
+output "confluence_rds_snapshot" {
+  value = local.confluence_rds_snapshot_id
+}
+
+output "confluence_ebs_snapshot" {
+  value = local.confluence_ebs_snapshot_id
+}
+
+output "confluence_db_snapshot_build_number" {
+  value = local.confluence_db_snapshot_build_number
+}
+
+output "bitbucket_rds_snapshot" {
+  value = local.bitbucket_rds_snapshot_id
+}
+
+output "bitbucket_ebs_snapshot" {
+  value = local.bitbucket_ebs_snapshot_id
+}
+
+output "crowd_rds_snapshot" {
+  value = local.crowd_rds_snapshot_id
+}
+
+output "crowd_ebs_snapshot" {
+  value = local.crowd_ebs_snapshot_id
+}
+
+output "crowd_db_snapshot_build_number" {
+  value = local.crowd_db_snapshot_build_number
+}
