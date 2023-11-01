@@ -281,6 +281,41 @@ grafana_pvc_disk_size = "20Gi"
     to override the default Prometheus 10Gi PVC storage request when creating enabling monitoring for the first time.
     [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/storage-classes.html){.external}.
 
+### Snapshot Configuration
+
+It is possible to restore DC products from snapshots. Each DC product requires a valid public RDS and EBS (shared-home) snapshot defined by the following variables:
+
+```
+<product>_db_snapshot_id
+```
+
+```
+<product>_shared_home_snapshot_id
+```
+
+Note that COnfluence and Crowd also require a build number:
+
+```
+confluence_db_snapshot_build_number = "8017"
+crowd_db_snapshot_build_number = "5023"
+```
+
+Snapshots must be public and exist in the target region.
+
+!!! info "Snapshots JSON File"
+    
+    It is also possible to use a special snapshots JSON file with pre-defined snapshot ID and build numbers for all products for both small and large dataset sizes.
+
+    You can find example JSON in `test/dcapt-snapshots.json`. To use snapshots JSON rather than dedicated environment variables, set in `config.tfvars`:
+
+    ```
+    snapshots_json_file_path = "test/dcapt-snapshots.json"
+    ```
+    
+    If `snapshots_json_file_path` snapshot variables defined in `config.tfvars` are ignored.
+    
+    Only use snapshots JSON suggested by [DCAPT team](https://github.com/atlassian/dc-app-performance-toolkit){.external}. 
+
 ## Product specific configuration
 
 === "Bamboo"
