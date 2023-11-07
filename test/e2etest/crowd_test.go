@@ -233,10 +233,12 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	createNewCrowdUser(t, userName, crowdURL, testConfig.CrowdPassword)
 
 	// before making calls to Bitbucket make sure we land on the same node and avoid using sticky cookie in requests
-	// scale bitbucket to 1 replica instead of 3
+	// scale bitbucket to 1 replica instead of 3.
 	log.Print("Scaling Bitbucket to 1")
 	_, kubectlError := k8s.RunKubectlAndGetOutputE(t, getKubectlOptions(t, testConfig), "scale", "sts/bitbucket", "-n", "atlassian", "--replicas=1")
 	assert.Nil(t, kubectlError)
+	_, _ := k8s.RunKubectlAndGetOutputE(t, getKubectlOptions(t, testConfig), "delete", "pod", "bitbucket-1", "bitbucket-2", "-n", "atlassian", "--force")
+
 
 	// get BITBUCKETSESSIONID to use in the header in subsequent calls
 	// even though basic auth works, atl_token is different each time
