@@ -248,14 +248,17 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	// now we need to extract atl_token from the hidden input in HTML response
 	// we will try 5 times, as token is extracted from html output and the test proved
 	// to be quite flaky as the token was missing
-	atlToken := getAtlToken(t, bitbucketURL, bitbucketSessionID)
+	var atlToken = ""
 	for i := 0; i < 5; i++ {
-		time.Sleep(5 * time.Second)
-		atlToken = getAtlToken(t, bitbucketURL, bitbucketSessionID)
+		atlToken := getAtlToken(t, bitbucketURL, bitbucketSessionID)
 		if atlToken != "" {
 			break
 		}
+		attemptsLeft := 4 - i
+		log.Printf("atl_token is empty. Retrying in 5 seconds. Attempts left: %d", attemptsLeft)
+		time.Sleep(5 * time.Second)
 	}
+
 	assert.NotEmptyf(t, atlToken, "atl_token cannot be empty")
 
 	// add a new user directory in Bitbucket
