@@ -237,7 +237,7 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	log.Print("Scaling Bitbucket to 1")
 	_, kubectlError := k8s.RunKubectlAndGetOutputE(t, getKubectlOptions(t, testConfig), "scale", "sts/bitbucket", "-n", "atlassian", "--replicas=1")
 	assert.Nil(t, kubectlError)
-	_, _ = k8s.RunKubectlAndGetOutputE(t, getKubectlOptions(t, testConfig), "delete", "pod", "bitbucket-1", "bitbucket-2", "-n", "atlassian", "--force")
+	time.Sleep(15 * time.Second)
 
 
 	// get BITBUCKETSESSIONID to use in the header in subsequent calls
