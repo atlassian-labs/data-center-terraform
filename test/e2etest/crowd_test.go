@@ -237,8 +237,8 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	log.Print("Scaling Bitbucket to 1")
 	_, kubectlError := k8s.RunKubectlAndGetOutputE(t, getKubectlOptions(t, testConfig), "scale", "sts/bitbucket", "-n", "atlassian", "--replicas=1")
 	assert.Nil(t, kubectlError)
+	// we need to give Bitbucket some time to unregister Hazelcast nodes and update cluster setting
 	time.Sleep(15 * time.Second)
-
 
 	// get BITBUCKETSESSIONID to use in the header in subsequent calls
 	// even though basic auth works, atl_token is different each time
@@ -246,7 +246,16 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	assert.NotEmptyf(t, bitbucketSessionID, "BITBUCKETSESSIONID cannot be empty")
 
 	// now we need to extract atl_token from the hidden input in HTML response
+	// we will try 5 times, as token is extracted from html output and the test proved
+	// to be quite flaky as the token was missing
 	atlToken := getAtlToken(t, bitbucketURL, bitbucketSessionID)
+	for i := 0; i < 5; i++ {
+		time.Sleep(5 * time.Second)
+		atlToken = getAtlToken(t, bitbucketURL, bitbucketSessionID)
+		if atlToken != "" {
+			break
+		}
+	}
 	assert.NotEmptyf(t, atlToken, "atl_token cannot be empty")
 
 	// add a new user directory in Bitbucket
