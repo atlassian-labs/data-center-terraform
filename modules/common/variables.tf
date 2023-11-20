@@ -177,7 +177,7 @@ variable "monitoring_custom_values_file" {
 }
 
 variable "start_test_deployment" {
-  description = "Whether to start DCAPT Jmeter and Selenium deployment"
+  description = "Deploy necessary resources to start DCAPT testing"
   type        = bool
   default     = false
 }

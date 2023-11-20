@@ -1321,7 +1321,7 @@ variable "confluence_s3_attachments_storage" {
 # test deployment configuration
 
 variable "start_test_deployment" {
-  description = "Whether to start DCAPT Jmeter and Selenium deployment"
+  description = "Deploy necessary resources to start DCAPT testing"
   type        = bool
   default     = false
 }

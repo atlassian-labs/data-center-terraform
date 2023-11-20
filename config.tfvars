@@ -146,7 +146,7 @@ max_cluster_capacity = 5
 ################################################################################
 
 # Create deployment with a docker-in-docker privileged container. Defaults to false
-# start_test_deployment = true
+# start_test_deployment = false
 
 # Initial CPU request for docker-in-docker container
 # test_deployment_cpu_request = "1"
