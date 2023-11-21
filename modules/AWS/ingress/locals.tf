@@ -19,6 +19,7 @@ locals {
       service = {
         annotations = {
           "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : module.ingress_certificate[0].this_acm_certificate_arn
+          "service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
         }
       }
     }
