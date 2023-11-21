@@ -36,6 +36,14 @@ module "base-infrastructure" {
   grafana_pvc_disk_size         = var.grafana_pvc_disk_size
   monitoring_custom_values_file = var.monitoring_custom_values_file
   monitoring_grafana_expose_lb  = var.monitoring_grafana_expose_lb
+
+  test_deployment_cpu_request = var.test_deployment_cpu_request
+  test_deployment_mem_request = var.test_deployment_mem_request
+  test_deployment_cpu_limit   = var.test_deployment_cpu_limit
+  test_deployment_mem_limit   = var.test_deployment_mem_limit
+  test_deployment_image_repo  = var.test_deployment_image_repo
+  test_deployment_image_tag   = var.test_deployment_image_tag
+  start_test_deployment       = var.start_test_deployment
 }
 
 module "bamboo" {

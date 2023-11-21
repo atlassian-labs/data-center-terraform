@@ -175,3 +175,45 @@ variable "monitoring_custom_values_file" {
   type        = string
   default     = ""
 }
+
+variable "start_test_deployment" {
+  description = "Deploy necessary resources to start DCAPT testing"
+  type        = bool
+  default     = false
+}
+
+variable "test_deployment_cpu_request" {
+  description = "Number of CPUs for DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "1"
+}
+
+variable "test_deployment_mem_request" {
+  description = "Amount of memory for DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "4Gi"
+}
+
+variable "test_deployment_cpu_limit" {
+  description = "CPU limit for DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "4"
+}
+
+variable "test_deployment_mem_limit" {
+  description = "Memory limit for DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "6Gi"
+}
+
+variable "test_deployment_image_repo" {
+  description = "Image repository of DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "docker"
+}
+
+variable "test_deployment_image_tag" {
+  description = "Image tag of DCAPT Jmeter and Selenium deployment"
+  type        = string
+  default     = "24.0.7-dind"
+}

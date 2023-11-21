@@ -145,6 +145,31 @@ max_cluster_capacity = 5
 # monitoring_custom_values_file = "/path/to/values.yaml"
 
 ################################################################################
+# DCAPT JMeter and Selenium Deployment Settings
+################################################################################
+
+# Create deployment with a docker-in-docker privileged container. Defaults to false
+# start_test_deployment = false
+
+# Initial CPU request for docker-in-docker container
+# test_deployment_cpu_request = "1"
+
+# Initial memory request for docker-in-docker container
+# test_deployment_mem_request = "4Gi"
+
+# Initial CPU limit for docker-in-docker container
+# test_deployment_cpu_limit = "4"
+
+# Initial memory limit for docker-in-docker container
+# test_deployment_mem_limit = "6Gi"
+
+# Image repository of the docker-in-docker container
+# test_deployment_image_repo = "docker"
+
+# Image tag of the docker-in-docker container
+# test_deployment_image_tag = "24.0.7-dind"
+
+################################################################################
 # Jira Settings
 ################################################################################
 

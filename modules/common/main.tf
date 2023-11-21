@@ -61,3 +61,64 @@ resource "kubernetes_namespace" "products" {
     name = var.namespace
   }
 }
+
+resource "kubernetes_deployment" "dcapt_exec" {
+  count      = var.start_test_deployment ? 1 : 0
+  depends_on = [kubernetes_namespace.products]
+  metadata {
+    name      = "dcapt"
+    namespace = var.namespace
+    labels = {
+      exec = "true"
+    }
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        exec = "true"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          exec = "true"
+        }
+      }
+      spec {
+        container {
+          name  = "dcapt"
+          image = "${var.test_deployment_image_repo}:${var.test_deployment_image_tag}"
+          security_context { privileged = true }
+          volume_mount {
+            mount_path = "/data"
+            name       = "data"
+          }
+          resources {
+            requests = {
+              cpu    = var.test_deployment_cpu_request
+              memory = var.test_deployment_mem_request
+            }
+            limits = {
+              cpu    = var.test_deployment_cpu_limit
+              memory = var.test_deployment_mem_limit
+            }
+          }
+          lifecycle {
+            post_start {
+              exec {
+                command = ["/bin/sh", "-c", "apk add --update vim bash git"]
+              }
+            }
+          }
+        }
+        volume {
+          name = "data"
+          empty_dir {}
+        }
+        termination_grace_period_seconds = 0
+      }
+    }
+  }
+}
+
