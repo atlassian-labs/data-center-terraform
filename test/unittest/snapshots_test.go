@@ -12,6 +12,8 @@ import (
 type DCSnapshots struct {
 	JiraEbs       string
 	JiraRds       string
+	JsmEbs        string
+	JsmRds        string
 	ConfluenceEbs string
 	ConfluenceRds string
 	BitbucketEbs  string
@@ -20,55 +22,83 @@ type DCSnapshots struct {
 	CrowdRds      string
 }
 
+var vars = map[string]interface{}{
+	"environment_name":              "e2etests",
+	"snapshots_json_file_path":      "test/dcapt-snapshots.json",
+	"products":                      []string{"jira", "confluence", "bitbucket", "crowd"},
+	"region":                        "us-east-2",
+	"jira_version_tag":              "9.4.10",
+	"jira_license":                  "license",
+	"jira_db_master_username":       "atljira",
+	"jira_db_master_password":       "Password1!",
+	"confluence_license":            "license",
+	"confluence_version_tag":        "7.19.14",
+	"confluence_db_master_username": "atlconfluence",
+	"confluence_db_master_password": "Password1!",
+	"bitbucket_license":             "license",
+	"bitbucket_version_tag":         "7.21.16",
+	"bitbucket_admin_username":      "admin",
+	"bitbucket_admin_password":      "admin",
+	"bitbucket_admin_display_name":  "admin",
+	"bitbucket_admin_email_address": "admin@example.com",
+	"bitbucket_db_master_username":  "atlbitbucket",
+	"bitbucket_db_master_password":  "Password1!",
+	"crowd_license":                 "license",
+	"crowd_version_tag":             "5.1.4",
+	"crowd_db_master_username":      "atlcrowd",
+	"crowd_db_master_password":      "Password1!",
+	"bamboo_license":                "bamboo-license",
+	"bamboo_version_tag":            "9.2.3",
+	"bamboo_agent_version_tag":      "9.2.3",
+	"bamboo_admin_username":         "admin",
+	"bamboo_admin_password":         "admin",
+	"bamboo_admin_display_name":     "admin",
+	"bamboo_admin_email_address":    "admin@example.com",
+	"bamboo_dataset_url":            "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip",
+}
+
+func TestJsmSnapshots(t *testing.T) {
+	t.Parallel()
+	jiraSnapshots := DCSnapshots{
+		JsmEbs: "snap-0381cc00e37231565",
+		JsmRds: "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jsm-5-4-10",
+	}
+	vars["jira_image_repository"] = "atlassian/jira-servicemanagement"
+	vars["jira_version_tag"] = "5.4.10"
+	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", "")
+	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
+	planFilePath := filepath.Join(exampleFolder, "plan.out")
+	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: exampleFolder,
+		Vars:         vars,
+		EnvVars: map[string]string{
+			"AWS_DEFAULT_REGION": awsRegion,
+		},
+		PlanFilePath: planFilePath,
+	})
+
+	plan, _ := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
+	jsmRdsSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	jsmEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	assert.Equal(t, jiraSnapshots.JsmRds, jsmRdsSnapshot)
+	assert.Equal(t, jiraSnapshots.JsmEbs, jsmEbsVolumeSnapshot)
+}
 func TestSnapshotsFromJson(t *testing.T) {
 	t.Parallel()
 
 	// rather than parse the ../dcapt-snapshots.json, snap ids are copied from it
 	dcSnapshots := DCSnapshots{
-		JiraEbs:       "snap-0d619095feaa2eca5",
-		JiraRds:       "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-8",
-		ConfluenceEbs: "snap-04cc3d8455b1ef6e9",
-		ConfluenceRds: "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-13-18",
-		BitbucketEbs:  "snap-0ccb8c3d34ff171f1",
-		BitbucketRds:  "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-14",
+		JiraEbs:       "snap-084e99e384dcfbe31",
+		JiraRds:       "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-10",
+		ConfluenceEbs: "snap-00f5e8147604a017e",
+		ConfluenceRds: "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14",
+		BitbucketEbs:  "snap-0d4bbe0cf3056c0ee",
+		BitbucketRds:  "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16",
 		CrowdEbs:      "snap-0a8e229690be9ae30",
 		CrowdRds:      "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4",
 	}
 
-	vars := map[string]interface{}{
-		"environment_name":              "e2etests",
-		"snapshots_json_file_path":      "test/dcapt-snapshots.json",
-		"products":                      []string{"jira", "confluence", "bitbucket", "crowd"},
-		"region":                        "us-east-2",
-		"jira_version_tag":              "9.4.8",
-		"jira_license":                  "license",
-		"jira_db_master_username":       "atljira",
-		"jira_db_master_password":       "Password1!",
-		"confluence_license":            "license",
-		"confluence_version_tag":        "7.13.18",
-		"confluence_db_master_username": "atlconfluence",
-		"confluence_db_master_password": "Password1!",
-		"bitbucket_license":             "license",
-		"bitbucket_version_tag":         "7.21.14",
-		"bitbucket_admin_username":      "admin",
-		"bitbucket_admin_password":      "admin",
-		"bitbucket_admin_display_name":  "admin",
-		"bitbucket_admin_email_address": "admin@example.com",
-		"bitbucket_db_master_username":  "atlbitbucket",
-		"bitbucket_db_master_password":  "Password1!",
-		"crowd_license":                 "license",
-		"crowd_version_tag":             "5.1.4",
-		"crowd_db_master_username":      "atlcrowd",
-		"crowd_db_master_password":      "Password1!",
-		"bamboo_license":                "bamboo-license",
-		"bamboo_version_tag":            "9.2.3",
-		"bamboo_agent_version_tag":      "9.2.3",
-		"bamboo_admin_username":         "admin",
-		"bamboo_admin_password":         "admin",
-		"bamboo_admin_display_name":     "admin",
-		"bamboo_admin_email_address":    "admin@example.com",
-		"bamboo_dataset_url":            "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip",
-	}
+	vars := vars
 
 	// a bit of copy-paste as we can't use GenerateTFOptions as is (we need to run terraform plan in the root of the directory)
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", "")
@@ -113,15 +143,15 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, "1893", plan.RawPlan.PlannedValues.Outputs["crowd_db_snapshot_build_number"].Value)
 
 	// assert that RDS snapshots are in db_snapshot data
-	confluenceRdsSnapShot := plan.ResourcePlannedValuesMap["module.confluence[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	bitbucketRdsSnapShot := plan.ResourcePlannedValuesMap["module.bitbucket[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	crowdRdsSnapShot := plan.ResourcePlannedValuesMap["module.crowd[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	jiraRdsSnapShot := plan.ResourcePlannedValuesMap["module.jira[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	confluenceRdsSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	bitbucketRdsSnapshot := plan.ResourcePlannedValuesMap["module.bitbucket[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	crowdRdsSnapshot := plan.ResourcePlannedValuesMap["module.crowd[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	jiraRdsSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
 
-	assert.Equal(t, dcSnapshots.ConfluenceRds, confluenceRdsSnapShot)
-	assert.Equal(t, dcSnapshots.BitbucketRds, bitbucketRdsSnapShot)
-	assert.Equal(t, dcSnapshots.CrowdRds, crowdRdsSnapShot)
-	assert.Equal(t, dcSnapshots.JiraRds, jiraRdsSnapShot)
+	assert.Equal(t, dcSnapshots.ConfluenceRds, confluenceRdsSnapshot)
+	assert.Equal(t, dcSnapshots.BitbucketRds, bitbucketRdsSnapshot)
+	assert.Equal(t, dcSnapshots.CrowdRds, crowdRdsSnapshot)
+	assert.Equal(t, dcSnapshots.JiraRds, jiraRdsSnapshot)
 
 	// assert ebs snapshot is in ebs_volume aws resource
 	bitbucketEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.bitbucket[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
