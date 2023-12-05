@@ -136,7 +136,7 @@ func TestSnapshotsFromJson(t *testing.T) {
 
 	assert.Equal(t, dcSnapshots.ConfluenceEbs, plan.RawPlan.PlannedValues.Outputs["confluence_ebs_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.ConfluenceRds, plan.RawPlan.PlannedValues.Outputs["confluence_rds_snapshot"].Value)
-	assert.Equal(t, "8703", plan.RawPlan.PlannedValues.Outputs["confluence_db_snapshot_build_number"].Value)
+	assert.Equal(t, "8804", plan.RawPlan.PlannedValues.Outputs["confluence_db_snapshot_build_number"].Value)
 
 	assert.Equal(t, dcSnapshots.CrowdEbs, plan.RawPlan.PlannedValues.Outputs["crowd_ebs_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.CrowdRds, plan.RawPlan.PlannedValues.Outputs["crowd_rds_snapshot"].Value)
