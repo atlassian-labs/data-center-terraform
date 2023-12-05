@@ -23,7 +23,7 @@ resource "kubernetes_secret" "license_secret" {
   }
 
   data = {
-    license = var.license
+    license = local.sanitized_license
   }
 }
 

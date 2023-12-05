@@ -121,4 +121,6 @@ locals {
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
   nfs_cluster_service_ipv4 = "172.20.2.2"
+
+  sanitized_license = replace(var.license, "\n", "\\n")
 }

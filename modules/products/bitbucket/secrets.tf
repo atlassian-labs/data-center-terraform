@@ -23,7 +23,7 @@ resource "kubernetes_secret" "license_secret" {
   }
 
   data = {
-    license-key = var.bitbucket_configuration["license"]
+    license-key = local.sanitized_license
   }
 }
 

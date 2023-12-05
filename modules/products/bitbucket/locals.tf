@@ -91,4 +91,6 @@ locals {
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
   nfs_cluster_service_ipv4 = "172.20.2.3"
+
+  sanitized_license = replace(var.bitbucket_configuration["license"], "\n", "\\n")
 }
