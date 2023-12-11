@@ -18,7 +18,6 @@ locals {
   local_agent_chart_path      = var.local_helm_charts_path != "" && var.bamboo_install_local_chart ? "${var.local_helm_charts_path}/bamboo-agent" : ""
   local_crowd_chart_path      = var.local_helm_charts_path != "" && var.crowd_install_local_chart ? "${var.local_helm_charts_path}/crowd" : ""
 
-  #  snapshots_json = var.snapshots_json_file_path != "" ? jsondecode(file(var.snapshots_json_file_path)) : jsondecode("{\"jira\": {\"versions\":[]},\"confluence\": {\"versions\":[]},\"crowd\": {\"versions\":[]},\"bitbucket\": {\"versions\":[]}}")
   snapshots_json = var.snapshots_json_file_path != "" ? jsondecode(file(var.snapshots_json_file_path)) : null
 
   filtered_bitbucket_snapshots = local.snapshots_json != null ? flatten([
@@ -82,8 +81,10 @@ locals {
     version.version == var.crowd_version_tag ? version.build_number : ""
   ]) : []
 
+  jira_flavor_versions = contains([var.jira_image_repository], "atlassian/jira-servicemanagement") ? local.snapshots_json.jsm.versions : local.snapshots_json.jira.versions
+
   filtered_jira_snapshots = local.snapshots_json != null ? flatten([
-    for version in local.snapshots_json.jira.versions :
+    for version in local.jira_flavor_versions :
     [for snapshot in version.data :
       merge({ version = version.version }, snapshot)
     ]
