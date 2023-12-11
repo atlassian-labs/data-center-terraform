@@ -81,7 +81,7 @@ locals {
     version.version == var.crowd_version_tag ? version.build_number : ""
   ]) : []
 
-  jira_flavor_versions = contains([var.jira_image_repository], "atlassian/jira-servicemanagement") ? local.snapshots_json.jsm.versions : local.snapshots_json.jira.versions
+  jira_flavor_versions = local.snapshots_json != null ? contains([var.jira_image_repository], "atlassian/jira-servicemanagement") ? local.snapshots_json.jsm.versions : local.snapshots_json.jira.versions : null
 
   filtered_jira_snapshots = local.snapshots_json != null ? flatten([
     for version in local.jira_flavor_versions :
