@@ -60,7 +60,7 @@ func TestInstaller(t *testing.T) {
 func runInstallScript(configPath string) {
 	cmd := &exec.Cmd{
 		Path:   "install.sh",
-		Args:   []string{"install.sh", "-c", configPath, "-f"},
+		Args:   []string{"install.sh", "-l", "-c", configPath, "-f"},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 		Dir:    "../../",

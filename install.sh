@@ -34,6 +34,7 @@ EOF
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -d : run cleanup.sh script at the beginning."
   echo "   -p : skip run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
+  echo "   -f : auto-approve terraform apply."
   echo "   -l : skip product license check."
   echo "   -h : provides help to how executing this script."
   echo
