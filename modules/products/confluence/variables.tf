@@ -22,6 +22,11 @@ variable "eks" {
   type        = any
 }
 
+variable "rds" {
+  description = "RDS module that hosts the product."
+  type        = any
+}
+
 variable "ingress" {
   default = null
   type    = any

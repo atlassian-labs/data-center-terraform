@@ -43,7 +43,7 @@ resource "helm_release" "jira" {
       }
       database = {
         type   = "postgres72"
-        url    = module.database.rds_jdbc_connection
+        url    = var.rds.rds_jdbc_connection
         driver = "org.postgresql.Driver"
         credentials = {
           secretName = kubernetes_secret.rds_secret.metadata[0].name

@@ -46,6 +46,23 @@ module "base-infrastructure" {
   start_test_deployment       = var.start_test_deployment
 }
 
+module "database" {
+  source = "./modules/AWS/rds"
+
+  count                   = length(var.products)
+  vpc                     = module.base-infrastructure.vpc
+  product                 = var.products[count.index]
+  rds_instance_identifier = format("atlas-%s-%s-db", var.environment_name, var.products[count.index])
+  allocated_storage       = local.database_settings[var.products[count.index]].db_allocated_storage
+  instance_class          = local.database_settings[var.products[count.index]].db_instance_class
+  iops                    = local.database_settings[var.products[count.index]].db_iops
+  major_engine_version    = local.database_settings[var.products[count.index]].db_major_engine_version
+  snapshot_identifier     = local.rds_snapshots[var.products[count.index]]
+  db_master_username      = local.database_settings[var.products[count.index]].db_master_username
+  db_master_password      = local.database_settings[var.products[count.index]].db_master_password
+  db_name                 = local.database_settings[var.products[count.index]].db_name
+}
+
 module "bamboo" {
   source     = "./modules/products/bamboo"
   count      = local.install_bamboo ? 1 : 0
@@ -55,6 +72,7 @@ module "bamboo" {
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "bamboo")]
   ingress          = module.base-infrastructure.ingress
 
   dataset_url = var.bamboo_dataset_url
@@ -118,6 +136,7 @@ module "jira" {
   namespace               = module.base-infrastructure.namespace
   vpc                     = module.base-infrastructure.vpc
   eks                     = module.base-infrastructure.eks
+  rds                     = module.database[index(var.products, "jira")]
   ingress                 = module.base-infrastructure.ingress
   db_major_engine_version = var.jira_db_major_engine_version
   db_allocated_storage    = var.jira_db_allocated_storage
@@ -169,6 +188,7 @@ module "confluence" {
   region_name      = var.region
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "confluence")]
   ingress          = module.base-infrastructure.ingress
 
   db_major_engine_version = var.confluence_db_major_engine_version
@@ -232,6 +252,7 @@ module "bitbucket" {
   namespace               = module.base-infrastructure.namespace
   vpc                     = module.base-infrastructure.vpc
   eks                     = module.base-infrastructure.eks
+  rds                     = module.database[index(var.products, "bitbucket")]
   ingress                 = module.base-infrastructure.ingress
   db_major_engine_version = var.bitbucket_db_major_engine_version
   db_allocated_storage    = var.bitbucket_db_allocated_storage
@@ -296,6 +317,7 @@ module "crowd" {
   namespace                = module.base-infrastructure.namespace
   vpc                      = module.base-infrastructure.vpc
   eks                      = module.base-infrastructure.eks
+  rds                      = module.database[index(var.products, "crowd")]
   ingress                  = module.base-infrastructure.ingress
   db_major_engine_version  = var.crowd_db_major_engine_version
   db_allocated_storage     = var.crowd_db_allocated_storage
