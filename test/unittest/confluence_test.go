@@ -23,12 +23,6 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
 	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
-
-	dbModuleKey := "module.database.module.db.module.db_instance.aws_db_instance.this[0]"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, dbModuleKey)
-	dbModule := plan.ResourcePlannedValuesMap[dbModuleKey]
-	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
-	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -77,14 +71,22 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 			"token":                  "dummy-token",
 			"cluster_ca_certificate": "dummy-certificate",
 		},
-		"cluster_security_group": "dummy-sg",
-		"availability_zone":      "dummy-az",
+		"cluster_security_group":    "dummy-sg",
+		"availability_zone":         "dummy-az",
 		"confluence_s3_bucket_name": "dummy-bucket",
 		"confluence_s3_role_arn":    "arn:dummy_arn",
 	},
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_endpoint":        "jdbc://dummy:5432",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-ame",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
 	"confluence_s3_attachments_storage": true,
 	"region_name":                       "us-east-1",
-	"vpc": VpcDefaultModuleVariable,
+	"vpc":                               VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",

@@ -24,7 +24,7 @@ func TestDbVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"instance_class\" is not set")
 	assert.Contains(t, err.Error(), "\"allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"iops\" is not set")
-	assert.Contains(t, err.Error(), "\"eks\" is not set")
+	//assert.Contains(t, err.Error(), "\"eks\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 }
 
@@ -43,9 +43,9 @@ func TestDbVariablesPopulatedWithValidValues(t *testing.T) {
 	planSubnets := plan.ResourcePlannedValuesMap["module.db.module.db_subnet_group.aws_db_subnet_group.this[0]"].AttributeValues["subnet_ids"]
 	assert.EqualValues(t, inputSubnets, planSubnets)
 
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.security_group.aws_security_group_rule.ingress_with_source_security_group_id[0]")
-	planSourceSgId := plan.ResourcePlannedValuesMap["module.security_group.aws_security_group_rule.ingress_with_source_security_group_id[0]"].AttributeValues["source_security_group_id"]
-	assert.Equal(t, inputSourceSgId, planSourceSgId)
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.security_group.aws_security_group_rule.ingress_with_cidr_blocks[0]")
+	planVpcCidr := plan.ResourcePlannedValuesMap["module.security_group.aws_security_group_rule.ingress_with_cidr_blocks[0]"].AttributeValues["cidr_blocks"]
+	assert.Equal(t, vpcCidrBlock, planVpcCidr)
 
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, "module.db.module.db_instance.aws_db_instance.this[0]")
 	planDbIdentifier := plan.ResourcePlannedValuesMap["module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["identifier"]

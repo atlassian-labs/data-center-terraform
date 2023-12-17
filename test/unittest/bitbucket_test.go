@@ -84,6 +84,13 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"cluster_size":           2,
 		"availability_zone":      "dummy-az",
 	},
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-ame",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
 	"vpc":                     VpcDefaultModuleVariable,
 	"db_major_engine_version": "13",
 	"db_allocated_storage":    5,
