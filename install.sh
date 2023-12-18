@@ -34,6 +34,8 @@ EOF
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
   echo "   -d : run cleanup.sh script at the beginning."
   echo "   -p : skip run pre-flight checks to test compatibility of EBS and RDS snapshots if any."
+  echo "   -f : auto-approve terraform apply."
+  echo "   -l : skip product license check."
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -44,14 +46,16 @@ EOF
   HELP_FLAG=
   FORCE_FLAG=
   CLEAN_UP_FLAG=
-  PRE_FLIGHT_FLAG=
-  while getopts hfdp?c: name ; do
+  SKIP_PRE_FLIGHT_FLAG=
+  SKIP_LICENSE_TEST_FLAG=
+  while getopts hfdpl?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
       d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
-      p)    PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
+      p)    SKIP_PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
+      l)    SKIP_LICENSE_TEST_FLAG="-l";;  # Skip license checks
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -105,6 +109,26 @@ pre_flight_checks() {
   PRODUCTS="${PRODUCTS#*=}"
   PRODUCTS_ARRAY=($(echo $PRODUCTS | sed 's/\[//g' | sed 's/\]//g' | sed 's/,/ /g' | sed 's/"//g'))
   REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+
+  if [ "${SKIP_LICENSE_TEST_FLAG}" == "" ]; then
+    for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
+      log "Checking ${PRODUCT} license"
+      LICENSE_ENV_VAR=${PRODUCT}'_license'
+      LICENSE_TEXT=$(get_variable ${LICENSE_ENV_VAR} "${CONFIG_ABS_PATH}")
+      if [ -z "$LICENSE_TEXT" ]; then
+        log "License is undefined or malformed. Please check '${LICENSE_ENV_VAR}' value in '${CONFIG_ABS_PATH}'" "ERROR"
+        log "It is possible that '${LICENSE_ENV_VAR}' is defined but it is a multi line string" "ERROR"
+        log "If that's the case remove all new lines to convert it to a one-liner" "ERROR"
+        exit 1
+      fi
+      if [ "${LICENSE_TEXT}" == ${PRODUCT}-license ]; then
+        log "License placeholder is unchanged. Please check '${LICENSE_ENV_VAR}' value in '${CONFIG_ABS_PATH}'" "ERROR"
+        log "Current license key: '${LICENSE_TEXT}'" "ERROR"
+        log "Generate a new license at https://my.atlassian.com/" "ERROR"
+        exit 1
+      fi
+    done
+  fi
 
   for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
     log "Starting pre-flight checks for ${PRODUCT}"
@@ -302,7 +326,7 @@ set_current_context_k8s() {
   CONTEXT_FILE="${ROOT_PATH}/kubeconfig_${EKS_CLUSTER}"
 
   aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}" --kubeconfig ${CONTEXT_FILE}
-  
+
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
@@ -412,7 +436,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-if [ "${PRE_FLIGHT_FLAG}" == "" ]; then
+if [ "${SKIP_PRE_FLIGHT_FLAG}" == "" ]; then
   # verify snapshots if any
   pre_flight_checks
 fi
