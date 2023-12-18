@@ -78,8 +78,10 @@ func TestJsmSnapshots(t *testing.T) {
 	})
 
 	plan, _ := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
-	jsmRdsSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	jsmRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[0].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
+	assert.NotNil(t, jsmRdsSnapshot)
 	jsmEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	assert.NotNil(t, jsmEbsVolumeSnapshot)
 	assert.Equal(t, jiraSnapshots.JsmRds, jsmRdsSnapshot)
 	assert.Equal(t, jiraSnapshots.JsmEbs, jsmEbsVolumeSnapshot)
 }
@@ -142,11 +144,11 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, dcSnapshots.CrowdRds, plan.RawPlan.PlannedValues.Outputs["crowd_rds_snapshot"].Value)
 	assert.Equal(t, "1893", plan.RawPlan.PlannedValues.Outputs["crowd_db_snapshot_build_number"].Value)
 
-	// assert that RDS snapshots are in db_snapshot data
-	confluenceRdsSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	bitbucketRdsSnapshot := plan.ResourcePlannedValuesMap["module.bitbucket[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	crowdRdsSnapshot := plan.ResourcePlannedValuesMap["module.crowd[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
-	jiraRdsSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.database.data.aws_db_snapshot.confluence_db_snapshot[0]"].AttributeValues["db_snapshot_identifier"]
+	// assert that the right RDS snapshots are in the right database modules
+	jiraRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[0].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
+	confluenceRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[1].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
+	bitbucketRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[2].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
+	crowdRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[3].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
 
 	assert.Equal(t, dcSnapshots.ConfluenceRds, confluenceRdsSnapshot)
 	assert.Equal(t, dcSnapshots.BitbucketRds, bitbucketRdsSnapshot)

@@ -21,7 +21,7 @@ module "security_group" {
   ]
 }
 
-data "aws_db_snapshot" "confluence_db_snapshot" {
+data "aws_db_snapshot" "atlassian_db_snapshot" {
   count                  = var.snapshot_identifier != null ? 1 : 0
   db_snapshot_identifier = var.snapshot_identifier
   most_recent            = true
