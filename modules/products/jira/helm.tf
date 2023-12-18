@@ -59,6 +59,10 @@ resource "helm_release" "jira" {
               }
             }
           }
+          persistentVolumeClaimRetentionPolicy = {
+            whenDeleted = "Delete"
+            whenScaled = "Retain"
+          }
         }
         sharedHome = {
           customVolume = {

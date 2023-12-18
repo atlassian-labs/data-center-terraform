@@ -47,6 +47,10 @@ resource "helm_release" "crowd" {
               }
             }
           }
+          persistentVolumeClaimRetentionPolicy = {
+            whenDeleted = "Delete"
+            whenScaled = "Retain"
+          }
         }
         sharedHome = {
           customVolume = {

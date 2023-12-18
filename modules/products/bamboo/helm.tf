@@ -50,6 +50,10 @@ resource "helm_release" "bamboo" {
               }
             }
           }
+          persistentVolumeClaimRetentionPolicy = {
+            whenDeleted = "Delete"
+            whenScaled = "Retain"
+          }
         }
         sharedHome = {
           customVolume = {

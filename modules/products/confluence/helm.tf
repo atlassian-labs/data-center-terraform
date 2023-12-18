@@ -70,6 +70,10 @@ resource "helm_release" "confluence" {
               }
             }
           }
+          persistentVolumeClaimRetentionPolicy = {
+            whenDeleted = "Delete"
+            whenScaled = "Retain"
+          }
         }
         sharedHome = {
           customVolume = {

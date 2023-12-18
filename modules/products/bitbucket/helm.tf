@@ -57,6 +57,10 @@ resource "helm_release" "bitbucket" {
               }
             }
           }
+          persistentVolumeClaimRetentionPolicy = {
+            whenDeleted = "Delete"
+            whenScaled = "Retain"
+          }
         }
         sharedHome = {
           customVolume = {
