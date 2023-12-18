@@ -73,6 +73,8 @@ func GetAvailableRegion(t *testing.T) string {
 			endpoints.ApNortheast2RegionID,
 			endpoints.ApSoutheast2RegionID,
 			endpoints.ApNortheast3RegionID,
+			endpoints.ApSoutheast1RegionID,
+			endpoints.EuWest2RegionID,
 		}) // Avoid busy/unavailable regions
 		vpcs, err := aws.GetVpcsE(t, nil, awsRegion)
 		require.NoError(t, err)
