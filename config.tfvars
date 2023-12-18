@@ -13,7 +13,7 @@ environment_name = "<ENVIRONMENT>"
 # Cloud provider region that this configuration will deploy to.
 region = "<REGION>"
 
-# EKS K8S API version. Defaults to 1.25. Allowed values are from 1.21 to 1.25.
+# EKS K8S API version. Defaults to 1.28. Allowed values are from 1.25 to 1.28.
 # See: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 # eks_version = <EKS_VERSION>
 
