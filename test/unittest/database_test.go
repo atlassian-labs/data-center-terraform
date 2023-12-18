@@ -24,7 +24,6 @@ func TestDbVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"instance_class\" is not set")
 	assert.Contains(t, err.Error(), "\"allocated_storage\" is not set")
 	assert.Contains(t, err.Error(), "\"iops\" is not set")
-	//assert.Contains(t, err.Error(), "\"eks\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 }
 
