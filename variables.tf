@@ -27,7 +27,7 @@ variable "eks_version" {
   default     = 1.28
   type        = number
   validation {
-    condition     = can(regex("^1\\.2[5-8]", var.eks_version))
+    condition     = can(regex("^1\\.2[7-8]", var.eks_version))
     error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.28."
   }
 }
