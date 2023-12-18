@@ -46,16 +46,16 @@ EOF
   HELP_FLAG=
   FORCE_FLAG=
   CLEAN_UP_FLAG=
-  PRE_FLIGHT_FLAG=
-  LICENSE_TEST_FLAG=
+  SKIP_PRE_FLIGHT_FLAG=
+  SKIP_LICENSE_TEST_FLAG=
   while getopts hfdpl?c: name ; do
       case $name in
       h)    HELP_FLAG=1; show_help;;  # Help
       c)    CONFIG_FILE="${OPTARG}";; # Config file name to install - this overrides the default, 'config.tfvars'
       f)    FORCE_FLAG="-f";;         # Auto-approve
       d)    CLEAN_UP_FLAG="-d";;      # Run cleanup script before install
-      p)    PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
-      l)    LICENSE_TEST_FLAG="-l";;  # Skip license checks
+      p)    SKIP_PRE_FLIGHT_FLAG="-p";;    # Skip pre-flight checks to test compatibility of EBS and RDS snapshots if any
+      l)    SKIP_LICENSE_TEST_FLAG="-l";;  # Skip license checks
       ?)    log "Invalid arguments." "ERROR" ; show_help
       esac
   done
@@ -110,7 +110,7 @@ pre_flight_checks() {
   PRODUCTS_ARRAY=($(echo $PRODUCTS | sed 's/\[//g' | sed 's/\]//g' | sed 's/,/ /g' | sed 's/"//g'))
   REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
-  if [ "${LICENSE_TEST_FLAG}" == "" ]; then
+  if [ "${SKIP_LICENSE_TEST_FLAG}" == "" ]; then
     for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
       log "Checking ${PRODUCT} license"
       LICENSE_ENV_VAR=${PRODUCT}'_license'
@@ -326,7 +326,7 @@ set_current_context_k8s() {
   CONTEXT_FILE="${ROOT_PATH}/kubeconfig_${EKS_CLUSTER}"
 
   aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}" --kubeconfig ${CONTEXT_FILE}
-  
+
   if [[ -f  "${CONTEXT_FILE}" ]]; then
     log "EKS Cluster ${EKS_CLUSTER} in region ${REGION} is ready to use."
     log "Kubernetes config file could be found at '${CONTEXT_FILE}'"
@@ -436,7 +436,7 @@ process_arguments
 # Verify the configuration file
 verify_configuration_file
 
-if [ "${PRE_FLIGHT_FLAG}" == "" ]; then
+if [ "${SKIP_PRE_FLIGHT_FLAG}" == "" ]; then
   # verify snapshots if any
   pre_flight_checks
 fi
