@@ -103,6 +103,18 @@ variable "local_home_size" {
   default     = "10Gi"
 }
 
+variable "local_home_retain_policy_when_deleted" {
+  description = "Retention policy for local home when deleted."
+  type        = string
+  default     = "Delete"
+}
+
+variable "local_home_retain_policy_when_scaled" {
+  description = "Retention policy for local home when scaled."
+  type        = string
+  default     = "Retain"
+}
+
 variable "version_tag" {
   description = "Version tag for Confluence"
   type        = string

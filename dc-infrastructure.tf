@@ -93,8 +93,10 @@ module "bamboo" {
     agent_count  = var.number_of_bamboo_agents
   }
 
-  local_home_size  = var.bamboo_local_home_size
-  shared_home_size = var.bamboo_shared_home_size
+  local_home_retain_policy_when_deleted = var.bamboo_local_home_retain_policy_when_deleted
+  local_home_retain_policy_when_scaled  = var.bamboo_local_home_retain_policy_when_scaled
+  local_home_size                       = var.bamboo_local_home_size
+  shared_home_size                      = var.bamboo_shared_home_size
 
   nfs_requests_cpu    = var.bamboo_nfs_requests_cpu
   nfs_requests_memory = var.bamboo_nfs_requests_memory
@@ -145,8 +147,10 @@ module "jira" {
   image_repository = var.jira_image_repository
   version_tag      = var.jira_version_tag
 
-  local_home_size  = var.jira_local_home_size
-  shared_home_size = var.jira_shared_home_size
+  local_home_retain_policy_when_deleted = var.jira_local_home_retain_policy_when_deleted
+  local_home_retain_policy_when_scaled  = var.jira_local_home_retain_policy_when_scaled
+  local_home_size                       = var.jira_local_home_size
+  shared_home_size                      = var.jira_shared_home_size
 
   nfs_requests_cpu    = var.jira_nfs_requests_cpu
   nfs_requests_memory = var.jira_nfs_requests_memory
@@ -209,8 +213,10 @@ module "confluence" {
     stack_size = var.synchrony_stack_size
   }
 
-  local_home_size  = var.confluence_local_home_size
-  shared_home_size = var.confluence_shared_home_size
+  local_home_retain_policy_when_deleted = var.confluence_local_home_retain_policy_when_deleted
+  local_home_retain_policy_when_scaled  = var.confluence_local_home_retain_policy_when_scaled
+  local_home_size                       = var.confluence_local_home_size
+  shared_home_size                      = var.confluence_shared_home_size
 
   nfs_requests_cpu    = var.confluence_nfs_requests_cpu
   nfs_requests_memory = var.confluence_nfs_requests_memory
@@ -256,8 +262,10 @@ module "bitbucket" {
     license            = var.bitbucket_license
   }
 
-  local_home_size  = var.bitbucket_local_home_size
-  shared_home_size = var.bitbucket_shared_home_size
+  local_home_retain_policy_when_deleted = var.bitbucket_local_home_retain_policy_when_deleted
+  local_home_retain_policy_when_scaled  = var.bitbucket_local_home_retain_policy_when_scaled
+  local_home_size                       = var.bitbucket_local_home_size
+  shared_home_size                      = var.bitbucket_shared_home_size
 
   display_name = var.bitbucket_display_name
 
@@ -323,8 +331,10 @@ module "crowd" {
   image_repository = var.crowd_image_repository
   version_tag      = var.crowd_version_tag
 
-  local_home_size  = var.crowd_local_home_size
-  shared_home_size = var.crowd_shared_home_size
+  local_home_retain_policy_when_deleted = var.crowd_local_home_retain_policy_when_deleted
+  local_home_retain_policy_when_scaled  = var.crowd_local_home_retain_policy_when_scaled
+  local_home_size                       = var.crowd_local_home_size
+  shared_home_size                      = var.crowd_shared_home_size
 
   nfs_requests_cpu    = var.crowd_nfs_requests_cpu
   nfs_requests_memory = var.crowd_nfs_requests_memory
