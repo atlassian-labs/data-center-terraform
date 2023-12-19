@@ -26,7 +26,7 @@ ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE
 
 RUN apt-get update \
-    && apt-get install -y gnupg software-properties-common curl unzip \
+    && apt-get install -y gnupg software-properties-common curl unzip openjdk-17-jdk \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-get update && apt-get install -y terraform jq
@@ -45,3 +45,5 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 COPY . /data-center-terraform
 
 WORKDIR /data-center-terraform
+
+RUN curl -s -o license-checker.jar https://license-checker-jar.s3.ap-southeast-2.amazonaws.com/check-license.jar/license-checker-1.0-0-jar-with-dependencies.jar

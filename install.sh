@@ -127,6 +127,17 @@ pre_flight_checks() {
         log "Generate a new license at https://my.atlassian.com/" "ERROR"
         exit 1
       fi
+      if test -e "license-checker.jar"; then
+        export ATLASSIAN_PRODUCT="${PRODUCT}"
+        export ATLASSIAN_LICENSE="${LICENSE_TEXT}"
+        java -jar license-checker.jar 2>&1 | while IFS= read -r line; do
+          log "$line" "INFO"
+        done
+        if [ $? -ne 0 ]; then
+            log "License validation failed" "ERROR"
+            exit $?
+        fi
+      fi
     done
   fi
 
