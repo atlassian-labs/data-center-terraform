@@ -10,10 +10,6 @@ variable "cluster_name" {
 variable "eks_version" {
   description = "EKS K8s version"
   type        = number
-  validation {
-    condition     = can(regex("^1\\.2[1-5]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.25."
-  }
 }
 
 variable "region" {
