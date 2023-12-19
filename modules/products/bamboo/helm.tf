@@ -51,8 +51,8 @@ resource "helm_release" "bamboo" {
             }
           }
           persistentVolumeClaimRetentionPolicy = {
-            whenDeleted = var.local_home_retain_policy_when_deleted
-            whenScaled = var.local_home_retain_policy_when_scaled
+            whenDeleted = var.local_home_retention_policy_when_deleted
+            whenScaled = var.local_home_retention_policy_when_scaled
           }
         }
         sharedHome = {

@@ -294,22 +294,22 @@ variable "jira_local_home_size" {
   default     = "10Gi"
 }
 
-variable "jira_local_home_retain_policy_when_deleted" {
+variable "jira_local_home_retention_policy_when_deleted" {
   description = "Retention policy for Jira local home when deleted."
   type        = string
   default     = "Delete"
   validation {
-    condition     = var.jira_local_home_retain_policy_when_deleted == null || contains(["Delete", "Retain"], var.jira_local_home_retain_policy_when_deleted)
+    condition     = var.jira_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.jira_local_home_retention_policy_when_deleted)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
 
-variable "jira_local_home_retain_policy_when_scaled" {
+variable "jira_local_home_retention_policy_when_scaled" {
   description = "Retention policy for Jira local home when scaled."
   type        = string
   default     = "Retain"
   validation {
-    condition     = var.jira_local_home_retain_policy_when_scaled == null || contains(["Delete", "Retain"], var.jira_local_home_retain_policy_when_scaled)
+    condition     = var.jira_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.jira_local_home_retention_policy_when_scaled)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
@@ -572,22 +572,22 @@ variable "confluence_local_home_size" {
   default     = "10Gi"
 }
 
-variable "confluence_local_home_retain_policy_when_deleted" {
+variable "confluence_local_home_retention_policy_when_deleted" {
   description = "Retention policy for Confluence local home when deleted."
   type        = string
   default     = "Delete"
   validation {
-    condition     = var.confluence_local_home_retain_policy_when_deleted == null || contains(["Delete", "Retain"], var.confluence_local_home_retain_policy_when_deleted)
+    condition     = var.confluence_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.confluence_local_home_retention_policy_when_deleted)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
 
-variable "confluence_local_home_retain_policy_when_scaled" {
+variable "confluence_local_home_retention_policy_when_scaled" {
   description = "Retention policy for Confluence local home when scaled."
   type        = string
   default     = "Retain"
   validation {
-    condition     = var.confluence_local_home_retain_policy_when_scaled == null || contains(["Delete", "Retain"], var.confluence_local_home_retain_policy_when_scaled)
+    condition     = var.confluence_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.confluence_local_home_retention_policy_when_scaled)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
@@ -840,22 +840,22 @@ variable "bitbucket_local_home_size" {
   default     = "10Gi"
 }
 
-variable "bitbucket_local_home_retain_policy_when_deleted" {
+variable "bitbucket_local_home_retention_policy_when_deleted" {
   description = "Retention policy for Bitbucket local home when deleted."
   type        = string
   default     = "Delete"
   validation {
-    condition     = var.bitbucket_local_home_retain_policy_when_deleted == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retain_policy_when_deleted)
+    condition     = var.bitbucket_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retention_policy_when_deleted)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
 
-variable "bitbucket_local_home_retain_policy_when_scaled" {
+variable "bitbucket_local_home_retention_policy_when_scaled" {
   description = "Retention policy for Bitbucket local home when scaled."
   type        = string
   default     = "Retain"
   validation {
-    condition     = var.bitbucket_local_home_retain_policy_when_scaled == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retain_policy_when_scaled)
+    condition     = var.bitbucket_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retention_policy_when_scaled)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
@@ -1104,22 +1104,22 @@ variable "bamboo_local_home_size" {
   default     = "10Gi"
 }
 
-variable "bamboo_local_home_retain_policy_when_deleted" {
+variable "bamboo_local_home_retention_policy_when_deleted" {
   description = "Retention policy for Bamboo local home when deleted."
   type        = string
   default     = "Delete"
   validation {
-    condition     = var.bamboo_local_home_retain_policy_when_deleted == null || contains(["Delete", "Retain"], var.bamboo_local_home_retain_policy_when_deleted)
+    condition     = var.bamboo_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.bamboo_local_home_retention_policy_when_deleted)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
 
-variable "bamboo_local_home_retain_policy_when_scaled" {
+variable "bamboo_local_home_retention_policy_when_scaled" {
   description = "Retention policy for Bamboo local home when scaled."
   type        = string
   default     = "Retain"
   validation {
-    condition     = var.bamboo_local_home_retain_policy_when_scaled == null || contains(["Delete", "Retain"], var.bamboo_local_home_retain_policy_when_scaled)
+    condition     = var.bamboo_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.bamboo_local_home_retention_policy_when_scaled)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
@@ -1317,22 +1317,22 @@ variable "crowd_local_home_size" {
   default     = "10Gi"
 }
 
-variable "crowd_local_home_retain_policy_when_deleted" {
+variable "crowd_local_home_retention_policy_when_deleted" {
   description = "Retention policy for Crowd local home when deleted."
   type        = string
   default     = "Delete"
   validation {
-    condition     = var.crowd_local_home_retain_policy_when_deleted == null || contains(["Delete", "Retain"], var.crowd_local_home_retain_policy_when_deleted)
+    condition     = var.crowd_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.crowd_local_home_retention_policy_when_deleted)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }
 
-variable "crowd_local_home_retain_policy_when_scaled" {
+variable "crowd_local_home_retention_policy_when_scaled" {
   description = "Retention policy for Crowd local home when scaled."
   type        = string
   default     = "Retain"
   validation {
-    condition     = var.crowd_local_home_retain_policy_when_scaled == null || contains(["Delete", "Retain"], var.crowd_local_home_retain_policy_when_scaled)
+    condition     = var.crowd_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.crowd_local_home_retention_policy_when_scaled)
     error_message = "Invalid retention policy. Expected values are: Delete, Retain."
   }
 }

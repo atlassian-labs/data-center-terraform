@@ -230,6 +230,10 @@ jira_reserved_code_cache = "512m"
 jira_local_home_size  = "10Gi"
 jira_shared_home_size = "10Gi"
 
+# Retention policy of dynamically created local home PVC, either 'Delete' or 'Retain'
+#jira_local_home_retention_policy_when_deleted = "Delete"
+#jira_local_home_retention_policy_when_scaled  = "Retain"
+
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
 # Documentation can be found via:
@@ -315,6 +319,10 @@ synchrony_stack_size = "2048k"
 # Storage
 confluence_local_home_size  = "10Gi"
 confluence_shared_home_size = "10Gi"
+
+# Retention policy of dynamically created local home PVC, either 'Delete' or 'Retain'
+#confluence_local_home_retention_policy_when_deleted = "Delete"
+#confluence_local_home_retention_policy_when_scaled  = "Retain"
 
 # Confluence NFS instance resource configuration
 #confluence_nfs_requests_cpu    = "<REQUESTS_CPU>"
@@ -426,6 +434,10 @@ bitbucket_max_heap = "512m"
 # Storage
 bitbucket_local_home_size  = "10Gi"
 bitbucket_shared_home_size = "10Gi"
+
+# Retention policy of dynamically created local home PVC, either 'Delete' or 'Retain'
+#bitbucket_local_home_retention_policy_when_deleted = "Delete"
+#bitbucket_local_home_retention_policy_when_scaled  = "Retain"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.
@@ -539,6 +551,10 @@ bamboo_agent_mem = "256m"
 bamboo_local_home_size  = "10Gi"
 bamboo_shared_home_size = "10Gi"
 
+# Retention policy of dynamically created local home PVC, either 'Delete' or 'Retain'
+#bamboo_local_home_retention_policy_when_deleted = "Delete"
+#bamboo_local_home_retention_policy_when_scaled  = "Retain"
+
 # Bamboo NFS instance resource configuration
 #bamboo_nfs_requests_cpu    = "<REQUESTS_CPU>"
 #bamboo_nfs_requests_memory = "<REQUESTS_MEMORY>"
@@ -603,6 +619,10 @@ crowd_max_heap = "512m"
 # Storage
 crowd_local_home_size  = "10Gi"
 crowd_shared_home_size = "10Gi"
+
+# Retention policy of dynamically created local home PVC, either 'Delete' or 'Retain'
+#crowd_local_home_retention_policy_when_deleted = "Delete"
+#crowd_local_home_retention_policy_when_scaled  = "Retain"
 
 # Crowd NFS instance resource configuration
 #crowd_nfs_requests_cpu    = "<REQUESTS_CPU>"
