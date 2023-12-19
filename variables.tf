@@ -24,11 +24,11 @@ variable "environment_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  default     = 1.25
+  default     = 1.28
   type        = number
   validation {
-    condition     = can(regex("^1\\.2[1-5]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.21 to 1.24."
+    condition     = can(regex("^1\\.2[7-8]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.28."
   }
 }
 
@@ -294,6 +294,26 @@ variable "jira_local_home_size" {
   default     = "10Gi"
 }
 
+variable "jira_local_home_retention_policy_when_deleted" {
+  description = "Retention policy for Jira local home when deleted."
+  type        = string
+  default     = "Delete"
+  validation {
+    condition     = var.jira_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.jira_local_home_retention_policy_when_deleted)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
+variable "jira_local_home_retention_policy_when_scaled" {
+  description = "Retention policy for Jira local home when scaled."
+  type        = string
+  default     = "Retain"
+  validation {
+    condition     = var.jira_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.jira_local_home_retention_policy_when_scaled)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
 variable "jira_db_major_engine_version" {
   description = "The database major version to use for Jira."
   default     = "14"
@@ -552,6 +572,26 @@ variable "confluence_local_home_size" {
   default     = "10Gi"
 }
 
+variable "confluence_local_home_retention_policy_when_deleted" {
+  description = "Retention policy for Confluence local home when deleted."
+  type        = string
+  default     = "Delete"
+  validation {
+    condition     = var.confluence_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.confluence_local_home_retention_policy_when_deleted)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
+variable "confluence_local_home_retention_policy_when_scaled" {
+  description = "Retention policy for Confluence local home when scaled."
+  type        = string
+  default     = "Retain"
+  validation {
+    condition     = var.confluence_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.confluence_local_home_retention_policy_when_scaled)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
 variable "confluence_db_major_engine_version" {
   description = "The database major version to use for Confluence."
   type        = string
@@ -800,6 +840,26 @@ variable "bitbucket_local_home_size" {
   default     = "10Gi"
 }
 
+variable "bitbucket_local_home_retention_policy_when_deleted" {
+  description = "Retention policy for Bitbucket local home when deleted."
+  type        = string
+  default     = "Delete"
+  validation {
+    condition     = var.bitbucket_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retention_policy_when_deleted)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
+variable "bitbucket_local_home_retention_policy_when_scaled" {
+  description = "Retention policy for Bitbucket local home when scaled."
+  type        = string
+  default     = "Retain"
+  validation {
+    condition     = var.bitbucket_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.bitbucket_local_home_retention_policy_when_scaled)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
 variable "bitbucket_shared_home_size" {
   description = "Storage size for Bitbucket shared home"
   type        = string
@@ -1044,6 +1104,26 @@ variable "bamboo_local_home_size" {
   default     = "10Gi"
 }
 
+variable "bamboo_local_home_retention_policy_when_deleted" {
+  description = "Retention policy for Bamboo local home when deleted."
+  type        = string
+  default     = "Delete"
+  validation {
+    condition     = var.bamboo_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.bamboo_local_home_retention_policy_when_deleted)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
+variable "bamboo_local_home_retention_policy_when_scaled" {
+  description = "Retention policy for Bamboo local home when scaled."
+  type        = string
+  default     = "Retain"
+  validation {
+    condition     = var.bamboo_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.bamboo_local_home_retention_policy_when_scaled)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
 variable "bamboo_shared_home_size" {
   description = "Storage size for Bamboo shared home"
   type        = string
@@ -1235,6 +1315,26 @@ variable "crowd_local_home_size" {
   description = "Storage size for Crowd local home"
   type        = string
   default     = "10Gi"
+}
+
+variable "crowd_local_home_retention_policy_when_deleted" {
+  description = "Retention policy for Crowd local home when deleted."
+  type        = string
+  default     = "Delete"
+  validation {
+    condition     = var.crowd_local_home_retention_policy_when_deleted == null || contains(["Delete", "Retain"], var.crowd_local_home_retention_policy_when_deleted)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
+}
+
+variable "crowd_local_home_retention_policy_when_scaled" {
+  description = "Retention policy for Crowd local home when scaled."
+  type        = string
+  default     = "Retain"
+  validation {
+    condition     = var.crowd_local_home_retention_policy_when_scaled == null || contains(["Delete", "Retain"], var.crowd_local_home_retention_policy_when_scaled)
+    error_message = "Invalid retention policy. Expected values are: Delete, Retain."
+  }
 }
 
 variable "crowd_db_major_engine_version" {
