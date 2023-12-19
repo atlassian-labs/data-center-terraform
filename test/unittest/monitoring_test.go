@@ -16,7 +16,7 @@ func TestMonitoringEnabled(t *testing.T) {
 	tfOptions := GenerateTFOptions(map[string]interface{}{
 		"region_name":          "us-west-2",
 		"environment_name":     "staging",
-		"eks_version":          "1.21",
+		"eks_version":          "1.28",
 		"tags":                 map[string]string{"key1": "value1", "key2": "value2"},
 		"instance_types":       []string{"t2.micro", "t3.small"},
 		"instance_disk_size":   50,
