@@ -32,25 +32,6 @@ variable "ingress" {
   type    = any
 }
 
-variable "db_major_engine_version" {
-  description = "The Database major version to use."
-  type        = string
-}
-
-variable "db_configuration" {
-  description = "Confluence database spec"
-  type        = map(any)
-  validation {
-    condition = (length(var.db_configuration) == 4 &&
-      alltrue([
-        for o in keys(var.db_configuration) : contains([
-          "db_allocated_storage", "db_instance_class", "db_iops", "db_name"
-        ], o)
-    ]))
-    error_message = "Confluence database configuration is not valid."
-  }
-}
-
 variable "replica_count" {
   description = "Number of Confluence application nodes"
   type        = number
@@ -131,18 +112,6 @@ variable "enable_synchrony" {
 
 variable "db_snapshot_id" {
   description = "Snapshot identifier for RDS."
-  type        = string
-  default     = null
-}
-
-variable "db_master_username" {
-  description = "Master username for the RDS instance."
-  type        = string
-  default     = null
-}
-
-variable "db_master_password" {
-  description = "Master password for the RDS instance."
   type        = string
   default     = null
 }

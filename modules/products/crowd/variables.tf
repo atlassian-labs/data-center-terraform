@@ -32,31 +32,6 @@ variable "ingress" {
   type    = any
 }
 
-variable "db_major_engine_version" {
-  description = "The database major version to use."
-  type        = string
-}
-
-variable "db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  type        = number
-}
-
-variable "db_instance_class" {
-  description = "Instance class of the RDS instance."
-  type        = string
-}
-
-variable "db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  type        = number
-}
-
-variable "db_name" {
-  description = "The default DB name of the DB instance."
-  type        = string
-}
-
 variable "replica_count" {
   description = "Number of crowd application nodes"
   type        = number

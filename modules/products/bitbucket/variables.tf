@@ -32,31 +32,6 @@ variable "ingress" {
   type    = any
 }
 
-variable "db_major_engine_version" {
-  description = "The database major version to use."
-  type        = string
-}
-
-variable "db_allocated_storage" {
-  description = "Allocated storage for database instance in GiB."
-  type        = number
-}
-
-variable "db_instance_class" {
-  description = "Instance class of the RDS instance."
-  type        = string
-}
-
-variable "db_iops" {
-  description = "The requested number of I/O operations per second that the DB instance can support."
-  type        = number
-}
-
-variable "db_name" {
-  description = "The default DB name of the DB instance."
-  type        = string
-}
-
 variable "replica_count" {
   description = "Number of Bitbucket application nodes"
   type        = number
@@ -205,18 +180,6 @@ variable "display_name" {
 
 variable "db_snapshot_id" {
   description = "Snapshot identifier for RDS. The snapshot should be in the same AWS region as the DB instance."
-  type        = string
-  default     = null
-}
-
-variable "db_master_username" {
-  description = "Master username for the RDS instance."
-  type        = string
-  default     = null
-}
-
-variable "db_master_password" {
-  description = "Master password for the RDS instance."
   type        = string
   default     = null
 }

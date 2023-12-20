@@ -67,11 +67,10 @@ var BambooCorrectVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"db_major_engine_version": "13",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -90,12 +89,6 @@ var BambooCorrectVariables = map[string]interface{}{
 		"min_heap":           "256m",
 		"max_heap":           "512m",
 		"custom_values_file": "",
-	},
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "bamboo",
 	},
 	"license":             "dummy_license",
 	"admin_username":      "dummy_admin_username",
@@ -127,11 +120,10 @@ var BambooIncorrectVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"db_major_engine_version": "13",
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -150,13 +142,6 @@ var BambooIncorrectVariables = map[string]interface{}{
 		"min_heap":     "256m",
 		"max_heap":     "512m",
 		"invalid":      "bamboo-configuration",
-	},
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "bamboo",
-		"invalid":              "value",
 	},
 	"license":             "",
 	"admin_username":      "dummy_admin_username",

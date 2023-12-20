@@ -373,17 +373,11 @@ var BitbucketInvalidVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "13",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "dummy_db_name",
-
+	"vpc": VpcDefaultModuleVariable,
 	"admin_configuration": map[string]interface{}{
 		"invalid":             "dummy_admin_username",
 		"admin_password":      "dummy_admin_password",
@@ -435,7 +429,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_endpoint":        "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
@@ -499,16 +493,11 @@ var JiraCorrectVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -530,9 +519,7 @@ var JiraCorrectVariables = map[string]interface{}{
 		"license":             "dummy_license",
 		"custom_values_file":  "",
 	},
-	"db_master_password": "dummy_password",
-	"db_master_username": "dummy_username",
-
+	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
 }
 
@@ -550,16 +537,11 @@ var JiraInvalidVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -579,10 +561,7 @@ var JiraInvalidVariables = map[string]interface{}{
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
 	},
-	"db_master_password": "dummy_password",
-	"db_master_username": "dummy_username",
-	"db_snapshot_id":     "dummy-rds-snapshot-id",
-
+	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
 }
 
@@ -603,16 +582,11 @@ var CrowdCorrectVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -650,16 +624,11 @@ var CrowdInvalidVariables = map[string]interface{}{
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
 		"rds_jdbc_connection": "jdbc://dummy:5432",
-		"rds_db_name":         "dummy-ame",
+		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -677,7 +646,5 @@ var CrowdInvalidVariables = map[string]interface{}{
 		"min_heap": "384m",
 		"max_heap": "786m",
 	},
-	"db_master_password":       "dummy_password",
-	"db_master_username":       "dummy_username",
 	"termination_grace_period": 0,
 }
