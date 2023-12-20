@@ -25,7 +25,7 @@ resource "kubernetes_job" "pre_install" {
   }
   wait_for_completion = true
   timeouts {
-    create = "2m"
-    update = "2m"
+    create = "3m"
+    update = "3m"
   }
 }
