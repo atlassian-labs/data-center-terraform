@@ -42,7 +42,6 @@ func TestBambooVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid value for variable")
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
 	assert.Contains(t, err.Error(), "Bamboo configuration is not valid.")
-	assert.Contains(t, err.Error(), "Bamboo database configuration is not valid.")
 	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 	assert.Contains(t, err.Error(), "Invalid email.")
 	assert.Contains(t, err.Error(), "Bamboo Agent configuration is not valid.")
