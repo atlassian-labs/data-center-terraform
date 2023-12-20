@@ -149,15 +149,3 @@ variable "db_snapshot_build_number" {
   }
 }
 
-variable "db_master_username" {
-  description = "Master username for the RDS instance."
-  type        = string
-  default     = null
-}
-
-
-variable "db_master_password" {
-  description = "Master password for the RDS instance."
-  type        = string
-  default     = null
-}

@@ -3,7 +3,6 @@ resource "kubernetes_job" "pre_install" {
     ignore_changes = all
   }
   count      = var.db_snapshot_id != null ? 1 : 0
-  depends_on = [var.rds]
   metadata {
     name      = "crowd-pre-install"
     namespace = var.namespace
@@ -15,12 +14,12 @@ resource "kubernetes_job" "pre_install" {
         container {
           name    = "update-db"
           image   = "ubuntu"
-          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.db_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -c \"UPDATE cwd_property SET property_value = '${local.crowd_ingress_url}' WHERE property_name = 'base.url';\""]
+          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"UPDATE cwd_property SET property_value = '${local.crowd_ingress_url}' WHERE property_name = 'base.url';\""]
         }
         container {
           name    = "update-cfg-xml"
           image   = "ubuntu"
-          command = ["/bin/bash", "-c", "cd home; apt update; apt install xmlstarlet -y; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='license']\" -v ${var.crowd_configuration["license"]} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.username']\" -v ${var.db_master_username} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.password']\" -v ${var.db_master_password} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.url']\" -v jdbc:postgresql://${var.rds.rds_endpoint}/${local.product_name}?reWriteBatchedInserts=true crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/buildNumber\" -v ${var.db_snapshot_build_number} crowd.cfg.xml;"]
+          command = ["/bin/bash", "-c", "cd home; apt update; apt install xmlstarlet -y; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='license']\" -v ${var.crowd_configuration["license"]} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.username']\" -v ${var.rds.rds_master_username} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.password']\" -v ${var.rds.rds_master_password} crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/properties/property[@name='hibernate.connection.url']\" -v jdbc:postgresql://${var.rds.rds_endpoint}/${local.product_name}?reWriteBatchedInserts=true crowd.cfg.xml; xmlstarlet ed -L -u \"/application-configuration/buildNumber\" -v ${var.db_snapshot_build_number} crowd.cfg.xml;"]
           volume_mount {
             name       = "shared-home"
             mount_path = "/home"

@@ -14,7 +14,7 @@ resource "kubernetes_job" "pre_install" {
         container {
           name    = "pre-install"
           image   = "ubuntu"
-          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.db_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -c \"update app_property SET prop_value = '${local.bitbucket_ingress_url}' WHERE prop_key = 'instance.url'; update app_property set prop_value = '${var.bitbucket_configuration["license"]}' where prop_key = 'license';\""]
+          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"update app_property SET prop_value = '${local.bitbucket_ingress_url}' WHERE prop_key = 'instance.url'; update app_property set prop_value = '${var.bitbucket_configuration["license"]}' where prop_key = 'license';\""]
         }
         restart_policy = "Never"
       }
