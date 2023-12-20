@@ -483,7 +483,8 @@ var JiraCorrectVariables = map[string]interface{}{
 	},
 	"rds": map[string]interface{}{
 		"rds_instance_id":     "dummy-id",
-		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_jdbc_connection": "jdbc://dummy:5432/jira",
+		"rds_endpoint":        "jdbc://dummy:5432",
 		"rds_db_name":         "dummy-name",
 		"rds_master_password": "dummy-password",
 		"rds_master_username": "dummy-username",
