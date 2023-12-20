@@ -45,5 +45,3 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 COPY . /data-center-terraform
 
 WORKDIR /data-center-terraform
-
-RUN curl -s -o license-checker.jar https://license-checker-jar.s3.ap-southeast-2.amazonaws.com/check-license.jar/license-checker-1.0-0-jar-with-dependencies.jar
