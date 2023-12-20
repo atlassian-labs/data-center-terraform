@@ -94,13 +94,6 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"db_major_engine_version": "11",
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "confluence",
-	},
 	"replica_count":        1,
 	"installation_timeout": testTimeout,
 	"confluence_configuration": map[string]interface{}{
@@ -120,8 +113,6 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"stack_size": "1024k",
 	},
 	"enable_synchrony":         false,
-	"db_master_username":       "dummyUsername",
-	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",
 	"termination_grace_period": 0,
 }
