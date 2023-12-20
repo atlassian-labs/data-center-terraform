@@ -444,14 +444,6 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 			"lb_zone_id":      "dummy_zone_id",
 		},
 	},
-	"db_major_engine_version": "11",
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "dummy_db_name",
-		"invalid_db_config":    "extra",
-	},
 	"replica_count":        1,
 	"installation_timeout": invalidTestTimeout,
 	"confluence_configuration": map[string]interface{}{
@@ -471,7 +463,6 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",
-	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "invalid.build.number",
 	"termination_grace_period": 0,
 }
