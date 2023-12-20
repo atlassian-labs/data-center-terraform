@@ -8,6 +8,11 @@ output "private_subnets" {
   description = "VPC private subnets"
 }
 
+output "vpc_cidr_block" {
+  value       = module.vpc.vpc_cidr_block
+  description = "Default CIDR block"
+}
+
 output "private_subnets_cidr_blocks" {
   value       = module.vpc.private_subnets_cidr_blocks
   description = "VPC private subnet CIDR blocks"

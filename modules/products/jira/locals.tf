@@ -14,8 +14,6 @@ locals {
     "reservedCodeCache" : var.jira_configuration["reserved_code_cache"]
   }
 
-  rds_instance_id = format("atlas-%s-%s-db", var.environment_name, local.product_name)
-
   domain_supplied          = var.ingress.outputs.domain != null ? true : false
   product_domain_name      = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
   ageOfUsableIndexSnapshot = 24 * 365 * 10 # 10 years

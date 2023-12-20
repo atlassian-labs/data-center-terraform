@@ -23,3 +23,4 @@ output "rds_endpoint" {
 output "rds_jdbc_connection" {
   value = local.db_jdbc_connection
 }
+

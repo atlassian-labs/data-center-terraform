@@ -28,21 +28,3 @@ module "nfs" {
   cluster_service_ipv4    = local.nfs_cluster_service_ipv4
 
 }
-
-module "database" {
-  source = "../../AWS/rds"
-
-  product                 = local.product_name
-  rds_instance_identifier = local.rds_instance_name
-  allocated_storage       = var.db_allocated_storage
-  eks                     = var.eks
-  instance_class          = var.db_instance_class
-  iops                    = var.db_iops
-  vpc                     = var.vpc
-  major_engine_version    = var.db_major_engine_version
-  snapshot_identifier     = var.db_snapshot_id
-  db_master_username      = var.db_master_username
-  db_master_password      = var.db_master_password
-  db_name                 = var.db_name
-
-}

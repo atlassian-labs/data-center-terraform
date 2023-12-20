@@ -46,6 +46,23 @@ module "base-infrastructure" {
   start_test_deployment       = var.start_test_deployment
 }
 
+module "database" {
+  source = "./modules/AWS/rds"
+
+  count                   = length(var.products)
+  vpc                     = module.base-infrastructure.vpc
+  product                 = var.products[count.index]
+  rds_instance_identifier = format("atlas-%s-%s-db", var.environment_name, var.products[count.index])
+  allocated_storage       = local.database_settings[var.products[count.index]].db_allocated_storage
+  instance_class          = local.database_settings[var.products[count.index]].db_instance_class
+  iops                    = local.database_settings[var.products[count.index]].db_iops
+  major_engine_version    = local.database_settings[var.products[count.index]].db_major_engine_version
+  snapshot_identifier     = local.rds_snapshots[var.products[count.index]]
+  db_master_username      = local.database_settings[var.products[count.index]].db_master_username
+  db_master_password      = local.database_settings[var.products[count.index]].db_master_password
+  db_name                 = local.database_settings[var.products[count.index]].db_name
+}
+
 module "bamboo" {
   source     = "./modules/products/bamboo"
   count      = local.install_bamboo ? 1 : 0
@@ -55,6 +72,7 @@ module "bamboo" {
   namespace        = module.base-infrastructure.namespace
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "bamboo")]
   ingress          = module.base-infrastructure.ingress
 
   dataset_url = var.bamboo_dataset_url
@@ -63,14 +81,6 @@ module "bamboo" {
   admin_password      = var.bamboo_admin_password
   admin_display_name  = var.bamboo_admin_display_name
   admin_email_address = var.bamboo_admin_email_address
-
-  db_major_engine_version = var.bamboo_db_major_engine_version
-  db_configuration = {
-    db_allocated_storage = var.bamboo_db_allocated_storage
-    db_instance_class    = var.bamboo_db_instance_class
-    db_iops              = var.bamboo_db_iops
-    db_name              = var.bamboo_db_name
-  }
 
   installation_timeout     = var.bamboo_installation_timeout
   termination_grace_period = var.bamboo_termination_grace_period
@@ -116,19 +126,14 @@ module "jira" {
   count      = local.install_jira ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name        = var.environment_name
-  namespace               = module.base-infrastructure.namespace
-  vpc                     = module.base-infrastructure.vpc
-  eks                     = module.base-infrastructure.eks
-  ingress                 = module.base-infrastructure.ingress
-  db_major_engine_version = var.jira_db_major_engine_version
-  db_allocated_storage    = var.jira_db_allocated_storage
-  db_instance_class       = var.jira_db_instance_class
-  db_iops                 = var.jira_db_iops
-  db_name                 = var.jira_db_name
-  db_snapshot_id          = local.jira_rds_snapshot_id
-  db_master_username      = var.jira_db_master_username
-  db_master_password      = var.jira_db_master_password
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "jira")]
+  ingress          = module.base-infrastructure.ingress
+
+  db_snapshot_id = local.jira_rds_snapshot_id
 
   replica_count            = var.jira_replica_count
   installation_timeout     = var.jira_installation_timeout
@@ -173,20 +178,11 @@ module "confluence" {
   region_name      = var.region
   vpc              = module.base-infrastructure.vpc
   eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "confluence")]
   ingress          = module.base-infrastructure.ingress
-
-  db_major_engine_version = var.confluence_db_major_engine_version
-  db_configuration = {
-    db_allocated_storage = var.confluence_db_allocated_storage
-    db_instance_class    = var.confluence_db_instance_class
-    db_iops              = var.confluence_db_iops
-    db_name              = var.confluence_db_name
-  }
 
   db_snapshot_id           = local.confluence_rds_snapshot_id
   db_snapshot_build_number = local.confluence_db_snapshot_build_number
-  db_master_username       = var.confluence_db_master_username
-  db_master_password       = var.confluence_db_master_password
 
   replica_count                     = var.confluence_replica_count
   installation_timeout              = var.confluence_installation_timeout
@@ -234,19 +230,14 @@ module "bitbucket" {
   count      = local.install_bitbucket ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name        = var.environment_name
-  namespace               = module.base-infrastructure.namespace
-  vpc                     = module.base-infrastructure.vpc
-  eks                     = module.base-infrastructure.eks
-  ingress                 = module.base-infrastructure.ingress
-  db_major_engine_version = var.bitbucket_db_major_engine_version
-  db_allocated_storage    = var.bitbucket_db_allocated_storage
-  db_instance_class       = var.bitbucket_db_instance_class
-  db_iops                 = var.bitbucket_db_iops
-  db_name                 = var.bitbucket_db_name
-  db_snapshot_id          = local.bitbucket_rds_snapshot_id
-  db_master_username      = var.bitbucket_db_master_username
-  db_master_password      = var.bitbucket_db_master_password
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "bitbucket")]
+  ingress          = module.base-infrastructure.ingress
+
+  db_snapshot_id = local.bitbucket_rds_snapshot_id
 
   replica_count            = var.bitbucket_replica_count
   installation_timeout     = var.bitbucket_installation_timeout
@@ -300,18 +291,13 @@ module "crowd" {
   count      = local.install_crowd ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name         = var.environment_name
-  namespace                = module.base-infrastructure.namespace
-  vpc                      = module.base-infrastructure.vpc
-  eks                      = module.base-infrastructure.eks
-  ingress                  = module.base-infrastructure.ingress
-  db_major_engine_version  = var.crowd_db_major_engine_version
-  db_allocated_storage     = var.crowd_db_allocated_storage
-  db_instance_class        = var.crowd_db_instance_class
-  db_iops                  = var.crowd_db_iops
-  db_name                  = var.crowd_db_name
-  db_master_username       = var.crowd_db_master_username
-  db_master_password       = var.crowd_db_master_password
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "crowd")]
+  ingress          = module.base-infrastructure.ingress
+
   db_snapshot_id           = local.crowd_rds_snapshot_id
   db_snapshot_build_number = local.crowd_db_snapshot_build_number
 

@@ -23,12 +23,6 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
 	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
-
-	dbModuleKey := "module.database.module.db.module.db_instance.aws_db_instance.this[0]"
-	terraform.RequirePlannedValuesMapKeyExists(t, plan, dbModuleKey)
-	dbModule := plan.ResourcePlannedValuesMap[dbModuleKey]
-	assert.Equal(t, "dummyUsername", dbModule.AttributeValues["username"])
-	assert.Equal(t, "dummyPassword!", dbModule.AttributeValues["password"])
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -39,7 +33,6 @@ func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "Invalid value for variable")
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
-	assert.Contains(t, err.Error(), "Confluence database configuration is not valid.")
 	assert.Contains(t, err.Error(), "Confluence configuration is not valid.")
 	assert.Contains(t, err.Error(), "Invalid build number.")
 	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
@@ -58,7 +51,6 @@ func TestConfluenceVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"namespace\" is not set")
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 	assert.Contains(t, err.Error(), "\"eks\" is not set")
-	assert.Contains(t, err.Error(), "\"db_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"replica_count\" is not set")
 	assert.Contains(t, err.Error(), "\"confluence_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"synchrony_configuration\" is not set")
@@ -77,14 +69,22 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 			"token":                  "dummy-token",
 			"cluster_ca_certificate": "dummy-certificate",
 		},
-		"cluster_security_group": "dummy-sg",
-		"availability_zone":      "dummy-az",
+		"cluster_security_group":    "dummy-sg",
+		"availability_zone":         "dummy-az",
 		"confluence_s3_bucket_name": "dummy-bucket",
 		"confluence_s3_role_arn":    "arn:dummy_arn",
 	},
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_endpoint":        "jdbc://dummy:5432",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
 	"confluence_s3_attachments_storage": true,
 	"region_name":                       "us-east-1",
-	"vpc": VpcDefaultModuleVariable,
+	"vpc":                               VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -93,13 +93,6 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 			"lb_hostname":     "dummy.hostname.com.au",
 			"lb_zone_id":      "dummy_zone_id",
 		},
-	},
-	"db_major_engine_version": "11",
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "confluence",
 	},
 	"replica_count":        1,
 	"installation_timeout": testTimeout,
@@ -120,8 +113,6 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"stack_size": "1024k",
 	},
 	"enable_synchrony":         false,
-	"db_master_username":       "dummyUsername",
-	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "1234",
 	"termination_grace_period": 0,
 }

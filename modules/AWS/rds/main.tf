@@ -10,18 +10,18 @@ module "security_group" {
   vpc_id      = var.vpc.vpc_id
 
   # ingress
-  ingress_with_source_security_group_id = [
+  ingress_with_cidr_blocks = [
     {
-      from_port                = 5432
-      to_port                  = 5432
-      protocol                 = "tcp"
-      description              = "PostgreSQL access from within EKS cluster"
-      source_security_group_id = var.eks.cluster_security_group
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within EKS cluster"
+      cidr_blocks = var.vpc.vpc_cidr_block
     },
   ]
 }
 
-data "aws_db_snapshot" "confluence_db_snapshot" {
+data "aws_db_snapshot" "atlassian_db_snapshot" {
   count                  = var.snapshot_identifier != null ? 1 : 0
   db_snapshot_identifier = var.snapshot_identifier
   most_recent            = true

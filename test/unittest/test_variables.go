@@ -261,7 +261,8 @@ const inputVpcId = "dummy_vpc_id"
 
 var inputSubnets = []interface{}{"subnet1", "subnet2"}
 
-const inputSourceSgId = "dummy-source-sg"
+var vpcCidrBlock = []interface{}{"0.0.0.0/0"}
+
 const inputProduct = "bamboo"
 const inputRdsInstanceId = "dummy-rds-instance-id"
 const inputInstanceClass = "dummy.instance.class"
@@ -281,17 +282,10 @@ var DbValidVariable = map[string]interface{}{
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
 	"db_name":                 dbName,
-	"eks": map[string]interface{}{
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-		"cluster_security_group": inputSourceSgId,
-	},
 	"vpc": map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
+		"vpc_cidr_block":  "0.0.0.0/0",
 	},
 }
 
@@ -302,17 +296,10 @@ var DbVariableWithDBMasterPassword = map[string]interface{}{
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
 	"db_name":                 dbName,
-	"eks": map[string]interface{}{
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-		"cluster_security_group": inputSourceSgId,
-	},
 	"vpc": map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
+		"vpc_cidr_block":  "0.0.0.0/0",
 	},
 	"db_master_password": masterPwd,
 }
@@ -324,16 +311,10 @@ var DbInvalidVariable = map[string]interface{}{
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
 	"db_name":                 dbName,
-	"eks": map[string]interface{}{
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-	},
 	"vpc": map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
+		"vpc_cidr_block":  "0.0.0.0/0",
 	},
 }
 
@@ -343,17 +324,10 @@ var DbVariableWithInvalidDBMasterPassword = map[string]interface{}{
 	"instance_class":          inputInstanceClass,
 	"allocated_storage":       inputAllocatedStorage,
 	"iops":                    inputIops,
-	"eks": map[string]interface{}{
-		"kubernetes_provider_config": map[string]interface{}{
-			"host":                   "dummy-host",
-			"token":                  "dummy-token",
-			"cluster_ca_certificate": "dummy-certificate",
-		},
-		"cluster_security_group": inputSourceSgId,
-	},
 	"vpc": map[string]interface{}{
 		"vpc_id":          inputVpcId,
 		"private_subnets": inputSubnets,
+		"vpc_cidr_block":  "0.0.0.0/0",
 	},
 	"db_master_password": "123@",
 }
@@ -396,13 +370,14 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"cluster_security_group": "dummy-sg",
 		"cluster_size":           2,
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "13",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "dummy_db_name",
-
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"admin_configuration": map[string]interface{}{
 		"invalid":             "dummy_admin_username",
 		"admin_password":      "dummy_admin_password",
@@ -451,6 +426,13 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_endpoint":        "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
 	"confluence_s3_attachments_storage": false,
 	"vpc":                               VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
@@ -461,14 +443,6 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 			"lb_hostname":     "dummy.hostname.com.au",
 			"lb_zone_id":      "dummy_zone_id",
 		},
-	},
-	"db_major_engine_version": "11",
-	"db_configuration": map[string]interface{}{
-		"db_allocated_storage": 5,
-		"db_instance_class":    "dummy_db_instance_class",
-		"db_iops":              1000,
-		"db_name":              "dummy_db_name",
-		"invalid_db_config":    "extra",
 	},
 	"replica_count":        1,
 	"installation_timeout": invalidTestTimeout,
@@ -489,7 +463,6 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	},
 	"enable_synchrony":         false,
 	"db_snapshot_id":           "dummy-snapshot-id",
-	"db_master_password":       "dummyPassword!",
 	"db_snapshot_build_number": "invalid.build.number",
 	"termination_grace_period": 0,
 }
@@ -508,12 +481,15 @@ var JiraCorrectVariables = map[string]interface{}{
 		"cluster_security_group": "dummy-sg",
 		"availability_zone":      "dummy-az",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432/jira",
+		"rds_endpoint":        "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -535,9 +511,7 @@ var JiraCorrectVariables = map[string]interface{}{
 		"license":             "dummy_license",
 		"custom_values_file":  "",
 	},
-	"db_master_password": "dummy_password",
-	"db_master_username": "dummy_username",
-
+	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
 }
 
@@ -552,12 +526,14 @@ var JiraInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -577,10 +553,7 @@ var JiraInvalidVariables = map[string]interface{}{
 		"max_heap":            "786m",
 		"reserved_code_cache": "512m",
 	},
-	"db_master_password": "dummy_password",
-	"db_master_username": "dummy_username",
-	"db_snapshot_id":     "dummy-rds-snapshot-id",
-
+	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
 }
 
@@ -598,12 +571,14 @@ var CrowdCorrectVariables = map[string]interface{}{
 		"cluster_security_group": "dummy-sg",
 		"availability_zone":      "dummy-az",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -638,12 +613,14 @@ var CrowdInvalidVariables = map[string]interface{}{
 		},
 		"cluster_security_group": "dummy-sg",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "12",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "jira",
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"ingress": map[string]interface{}{
 		"outputs": map[string]interface{}{
 			"r53_zone":        "dummy_r53_zone",
@@ -661,7 +638,5 @@ var CrowdInvalidVariables = map[string]interface{}{
 		"min_heap": "384m",
 		"max_heap": "786m",
 	},
-	"db_master_password":       "dummy_password",
-	"db_master_username":       "dummy_username",
 	"termination_grace_period": 0,
 }

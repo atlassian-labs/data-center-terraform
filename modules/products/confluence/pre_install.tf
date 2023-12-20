@@ -3,7 +3,7 @@ resource "kubernetes_job" "pre_install" {
     ignore_changes = all
   }
   count      = var.db_snapshot_id != null ? 1 : 0
-  depends_on = [module.database]
+  depends_on = [module.nfs]
   metadata {
     name      = "confluence-pre-install"
     namespace = var.namespace
@@ -35,7 +35,7 @@ resource "kubernetes_job" "pre_install" {
   }
   wait_for_completion = true
   timeouts {
-    create = "2m"
-    update = "2m"
+    create = "3m"
+    update = "3m"
   }
 }

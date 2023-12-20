@@ -37,11 +37,6 @@ variable "db_name" {
   type    = string
 }
 
-variable "eks" {
-  description = "EKS module that hosts the product."
-  type        = any
-}
-
 variable "vpc" {
   description = "VPC module that hosts the product."
   type        = any

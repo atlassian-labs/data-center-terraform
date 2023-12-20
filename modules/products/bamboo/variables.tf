@@ -22,14 +22,14 @@ variable "eks" {
   type        = any
 }
 
+variable "rds" {
+  description = "RDS module that hosts the product."
+  type        = any
+}
+
 variable "ingress" {
   default = null
   type    = any
-}
-
-variable "db_major_engine_version" {
-  description = "The Database major version to use."
-  type        = string
 }
 
 variable "dataset_url" {
@@ -143,16 +143,6 @@ variable "agent_version_tag" {
   description = "Version tag for Bamboo Agent"
   type        = string
   default     = null
-}
-
-variable "db_configuration" {
-  description = "Bamboo database spec"
-  type        = map(any)
-  validation {
-    condition = (length(var.db_configuration) == 4 &&
-    alltrue([for o in keys(var.db_configuration) : contains(["db_allocated_storage", "db_instance_class", "db_iops", "db_name"], o)]))
-    error_message = "Bamboo database configuration is not valid."
-  }
 }
 
 variable "local_bamboo_chart_path" {

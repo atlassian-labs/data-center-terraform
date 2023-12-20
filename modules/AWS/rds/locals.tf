@@ -23,6 +23,6 @@ locals {
       "14" = "postgres14"
   }, var.major_engine_version, "postgres11")
 
-  db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.confluence_db_snapshot[0].engine_version : null
-  db_snapshot_major_engine_version = var.snapshot_identifier != null ? element(split(".", data.aws_db_snapshot.confluence_db_snapshot[0].engine_version), 0) : null
+  db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.atlassian_db_snapshot[0].engine_version : null
+  db_snapshot_major_engine_version = var.snapshot_identifier != null ? element(split(".", data.aws_db_snapshot.atlassian_db_snapshot[0].engine_version), 0) : null
 }

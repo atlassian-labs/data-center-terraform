@@ -3,15 +3,15 @@ output "product_domain_name" {
 }
 
 output "rds_instance_id" {
-  value = module.database.rds_instance_id
+  value = var.rds.rds_instance_id
 }
 
 output "rds_jdbc_connection" {
-  value = module.database.rds_jdbc_connection
+  value = var.rds.rds_jdbc_connection
 }
 
 output "db_name" {
-  value = module.database.rds_db_name
+  value = var.rds.rds_db_name
 }
 
 output "kubernetes_rds_secret_name" {

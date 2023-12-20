@@ -3,7 +3,7 @@ resource "kubernetes_job" "pre_install" {
     ignore_changes = all
   }
   count      = var.db_snapshot_id != null ? 1 : 0
-  depends_on = [module.database]
+  depends_on = [module.nfs]
   metadata {
     name      = "jira-pre-install"
     namespace = var.namespace
@@ -15,7 +15,7 @@ resource "kubernetes_job" "pre_install" {
         container {
           name    = "pre-install"
           image   = "ubuntu"
-          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.db_master_password} psql postgresql://${module.database.rds_endpoint}/${local.product_name} -U ${var.db_master_username} -Atc \"update propertystring set propertyvalue = '${local.jira_ingress_url}' from propertyentry PE where PE.id=propertystring.id and PE.property_key = 'jira.baseurl'; update productlicense set license = '${var.jira_configuration["license"]}' from (select id from productlicense) as subquery where productlicense.id = subquery.id; \""]
+          command = ["/bin/bash", "-c", "apt update; apt install postgresql-client -y; PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"update propertystring set propertyvalue = '${local.jira_ingress_url}' from propertyentry PE where PE.id=propertystring.id and PE.property_key = 'jira.baseurl'; update productlicense set license = '${var.jira_configuration["license"]}' from (select id from productlicense) as subquery where productlicense.id = subquery.id; \""]
         }
         restart_policy = "Never"
       }
@@ -25,7 +25,7 @@ resource "kubernetes_job" "pre_install" {
   }
   wait_for_completion = true
   timeouts {
-    create = "2m"
-    update = "2m"
+    create = "3m"
+    update = "3m"
   }
 }

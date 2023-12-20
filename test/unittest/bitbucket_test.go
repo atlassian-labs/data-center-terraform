@@ -55,10 +55,6 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"vpc\" is not set")
 	assert.Contains(t, err.Error(), "\"eks\" is not set")
 	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
-	assert.Contains(t, err.Error(), "\"db_major_engine_version\" is not set")
-	assert.Contains(t, err.Error(), "\"db_allocated_storage\" is not set")
-	assert.Contains(t, err.Error(), "\"db_instance_class\" is not set")
-	assert.Contains(t, err.Error(), "\"db_iops\" is not set")
 	assert.Contains(t, err.Error(), "\"bitbucket_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"admin_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"elasticsearch_requests_cpu\" is not set")
@@ -84,12 +80,14 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"cluster_size":           2,
 		"availability_zone":      "dummy-az",
 	},
-	"vpc":                     VpcDefaultModuleVariable,
-	"db_major_engine_version": "13",
-	"db_allocated_storage":    5,
-	"db_instance_class":       "dummy_db_instance_class",
-	"db_iops":                 1000,
-	"db_name":                 "bitbucket",
+	"rds": map[string]interface{}{
+		"rds_instance_id":     "dummy-id",
+		"rds_jdbc_connection": "jdbc://dummy:5432",
+		"rds_db_name":         "dummy-name",
+		"rds_master_password": "dummy-password",
+		"rds_master_username": "dummy-username",
+	},
+	"vpc": VpcDefaultModuleVariable,
 	"admin_configuration": map[string]interface{}{
 		"admin_username":      "dummy_admin_username",
 		"admin_password":      "dummy_admin_password",

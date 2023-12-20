@@ -35,7 +35,7 @@ resource "helm_release" "bamboo" {
       }
       database = {
         type = "postgresql"
-        url  = module.database.rds_jdbc_connection
+        url  = var.rds.rds_jdbc_connection
         credentials = {
           secretName = kubernetes_secret.rds_secret.metadata[0].name
         }

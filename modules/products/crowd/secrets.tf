@@ -8,7 +8,7 @@ resource "kubernetes_secret" "rds_secret" {
   }
 
   data = {
-    username = module.database.rds_master_username
-    password = module.database.rds_master_password
+    username = var.rds.rds_master_username
+    password = var.rds.rds_master_password
   }
 }

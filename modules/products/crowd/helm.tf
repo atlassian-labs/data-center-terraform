@@ -2,7 +2,7 @@
 
 resource "helm_release" "crowd" {
   depends_on = [
-    module.database,
+    var.rds,
     time_sleep.wait_crowd_termination
   ]
   name       = local.product_name
