@@ -23,8 +23,6 @@ locals {
     "mem" : var.synchrony_configuration["mem"]
   }
 
-  rds_instance_name = format("atlas-%s-%s-db", var.environment_name, local.product_name)
-
   domain_supplied     = var.ingress.outputs.domain != null ? true : false
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
 
@@ -97,7 +95,7 @@ locals {
 
 
   # updates base url (in case we are restoring from snapshot)
-  cmd_psql_update    = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\""
+  cmd_psql_update = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\""
 
   # updates license in shared home (in case we are restoring from snapshot)
   cmd_license_update = "sed -i 's|<property name=\"atlassian.license.message\">.*</property>|<property name=\"atlassian.license.message\">${var.confluence_configuration["license"]}</property>|g' /shared-home/confluence.cfg.xml"

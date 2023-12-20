@@ -124,14 +124,14 @@ module "jira" {
   count      = local.install_jira ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name        = var.environment_name
-  namespace               = module.base-infrastructure.namespace
-  vpc                     = module.base-infrastructure.vpc
-  eks                     = module.base-infrastructure.eks
-  rds                     = module.database[index(var.products, "jira")]
-  ingress                 = module.base-infrastructure.ingress
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "jira")]
+  ingress          = module.base-infrastructure.ingress
 
-  db_snapshot_id          = local.jira_rds_snapshot_id
+  db_snapshot_id = local.jira_rds_snapshot_id
 
   replica_count            = var.jira_replica_count
   installation_timeout     = var.jira_installation_timeout
@@ -224,14 +224,14 @@ module "bitbucket" {
   count      = local.install_bitbucket ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name        = var.environment_name
-  namespace               = module.base-infrastructure.namespace
-  vpc                     = module.base-infrastructure.vpc
-  eks                     = module.base-infrastructure.eks
-  rds                     = module.database[index(var.products, "bitbucket")]
-  ingress                 = module.base-infrastructure.ingress
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "bitbucket")]
+  ingress          = module.base-infrastructure.ingress
 
-  db_snapshot_id          = local.bitbucket_rds_snapshot_id
+  db_snapshot_id = local.bitbucket_rds_snapshot_id
 
   replica_count            = var.bitbucket_replica_count
   installation_timeout     = var.bitbucket_installation_timeout
@@ -283,12 +283,12 @@ module "crowd" {
   count      = local.install_crowd ? 1 : 0
   depends_on = [module.base-infrastructure]
 
-  environment_name         = var.environment_name
-  namespace                = module.base-infrastructure.namespace
-  vpc                      = module.base-infrastructure.vpc
-  eks                      = module.base-infrastructure.eks
-  rds                      = module.database[index(var.products, "crowd")]
-  ingress                  = module.base-infrastructure.ingress
+  environment_name = var.environment_name
+  namespace        = module.base-infrastructure.namespace
+  vpc              = module.base-infrastructure.vpc
+  eks              = module.base-infrastructure.eks
+  rds              = module.database[index(var.products, "crowd")]
+  ingress          = module.base-infrastructure.ingress
 
   db_snapshot_id           = local.crowd_rds_snapshot_id
   db_snapshot_build_number = local.crowd_db_snapshot_build_number
