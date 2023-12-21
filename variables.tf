@@ -688,6 +688,12 @@ variable "confluence_shared_home_snapshot_id" {
   default     = null
 }
 
+variable "local_home_snapshot_id" {
+  description = "EBS Snapshot ID with local home content."
+  type        = string
+  default     = null
+}
+
 variable "confluence_dataset_size" {
   description = "The size of the dataset to restore from"
   type        = string

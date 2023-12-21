@@ -174,6 +174,12 @@ variable "shared_home_snapshot_id" {
   default     = null
 }
 
+variable "local_home_snapshot_id" {
+  description = "EBS Snapshot ID with local home content."
+  type        = string
+  default     = null
+}
+
 variable "confluence_s3_attachments_storage" {
   description = "Use S3 as attachment storage"
   type        = bool
