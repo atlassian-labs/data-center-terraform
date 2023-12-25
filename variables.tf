@@ -418,6 +418,16 @@ variable "jira_shared_home_snapshot_id" {
   }
 }
 
+variable "jira_local_home_snapshot_id" {
+  description = "EBS Snapshot ID with local home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.jira_local_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.jira_local_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 variable "jira_install_local_chart" {
   description = "If true installs Jira using local Helm charts located in local_helm_charts_path"
   default     = false
@@ -686,12 +696,20 @@ variable "confluence_shared_home_snapshot_id" {
   description = "EBS Snapshot ID with shared home content."
   type        = string
   default     = null
+  validation {
+    condition     = var.confluence_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.confluence_shared_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
 }
 
-variable "local_home_snapshot_id" {
+variable "confluence_local_home_snapshot_id" {
   description = "EBS Snapshot ID with local home content."
   type        = string
   default     = null
+  validation {
+    condition     = var.confluence_local_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.confluence_local_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
 }
 
 variable "confluence_dataset_size" {

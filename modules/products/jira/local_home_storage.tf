@@ -5,14 +5,14 @@ resource "aws_ebs_volume" "local_home" {
   size              = tonumber(regex("\\d+", var.local_home_size))
   type              = local.storage_class
   tags = {
-    Name = "local-home-confluence-${count.index}"
+    Name = "local-home-jira-${count.index}"
   }
 }
 
 resource "kubernetes_persistent_volume" "local_home" {
   count = var.local_home_snapshot_id != null ? var.replica_count : 0
   metadata {
-    name = "local-home-confluence-${count.index}"
+    name = "local-home-jira-${count.index}"
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -26,7 +26,7 @@ resource "kubernetes_persistent_volume" "local_home" {
       }
     }
     claim_ref {
-      name      = "local-home-confluence-${count.index}"
+      name      = "local-home-jira-${count.index}"
       namespace = var.namespace
     }
   }
@@ -35,7 +35,7 @@ resource "kubernetes_persistent_volume" "local_home" {
 resource "kubernetes_persistent_volume_claim" "local_home" {
   count = var.local_home_snapshot_id != null ? var.replica_count : 0
   metadata {
-    name      = "local-home-confluence-${count.index}"
+    name      = "local-home-jira-${count.index}"
     namespace = var.namespace
   }
   spec {

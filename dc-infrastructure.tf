@@ -163,6 +163,7 @@ module "jira" {
   nfs_limits_memory   = var.jira_nfs_limits_memory
 
   shared_home_snapshot_id = local.jira_ebs_snapshot_id
+  local_home_snapshot_id  = var.jira_local_home_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_jira_chart_path = local.local_jira_chart_path
@@ -220,6 +221,7 @@ module "confluence" {
   nfs_limits_memory   = var.confluence_nfs_limits_memory
 
   shared_home_snapshot_id = local.confluence_ebs_snapshot_id
+  local_home_snapshot_id  = var.confluence_local_home_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
