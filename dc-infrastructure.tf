@@ -171,7 +171,6 @@ module "jira" {
   local_home_size                          = var.jira_local_home_size
   shared_home_size                         = var.jira_shared_home_size
   shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
-  shared_home_snapshot_id                  = local.jira_ebs_snapshot_id
 
   shared_home_snapshot_id = local.jira_ebs_snapshot_id
   local_home_snapshot_id  = var.jira_local_home_snapshot_id
@@ -226,7 +225,6 @@ module "confluence" {
   local_home_size                          = var.confluence_local_home_size
   shared_home_size                         = var.confluence_shared_home_size
   shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
-  shared_home_snapshot_id                  = local.confluence_ebs_snapshot_id
 
   shared_home_snapshot_id = local.confluence_ebs_snapshot_id
   local_home_snapshot_id  = var.confluence_local_home_snapshot_id
