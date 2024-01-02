@@ -2,7 +2,6 @@
 
 resource "helm_release" "crowd" {
   depends_on = [
-    var.rds,
     time_sleep.wait_crowd_termination
   ]
   name       = local.product_name
@@ -55,7 +54,7 @@ resource "helm_release" "crowd" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = module.nfs.nfs_claim_name
+              claimName = var.shared_home_pvc_name
             }
           }
         }
@@ -70,7 +69,6 @@ resource "helm_release" "crowd" {
 # https://github.com/hashicorp/terraform-provider-helm/issues/593
 resource "time_sleep" "wait_crowd_termination" {
   destroy_duration = "${var.termination_grace_period}s"
-  depends_on       = [module.nfs]
 }
 
 data "kubernetes_service" "crowd" {

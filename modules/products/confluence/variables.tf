@@ -138,30 +138,6 @@ variable "db_snapshot_build_number" {
   }
 }
 
-variable "nfs_requests_cpu" {
-  description = "The minimum CPU compute to request for the NFS instance"
-  type        = string
-  default     = "1"
-}
-
-variable "nfs_requests_memory" {
-  description = "The minimum amount of memory to allocate to the NFS instance"
-  type        = string
-  default     = "1Gi"
-}
-
-variable "nfs_limits_cpu" {
-  description = "The maximum CPU compute to allocate to the NFS instance"
-  type        = string
-  default     = "2"
-}
-
-variable "nfs_limits_memory" {
-  description = "The maximum amount of memory to allocate to the NFS instance"
-  type        = string
-  default     = "2Gi"
-}
-
 variable "shared_home_size" {
   description = "The storage capacity to allocate to the NFS"
   type        = string
@@ -181,5 +157,10 @@ variable "confluence_s3_attachments_storage" {
 
 variable "region_name" {
   description = "Name of the AWS region"
+  type        = string
+}
+
+variable "shared_home_pvc_name" {
+  description = "Name of the shared-home PVC"
   type        = string
 }

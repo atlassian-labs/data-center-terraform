@@ -114,6 +114,4 @@ locals {
       }
     }
   }) : yamlencode({})
-
-  nfs_cluster_service_ipv4 = "172.20.2.4"
 }

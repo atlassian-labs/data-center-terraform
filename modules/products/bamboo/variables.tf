@@ -89,30 +89,6 @@ variable "shared_home_size" {
   default     = "10Gi"
 }
 
-variable "nfs_requests_cpu" {
-  description = "The minimum CPU compute to request for the NFS instance"
-  type        = string
-  default     = "1"
-}
-
-variable "nfs_requests_memory" {
-  description = "The minimum amount of memory to allocate to the NFS instance"
-  type        = string
-  default     = "1Gi"
-}
-
-variable "nfs_limits_cpu" {
-  description = "The maximum CPU compute to allocate to the NFS instance"
-  type        = string
-  default     = "2"
-}
-
-variable "nfs_limits_memory" {
-  description = "The maximum amount of memory to allocate to the NFS instance"
-  type        = string
-  default     = "2Gi"
-}
-
 variable "license" {
   description = "License to use for Bamboo"
   type        = string
@@ -188,4 +164,9 @@ variable "admin_email_address" {
     condition     = can(regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", var.admin_email_address))
     error_message = "Invalid email."
   }
+}
+
+variable "shared_home_pvc_name" {
+  description = "Name of the shared-home PVC"
+  type        = string
 }
