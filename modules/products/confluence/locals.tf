@@ -114,4 +114,6 @@ locals {
       }
     }
   }) : yamlencode({})
+
+  storage_class = "gp2"
 }

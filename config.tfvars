@@ -225,6 +225,11 @@ jira_reserved_code_cache = "512m"
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #jira_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
+# To restore a local home dataset, you can provide an EBS snapshot ID that contains the content of the local home volume.
+# This volume will be used to pre-create local home PVC and PV which will significantly improve Jira cold start time.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#jira_local_home_snapshot_id = "<LOCAL_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+
 # Storage
 # initial volume size of local/shared home EBS.
 jira_local_home_size  = "10Gi"
@@ -335,6 +340,11 @@ confluence_shared_home_size = "10Gi"
 # This volume will be mounted to the NFS server and used when the product is started.
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
+
+# To restore a local home dataset, you can provide an EBS snapshot ID that contains the content of the local home volume.
+# This volume will be used to pre-create local home PVC and PV which will significantly improve Confluence cold start time.
+# Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
+#confluence_local_home_snapshot_id = "<LOCAL_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
 # RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
 # You may want to adjust these values according to your needs.

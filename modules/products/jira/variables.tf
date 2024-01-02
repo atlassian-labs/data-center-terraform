@@ -109,6 +109,16 @@ variable "shared_home_snapshot_id" {
   }
 }
 
+variable "local_home_snapshot_id" {
+  description = "EBS Snapshot ID with local home content."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.local_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.local_home_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 variable "image_repository" {
   description = "Jira image repository"
   type        = string
