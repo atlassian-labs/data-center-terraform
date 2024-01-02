@@ -125,7 +125,7 @@ module "bamboo" {
   local_home_retention_policy_when_scaled  = var.bamboo_local_home_retention_policy_when_scaled
   local_home_size                          = var.bamboo_local_home_size
   shared_home_size                         = var.bamboo_shared_home_size
-  shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
+  shared_home_pvc_name                     = module.nfs[index(var.products, "bamboo")].nfs_claim_name
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
@@ -170,7 +170,7 @@ module "jira" {
   local_home_retention_policy_when_scaled  = var.jira_local_home_retention_policy_when_scaled
   local_home_size                          = var.jira_local_home_size
   shared_home_size                         = var.jira_shared_home_size
-  shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
+  shared_home_pvc_name                     = module.nfs[index(var.products, "jira")].nfs_claim_name
 
   shared_home_snapshot_id = local.jira_ebs_snapshot_id
   local_home_snapshot_id  = var.jira_local_home_snapshot_id
@@ -224,7 +224,7 @@ module "confluence" {
   local_home_retention_policy_when_scaled  = var.confluence_local_home_retention_policy_when_scaled
   local_home_size                          = var.confluence_local_home_size
   shared_home_size                         = var.confluence_shared_home_size
-  shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
+  shared_home_pvc_name                     = module.nfs[index(var.products, "confluence")].nfs_claim_name
 
   shared_home_snapshot_id = local.confluence_ebs_snapshot_id
   local_home_snapshot_id  = var.confluence_local_home_snapshot_id
@@ -265,7 +265,7 @@ module "bitbucket" {
   local_home_retention_policy_when_scaled  = var.bitbucket_local_home_retention_policy_when_scaled
   local_home_size                          = var.bitbucket_local_home_size
   shared_home_size                         = var.bitbucket_shared_home_size
-  shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
+  shared_home_pvc_name                     = module.nfs[index(var.products, "bitbucket")].nfs_claim_name
 
   display_name = var.bitbucket_display_name
 
@@ -325,7 +325,7 @@ module "crowd" {
   local_home_retention_policy_when_scaled  = var.crowd_local_home_retention_policy_when_scaled
   local_home_size                          = var.crowd_local_home_size
   shared_home_size                         = var.crowd_shared_home_size
-  shared_home_pvc_name                     = module.nfs[count.index].nfs_claim_name
+  shared_home_pvc_name                     = module.nfs[index(var.products, "crowd")].nfs_claim_name
   shared_home_snapshot_id                  = local.crowd_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
