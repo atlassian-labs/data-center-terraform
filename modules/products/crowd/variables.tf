@@ -140,4 +140,6 @@ variable "db_snapshot_build_number" {
 variable "shared_home_pvc_name" {
   description = "Name of the shared-home PVC"
   type        = string
+  default     = "crowd-shared-home-pvc"
+
 }

@@ -130,4 +130,5 @@ variable "db_snapshot_id" {
 variable "shared_home_pvc_name" {
   description = "Name of the shared-home PVC"
   type        = string
+  default     = "jira-shared-home-pvc"
 }

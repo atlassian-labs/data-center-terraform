@@ -169,4 +169,5 @@ variable "admin_email_address" {
 variable "shared_home_pvc_name" {
   description = "Name of the shared-home PVC"
   type        = string
+  default     = "bamboo-shared-home-pvc"
 }
