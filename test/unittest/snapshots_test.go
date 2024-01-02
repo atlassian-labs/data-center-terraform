@@ -80,7 +80,7 @@ func TestJsmSnapshots(t *testing.T) {
 	plan, _ := terraform.InitAndPlanAndShowWithStructE(t, tfOptions)
 	jsmRdsSnapshot := plan.ResourcePlannedValuesMap["module.database[0].module.db.module.db_instance.aws_db_instance.this[0]"].AttributeValues["snapshot_identifier"]
 	assert.NotNil(t, jsmRdsSnapshot)
-	jsmEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	jsmEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[0].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	assert.NotNil(t, jsmEbsVolumeSnapshot)
 	assert.Equal(t, jiraSnapshots.JsmRds, jsmRdsSnapshot)
 	assert.Equal(t, jiraSnapshots.JsmEbs, jsmEbsVolumeSnapshot)
@@ -156,10 +156,10 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, dcSnapshots.JiraRds, jiraRdsSnapshot)
 
 	// assert ebs snapshot is in ebs_volume aws resource
-	bitbucketEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.bitbucket[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
-	jiraEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
-	confluenceEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
-	crowdEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.crowd[0].module.nfs.aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	jiraEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[0].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	confluenceEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[1].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	bitbucketEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[2].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	crowdEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[3].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 
 	assert.Equal(t, dcSnapshots.BitbucketEbs, bitbucketEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.JiraEbs, jiraEbsVolumeSnapshot)
