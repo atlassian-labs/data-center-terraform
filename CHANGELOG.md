@@ -1,8 +1,23 @@
 # Change Log
 
+## 2.7.0
+
+**Release date:** 2024-01-03
+
+* Read snapshots from a JSON file [#341](https://github.com/atlassian-labs/data-center-terraform/pull/341)
+* Create a test container to run Selenium/stress tests [#345](https://github.com/atlassian-labs/data-center-terraform/pull/345)
+* Update security policy for the https listener in the Nginx LB [#346](https://github.com/atlassian-labs/data-center-terraform/pull/346)
+* Run extensive license checks before starting Terraform [#349](https://github.com/atlassian-labs/data-center-terraform/pull/349)
+* Optimize Terraform plan to decrease deployment time [#351](https://github.com/atlassian-labs/data-center-terraform/pull/351)
+* Automatically clean up PVCs created from volume claim templates [#352](https://github.com/atlassian-labs/data-center-terraform/pull/352)
+* Bump EKS version to 1.28 [#352](https://github.com/atlassian-labs/data-center-terraform/pull/352)
+* Make it possible to restore local home PVs from snapshots [#355](https://github.com/atlassian-labs/data-center-terraform/pull/355)
+* Optimize NFS server deployment to decrease infra creation time and flatten Terraform plan [#356](https://github.com/atlassian-labs/data-center-terraform/pull/356)
+
+
 ## 2.6.0
 
-**Release date:** 2022-08-14
+**Release date:** 2023-08-14
 
 * Add go-to-sleep nodes and external dns [#333](https://github.com/atlassian-labs/data-center-terraform/pull/333)
 * Fix Crowd dependency issues [#334](https://github.com/atlassian-labs/data-center-terraform/pull/334)
@@ -11,7 +26,7 @@
 
 ## 2.5.0
 
-**Release date:** 2022-06-13
+**Release date:** 2023-06-13
 
 * Add Prometheus monitoring stack [#320](https://github.com/atlassian-labs/data-center-terraform/pull/320)
 * Use name prefix when creating launch template [#328](https://github.com/atlassian-labs/data-center-terraform/pull/328)
@@ -20,7 +35,7 @@
 
 ## 2.4.0
 
-**Release date:** 2022-04-04
+**Release date:** 2023-04-04
 
 * Support Crowd DB and EBS snapshot restoration [#317](https://github.com/atlassian-labs/data-center-terraform/pull/317)
 * Update EKS output [#316](https://github.com/atlassian-labs/data-center-terraform/pull/316)
@@ -29,7 +44,7 @@
 
 ## 2.3.1
 
-**Release date:** 2022-02-07
+**Release date:** 2023-02-07
 
 * Fix instance disk size override [#303](https://github.com/atlassian-labs/data-center-terraform/pull/303)
 * Update nfs-server image tag to address performance/stability issues [#305](https://github.com/atlassian-labs/data-center-terraform/pull/305)
@@ -37,7 +52,7 @@
 
 ## 2.3.0
 
-**Release date:** 2022-01-13
+**Release date:** 2023-01-13
 
 * Read engine_version from snapshot. Support Postgres 14 [#297](https://github.com/atlassian-labs/data-center-terraform/pull/297)
 
