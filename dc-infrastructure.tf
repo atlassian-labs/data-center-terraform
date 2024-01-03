@@ -63,10 +63,28 @@ module "database" {
   db_name                 = local.database_settings[var.products[count.index]].db_name
 }
 
+module "nfs" {
+  source = "./modules/AWS/nfs"
+
+  depends_on              = [module.base-infrastructure.namespace]
+  count                   = length(var.products)
+  namespace               = local.namespace
+  product                 = var.products[count.index]
+  requests_cpu            = local.nfs_server_settings[var.products[count.index]].nfs_requests_cpu
+  requests_memory         = local.nfs_server_settings[var.products[count.index]].nfs_requests_memory
+  limits_cpu              = local.nfs_server_settings[var.products[count.index]].nfs_limits_cpu
+  limits_memory           = local.nfs_server_settings[var.products[count.index]].nfs_limits_memory
+  availability_zone       = module.base-infrastructure.eks.availability_zone
+  shared_home_snapshot_id = local.nfs_server_settings[var.products[count.index]].shared_home_snapshot_id
+  shared_home_size        = local.nfs_server_settings[var.products[count.index]].shared_home_size
+  cluster_service_ipv4    = local.nfs_server_settings[var.products[count.index]].cluster_service_ipv4
+}
+
+
 module "bamboo" {
   source     = "./modules/products/bamboo"
   count      = local.install_bamboo ? 1 : 0
-  depends_on = [module.base-infrastructure]
+  depends_on = [module.nfs, module.base-infrastructure]
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
@@ -107,11 +125,7 @@ module "bamboo" {
   local_home_retention_policy_when_scaled  = var.bamboo_local_home_retention_policy_when_scaled
   local_home_size                          = var.bamboo_local_home_size
   shared_home_size                         = var.bamboo_shared_home_size
-
-  nfs_requests_cpu    = var.bamboo_nfs_requests_cpu
-  nfs_requests_memory = var.bamboo_nfs_requests_memory
-  nfs_limits_cpu      = var.bamboo_nfs_limits_cpu
-  nfs_limits_memory   = var.bamboo_nfs_limits_memory
+  shared_home_pvc_name                     = module.nfs[index(var.products, "bamboo")].nfs_claim_name
 
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
@@ -124,7 +138,7 @@ module "bamboo" {
 module "jira" {
   source     = "./modules/products/jira"
   count      = local.install_jira ? 1 : 0
-  depends_on = [module.base-infrastructure]
+  depends_on = [module.nfs, module.base-infrastructure]
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
@@ -156,11 +170,7 @@ module "jira" {
   local_home_retention_policy_when_scaled  = var.jira_local_home_retention_policy_when_scaled
   local_home_size                          = var.jira_local_home_size
   shared_home_size                         = var.jira_shared_home_size
-
-  nfs_requests_cpu    = var.jira_nfs_requests_cpu
-  nfs_requests_memory = var.jira_nfs_requests_memory
-  nfs_limits_cpu      = var.jira_nfs_limits_cpu
-  nfs_limits_memory   = var.jira_nfs_limits_memory
+  shared_home_pvc_name                     = module.nfs[index(var.products, "jira")].nfs_claim_name
 
   shared_home_snapshot_id = local.jira_ebs_snapshot_id
   local_home_snapshot_id  = var.jira_local_home_snapshot_id
@@ -172,7 +182,7 @@ module "jira" {
 module "confluence" {
   source     = "./modules/products/confluence"
   count      = local.install_confluence ? 1 : 0
-  depends_on = [module.base-infrastructure]
+  depends_on = [module.nfs, module.base-infrastructure]
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
@@ -214,11 +224,7 @@ module "confluence" {
   local_home_retention_policy_when_scaled  = var.confluence_local_home_retention_policy_when_scaled
   local_home_size                          = var.confluence_local_home_size
   shared_home_size                         = var.confluence_shared_home_size
-
-  nfs_requests_cpu    = var.confluence_nfs_requests_cpu
-  nfs_requests_memory = var.confluence_nfs_requests_memory
-  nfs_limits_cpu      = var.confluence_nfs_limits_cpu
-  nfs_limits_memory   = var.confluence_nfs_limits_memory
+  shared_home_pvc_name                     = module.nfs[index(var.products, "confluence")].nfs_claim_name
 
   shared_home_snapshot_id = local.confluence_ebs_snapshot_id
   local_home_snapshot_id  = var.confluence_local_home_snapshot_id
@@ -230,7 +236,7 @@ module "confluence" {
 module "bitbucket" {
   source     = "./modules/products/bitbucket"
   count      = local.install_bitbucket ? 1 : 0
-  depends_on = [module.base-infrastructure]
+  depends_on = [module.nfs, module.base-infrastructure]
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
@@ -259,6 +265,7 @@ module "bitbucket" {
   local_home_retention_policy_when_scaled  = var.bitbucket_local_home_retention_policy_when_scaled
   local_home_size                          = var.bitbucket_local_home_size
   shared_home_size                         = var.bitbucket_shared_home_size
+  shared_home_pvc_name                     = module.nfs[index(var.products, "bitbucket")].nfs_claim_name
 
   display_name = var.bitbucket_display_name
 
@@ -269,11 +276,6 @@ module "bitbucket" {
     admin_email_address = var.bitbucket_admin_email_address
   }
   version_tag = var.bitbucket_version_tag
-
-  nfs_requests_cpu    = var.bitbucket_nfs_requests_cpu
-  nfs_requests_memory = var.bitbucket_nfs_requests_memory
-  nfs_limits_cpu      = var.bitbucket_nfs_limits_cpu
-  nfs_limits_memory   = var.bitbucket_nfs_limits_memory
 
   elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
   elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
@@ -291,7 +293,7 @@ module "bitbucket" {
 module "crowd" {
   source     = "./modules/products/crowd"
   count      = local.install_crowd ? 1 : 0
-  depends_on = [module.base-infrastructure]
+  depends_on = [module.nfs, module.base-infrastructure]
 
   environment_name = var.environment_name
   namespace        = module.base-infrastructure.namespace
@@ -323,13 +325,8 @@ module "crowd" {
   local_home_retention_policy_when_scaled  = var.crowd_local_home_retention_policy_when_scaled
   local_home_size                          = var.crowd_local_home_size
   shared_home_size                         = var.crowd_shared_home_size
-
-  nfs_requests_cpu    = var.crowd_nfs_requests_cpu
-  nfs_requests_memory = var.crowd_nfs_requests_memory
-  nfs_limits_cpu      = var.crowd_nfs_limits_cpu
-  nfs_limits_memory   = var.crowd_nfs_limits_memory
-
-  shared_home_snapshot_id = local.crowd_ebs_snapshot_id
+  shared_home_pvc_name                     = module.nfs[index(var.products, "crowd")].nfs_claim_name
+  shared_home_snapshot_id                  = local.crowd_ebs_snapshot_id
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_crowd_chart_path = local.local_crowd_chart_path

@@ -31,7 +31,7 @@ resource "kubernetes_job" "import_dataset" {
         volume {
           name = "shared-home"
           persistent_volume_claim {
-            claim_name = module.nfs.nfs_claim_name
+            claim_name = var.shared_home_pvc_name
           }
         }
       }

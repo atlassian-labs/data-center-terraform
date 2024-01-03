@@ -61,6 +61,54 @@ locals {
     }
   }
 
+  nfs_server_settings = {
+    jira = {
+      nfs_requests_cpu        = var.jira_nfs_requests_cpu
+      nfs_requests_memory     = var.jira_nfs_requests_memory
+      nfs_limits_cpu          = var.jira_nfs_limits_cpu
+      nfs_limits_memory       = var.jira_nfs_limits_memory
+      shared_home_size        = var.jira_shared_home_size
+      shared_home_snapshot_id = local.jira_ebs_snapshot_id
+      cluster_service_ipv4    = "172.20.2.5"
+    }
+    confluence = {
+      nfs_requests_cpu        = var.confluence_nfs_requests_cpu
+      nfs_requests_memory     = var.confluence_nfs_requests_memory
+      nfs_limits_cpu          = var.confluence_nfs_limits_cpu
+      nfs_limits_memory       = var.confluence_nfs_limits_memory
+      shared_home_size        = var.confluence_shared_home_size
+      shared_home_snapshot_id = local.confluence_ebs_snapshot_id
+      cluster_service_ipv4    = "172.20.2.4"
+    }
+    bitbucket = {
+      nfs_requests_cpu        = var.bitbucket_nfs_requests_cpu
+      nfs_requests_memory     = var.bitbucket_nfs_requests_memory
+      nfs_limits_cpu          = var.bitbucket_nfs_limits_cpu
+      nfs_limits_memory       = var.bitbucket_nfs_limits_memory
+      shared_home_size        = var.bitbucket_shared_home_size
+      shared_home_snapshot_id = local.bitbucket_ebs_snapshot_id
+      cluster_service_ipv4    = "172.20.2.3"
+    }
+    bamboo = {
+      nfs_requests_cpu        = var.bamboo_nfs_requests_cpu
+      nfs_requests_memory     = var.bamboo_nfs_requests_memory
+      nfs_limits_cpu          = var.bamboo_nfs_limits_cpu
+      nfs_limits_memory       = var.bamboo_nfs_limits_memory
+      shared_home_size        = var.bamboo_shared_home_size
+      shared_home_snapshot_id = null
+      cluster_service_ipv4    = "172.20.2.2"
+    }
+    crowd = {
+      nfs_requests_cpu        = var.crowd_nfs_requests_cpu
+      nfs_requests_memory     = var.crowd_nfs_requests_memory
+      nfs_limits_cpu          = var.crowd_nfs_limits_cpu
+      nfs_limits_memory       = var.crowd_nfs_limits_memory
+      shared_home_size        = var.crowd_shared_home_size
+      shared_home_snapshot_id = local.crowd_ebs_snapshot_id
+      cluster_service_ipv4    = "172.20.2.6"
+    }
+  }
+
   # If Bitbucket is the only product to install then we don't need to create shared home
   shared_home_size = length(var.products) == 0 || (local.install_bitbucket && length(var.products) == 1) ? null : "5Gi"
 

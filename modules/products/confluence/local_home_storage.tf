@@ -1,7 +1,7 @@
 data "aws_ebs_snapshot" "local_home_snapshot" {
-  count = var.local_home_snapshot_id != null ? var.replica_count : 0
-  snapshot_ids           = [var.local_home_snapshot_id]
-  most_recent            = true
+  count        = var.local_home_snapshot_id != null ? var.replica_count : 0
+  snapshot_ids = [var.local_home_snapshot_id]
+  most_recent  = true
 }
 
 resource "aws_ebs_volume" "local_home" {

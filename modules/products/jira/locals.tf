@@ -56,7 +56,5 @@ locals {
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
-  nfs_cluster_service_ipv4 = "172.20.2.5"
-
   storage_class = "gp2"
 }

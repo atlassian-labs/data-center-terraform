@@ -2,8 +2,7 @@ resource "kubernetes_job" "pre_install" {
   lifecycle {
     ignore_changes = all
   }
-  count      = var.db_snapshot_id != null ? 1 : 0
-  depends_on = [module.nfs]
+  count = var.db_snapshot_id != null ? 1 : 0
   metadata {
     name      = "confluence-pre-install"
     namespace = var.namespace
@@ -25,7 +24,7 @@ resource "kubernetes_job" "pre_install" {
         volume {
           name = "nfs-shared-home"
           persistent_volume_claim {
-            claim_name = module.nfs.nfs_claim_name
+            claim_name = var.shared_home_pvc_name
           }
         }
       }

@@ -2,8 +2,7 @@ resource "kubernetes_job" "pre_install" {
   lifecycle {
     ignore_changes = all
   }
-  count      = var.db_snapshot_id != null ? 1 : 0
-  depends_on = [module.nfs]
+  count = var.db_snapshot_id != null ? 1 : 0
   metadata {
     name      = "jira-pre-install"
     namespace = var.namespace

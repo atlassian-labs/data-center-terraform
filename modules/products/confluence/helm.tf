@@ -79,7 +79,7 @@ resource "helm_release" "confluence" {
         sharedHome = {
           customVolume = {
             persistentVolumeClaim = {
-              claimName = module.nfs.nfs_claim_name
+              claimName = var.shared_home_pvc_name
             }
           }
         }
@@ -99,7 +99,6 @@ resource "helm_release" "confluence" {
 # https://github.com/hashicorp/terraform-provider-helm/issues/593
 resource "time_sleep" "wait_confluence_termination" {
   destroy_duration = "${var.termination_grace_period}s"
-  depends_on       = [module.nfs]
 }
 
 
