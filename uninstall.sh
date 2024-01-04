@@ -132,7 +132,7 @@ destroy_infrastructure() {
     set -e
     log "Failed to remove '${ENVIRONMENT_NAME}' infrastructure." "ERROR"
     log "Attempting to force terminate environment" "ERROR"
-    python3 <(curl -s https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/retry-in-cleanup-script/app/util/k8s/terminate_cluster.py) \
+    python3 <(curl -s https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/terminate_cluster.py) \
             --cluster_name atlas-${ENVIRONMENT_NAME}-cluster \
             --aws_region ${REGION}
   fi
