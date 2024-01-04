@@ -112,6 +112,9 @@ pre_flight_checks() {
 
   if [ "${SKIP_LICENSE_TEST_FLAG}" == "" ]; then
     for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
+      # when config.tfvars has been edited in Windows, it may contain carriage returns `\r`
+      # which breaks the below code, so let's sanitize PRODUCT variable 
+      PRODUCT=$(echo ${PRODUCT} | sed 's/\r$//')
       log "Checking ${PRODUCT} license"
       LICENSE_ENV_VAR=${PRODUCT}'_license'
       LICENSE_TEXT=$(get_variable ${LICENSE_ENV_VAR} "${CONFIG_ABS_PATH}")
