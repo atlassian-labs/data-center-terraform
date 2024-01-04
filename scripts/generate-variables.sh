@@ -53,11 +53,13 @@ set_variables() {
   fi
 
   # Generates the unique s3 bucket and key names for the deployment to keep the terraform state
-  S3_BUCKET="atlassian-data-center-${REGION}-${AWS_ACCOUNT_ID}-tf-state"
+  MAX_LENGTH=63
+  S3_BUCKET="atl-dc-${ENVIRONMENT_NAME}-${REGION}-${AWS_ACCOUNT_ID}-tfstate"
+  S3_BUCKET=${S3_BUCKET:0:MAX_LENGTH}
   BUCKET_KEY="${ENVIRONMENT_NAME}"
 
   # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
-  DYNAMODB_TABLE="atlassian_data_center_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
+  DYNAMODB_TABLE="atl_dc_${ENVIRONMENT_NAME//-/_}_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
 
   BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
   TFSTATE_LOCALS="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"

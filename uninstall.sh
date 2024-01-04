@@ -78,7 +78,8 @@ process_arguments() {
   fi
 
   ENVIRONMENT_NAME=$(get_variable 'environment_name' ${CONFIG_ABS_PATH})
-  
+  REGION=$(get_variable 'region' ${CONFIG_ABS_PATH})
+
   if [ "${SKIP_REFRESH}" ]; then
     SKIP_REFRESH="-refresh=false"
   fi
@@ -126,12 +127,15 @@ destroy_infrastructure() {
   set +e
   terraform -chdir="${ROOT_PATH}" destroy -auto-approve ${SKIP_REFRESH} -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   if [ $? -eq 0 ]; then
-    set -e
+    log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
   else
+    set -e
     log "Failed to remove '${ENVIRONMENT_NAME}' infrastructure." "ERROR"
-    exit 1
+    log "Attempting to force terminate environment" "ERROR"
+    python3 <(curl -s https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/terminate_cluster.py) \
+            --cluster_name atlas-${ENVIRONMENT_NAME}-cluster \
+            --aws_region ${REGION}
   fi
-  log "'${ENVIRONMENT_NAME}' infrastructure was removed successfully."
 }
 
 destroy_tfstate() {
