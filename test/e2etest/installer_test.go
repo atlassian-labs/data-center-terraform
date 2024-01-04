@@ -76,7 +76,7 @@ func runInstallScript(configPath string) {
 func runUninstallScript(configPath string) {
 	cmd := &exec.Cmd{
 		Path:   "uninstall.sh",
-		Args:   []string{"uninstall.sh", "-c", configPath, "-f"},
+		Args:   []string{"uninstall.sh", "-c", configPath, "-f", "-t"},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 		Dir:    "../../",
