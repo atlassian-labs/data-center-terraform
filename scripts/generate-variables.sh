@@ -60,7 +60,6 @@ set_variables() {
 
   # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
   DYNAMODB_TABLE="atl_dc_${ENVIRONMENT_NAME//-/_}_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
-  DYNAMODB_TABLE=${DYNAMODB_TABLE:0:MAX_LENGTH}
 
   BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
   TFSTATE_LOCALS="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
