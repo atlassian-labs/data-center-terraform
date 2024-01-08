@@ -15,13 +15,15 @@ The uninstallation script is located in the root folder of the project directory
 Usage:
 
 ```shell
-./uninstall.sh [-t] [-c <config.tfvars>]
+./uninstall.sh [-c <config_file>] [-h] [-f] [-s]"
 ```
 
 The following options are available:
 
-- `-t` - Delete Terraform state files for all installed environment in the same region using the same AWS account.
 - `-c <config_file_path>` - Pass a custom configuration file to uninstall the environment provisioned by it.
+- `-f` - skip manual confirmation of the environment deletion."
+- `-s` - skip refresh when running terraform destroy"
+- `-h` - provides help to how executing this script."
 
 !!!info "Uninstallation using default and custom configuration files"
 
@@ -36,22 +38,4 @@ The following options are available:
     ```shell
     ./uninstall.sh -c my-custom-config.tfvars
     ```
-
-### Removing Terraform state files
-
-We create an AWS S3 bucket and DynamoDB table to store the Terraform state of the environments for each region. Without the state information, Terraform cannot maintain the infrastructure.
-All environments installed in the same region share one S3 bucket to store the state files.  
-By default, the uninstall script does not remove Terraform state files.  
-
-!!! warning "Remove Terraform state files only if you confirm there is no other installed environment in the same region."
-    If you have installed multiple environments using the same AWS account in the same region, you need to make sure all those environments are uninstalled before removing terraform state.
-    
-    After deleting the state files, **Terraform cannot manage the installed environments**.
-    
-If you have **no other environment installed in the same region**, you may want to remove the Terraform state files permanently. 
-To remove Terraform state files permanently and delete AWS S3 bucket and DynamoDB, run the uninstallation script with the `-t` switch:
-
-```shell 
-./uninstall.sh -t -c <config_file_path>
-```
 

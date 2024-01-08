@@ -140,11 +140,6 @@ destroy_infrastructure() {
 }
 
 destroy_tfstate() {
-  # Check if the user passed '-s' parameter to skip removing tfstate
-  if [ "${SKIP_CLEAN_TFSTATE}" ]; then
-    log "'-t' flag is provided. Terraform state will not be deleted" "INFO"
-    return
-  fi
   echo
   log "Attempting to remove terraform backend."
   echo
