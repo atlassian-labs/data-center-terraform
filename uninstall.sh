@@ -29,7 +29,7 @@ EOF
   echo
   echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t] [-f] [-s]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
-  echo "   -t : skip cleaning up the terraform state S3 bucket permanently."
+  echo "   -t : DEPRECATED. Skip cleaning up the terraform state S3 bucket permanently."
   echo "   -f : skip manual confirmation of the environment deletion."
   echo "   -s : skip refresh when running terraform destroy"
   echo "   -h : provides help to how executing this script."
