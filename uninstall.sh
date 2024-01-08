@@ -22,15 +22,16 @@ show_help(){
 cat << EOF
 ** WARNING **
 This script destroys the infrastructure for Atlassian Data Center products in AWS environment. You may lose all application data.
-The infrastructure will be removed by terraform. Also the terraform state could be removed if you use switch `-t` in uninstall command.
+The infrastructure will be removed by terraform. Terraform state will be deleted as well.
 EOF
 
   fi
   echo
-  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t]"
+  echo "Usage:  ./uninstall.sh [-c <config_file>] [-h] [-t] [-f] [-s]"
   echo "   -c <config_file>: Terraform configuration file. The default value is 'config.tfvars' if the argument is not provided."
-  echo "   -t : Cleaning up the terraform state S3 bucket permanently."
-  echo "        Use this option only when there is no other environment installed in the region."
+  echo "   -t : DEPRECATED. Skip cleaning up the terraform state S3 bucket permanently."
+  echo "   -f : skip manual confirmation of the environment deletion."
+  echo "   -s : skip refresh when running terraform destroy"
   echo "   -h : provides help to how executing this script."
   echo
   exit 2
@@ -39,16 +40,16 @@ EOF
 # Extract arguments
   CONFIG_FILE=
   HELP_FLAG=
-  CLEAN_TFSTATE=
+  SKIP_CLEAN_TFSTATE=
   FORCE_FLAG=
   SKIP_REFRESH=
   while getopts thfs?c: name ; do
       case $name in
-      t)  CLEAN_TFSTATE=1;;            # Cleaning terraform state
+      t)  SKIP_CLEAN_TFSTATE=1;;      # Skip cleaning terraform state
       h)  HELP_FLAG=1; show_help;;    # Help
-      c)  CONFIG_FILE="${OPTARG}";;       # Config file name to install - this overrides the default, 'config.tfvars'
-      f)  FORCE_FLAG="-f";;         # Force uninstall - Auto-approve
-      s)  SKIP_REFRESH="-s";;
+      c)  CONFIG_FILE="${OPTARG}";;   # Config file name to install - this overrides the default, 'config.tfvars'
+      f)  FORCE_FLAG="-f";;           # Force uninstall - Auto-approve
+      s)  SKIP_REFRESH="-s";;         # Skip refreshing state when running terraform destroy
       ?)  log "Invalid arguments." "ERROR"; show_help
       esac
   done
@@ -139,10 +140,6 @@ destroy_infrastructure() {
 }
 
 destroy_tfstate() {
-  # Check if the user passed '-s' parameter to skip removing tfstate
-  if [ -z "${CLEAN_TFSTATE}" ]; then
-    return
-  fi
   echo
   log "Attempting to remove terraform backend."
   echo
