@@ -22,7 +22,7 @@ show_help(){
 cat << EOF
 ** WARNING **
 This script destroys the infrastructure for Atlassian Data Center products in AWS environment. You may lose all application data.
-The infrastructure will be removed by terraform. Also the terraform state deletion could be skipped if you use switch `-t` in uninstall command.
+The infrastructure will be removed by terraform. Terraform state will be deleted as well.
 EOF
 
   fi
