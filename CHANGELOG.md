@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.7.1
+
+**Release date:** 2024-01-09
+
+* Force delete environment if terraform destroy failed [#358](https://github.com/atlassian-labs/data-center-terraform/pull/358)
+* sanitize product variable to get rid of Windows style line endings [#359](https://github.com/atlassian-labs/data-center-terraform/pull/359)
+* always delete terraform state [#360](https://github.com/atlassian-labs/data-center-terraform/pull/360)
+
 ## 2.7.0
 
 **Release date:** 2024-01-03
