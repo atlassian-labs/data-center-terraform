@@ -113,7 +113,7 @@ pre_flight_checks() {
   if [ "${SKIP_LICENSE_TEST_FLAG}" == "" ]; then
     for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
       # when config.tfvars has been edited in Windows, it may contain carriage returns `\r`
-      # which breaks the below code, so let's sanitize PRODUCT variable 
+      # which breaks the below code, so let's sanitize PRODUCT variable
       PRODUCT=$(echo ${PRODUCT} | sed 's/\r$//')
       log "Checking ${PRODUCT} license"
       LICENSE_ENV_VAR=${PRODUCT}'_license'
@@ -328,7 +328,18 @@ create_update_infrastructure() {
     terraform -chdir="${ROOT_PATH}" init -migrate-state -no-color | tee -a "${LOG_FILE}"
     terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
   fi
+  set +e
   terraform -chdir="${ROOT_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  if [ $? -ne 0 ]; then
+    log "Terraform exited with a non zero code" "ERROR"
+      if test -e "${SCRIPT_PATH}/collect_k8s_logs.sh"; then
+        log "Collecting detailed logs" "ERROR"
+        ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
+        REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+        ./scripts/collect_k8s_logs.sh atlas-${ENVIRONMENT_NAME}-cluster ${REGION} logs/k8s_logs
+      fi
+    exit 1
+  fi
   terraform -chdir="${ROOT_PATH}" output -json > outputs.json
 }
 
