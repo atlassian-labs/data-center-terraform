@@ -336,7 +336,7 @@ create_update_infrastructure() {
         log "Collecting detailed logs" "ERROR"
         ENVIRONMENT_NAME=$(get_variable 'environment_name' "${CONFIG_ABS_PATH}")
         REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
-        ./scripts/collect_k8s_logs.sh atlas-${ENVIRONMENT_NAME}-cluster ${REGION} logs/k8s_logs
+        ./scripts/collect_k8s_logs.sh atlas-${ENVIRONMENT_NAME}-cluster ${REGION} logs/k8s_logs_$(date '+%Y-%m-%d_%H-%M-%S')
       fi
     exit 1
   fi
