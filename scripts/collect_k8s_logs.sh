@@ -91,7 +91,7 @@ ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --filters "Name=tag:eks:
 if [ -z "${ASG_NAME}" ]; then
   echo "[WARNING]: Failed to get ASG name for ${CLUSTER_NAME} cluster"
 else
-  aws autoscaling describe-scaling-activities --auto-scaling-group-name "${ASG_NAME}" --region "${AWS_REGION}" --max-items 10
+  aws autoscaling describe-scaling-activities --auto-scaling-group-name "${ASG_NAME}" --region "${AWS_REGION}" --max-items 10 > "${DEBUG_FOLDER}"/asg_events.log 2>&1
 fi
 
 echo "[INFO]: Logs and events saved to ${DEBUG_FOLDER}"
