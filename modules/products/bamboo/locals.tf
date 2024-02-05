@@ -39,18 +39,6 @@ locals {
     }
   })
 
-  # TODO: Once TFKUBE-384 has been merged and released this variable can be removed.
-  additional_environment_settings = !local.domain_supplied ? yamlencode({
-    bamboo = {
-      additionalEnvironmentVariables = [
-        {
-          name  = "ATL_BASE_URL"
-          value = "http://${var.ingress.outputs.lb_hostname}/${local.product_name}"
-        }
-      ]
-    }
-  }) : yamlencode({})
-
   context_path_settings = !local.domain_supplied ? yamlencode({
     bamboo = {
       service = {
