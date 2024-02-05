@@ -64,7 +64,6 @@ resource "helm_release" "bamboo" {
         }
       }
     }),
-    local.additional_environment_settings,
     local.ingress_settings,
     local.context_path_settings,
     local.license_settings,
