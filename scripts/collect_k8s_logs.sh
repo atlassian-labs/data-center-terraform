@@ -83,11 +83,11 @@ kubectl describe nodes > "${DEBUG_FOLDER}"/nodes.log 2>&1
 
 echo "[INFO]: Getting AWS CPU resource quota"
 
-aws service-quotas get-service-quota --service-code ec2 --quota-code L-1216C47A | jq .Quota.Value > "${DEBUG_FOLDER}"/aws_cpu_quotas.log 2>&1
+aws service-quotas get-service-quota --region "${AWS_REGION}" --service-code ec2 --quota-code L-1216C47A | jq .Quota.Value > "${DEBUG_FOLDER}"/aws_cpu_quotas.log 2>&1
 
 echo "[INFO]: Getting EKS ASG activity events"
 
-ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --region "${AWS_REGION}" --filters "Name=tag:eks:cluster-name,Values=${CLUSTER_NAME}" --query "AutoScalingGroups[*].AutoScalingGroupName" --region "${AWS_REGION}" | jq -r .[])
+ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --filters "Name=tag:eks:cluster-name,Values=${CLUSTER_NAME}" --query "AutoScalingGroups[*].AutoScalingGroupName" --region "${AWS_REGION}" | jq -r .[])
 if [ -z "${ASG_NAME}" ]; then
   echo "[WARNING]: Failed to get ASG name for ${CLUSTER_NAME} cluster"
 else
