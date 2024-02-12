@@ -136,6 +136,7 @@ destroy_infrastructure() {
     python3 <(curl -s https://raw.githubusercontent.com/atlassian/dc-app-performance-toolkit/master/app/util/k8s/terminate_cluster.py) \
             --cluster_name atlas-${ENVIRONMENT_NAME}-cluster \
             --aws_region ${REGION}
+    exit 0
   fi
 }
 
