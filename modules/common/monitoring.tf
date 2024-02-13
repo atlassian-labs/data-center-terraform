@@ -11,7 +11,7 @@ resource "helm_release" "prometheus_monitoring_stack" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
-  version    = "45.21.0"
+  version    = "56.6.2"
   timeout    = 600 # it takes a while to install this Helm chart
   namespace  = kubernetes_namespace.monitoring[count.index].metadata[0].name
 
