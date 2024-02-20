@@ -41,6 +41,7 @@ resource "helm_release" "jira" {
           }
         }
         additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot, local.dcapt_analytics_property)
+        additionalEnvironmentVariables = var.local_home_snapshot_id != null ? [{name = "ATL_FORCE_CFG_UPDATE", value: "true" }] : null
       }
       database = {
         type   = "postgres72"
