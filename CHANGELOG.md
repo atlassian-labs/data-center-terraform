@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.7.2
+
+**Release date:** 2024-02-21
+
+* Upgrade kube-prom-stack to 56.6.2 [#367](https://github.com/atlassian-labs/data-center-terraform/pull/367)
+* Bump RDS minor version to 13.13 [#366](https://github.com/atlassian-labs/data-center-terraform/pull/366)
+* Upgrade EKS to 1.29 [#365](https://github.com/atlassian-labs/data-center-terraform/pull/365)
+* Exit 0 if force uninstall has been successful [#364](https://github.com/atlassian-labs/data-center-terraform/pull/364)
+* Update collect_k8s_logs.sh with region for describe-auto-scaling-groups [#363](https://github.com/atlassian-labs/data-center-terraform/pull/363)
+* Cleaned up Bamboo additional environment variable - ATL_BASE_URL [#362](https://github.com/atlassian-labs/data-center-terraform/pull/362)
+* Install and log collection script improvements [#361](https://github.com/atlassian-labs/data-center-terraform/pull/361)
+
 ## 2.7.1
 
 **Release date:** 2024-01-09
