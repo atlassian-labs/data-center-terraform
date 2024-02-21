@@ -138,11 +138,13 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, dcSnapshots.BitbucketRds, plan.RawPlan.PlannedValues.Outputs["bitbucket_rds_snapshot"].Value)
 
 	assert.Equal(t, dcSnapshots.JiraEbs, plan.RawPlan.PlannedValues.Outputs["jira_ebs_snapshot"].Value)
-	assert.Equal(t, dcSnapshots.JiraEbsLocal, plan.RawPlan.PlannedValues.Outputs["jira_local_home_snapshot"].Value)
+	// uncomment after local home snapshots are publicly available. Update dcapt-snapshot.json
+	//assert.Equal(t, dcSnapshots.JiraEbsLocal, plan.RawPlan.PlannedValues.Outputs["jira_local_home_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.JiraRds, plan.RawPlan.PlannedValues.Outputs["jira_rds_snapshot"].Value)
 
 	assert.Equal(t, dcSnapshots.ConfluenceEbs, plan.RawPlan.PlannedValues.Outputs["confluence_ebs_snapshot"].Value)
-	assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, plan.RawPlan.PlannedValues.Outputs["confluence_local_home_snapshot"].Value)
+	// uncomment after local home snapshots are publicly available. Update dcapt-snapshot.json
+	//assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, plan.RawPlan.PlannedValues.Outputs["confluence_local_home_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.ConfluenceRds, plan.RawPlan.PlannedValues.Outputs["confluence_rds_snapshot"].Value)
 	assert.Equal(t, "8804", plan.RawPlan.PlannedValues.Outputs["confluence_db_snapshot_build_number"].Value)
 
@@ -166,13 +168,17 @@ func TestSnapshotsFromJson(t *testing.T) {
 	confluenceEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[1].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	bitbucketEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[2].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	crowdEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[3].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
-	jiraEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
-	confluenceEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
+
+	// uncomment after local home snapshots are publicly available. Update dcapt-snapshot.json
+	//jiraEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
+	//confluenceEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
 
 	assert.Equal(t, dcSnapshots.BitbucketEbs, bitbucketEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.JiraEbs, jiraEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.ConfluenceEbs, confluenceEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.CrowdEbs, crowdEbsVolumeSnapshot)
-	assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, confluenceEbsLocalSnapshot)
-	assert.Equal(t, dcSnapshots.JiraEbsLocal, jiraEbsLocalSnapshot)
+
+	// uncomment after local home snapshots are publicly available. Update dcapt-snapshot.json
+	//assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, confluenceEbsLocalSnapshot)
+	//assert.Equal(t, dcSnapshots.JiraEbsLocal, jiraEbsLocalSnapshot)
 }
