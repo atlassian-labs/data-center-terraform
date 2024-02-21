@@ -120,12 +120,20 @@ output "jira_ebs_snapshot" {
   value = local.jira_ebs_snapshot_id
 }
 
+output "jira_local_home_snapshot" {
+  value = local.jira_local_home_snapshot_id
+}
+
 output "confluence_rds_snapshot" {
   value = local.confluence_rds_snapshot_id
 }
 
 output "confluence_ebs_snapshot" {
   value = local.confluence_ebs_snapshot_id
+}
+
+output "confluence_local_home_snapshot" {
+  value = local.confluence_local_home_snapshot_id
 }
 
 output "confluence_db_snapshot_build_number" {

@@ -10,16 +10,18 @@ import (
 )
 
 type DCSnapshots struct {
-	JiraEbs       string
-	JiraRds       string
-	JsmEbs        string
-	JsmRds        string
-	ConfluenceEbs string
-	ConfluenceRds string
-	BitbucketEbs  string
-	BitbucketRds  string
-	CrowdEbs      string
-	CrowdRds      string
+	JiraEbs            string
+	JiraEbsLocal       string
+	JiraRds            string
+	JsmEbs             string
+	JsmRds             string
+	ConfluenceEbs      string
+	ConfluenceEbsLocal string
+	ConfluenceRds      string
+	BitbucketEbs       string
+	BitbucketRds       string
+	CrowdEbs           string
+	CrowdRds           string
 }
 
 var vars = map[string]interface{}{
@@ -90,14 +92,16 @@ func TestSnapshotsFromJson(t *testing.T) {
 
 	// rather than parse the ../dcapt-snapshots.json, snap ids are copied from it
 	dcSnapshots := DCSnapshots{
-		JiraEbs:       "snap-084e99e384dcfbe31",
-		JiraRds:       "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-10",
-		ConfluenceEbs: "snap-00f5e8147604a017e",
-		ConfluenceRds: "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14",
-		BitbucketEbs:  "snap-0d4bbe0cf3056c0ee",
-		BitbucketRds:  "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16",
-		CrowdEbs:      "snap-0a8e229690be9ae30",
-		CrowdRds:      "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4",
+		JiraEbs:            "snap-084e99e384dcfbe31",
+		JiraEbsLocal:       "snap-0dab2d7af5181534e",
+		JiraRds:            "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-jira-9-4-10",
+		ConfluenceEbs:      "snap-00f5e8147604a017e",
+		ConfluenceEbsLocal: "snap-0d2c9acae3ddb764e",
+		ConfluenceRds:      "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-confluence-7-19-14",
+		BitbucketEbs:       "snap-0d4bbe0cf3056c0ee",
+		BitbucketRds:       "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-bitbucket-7-21-16",
+		CrowdEbs:           "snap-0a8e229690be9ae30",
+		CrowdRds:           "arn:aws:rds:us-east-2:585036043680:snapshot:dcapt-crowd-5-1-4",
 	}
 
 	vars := vars
@@ -134,9 +138,11 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, dcSnapshots.BitbucketRds, plan.RawPlan.PlannedValues.Outputs["bitbucket_rds_snapshot"].Value)
 
 	assert.Equal(t, dcSnapshots.JiraEbs, plan.RawPlan.PlannedValues.Outputs["jira_ebs_snapshot"].Value)
+	assert.Equal(t, dcSnapshots.JiraEbsLocal, plan.RawPlan.PlannedValues.Outputs["jira_local_home_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.JiraRds, plan.RawPlan.PlannedValues.Outputs["jira_rds_snapshot"].Value)
 
 	assert.Equal(t, dcSnapshots.ConfluenceEbs, plan.RawPlan.PlannedValues.Outputs["confluence_ebs_snapshot"].Value)
+	assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, plan.RawPlan.PlannedValues.Outputs["confluence_local_home_snapshot"].Value)
 	assert.Equal(t, dcSnapshots.ConfluenceRds, plan.RawPlan.PlannedValues.Outputs["confluence_rds_snapshot"].Value)
 	assert.Equal(t, "8804", plan.RawPlan.PlannedValues.Outputs["confluence_db_snapshot_build_number"].Value)
 
@@ -155,14 +161,18 @@ func TestSnapshotsFromJson(t *testing.T) {
 	assert.Equal(t, dcSnapshots.CrowdRds, crowdRdsSnapshot)
 	assert.Equal(t, dcSnapshots.JiraRds, jiraRdsSnapshot)
 
-	// assert ebs snapshot is in ebs_volume aws resource
+	// assert ebs and local home snapshots are in ebs_volume aws resources
 	jiraEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[0].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	confluenceEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[1].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	bitbucketEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[2].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
 	crowdEbsVolumeSnapshot := plan.ResourcePlannedValuesMap["module.nfs[3].aws_ebs_volume.shared_home"].AttributeValues["snapshot_id"]
+	jiraEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.jira[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
+	confluenceEbsLocalSnapshot := plan.ResourcePlannedValuesMap["module.confluence[0].aws_ebs_volume.local_home[0]"].AttributeValues["snapshot_id"]
 
 	assert.Equal(t, dcSnapshots.BitbucketEbs, bitbucketEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.JiraEbs, jiraEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.ConfluenceEbs, confluenceEbsVolumeSnapshot)
 	assert.Equal(t, dcSnapshots.CrowdEbs, crowdEbsVolumeSnapshot)
+	assert.Equal(t, dcSnapshots.ConfluenceEbsLocal, confluenceEbsLocalSnapshot)
+	assert.Equal(t, dcSnapshots.JiraEbsLocal, jiraEbsLocalSnapshot)
 }
