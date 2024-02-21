@@ -155,6 +155,11 @@ locals {
     snapshot.type == "ebs" && snapshot.size == var.confluence_dataset_size && snapshot.version == var.confluence_version_tag ? snapshot.snapshots[0][var.region] : ""
   ] : []
 
+  confluence_local_home_snapshot = local.snapshots_json != null ? [
+    for snapshot in local.filtered_confluence_snapshots :
+    snapshot.type == "local-home" && snapshot.size == var.confluence_dataset_size && snapshot.version == var.confluence_version_tag ? snapshot.snapshots[0][var.region] : ""
+  ] : []
+
   confluence_build_numbers = local.snapshots_json != null ? flatten([
     for version in local.snapshots_json.confluence.versions :
     version.version == var.confluence_version_tag ? version.build_number : ""
@@ -201,6 +206,11 @@ locals {
     snapshot.type == "ebs" && snapshot.size == var.jira_dataset_size && snapshot.version == var.jira_version_tag ? snapshot.snapshots[0][var.region] : ""
   ] : []
 
+  jira_local_home_snapshot = local.snapshots_json != null ? [
+    for snapshot in local.filtered_jira_snapshots :
+    snapshot.type == "local-home" && snapshot.size == var.jira_dataset_size && snapshot.version == var.jira_version_tag ? snapshot.snapshots[0][var.region] : ""
+  ] : []
+
   rds_snapshots = {
     bitbucket  = length(compact(local.bitbucket_rds_snapshot)) > 0 ? compact(local.bitbucket_rds_snapshot)[0] : var.bitbucket_db_snapshot_id != null ? var.bitbucket_db_snapshot_id : null
     confluence = length(compact(local.confluence_rds_snapshot)) > 0 ? compact(local.confluence_rds_snapshot)[0] : var.confluence_db_snapshot_id != null ? var.confluence_db_snapshot_id : null
@@ -211,9 +221,11 @@ locals {
 
   jira_rds_snapshot_id = length(compact(local.jira_rds_snapshot)) > 0 ? compact(local.jira_rds_snapshot)[0] : var.jira_db_snapshot_id != null ? var.jira_db_snapshot_id : null
   jira_ebs_snapshot_id = length(compact(local.jira_ebs_snapshot)) > 0 ? compact(local.jira_ebs_snapshot)[0] : var.jira_shared_home_snapshot_id != null ? var.jira_shared_home_snapshot_id : null
-
+  jira_local_home_snapshot_id = length(compact(local.jira_local_home_snapshot)) > 0 ? compact(local.jira_local_home_snapshot)[0] : var.jira_local_home_snapshot_id != null ? var.jira_local_home_snapshot_id : null
+  
   confluence_rds_snapshot_id          = length(compact(local.confluence_rds_snapshot)) > 0 ? compact(local.confluence_rds_snapshot)[0] : var.confluence_db_snapshot_id != null ? var.confluence_db_snapshot_id : null
   confluence_ebs_snapshot_id          = length(compact(local.confluence_ebs_snapshot)) > 0 ? compact(local.confluence_ebs_snapshot)[0] : var.confluence_shared_home_snapshot_id != null ? var.confluence_shared_home_snapshot_id : null
+  confluence_local_home_snapshot_id = length(compact(local.confluence_local_home_snapshot)) > 0 ? compact(local.confluence_local_home_snapshot)[0] : var.confluence_local_home_snapshot_id != null ? var.confluence_local_home_snapshot_id : null
   confluence_db_snapshot_build_number = length(compact(local.confluence_build_numbers)) > 0 ? compact(local.confluence_build_numbers)[0] : var.confluence_db_snapshot_build_number != null ? var.confluence_db_snapshot_build_number : null
 
   crowd_rds_snapshot_id          = length(compact(local.crowd_rds_snapshot)) > 0 ? compact(local.crowd_rds_snapshot)[0] : var.crowd_db_snapshot_id != null ? var.crowd_db_snapshot_id : null
