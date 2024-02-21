@@ -38,6 +38,7 @@ resource "helm_release" "confluence" {
           }
         }
         additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties)
+        additionalEnvironmentVariables = var.local_home_snapshot_id != null ? [{name = "ATL_FORCE_CFG_UPDATE", value: "true" }] : null
       }
       synchrony = {
         resources = {
