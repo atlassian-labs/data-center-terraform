@@ -41,6 +41,7 @@ resource "helm_release" "jira" {
           }
         }
         additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot, local.dcapt_analytics_property)
+        additionalEnvironmentVariables = var.local_home_snapshot_id != null ? [{name = "ATL_FORCE_CFG_UPDATE", value: "true" }] : null
       }
       database = {
         type   = "postgres72"
@@ -56,7 +57,7 @@ resource "helm_release" "jira" {
             create = true
             resources = {
               requests = {
-                storage = var.local_home_snapshot_id != null ? "${data.aws_ebs_snapshot.local_home_snapshot[1].volume_size}Gi" : var.local_home_size
+                storage = var.local_home_snapshot_id != null ? "${data.aws_ebs_snapshot.local_home_snapshot[0].volume_size}Gi" : var.local_home_size
               }
             }
           }
