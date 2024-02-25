@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.7.3
+
+**Release date:** 2024-02-26
+
+* Fix restore from a local home snapshot [#369](https://github.com/atlassian-labs/data-center-terraform/pull/369)
+
 ## 2.7.2
 
 **Release date:** 2024-02-21
