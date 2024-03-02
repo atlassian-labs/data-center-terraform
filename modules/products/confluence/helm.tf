@@ -84,6 +84,11 @@ resource "helm_release" "confluence" {
           }
         }
       }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
+        }
+      }
     }),
     local.ingress_settings,
     local.context_path_settings,
@@ -92,11 +97,6 @@ resource "helm_release" "confluence" {
     local.version_tag,
     local.db_restore_env_vars,
     local.service_account_annotations,
-    atlassianAnalyticsAndSupport = {
-      analytics = {
-        enabled = false
-      }
-    },
   ]
 }
 
