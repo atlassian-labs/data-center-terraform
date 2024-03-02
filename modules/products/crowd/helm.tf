@@ -62,6 +62,11 @@ resource "helm_release" "crowd" {
     }),
     local.ingress_settings,
     local.version_tag,
+    atlassianAnalyticsAndSupport = {
+      analytics = {
+        enabled = false,
+      }
+    },
   ]
 }
 

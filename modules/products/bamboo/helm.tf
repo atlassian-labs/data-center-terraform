@@ -72,6 +72,11 @@ resource "helm_release" "bamboo" {
     local.security_token_setting,
     local.dataset_settings,
     local.version_tag,
+    atlassianAnalyticsAndSupport = {
+      analytics = {
+        enabled = false,
+      }
+    },
   ]
 }
 
