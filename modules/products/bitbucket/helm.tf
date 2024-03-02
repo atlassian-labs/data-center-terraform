@@ -70,6 +70,11 @@ resource "helm_release" "bitbucket" {
           }
         }
       }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
+        }
+      }
     }),
     local.ingress_settings,
     local.context_path_settings,
@@ -77,11 +82,6 @@ resource "helm_release" "bitbucket" {
     local.admin_settings,
     local.version_tag,
     local.display_name,
-    atlassianAnalyticsAndSupport = {
-      analytics = {
-        enabled = false
-      }
-    },
   ]
 }
 

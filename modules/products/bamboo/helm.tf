@@ -63,6 +63,11 @@ resource "helm_release" "bamboo" {
           }
         }
       }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
+        }
+      }
     }),
     local.ingress_settings,
     local.context_path_settings,
@@ -72,11 +77,6 @@ resource "helm_release" "bamboo" {
     local.security_token_setting,
     local.dataset_settings,
     local.version_tag,
-    atlassianAnalyticsAndSupport = {
-      analytics = {
-        enabled = false
-      }
-    },
   ]
 }
 
