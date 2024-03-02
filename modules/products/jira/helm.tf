@@ -80,7 +80,7 @@ resource "helm_release" "jira" {
     local.version_tag,
     atlassianAnalyticsAndSupport = {
       analytics = {
-        enabled = false,
+        enabled = false
       }
     },
   ]

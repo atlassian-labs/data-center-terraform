@@ -79,7 +79,7 @@ resource "helm_release" "bitbucket" {
     local.display_name,
     atlassianAnalyticsAndSupport = {
       analytics = {
-        enabled = false,
+        enabled = false
       }
     },
   ]

@@ -64,7 +64,7 @@ resource "helm_release" "crowd" {
     local.version_tag,
     atlassianAnalyticsAndSupport = {
       analytics = {
-        enabled = false,
+        enabled = false
       }
     },
   ]

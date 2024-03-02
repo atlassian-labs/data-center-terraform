@@ -94,7 +94,7 @@ resource "helm_release" "confluence" {
     local.service_account_annotations,
     atlassianAnalyticsAndSupport = {
       analytics = {
-        enabled = false,
+        enabled = false
       }
     },
   ]

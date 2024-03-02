@@ -74,7 +74,7 @@ resource "helm_release" "bamboo" {
     local.version_tag,
     atlassianAnalyticsAndSupport = {
       analytics = {
-        enabled = false,
+        enabled = false
       }
     },
   ]
