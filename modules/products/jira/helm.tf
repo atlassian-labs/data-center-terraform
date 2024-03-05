@@ -74,6 +74,11 @@ resource "helm_release" "jira" {
           }
         }
       }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
+        }
+      }
     }),
     local.ingress_settings,
     local.context_path_settings,
