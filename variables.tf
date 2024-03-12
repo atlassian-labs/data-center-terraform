@@ -444,6 +444,12 @@ variable "jira_dataset_size" {
   }
 }
 
+variable "jira_additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  default     = []
+  type        = list(string)
+}
+
 ################################################################################
 # Confluence variables
 ################################################################################
@@ -722,6 +728,12 @@ variable "confluence_dataset_size" {
   }
 }
 
+variable "confluence_additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  default     = []
+  type        = list(string)
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
@@ -998,6 +1010,12 @@ variable "bitbucket_dataset_size" {
   }
 }
 
+variable "bitbucket_additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  default     = []
+  type        = list(string)
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################
@@ -1219,6 +1237,14 @@ variable "bamboo_dataset_url" {
   default     = null
   type        = string
 }
+
+variable "bamboo_additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  default     = []
+  type        = list(string)
+}
+
+### OSQUERY settings
 
 variable "osquery_fleet_enrollment_secret_name" {
   type        = string
@@ -1461,6 +1487,12 @@ variable "crowd_shared_home_snapshot_id" {
     condition     = var.crowd_shared_home_snapshot_id == null || can(regex("^snap-\\w{17}$", var.crowd_shared_home_snapshot_id))
     error_message = "Provide correct EBS snapshot ID."
   }
+}
+
+variable "crowd_additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  default     = []
+  type        = list(string)
 }
 
 variable "crowd_install_local_chart" {

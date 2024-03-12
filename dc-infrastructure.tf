@@ -130,6 +130,8 @@ module "bamboo" {
   version_tag       = var.bamboo_version_tag
   agent_version_tag = var.bamboo_agent_version_tag
 
+  additional_jvm_args = var.bamboo_additional_jvm_args
+
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bamboo_chart_path = local.local_bamboo_chart_path
   local_agent_chart_path  = local.local_agent_chart_path
@@ -166,6 +168,8 @@ module "jira" {
   image_repository = var.jira_image_repository
   version_tag      = var.jira_version_tag
 
+  additional_jvm_args = var.jira_additional_jvm_args
+
   local_home_retention_policy_when_deleted = var.jira_local_home_retention_policy_when_deleted
   local_home_retention_policy_when_scaled  = var.jira_local_home_retention_policy_when_scaled
   local_home_size                          = var.jira_local_home_size
@@ -201,6 +205,8 @@ module "confluence" {
   enable_synchrony                  = var.confluence_collaborative_editing_enabled
   termination_grace_period          = var.confluence_termination_grace_period
   confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
+
+  additional_jvm_args = var.confluence_additional_jvm_args
 
   confluence_configuration = {
     helm_version       = var.confluence_helm_chart_version
@@ -277,6 +283,8 @@ module "bitbucket" {
   }
   version_tag = var.bitbucket_version_tag
 
+  additional_jvm_args = var.bitbucket_additional_jvm_args
+
   elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
   elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
   elasticsearch_limits_cpu      = var.bitbucket_elasticsearch_limits_cpu
@@ -320,6 +328,8 @@ module "crowd" {
   }
   image_repository = var.crowd_image_repository
   version_tag      = var.crowd_version_tag
+
+  additional_jvm_args = var.crowd_additional_jvm_args
 
   local_home_retention_policy_when_deleted = var.crowd_local_home_retention_policy_when_deleted
   local_home_retention_policy_when_scaled  = var.crowd_local_home_retention_policy_when_scaled

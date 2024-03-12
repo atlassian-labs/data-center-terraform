@@ -69,3 +69,6 @@ test/pkg
 
 # File created by tagging resource
 modules/AWS/asg_ec2_tagging
+
+# it's handy to have this file in the root of the repo to be able to use datasets
+dcapt-snapshots.json

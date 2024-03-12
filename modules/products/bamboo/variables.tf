@@ -171,3 +171,8 @@ variable "shared_home_pvc_name" {
   type        = string
   default     = "bamboo-shared-home-pvc"
 }
+
+variable "additional_jvm_args" {
+  description = "List of additional JVM arguments to be passed to the server"
+  type        = list(string)
+}

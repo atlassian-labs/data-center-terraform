@@ -37,7 +37,7 @@ resource "helm_release" "confluence" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties, var.additional_jvm_args)
       }
       synchrony = {
         resources = {

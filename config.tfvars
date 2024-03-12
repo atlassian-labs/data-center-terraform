@@ -270,6 +270,9 @@ jira_db_name = "jira"
 #jira_db_master_username     = "<DB_MASTER_USERNAME>"
 #jira_db_master_password     = "<DB_MASTER_PASSWORD>"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# jira_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+
 ################################################################################
 # Confluence Settings
 ################################################################################
@@ -376,6 +379,9 @@ confluence_db_name = "confluence"
 # If password is not provided, a random password will be generated.
 #confluence_db_master_username = "<DB_MASTER_USERNAME>"
 #confluence_db_master_password = "<DB_MASTER_PASSWORD>"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# confluence_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
@@ -500,6 +506,9 @@ bitbucket_db_name = "bitbucket"
 # Make sure the snapshot is available in the region you are deploying to and it follows all product requirements.
 #bitbucket_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# bitbucket_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+
 ################################################################################
 # Bamboo Settings
 ################################################################################
@@ -598,6 +607,9 @@ bamboo_db_name                 = "bamboo"
 # if you encounter such an issue. This will apply to both Bamboo server and agent pods.
 #bamboo_termination_grace_period = 0
 
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# bamboo_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
+
 ################################################################################
 # Crowd Settings
 ################################################################################
@@ -685,3 +697,6 @@ crowd_db_name                 = "crowd"
 # To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_crowd_license`) and keep the below line commented out
 # If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
 #crowd_license = "<LICENSE_KEY>"
+
+# A list of JVM arguments to be passed to the server. Defaults to an empty list.
+# crowd_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
