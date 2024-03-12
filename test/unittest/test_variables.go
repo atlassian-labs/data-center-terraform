@@ -463,7 +463,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_snapshot_build_number": "invalid.build.number",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[],
+"additional_jvm_args": 			[]string{},
 }
 
 // Jira
@@ -512,7 +512,7 @@ var JiraCorrectVariables = map[string]interface{}{
 	},
 	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[],
+"additional_jvm_args": 			[]string{},
 }
 
 var JiraInvalidVariables = map[string]interface{}{
@@ -555,7 +555,7 @@ var JiraInvalidVariables = map[string]interface{}{
 	},
 	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[],
+"additional_jvm_args": 			[]string{},
 }
 
 // Crowd
@@ -601,7 +601,7 @@ var CrowdCorrectVariables = map[string]interface{}{
 		"custom_values_file": "",
 	},
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[],
+"additional_jvm_args": 			[]string{},
 }
 
 var CrowdInvalidVariables = map[string]interface{}{
@@ -641,5 +641,5 @@ var CrowdInvalidVariables = map[string]interface{}{
 		"max_heap": "786m",
 	},
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[],
+"additional_jvm_args": 			[]string{},
 }
