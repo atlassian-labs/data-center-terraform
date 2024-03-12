@@ -41,7 +41,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	if contains(productList, jira) {
-		jiraHealthTests(t, productUrls[jira])
+		jiraHealthTests(t, productUrls[jira], testConfig)
 	}
 
 	if contains(productList, confluence) {

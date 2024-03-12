@@ -271,7 +271,7 @@ jira_db_name = "jira"
 #jira_db_master_password     = "<DB_MASTER_PASSWORD>"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# jira_additional_jvm_args = ["-Dpropety=value", "-Dproperty1=value1"]
+# jira_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Confluence Settings
@@ -381,7 +381,7 @@ confluence_db_name = "confluence"
 #confluence_db_master_password = "<DB_MASTER_PASSWORD>"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# confluence_additional_jvm_args = ["-Dpropety=value", "-Dproperty1=value1"]
+# confluence_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 # Enables Collaborative editing in Confluence
 confluence_collaborative_editing_enabled = true
@@ -507,7 +507,7 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# bitbucket_additional_jvm_args = ["-Dpropety=value", "-Dproperty1=value1"]
+# bitbucket_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Bamboo Settings
@@ -608,7 +608,7 @@ bamboo_db_name                 = "bamboo"
 #bamboo_termination_grace_period = 0
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# bamboo_additional_jvm_args = ["-Dpropety=value", "-Dproperty1=value1"]
+# bamboo_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
 
 ################################################################################
 # Crowd Settings
@@ -699,4 +699,4 @@ crowd_db_name                 = "crowd"
 #crowd_license = "<LICENSE_KEY>"
 
 # A list of JVM arguments to be passed to the server. Defaults to an empty list.
-# crowd_additional_jvm_args = ["-Dpropety=value", "-Dproperty1=value1"]
+# crowd_additional_jvm_args = ["-Dproperty=value", "-Dproperty1=value1"]
