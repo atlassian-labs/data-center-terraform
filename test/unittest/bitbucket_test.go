@@ -123,4 +123,6 @@ var BitbucketCorrectVariables = map[string]interface{}{
 	"elasticsearch_storage":         10,
 	"elasticsearch_replicas":        2,
 	"termination_grace_period":      0,
+	"additional_jvm_args": 					 []string,
+
 }
