@@ -115,5 +115,5 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 	"enable_synchrony":         false,
 	"db_snapshot_build_number": "1234",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string,
+	"additional_jvm_args": 			[],
 }

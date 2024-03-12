@@ -102,7 +102,7 @@ var BambooCorrectVariables = map[string]interface{}{
 		"agent_count":  5,
 	},
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string,
+	"additional_jvm_args": 			[],
 }
 
 var BambooIncorrectVariables = map[string]interface{}{
