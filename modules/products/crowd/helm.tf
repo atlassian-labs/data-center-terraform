@@ -34,7 +34,7 @@ resource "helm_release" "crowd" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args)
       }
       volumes = {
         localHome = {
