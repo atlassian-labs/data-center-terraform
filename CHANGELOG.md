@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.7.4
+
+**Release date:** 2024-03-13
+
+* Make jvm args configurable [#373](https://github.com/atlassian-labs/data-center-terraform/pull/373)
+* Disable Atlassian analytics [#372](https://github.com/atlassian-labs/data-center-terraform/pull/372)
+
 ## 2.7.3
 
 **Release date:** 2024-02-26
