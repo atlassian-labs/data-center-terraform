@@ -119,6 +119,7 @@ pre_flight_checks() {
         JIRA_REPO=$(get_variable 'jira_image_repository' "${CONFIG_ABS_PATH}")
         if [[ "${JIRA_REPO}" == *"servicemanagement"* ]]; then
           PRODUCT="jsm"
+        fi
       fi
       log "Checking ${PRODUCT} license"
       LICENSE_ENV_VAR=${PRODUCT}'_license'
@@ -201,8 +202,8 @@ pre_flight_checks() {
         AVAILABLE_SNAPSHOT_VERSIONS=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq -r ".${PRODUCT}.versions | map(.version) | join(\", \")")
         log "Available ${PRODUCT} snapshots are: '${AVAILABLE_SNAPSHOT_VERSIONS}'" "ERROR"
         exit 1
-    fi
-    fi
+      fi
+    fi  
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
     if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
       RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
