@@ -192,6 +192,11 @@ pre_flight_checks() {
         aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION}
         exit 1
       fi
+    else
+      log "No snapshots found in ${SNAPSHOTS_JSON_FILE_PATH} for ${PRODUCT} version ${PRODUCT_VERSION}, ${DATASET_SIZE} dataset" "ERROR"
+      AVAILABLE_SNAPSHOT_VERSIONS=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq -r ".${PRODUCT}.versions | map(.version) | join(\", \")")
+      log "Available ${PRODUCT} snapshots are: '${AVAILABLE_SNAPSHOT_VERSIONS}'" "ERROR"
+      exit 1
     fi
     RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
     if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
