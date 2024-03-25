@@ -21,7 +21,12 @@ locals {
 
   templates = fileset("${path.module}/templates", "*.tpl")
 
-  templates_all = var.osquery_secret_name != "" ? concat(tolist(local.templates), ["osquery/osquery.sh.tpl"]) : local.templates
+  osquery_templates     = var.osquery_secret_name != "" ? ["osquery/osquery.sh.tpl"] : []
+  crowdstrike_templates = var.crowdstrike_secret_name != "" ? ["crowdstrike/crowdstrike.sh.tpl"] : []
+
+  templates_all = concat(tolist(local.templates), local.osquery_templates, local.crowdstrike_templates)
+
+  current_aws_region = data.aws_region.current.name
 
   user_content = [for tpl in local.templates_all : templatefile("${path.module}/templates/${tpl}", {
     account_id                    = data.aws_caller_identity.current.account_id
@@ -32,7 +37,11 @@ locals {
     env                           = var.osquery_env
     aws_sts_arn_role              = local.aws_sts_arn_role
     osquery_fleet_enrollment_host = var.osquery_fleet_enrollment_host
+    falcon_sensor_version         = var.falcon_sensor_version
+    aws_region                    = local.current_aws_region
+    crowdstrike_aws_account_id    = var.crowdstrike_aws_account_id
+    crowdstrike_secret_name       = var.crowdstrike_secret_name
   })]
 
-  user_data = local.user_content != null ? base64encode(join("\n", local.user_content)) : null
+  user_data = local.user_content != null ? base64encode(join("\n", concat(local.user_content, ["--==MYBOUNDARY==--"]))) : null
 }

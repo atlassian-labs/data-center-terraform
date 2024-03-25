@@ -92,7 +92,7 @@ locals {
         },
         {
           name = "ATL_FORCE_CFG_UPDATE",
-          value: local.overwrite_cfg_xml
+          value : local.overwrite_cfg_xml
         },
       ]
     }

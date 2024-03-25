@@ -40,8 +40,8 @@ resource "helm_release" "jira" {
             }
           }
         }
-        additionalJvmArgs = concat(local.ignore_index_check, local.reuse_old_index_snapshot, local.dcapt_analytics_property, var.additional_jvm_args)
-        additionalEnvironmentVariables = var.local_home_snapshot_id != null ? [{name = "ATL_FORCE_CFG_UPDATE", value: "true" }] : null
+        additionalJvmArgs              = concat(local.ignore_index_check, local.reuse_old_index_snapshot, local.dcapt_analytics_property, var.additional_jvm_args)
+        additionalEnvironmentVariables = var.local_home_snapshot_id != null ? [{ name = "ATL_FORCE_CFG_UPDATE", value : "true" }] : null
       }
       database = {
         type   = "postgres72"

@@ -1,4 +1,5 @@
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 resource "aws_launch_template" "nodegroup" {
   name_prefix            = var.cluster_name

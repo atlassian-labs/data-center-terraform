@@ -219,13 +219,13 @@ locals {
     bamboo     = null
   }
 
-  jira_rds_snapshot_id = length(compact(local.jira_rds_snapshot)) > 0 ? compact(local.jira_rds_snapshot)[0] : var.jira_db_snapshot_id != null ? var.jira_db_snapshot_id : null
-  jira_ebs_snapshot_id = length(compact(local.jira_ebs_snapshot)) > 0 ? compact(local.jira_ebs_snapshot)[0] : var.jira_shared_home_snapshot_id != null ? var.jira_shared_home_snapshot_id : null
+  jira_rds_snapshot_id        = length(compact(local.jira_rds_snapshot)) > 0 ? compact(local.jira_rds_snapshot)[0] : var.jira_db_snapshot_id != null ? var.jira_db_snapshot_id : null
+  jira_ebs_snapshot_id        = length(compact(local.jira_ebs_snapshot)) > 0 ? compact(local.jira_ebs_snapshot)[0] : var.jira_shared_home_snapshot_id != null ? var.jira_shared_home_snapshot_id : null
   jira_local_home_snapshot_id = length(compact(local.jira_local_home_snapshot)) > 0 ? compact(local.jira_local_home_snapshot)[0] : var.jira_local_home_snapshot_id != null ? var.jira_local_home_snapshot_id : null
-  
+
   confluence_rds_snapshot_id          = length(compact(local.confluence_rds_snapshot)) > 0 ? compact(local.confluence_rds_snapshot)[0] : var.confluence_db_snapshot_id != null ? var.confluence_db_snapshot_id : null
   confluence_ebs_snapshot_id          = length(compact(local.confluence_ebs_snapshot)) > 0 ? compact(local.confluence_ebs_snapshot)[0] : var.confluence_shared_home_snapshot_id != null ? var.confluence_shared_home_snapshot_id : null
-  confluence_local_home_snapshot_id = length(compact(local.confluence_local_home_snapshot)) > 0 ? compact(local.confluence_local_home_snapshot)[0] : var.confluence_local_home_snapshot_id != null ? var.confluence_local_home_snapshot_id : null
+  confluence_local_home_snapshot_id   = length(compact(local.confluence_local_home_snapshot)) > 0 ? compact(local.confluence_local_home_snapshot)[0] : var.confluence_local_home_snapshot_id != null ? var.confluence_local_home_snapshot_id : null
   confluence_db_snapshot_build_number = length(compact(local.confluence_build_numbers)) > 0 ? compact(local.confluence_build_numbers)[0] : var.confluence_db_snapshot_build_number != null ? var.confluence_db_snapshot_build_number : null
 
   crowd_rds_snapshot_id          = length(compact(local.crowd_rds_snapshot)) > 0 ? compact(local.crowd_rds_snapshot)[0] : var.crowd_db_snapshot_id != null ? var.crowd_db_snapshot_id : null
