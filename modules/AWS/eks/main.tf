@@ -17,6 +17,9 @@ module "nodegroup_launch_template" {
   osquery_version                 = var.osquery_version
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
+  crowdstrike_secret_name         = var.crowdstrike_secret_name
+  crowdstrike_aws_account_id      = var.crowdstrike_aws_account_id
+  falcon_sensor_version           = var.falcon_sensor_version
 }
 
 module "eks" {

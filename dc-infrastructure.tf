@@ -29,6 +29,11 @@ module "base-infrastructure" {
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
 
+  crowdstrike_secret_name    = var.crowdstrike_secret_name
+  crowdstrike_kms_key_name   = var.crowdstrike_kms_key_name
+  crowdstrike_aws_account_id = var.crowdstrike_aws_account_id
+  falcon_sensor_version      = var.falcon_sensor_version
+
   confluence_s3_attachments_storage = var.confluence_s3_attachments_storage
 
   monitoring_enabled            = var.monitoring_enabled

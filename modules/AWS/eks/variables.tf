@@ -121,6 +121,30 @@ variable "kinesis_log_producers_role_arns" {
   })
 }
 
+variable "crowdstrike_secret_name" {
+  description = "Crowdstrike secret name with cid and token"
+  type        = string
+  default     = ""
+}
+
+variable "crowdstrike_kms_key_name" {
+  description = "Crowdstrike kms key name to decrypt secret"
+  type        = string
+  default     = ""
+}
+
+variable "crowdstrike_aws_account_id" {
+  description = "AWS account ID with a shareds crowdstrike secret"
+  type        = string
+  default     = ""
+}
+
+variable "falcon_sensor_version" {
+  description = "Falcon sensor version"
+  type        = string
+  default     = "7.10.0-16303"
+}
+
 variable "namespace" {
   description = "Namespace for Atlassian products."
   type        = string

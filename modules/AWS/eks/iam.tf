@@ -85,3 +85,15 @@ resource "aws_iam_role_policy_attachment" "fleet_enrollment_secret" {
   policy_arn = aws_iam_policy.fleet_enrollment_secret[0].arn
   role       = aws_iam_role.node_group.name
 }
+
+resource "aws_iam_role_policy_attachment" "crowdstrike_s3" {
+  count      = var.crowdstrike_secret_name != "" ? 1 : 0
+  policy_arn = aws_iam_policy.crowdstrike_s3[0].arn
+  role       = aws_iam_role.node_group.name
+}
+
+resource "aws_iam_role_policy_attachment" "crowdstrike_secret" {
+  count      = var.crowdstrike_secret_name != "" ? 1 : 0
+  policy_arn = aws_iam_policy.crowdstrike_secret[0].arn
+  role       = aws_iam_role.node_group.name
+}

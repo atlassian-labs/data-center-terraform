@@ -89,6 +89,22 @@ max_cluster_capacity = 5
 # snapshots_json_file_path = "test/dcapt-snapshots.json"
 
 ################################################################################
+# Crowdstrike settings. Atlassian only!
+################################################################################
+
+# name of the AWS secret holding cid and token
+# crowdstrike_secret_name = "crowdstrike-secret"
+
+# name of the kms key which is used to decrypt the secret
+# crowdstrike_kms_key_name = "kms-key"
+
+# AWS account that shares crowdstrike resources
+# crowdstrike_aws_account_id = "1234567890"
+
+# falcon sensor version  version
+# falcon_sensor_version = "7.10.0-16303"
+
+################################################################################
 # Osquery settings. Atlassian only!
 ################################################################################
 

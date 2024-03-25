@@ -1,10 +1,14 @@
 package e2etest
 
 import (
+	"encoding/base64"
+	"fmt"
 	"github.com/aws/aws-sdk-go/service/autoscaling"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"strconv"
 	"testing"
+
+	aws_sdk "github.com/aws/aws-sdk-go/aws"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
@@ -49,6 +53,65 @@ func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 	autoScalingGroups, err := asgClient.DescribeAutoScalingGroups(input)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(autoScalingGroups.AutoScalingGroups))
+}
+
+func checkLaunchTemplate(t *testing.T, testConfig TestConfig) {
+	printTestBanner("Check LaunchTemplate", "UserData")
+	var ltId string
+	clusterName := fmt.Sprintf("atlas-%s-cluster", testConfig.EnvironmentName)
+	ec2Client := aws.NewEc2Client(t, testConfig.AwsRegion)
+
+	describeTagsInput := &ec2.DescribeTagsInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws_sdk.String("key"),
+				Values: []*string{aws_sdk.String("eks:cluster-name")},
+			},
+			{
+				Name:   aws_sdk.String("value"),
+				Values: []*string{aws_sdk.String(clusterName)},
+			},
+		},
+	}
+
+	tagsOutput, err := ec2Client.DescribeTags(describeTagsInput)
+	if err != nil {
+		fmt.Printf("Failed to describe tags: %v", err)
+	}
+
+	for _, tag := range tagsOutput.Tags {
+		if *tag.ResourceType == "launch-template" {
+			fmt.Printf("Found Launch Template with ID: %s for tag eks:cluster-name\n", *tag.ResourceId)
+			ltId = *tag.ResourceId
+		}
+	}
+
+	input := &ec2.DescribeLaunchTemplateVersionsInput{
+		LaunchTemplateId: aws_sdk.String(ltId),
+		Versions:         []*string{aws_sdk.String("$Latest")},
+	}
+
+	output, err := ec2Client.DescribeLaunchTemplateVersions(input)
+	if err != nil {
+		fmt.Printf("Failed to describe launch template versions: %v", err)
+	}
+
+	if len(output.LaunchTemplateVersions) == 0 {
+		fmt.Printf("No launch template versions found for ID: %s", ltId)
+	}
+
+	userDataB64 := output.LaunchTemplateVersions[0].LaunchTemplateData.UserData
+	if userDataB64 == nil || *userDataB64 == "" {
+		fmt.Printf("User data is empty or not available")
+	}
+	userData, err := base64.StdEncoding.DecodeString(*userDataB64)
+	if err != nil {
+		fmt.Printf("Failed to decode user data: %v", err)
+	}
+
+	// assert inclusion of crodwstrike and osquery scripts to user data of the launch template
+	assert.Contains(t, string(userData[:]), "systemctl start falcon-sensor.service")
+	assert.Contains(t, string(userData[:]), "systemctl start osqueryd")
 }
 
 func checkEbsVolumes(t *testing.T, testConfig TestConfig) {
