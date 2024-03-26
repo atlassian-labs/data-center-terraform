@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.7.5
+
+**Release date:** 2024-04-26
+
+* Exit installation script if product version does not exist in snapshots.json [#374](https://github.com/atlassian-labs/data-center-terraform/pull/374)
+* Add optional CrowdStrike installation to user data [#375](https://github.com/atlassian-labs/data-center-terraform/pull/375)
+
 ## 2.7.4
 
 **Release date:** 2024-03-13
