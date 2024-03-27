@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.7.6
+
+**Release date:** 2024-04-28
+
+* Fix pre-flight checks for JSM and Bamboo [#377](https://github.com/atlassian-labs/data-center-terraform/pull/377)
+
 ## 2.7.5
 
 **Release date:** 2024-04-26
