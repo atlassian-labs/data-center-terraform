@@ -5,7 +5,8 @@ resource "helm_release" "confluence" {
   depends_on = [
     kubernetes_job.pre_install,
     kubernetes_persistent_volume_claim.local_home,
-    time_sleep.wait_confluence_termination
+    time_sleep.wait_confluence_termination,
+    helm_release.opensearch,
   ]
   name       = local.product_name
   namespace  = var.namespace
@@ -37,7 +38,7 @@ resource "helm_release" "confluence" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties, var.additional_jvm_args)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties, var.additional_jvm_args, local.opensearch_properties)
       }
       synchrony = {
         resources = {

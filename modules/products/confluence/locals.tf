@@ -112,6 +112,12 @@ locals {
     "-Dconfluence.filestore.attachments.s3.bucket.name=${var.eks.confluence_s3_bucket_name}",
   "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"] : []
 
+  opensearch_password = "OpenSearchAtl1234!"
+  opensearch_properties = var.opensearch_enabled ? ["-Dsearch.platform=opensearch",
+                           "-Dopensearch.http.url=http://opensearch-cluster-master.${var.namespace}.svc.cluster.local:9200",
+                           "-Dopensearch.password=${local.opensearch_password}",
+                           "-Dopensearch.username=admin"] : []
+
   service_account_annotations = var.confluence_s3_attachments_storage ? yamlencode({
     serviceAccount = {
       annotations = {

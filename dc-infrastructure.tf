@@ -242,6 +242,8 @@ module "confluence" {
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
+
+  opensearch_enabled = var.confluence_opensearch_enabled
 }
 
 module "bitbucket" {
