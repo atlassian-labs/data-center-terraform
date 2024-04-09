@@ -406,6 +406,11 @@ confluence_collaborative_editing_enabled = true
 # Terraform will automatically create S3 bucket, IAM role and policy
 #confluence_s3_attachments_storage = true
 
+# Enable OpenSearch as Confluence search engine and configure resource requests and limits
+# confluence_opensearch_enabled = false
+# confluence_opensearch_requests_cpu = "<REQUESTS_CPU>"
+# confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################
