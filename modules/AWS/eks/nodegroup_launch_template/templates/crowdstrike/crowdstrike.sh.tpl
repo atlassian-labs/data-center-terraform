@@ -24,8 +24,8 @@ crowdstrike_cid_and_token=$(aws secretsmanager get-secret-value \
         --output text \
         2>&1)
 
-crowdstrike_cid=$(echo "$${crowdstrike_cid_and_token}" | jq -r '.cid')
-crowdstrike_token=$(echo "$${crowdstrike_cid_and_token}" | jq -r '.token')
+crowdstrike_cid=$(echo "${crowdstrike_cid_and_token}" | jq -r '.cid')
+crowdstrike_token=$(echo "${crowdstrike_cid_and_token}" | jq -r '.token')
 
 # register agent to CrowdStrike console
 agent_tags="non-micros,non-micros/dev,non-micros/dev/dcapt"
