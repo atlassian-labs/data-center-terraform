@@ -1,6 +1,7 @@
 package unittest
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,6 +24,15 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
 	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
+
+	opensearch := plan.ResourcePlannedValuesMap["helm_release.opensearch[0]"]
+	assert.Equal(t, "deployed", opensearch.AttributeValues["status"])
+	assert.Equal(t, "opensearch", opensearch.AttributeValues["chart"])
+	assert.Equal(t, "https://opensearch-project.github.io/helm-charts/", opensearch.AttributeValues["repository"])
+
+	values := opensearch.AttributeValues["values"].([]interface{})[0].(string)
+	expectedHelmValues := fmt.Sprintf("\"extraEnvs\":\n- \"name\": \"OPENSEARCH_INITIAL_ADMIN_PASSWORD\"\n  \"value\": \"OpenSearchAtl1234!\"\n- \"name\": \"plugins.security.ssl.http.enabled\"\n  \"value\": \"false\"\n\"resources\":\n  \"requests\":\n    \"cpu\": \"2\"\n    \"memory\": \"2Gi\"\n\"singleNode\": true\n")
+	assert.Equal(t, expectedHelmValues, values)
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -112,8 +122,11 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"max_heap":   "1024m",
 		"stack_size": "1024k",
 	},
-	"enable_synchrony":         false,
-	"db_snapshot_build_number": "1234",
-	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"enable_synchrony":           false,
+	"db_snapshot_build_number":   "1234",
+	"termination_grace_period":   0,
+	"additional_jvm_args":        []string{},
+	"opensearch_enabled":         true,
+	"opensearch_requests_cpu":    "2",
+	"opensearch_requests_memory": "2Gi",
 }
