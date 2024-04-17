@@ -1,7 +1,6 @@
 package unittest
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,7 +30,7 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "https://opensearch-project.github.io/helm-charts/", opensearch.AttributeValues["repository"])
 
 	values := opensearch.AttributeValues["values"].([]interface{})[0].(string)
-	expectedHelmValues := fmt.Sprintf("\"extraEnvs\":\n- \"name\": \"OPENSEARCH_INITIAL_ADMIN_PASSWORD\"\n  \"value\": \"OpenSearchAtl1234!\"\n- \"name\": \"plugins.security.ssl.http.enabled\"\n  \"value\": \"false\"\n\"resources\":\n  \"requests\":\n    \"cpu\": \"2\"\n    \"memory\": \"2Gi\"\n\"singleNode\": true\n")
+	expectedHelmValues := "\"extraEnvs\":\n- \"name\": \"OPENSEARCH_INITIAL_ADMIN_PASSWORD\"\n  \"value\": \"OpenSearchAtl1234!\"\n- \"name\": \"plugins.security.ssl.http.enabled\"\n  \"value\": \"false\"\n\"resources\":\n  \"requests\":\n    \"cpu\": \"2\"\n    \"memory\": \"2Gi\"\n\"singleNode\": true\n"
 	assert.Equal(t, expectedHelmValues, values)
 }
 
