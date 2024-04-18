@@ -69,6 +69,19 @@ locals {
     }
   }) : yamlencode({})
 
+  # OpenSearch settings
+  opensearch_settings = var.opensearch_enabled ? yamlencode({
+    opensearch = {
+      enabled = true
+      resources = {
+        requests = {
+          cpu    = var.opensearch_requests_cpu
+          memory = var.opensearch_requests_memory
+        }
+      }
+    }
+  }) : yamlencode({})
+
   # Provide additional environment variables to Confluence Helm chart to skip setup wizard when restoring database from snapshot.
   overwrite_cfg_xml = var.local_home_snapshot_id != null ? "true" : "false"
   db_restore_env_vars = var.db_snapshot_id != null ? yamlencode({
