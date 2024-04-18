@@ -11,8 +11,8 @@ variable "eks_version" {
   description = "EKS K8s version"
   type        = number
   validation {
-    condition     = can(regex("^1\\.2[7-8]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.28."
+    condition     = can(regex("^1\\.2[7-9]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.29."
   }
 }
 
@@ -119,6 +119,30 @@ variable "kinesis_log_producers_role_arns" {
     eu     = string
     non-eu = string
   })
+}
+
+variable "crowdstrike_secret_name" {
+  description = "Crowdstrike secret name with cid and token"
+  type        = string
+  default     = ""
+}
+
+variable "crowdstrike_kms_key_name" {
+  description = "Crowdstrike kms key name to decrypt secret"
+  type        = string
+  default     = ""
+}
+
+variable "crowdstrike_aws_account_id" {
+  description = "AWS account ID with a shareds crowdstrike secret"
+  type        = string
+  default     = ""
+}
+
+variable "falcon_sensor_version" {
+  description = "Falcon sensor version"
+  type        = string
+  default     = "7.10.0-16303"
 }
 
 variable "namespace" {

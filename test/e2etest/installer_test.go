@@ -31,6 +31,7 @@ func TestInstaller(t *testing.T) {
 	clusterHealthTests(t, testConfig)
 	checkAGSAndEC2Tags(t, testConfig)
 	checkEbsVolumes(t, testConfig)
+	checkLaunchTemplate(t, testConfig)
 
 	productUrls := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "product_urls")
 	crowdDbInfo := terraform.OutputMap(t, &terraform.Options{TerraformDir: "../../"}, "crowd_database")
@@ -41,7 +42,7 @@ func TestInstaller(t *testing.T) {
 	}
 
 	if contains(productList, jira) {
-		jiraHealthTests(t, productUrls[jira])
+		jiraHealthTests(t, productUrls[jira], testConfig)
 	}
 
 	if contains(productList, confluence) {

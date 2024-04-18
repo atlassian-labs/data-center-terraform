@@ -1,5 +1,43 @@
 # Change Log
 
+## 2.7.6
+
+**Release date:** 2024-04-28
+
+* Fix pre-flight checks for JSM and Bamboo [#377](https://github.com/atlassian-labs/data-center-terraform/pull/377)
+
+## 2.7.5
+
+**Release date:** 2024-04-26
+
+* Exit installation script if product version does not exist in snapshots.json [#374](https://github.com/atlassian-labs/data-center-terraform/pull/374)
+* Add optional CrowdStrike installation to user data [#375](https://github.com/atlassian-labs/data-center-terraform/pull/375)
+
+## 2.7.4
+
+**Release date:** 2024-03-13
+
+* Make jvm args configurable [#373](https://github.com/atlassian-labs/data-center-terraform/pull/373)
+* Disable Atlassian analytics [#372](https://github.com/atlassian-labs/data-center-terraform/pull/372)
+
+## 2.7.3
+
+**Release date:** 2024-02-26
+
+* Fix restore from a local home snapshot [#369](https://github.com/atlassian-labs/data-center-terraform/pull/369)
+
+## 2.7.2
+
+**Release date:** 2024-02-21
+
+* Upgrade kube-prom-stack to 56.6.2 [#367](https://github.com/atlassian-labs/data-center-terraform/pull/367)
+* Bump RDS minor version to 13.13 [#366](https://github.com/atlassian-labs/data-center-terraform/pull/366)
+* Upgrade EKS to 1.29 [#365](https://github.com/atlassian-labs/data-center-terraform/pull/365)
+* Exit 0 if force uninstall has been successful [#364](https://github.com/atlassian-labs/data-center-terraform/pull/364)
+* Update collect_k8s_logs.sh with region for describe-auto-scaling-groups [#363](https://github.com/atlassian-labs/data-center-terraform/pull/363)
+* Cleaned up Bamboo additional environment variable - ATL_BASE_URL [#362](https://github.com/atlassian-labs/data-center-terraform/pull/362)
+* Install and log collection script improvements [#361](https://github.com/atlassian-labs/data-center-terraform/pull/361)
+
 ## 2.7.1
 
 **Release date:** 2024-01-09

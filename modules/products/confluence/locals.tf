@@ -70,6 +70,7 @@ locals {
   }) : yamlencode({})
 
   # Provide additional environment variables to Confluence Helm chart to skip setup wizard when restoring database from snapshot.
+  overwrite_cfg_xml = var.local_home_snapshot_id != null ? "true" : "false"
   db_restore_env_vars = var.db_snapshot_id != null ? yamlencode({
     confluence = {
       additionalEnvironmentVariables = [
@@ -88,6 +89,10 @@ locals {
         {
           name  = "ATL_SNAPSHOT_USED",
           value = "true"
+        },
+        {
+          name = "ATL_FORCE_CFG_UPDATE",
+          value : local.overwrite_cfg_xml
         },
       ]
     }

@@ -115,8 +115,15 @@ pre_flight_checks() {
       # when config.tfvars has been edited in Windows, it may contain carriage returns `\r`
       # which breaks the below code, so let's sanitize PRODUCT variable
       PRODUCT=$(echo ${PRODUCT} | sed 's/\r$//')
-      log "Checking ${PRODUCT} license"
       LICENSE_ENV_VAR=${PRODUCT}'_license'
+      if [ ${PRODUCT} == "jira" ]; then
+        JIRA_REPO=$(get_variable 'jira_image_repository' "${CONFIG_ABS_PATH}")
+        if [[ "${JIRA_REPO}" == *"servicemanagement"* ]]; then
+          PRODUCT="jsm"
+          LICENSE_ENV_VAR="jira_license"
+        fi
+      fi
+      log "Checking ${PRODUCT} license"
       LICENSE_TEXT=$(get_variable ${LICENSE_ENV_VAR} "${CONFIG_ABS_PATH}")
       if [ -z "$LICENSE_TEXT" ]; then
         log "License is undefined or malformed. Please check '${LICENSE_ENV_VAR}' value in '${CONFIG_ABS_PATH}'" "ERROR"
@@ -145,68 +152,83 @@ pre_flight_checks() {
   fi
 
   for PRODUCT in ${PRODUCTS_ARRAY[@]}; do
-    log "Starting pre-flight checks for ${PRODUCT}"
-    SHARED_HOME_SNAPSHOT_VAR=$PRODUCT'_shared_home_snapshot_id'
-    RDS_SNAPSHOT_VAR=$PRODUCT'_db_snapshot_id'
-    PRODUCT_VERSION_VAR=$PRODUCT'_version_tag'
-    PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
-    MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
-    EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    DATASET_SIZE=$(get_variable ${PRODUCT}_dataset_size "${CONFIG_ABS_PATH}")
-    if [ -z "$DATASET_SIZE" ]; then
-      DATASET_SIZE="large"
-    fi
-    log "Dataset size is ${DATASET_SIZE}"
-    SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
-    if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
-      EBS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"ebs\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
-    fi
-    if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
-      log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
-      EBS_SNAPSHOT_DESCRIPTION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description')
-      if [ -z ${EBS_SNAPSHOT_DESCRIPTION} ]; then
-        log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
-        log "Failed to describe EBS snapshot defined by $SHARED_HOME_SNAPSHOT_VAR" "ERROR"
-        log "Please check if correct '${SHARED_HOME_SNAPSHOT_VAR}' variable is defined in tfvars config file" "ERROR"
-        log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
-        exit 1
+    if [ ${PRODUCT} == "bamboo" ]; then
+      log "No pre-flight checks are required for ${PRODUCT}"
+    else
+      log "Starting pre-flight checks for ${PRODUCT}"
+      SHARED_HOME_SNAPSHOT_VAR=$PRODUCT'_shared_home_snapshot_id'
+      RDS_SNAPSHOT_VAR=$PRODUCT'_db_snapshot_id'
+      PRODUCT_VERSION_VAR=$PRODUCT'_version_tag'
+      PRODUCT_VERSION=$(get_variable ${PRODUCT_VERSION_VAR} "${CONFIG_ABS_PATH}")
+      MAJOR_MINOR_VERSION=$(echo "$PRODUCT_VERSION" | cut -d '.' -f1-2)
+      EBS_SNAPSHOT_ID=$(get_variable ${SHARED_HOME_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
+      DATASET_SIZE=$(get_variable ${PRODUCT}_dataset_size "${CONFIG_ABS_PATH}")
+      if [ -z "$DATASET_SIZE" ]; then
+        DATASET_SIZE="large"
       fi
-      if [[ ! $EBS_SNAPSHOT_DESCRIPTION == *"dcapt"* ]]; then
-        log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
-        log "Failed to identify EBS snapshot defined in ${SHARED_HOME_SNAPSHOT_VAR} as the one created for 'DCAPT'" "ERROR"
-        log "Please check if '${SHARED_HOME_SNAPSHOT_VAR}' variable has the correct value in tfvars config file" "ERROR"
-        log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
-        log "EBS snapshot '${EBS_SNAPSHOT_ID}' defined by ${SHARED_HOME_SNAPSHOT_VAR} has the following description:" "ERROR"
-        aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description'
-        exit 1
+      log "Dataset size is ${DATASET_SIZE}"
+      SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
+      if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+        if [ ${PRODUCT} == "jira" ]; then
+          JIRA_REPO=$(get_variable 'jira_image_repository' "${CONFIG_ABS_PATH}")
+          if [[ "${JIRA_REPO}" == *"servicemanagement"* ]]; then
+            PRODUCT="jsm"
+          fi
+        fi
+        EBS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"ebs\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
+        if [ ! -z ${EBS_SNAPSHOT_ID} ]; then
+          log "Checking EBS snapshot ${EBS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
+          EBS_SNAPSHOT_DESCRIPTION=$(aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description')
+          if [ -z ${EBS_SNAPSHOT_DESCRIPTION} ]; then
+            log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
+            log "Failed to describe EBS snapshot defined by $SHARED_HOME_SNAPSHOT_VAR" "ERROR"
+            log "Please check if correct '${SHARED_HOME_SNAPSHOT_VAR}' variable is defined in tfvars config file" "ERROR"
+            log "****************FAILED TO GET EBS SNAPSHOT******************" "ERROR"
+            exit 1
+          fi
+          if [[ ! $EBS_SNAPSHOT_DESCRIPTION == *"dcapt"* ]]; then
+            log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
+            log "Failed to identify EBS snapshot defined in ${SHARED_HOME_SNAPSHOT_VAR} as the one created for 'DCAPT'" "ERROR"
+            log "Please check if '${SHARED_HOME_SNAPSHOT_VAR}' variable has the correct value in tfvars config file" "ERROR"
+            log "****************FAILED TO VALIDATE EBS DESCRIPTION**********" "ERROR"
+            log "EBS snapshot '${EBS_SNAPSHOT_ID}' defined by ${SHARED_HOME_SNAPSHOT_VAR} has the following description:" "ERROR"
+            aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION} --query 'Snapshots[0].Description'
+            exit 1
+          fi
+          EBS_SNAPSHOT_VERSION=$(echo ${EBS_SNAPSHOT_DESCRIPTION} | sed 's/-/./g' | sed 's/"//g' | cut -d '.' -f3-)
+          if [[ "$EBS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
+            log "EBS snapshot ${EBS_SNAPSHOT_ID} version ${EBS_SNAPSHOT_VERSION} is compatible with ${PRODUCT} version ${PRODUCT_VERSION}"
+          else
+            log "***************INCOMPATIBLE EBS SNAPSHOT USED***************" "ERROR"
+            log "EBS snapshot ${EBS_SNAPSHOT_ID} version ${EBS_SNAPSHOT_VERSION} defined by '${SHARED_HOME_SNAPSHOT_VAR}' is not compatible with ${PRODUCT} version ${PRODUCT_VERSION}" "ERROR"
+            log "Make sure you set $SHARED_HOME_SNAPSHOT_VAR variable to a snapshot ID compatible with ${PRODUCT} version ${PRODUCT_VERSION}" "ERROR"
+            log "***************INCOMPATIBLE EBS SNAPSHOT USED***************" "ERROR"
+            log "EBS snapshot that is currently defined:" "ERROR"
+            aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION}
+            exit 1
+          fi
+        else
+          log "No snapshots found in ${SNAPSHOTS_JSON_FILE_PATH} for ${PRODUCT} version ${PRODUCT_VERSION}, ${DATASET_SIZE} dataset" "ERROR"
+          AVAILABLE_SNAPSHOT_VERSIONS=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq -r ".${PRODUCT}.versions | map(.version) | join(\", \")")
+          log "Available ${PRODUCT} snapshots are: '${AVAILABLE_SNAPSHOT_VERSIONS}'" "ERROR"
+          exit 1
+        fi
       fi
-      EBS_SNAPSHOT_VERSION=$(echo ${EBS_SNAPSHOT_DESCRIPTION} | sed 's/-/./g' | sed 's/"//g' | cut -d '.' -f3-)
-      if [[ "$EBS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
-        log "EBS snapshot ${EBS_SNAPSHOT_ID} version ${EBS_SNAPSHOT_VERSION} is compatible with ${PRODUCT} version ${PRODUCT_VERSION}"
-      else
-        log "***************INCOMPATIBLE EBS SNAPSHOT USED***************" "ERROR"
-        log "EBS snapshot ${EBS_SNAPSHOT_ID} version ${EBS_SNAPSHOT_VERSION} defined by '${SHARED_HOME_SNAPSHOT_VAR}' is not compatible with ${PRODUCT} version ${PRODUCT_VERSION}" "ERROR"
-        log "Make sure you set $SHARED_HOME_SNAPSHOT_VAR variable to a snapshot ID compatible with ${PRODUCT} version ${PRODUCT_VERSION}" "ERROR"
-        log "***************INCOMPATIBLE EBS SNAPSHOT USED***************" "ERROR"
-        log "EBS snapshot that is currently defined:" "ERROR"
-        aws ec2 describe-snapshots --snapshot-ids=${EBS_SNAPSHOT_ID} --region ${REGION}
-        exit 1
+      RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
+      if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
+        RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
       fi
-    fi
-    RDS_SNAPSHOT_ID=$(get_variable ${RDS_SNAPSHOT_VAR} "${CONFIG_ABS_PATH}")
-    if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
-      RDS_SNAPSHOT_ID=$(cat ${SNAPSHOTS_JSON_FILE_PATH} | jq ".${PRODUCT}.versions[] | select(.version == \"${PRODUCT_VERSION}\") | .data[] | select(.size == \"${DATASET_SIZE}\" and .type == \"rds\") | .snapshots[] | .[\"${REGION}\"]" | sed 's/"//g')
-    fi
-    if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
-      log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
-      RDS_SNAPSHOT_VERSION=$(echo "${RDS_SNAPSHOT_ID}" | sed 's/.*dcapt-\(.*\)/\1/' | sed 's/-/./g' | cut -d '.' -f 2-)
-      if [[ "$RDS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
-        log "RDS snapshot '${RDS_SNAPSHOT_ID}' is compatible with ${PRODUCT} version ${PRODUCT_VERSION}"
-      else
-        log "***************INCOMPATIBLE RDS SNAPSHOT USED***************" "ERROR"
-        log "RDS snapshot '${RDS_SNAPSHOT_ID}' defined by '${RDS_SNAPSHOT_VAR}' variable is created for ${PRODUCT} version ${RDS_SNAPSHOT_VERSION} while the requested ${PRODUCT} version is: ${PRODUCT_VERSION}" "ERROR"
-        log "***************INCOMPATIBLE RDS SNAPSHOT USED***************" "ERROR"
-        exit 1
+      if [ ! -z ${RDS_SNAPSHOT_ID} ]; then
+        log "Checking RDS snapshot ${RDS_SNAPSHOT_ID} compatibility with ${PRODUCT} version ${PRODUCT_VERSION}"
+        RDS_SNAPSHOT_VERSION=$(echo "${RDS_SNAPSHOT_ID}" | sed 's/.*dcapt-\(.*\)/\1/' | sed 's/-/./g' | cut -d '.' -f 2-)
+        if [[ "$RDS_SNAPSHOT_VERSION" == *"$MAJOR_MINOR_VERSION"* ]]; then
+          log "RDS snapshot '${RDS_SNAPSHOT_ID}' is compatible with ${PRODUCT} version ${PRODUCT_VERSION}"
+        else
+          log "***************INCOMPATIBLE RDS SNAPSHOT USED***************" "ERROR"
+          log "RDS snapshot '${RDS_SNAPSHOT_ID}' defined by '${RDS_SNAPSHOT_VAR}' variable is created for ${PRODUCT} version ${RDS_SNAPSHOT_VERSION} while the requested ${PRODUCT} version is: ${PRODUCT_VERSION}" "ERROR"
+          log "***************INCOMPATIBLE RDS SNAPSHOT USED***************" "ERROR"
+          exit 1
+        fi
       fi
     fi
   done

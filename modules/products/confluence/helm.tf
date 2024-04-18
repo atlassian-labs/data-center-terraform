@@ -37,7 +37,7 @@ resource "helm_release" "confluence" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, local.irsa_properties, var.additional_jvm_args)
       }
       synchrony = {
         resources = {
@@ -67,7 +67,7 @@ resource "helm_release" "confluence" {
             create = true
             resources = {
               requests = {
-                storage = var.local_home_snapshot_id != null ? "${data.aws_ebs_snapshot.local_home_snapshot[1].volume_size}Gi" : var.local_home_size
+                storage = var.local_home_snapshot_id != null ? "${data.aws_ebs_snapshot.local_home_snapshot[0].volume_size}Gi" : var.local_home_size
               }
             }
           }
@@ -84,6 +84,11 @@ resource "helm_release" "confluence" {
           }
         }
       }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
+        }
+      }
     }),
     local.ingress_settings,
     local.context_path_settings,
@@ -91,7 +96,7 @@ resource "helm_release" "confluence" {
     local.synchrony_settings_stanza,
     local.version_tag,
     local.db_restore_env_vars,
-    local.service_account_annotations
+    local.service_account_annotations,
   ]
 }
 

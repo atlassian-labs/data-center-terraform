@@ -31,7 +31,7 @@ resource "helm_release" "bamboo" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args)
       }
       database = {
         type = "postgresql"
@@ -61,6 +61,11 @@ resource "helm_release" "bamboo" {
               claimName = var.shared_home_pvc_name
             }
           }
+        }
+      }
+      atlassianAnalyticsAndSupport = {
+        analytics = {
+          enabled = false
         }
       }
     }),
