@@ -1,14 +1,20 @@
 # Change Log
 
+## 2.7.7
+
+**Release date:** 2024-04-17
+
+* Update RDS 14.x version [#382](https://github.com/atlassian-labs/data-center-terraform/pull/382)
+
 ## 2.7.6
 
-**Release date:** 2024-04-28
+**Release date:** 2024-03-28
 
 * Fix pre-flight checks for JSM and Bamboo [#377](https://github.com/atlassian-labs/data-center-terraform/pull/377)
 
 ## 2.7.5
 
-**Release date:** 2024-04-26
+**Release date:** 2024-03-26
 
 * Exit installation script if product version does not exist in snapshots.json [#374](https://github.com/atlassian-labs/data-center-terraform/pull/374)
 * Add optional CrowdStrike installation to user data [#375](https://github.com/atlassian-labs/data-center-terraform/pull/375)
