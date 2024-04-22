@@ -242,3 +242,20 @@ confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 ```
 
 ??? Warning "Snapshot and your environment must be in same region"  
+
+## Search engine configuration
+### OpenSearch
+`confluence_opensearch_enabled` decides whether to use OpenSearch as Confluence search engine. If set to true,
+a single-node OpenSearch will be created as part of the deployment, and Confluence will be configured to connect to this instance.
+
+```terraform
+confluence_opensearch_enabled = true
+```
+
+### OpenSearch instance resource configuration
+The following variables set number of CPU and amount of memory of OpenSearch instance. (Used default values as example.)
+
+```terraform
+confluence_opensearch_requests_cpu = "1"
+confluence_opensearch_requests_memory = "1Gi"
+```

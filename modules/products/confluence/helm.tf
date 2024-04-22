@@ -97,6 +97,7 @@ resource "helm_release" "confluence" {
     local.version_tag,
     local.db_restore_env_vars,
     local.service_account_annotations,
+    local.opensearch_settings,
   ]
 }
 

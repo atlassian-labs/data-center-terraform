@@ -176,3 +176,21 @@ variable "additional_jvm_args" {
   description = "List of additional JVM arguments to be passed to the server"
   type        = list(string)
 }
+
+variable "opensearch_enabled" {
+  description = "If true, OpenSearch will be enabled."
+  type        = bool
+  default     = false
+}
+
+variable "opensearch_requests_cpu" {
+  description = "The minimum CPU compute to request for the OpenSearch instance"
+  type        = string
+  default     = "1"
+}
+
+variable "opensearch_requests_memory" {
+  description = "The minimum amount of memory to allocate to the OpenSearch instance"
+  type        = string
+  default     = "1Gi"
+}

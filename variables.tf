@@ -734,6 +734,24 @@ variable "confluence_additional_jvm_args" {
   type        = list(string)
 }
 
+variable "confluence_opensearch_enabled" {
+  description = "If true, OpenSearch will be enabled."
+  type        = bool
+  default     = false
+}
+
+variable "confluence_opensearch_requests_cpu" {
+  description = "The minimum CPU compute to request for the OpenSearch instance"
+  type        = string
+  default     = "1"
+}
+
+variable "confluence_opensearch_requests_memory" {
+  description = "The minimum amount of memory to allocate to the OpenSearch instance"
+  type        = string
+  default     = "1Gi"
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
