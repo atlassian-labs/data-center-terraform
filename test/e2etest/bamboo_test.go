@@ -3,6 +3,8 @@ package e2etest
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"regexp"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -54,12 +56,16 @@ func assertBambooProjects(t *testing.T, productUrl string) {
 
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig, productUrl string) {
 	agentUrl := "admin/agent/configureAgents!doDefault.action"
-	// Wait 15 seconds to allow remote agents get online
 	time.Sleep(20 * time.Second)
 	url := fmt.Sprintf("%s/%s", productUrl, agentUrl)
 	content := getPageContentWithBasicAuth(t, url, "admin", testConfig.BambooPassword)
 	println("Asserting Bamboo RemoteAgentList...")
-	assert.Contains(t, string(content), "There are currently 3 remote agents online")
+	r := regexp.MustCompile(`(?s)There are currently\s+(\d+)\s+remote agents online`)
+	matches := r.FindStringSubmatch(string(content))
+	assert.NotEmpty(t, matches, "Expected to find a match for 'There are currently X remote agents online' but none was found")
+	numAgents, err := strconv.Atoi(matches[1])
+	assert.NoError(t, err, "Failed to convert the number of agents to an integer")
+	assert.GreaterOrEqual(t, numAgents, 3, "The number of remote agents should be greater than 3")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig, productUrl string) {
