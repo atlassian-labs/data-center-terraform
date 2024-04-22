@@ -23,6 +23,8 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	assert.Equal(t, "confluence", confluence.AttributeValues["chart"])
 	assert.Equal(t, float64(testTimeout*60), confluence.AttributeValues["timeout"])
 	assert.Equal(t, "https://atlassian.github.io/data-center-helm-charts", confluence.AttributeValues["repository"])
+	openSearchValues := confluence.AttributeValues["values"].([]interface{})[9].(string)
+	assert.Equal(t, "\"opensearch\":\n  \"enabled\": true\n  \"resources\":\n    \"requests\":\n      \"cpu\": \"2\"\n      \"memory\": \"2Gi\"\n", openSearchValues)
 }
 
 func TestConfluenceVariablesPopulatedWithInvalidValues(t *testing.T) {
@@ -112,8 +114,11 @@ var ConfluenceCorrectVariables = map[string]interface{}{
 		"max_heap":   "1024m",
 		"stack_size": "1024k",
 	},
-	"enable_synchrony":         false,
-	"db_snapshot_build_number": "1234",
-	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"enable_synchrony":           false,
+	"db_snapshot_build_number":   "1234",
+	"termination_grace_period":   0,
+	"additional_jvm_args":        []string{},
+	"opensearch_enabled":         true,
+	"opensearch_requests_cpu":    "2",
+	"opensearch_requests_memory": "2Gi",
 }
