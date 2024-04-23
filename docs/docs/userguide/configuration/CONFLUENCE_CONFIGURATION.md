@@ -244,6 +244,9 @@ confluence_shared_home_snapshot_id = "<SHARED_HOME_EBS_SNAPSHOT_IDENTIFIER>"
 ??? Warning "Snapshot and your environment must be in same region"  
 
 ## Search engine configuration
+Starting from Confluence 8.9.0, OpenSearch is supported as search engine. 
+See: https://confluence.atlassian.com/doc/configuring-opensearch-for-confluence-1387594125.html
+
 ### OpenSearch
 `confluence_opensearch_enabled` decides whether to use OpenSearch as Confluence search engine. If set to true,
 a single-node OpenSearch will be created as part of the deployment, and Confluence will be configured to connect to this instance.

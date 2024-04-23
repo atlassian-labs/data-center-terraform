@@ -407,6 +407,7 @@ confluence_collaborative_editing_enabled = true
 #confluence_s3_attachments_storage = true
 
 # Enable OpenSearch as Confluence search engine and configure resource requests and limits
+# It is only supported from Confluence 8.9.0. See: https://confluence.atlassian.com/doc/configuring-opensearch-for-confluence-1387594125.html
 # confluence_opensearch_enabled = false
 # confluence_opensearch_requests_cpu = "<REQUESTS_CPU>"
 # confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
