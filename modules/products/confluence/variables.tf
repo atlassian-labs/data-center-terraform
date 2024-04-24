@@ -194,3 +194,9 @@ variable "opensearch_requests_memory" {
   type        = string
   default     = "1Gi"
 }
+
+variable "opensearch_snapshot_id" {
+  description = "EBS Snapshot ID with OpenSearch data."
+  type        = string
+  default     = null
+}

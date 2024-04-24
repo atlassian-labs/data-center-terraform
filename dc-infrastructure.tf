@@ -246,6 +246,7 @@ module "confluence" {
   opensearch_enabled = var.confluence_opensearch_enabled
   opensearch_requests_cpu = var.confluence_opensearch_requests_cpu
   opensearch_requests_memory = var.confluence_opensearch_requests_memory
+  opensearch_snapshot_id = var.confluence_opensearch_snapshot_id
 }
 
 module "bitbucket" {

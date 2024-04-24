@@ -752,6 +752,16 @@ variable "confluence_opensearch_requests_memory" {
   default     = "1Gi"
 }
 
+variable "confluence_opensearch_snapshot_id" {
+  description = "EBS Snapshot ID with OpenSearch data."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.confluence_opensearch_snapshot_id == null || can(regex("^snap-\\w{17}$", var.confluence_opensearch_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################

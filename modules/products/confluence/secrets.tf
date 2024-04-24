@@ -26,3 +26,17 @@ resource "kubernetes_secret" "license_secret" {
     license-key = var.confluence_configuration["license"]
   }
 }
+
+################################################################################
+# Kubernetes secret to store OpenSearch initial password
+################################################################################
+resource "kubernetes_secret" "opensearch_secret" {
+  metadata {
+    name      = "opensearch-initial-password"
+    namespace = var.namespace
+  }
+
+  data = {
+    OPENSEARCH_INITIAL_ADMIN_PASSWORD = "OpenSearchAtl123!"
+  }
+}

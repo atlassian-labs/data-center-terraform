@@ -79,6 +79,12 @@ locals {
           memory = var.opensearch_requests_memory
         }
       }
+      credentials = {
+        createSecret = false
+        existingSecretRef = {
+          name = "opensearch-initial-password"
+        }
+      }
     }
   }) : yamlencode({})
 
@@ -121,9 +127,11 @@ locals {
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
-  irsa_properties = var.confluence_s3_attachments_storage ? ["-Daws.webIdentityTokenFile=/var/run/secrets/eks.amazonaws.com/serviceaccount/token",
+  irsa_properties = var.confluence_s3_attachments_storage ? [
+    "-Daws.webIdentityTokenFile=/var/run/secrets/eks.amazonaws.com/serviceaccount/token",
     "-Dconfluence.filestore.attachments.s3.bucket.name=${var.eks.confluence_s3_bucket_name}",
-  "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"] : []
+    "-Dconfluence.filestore.attachments.s3.bucket.region=${var.region_name}"
+  ] : []
 
   service_account_annotations = var.confluence_s3_attachments_storage ? yamlencode({
     serviceAccount = {
@@ -133,5 +141,6 @@ locals {
     }
   }) : yamlencode({})
 
-  storage_class = "gp2"
+  storage_class            = "gp2"
+  opensearch_storage_class = "gp2"
 }
