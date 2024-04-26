@@ -79,6 +79,9 @@ locals {
           memory = var.opensearch_requests_memory
         }
       }
+      persistence = {
+        size = var.opensearch_persistence_size
+      }
       credentials = {
         createSecret = false
         existingSecretRef = {

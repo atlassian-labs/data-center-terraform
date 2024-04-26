@@ -752,6 +752,12 @@ variable "confluence_opensearch_requests_memory" {
   default     = "1Gi"
 }
 
+variable "confluence_opensearch_persistence_size" {
+  description = "OpenSearch persistent volume size"
+  type        = string
+  default     = "10Gi"
+}
+
 variable "confluence_opensearch_snapshot_id" {
   description = "EBS Snapshot ID with OpenSearch data."
   type        = string

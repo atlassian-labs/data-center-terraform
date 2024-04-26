@@ -411,6 +411,7 @@ confluence_collaborative_editing_enabled = true
 # confluence_opensearch_enabled = false
 # confluence_opensearch_requests_cpu = "<REQUESTS_CPU>"
 # confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
+# confluence_opensearch_persistence_size = "<PERSISTENCE_SIZE>"
 
 ################################################################################
 # Bitbucket Settings

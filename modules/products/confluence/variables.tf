@@ -195,6 +195,12 @@ variable "opensearch_requests_memory" {
   default     = "1Gi"
 }
 
+variable "opensearch_persistence_size" {
+  description = "OpenSearch persistent volume size"
+  type        = string
+  default     = "10Gi"
+}
+
 variable "opensearch_snapshot_id" {
   description = "EBS Snapshot ID with OpenSearch data."
   type        = string
