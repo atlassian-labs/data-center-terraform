@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.7.9
+
+**Release date:** 2024-04-27
+
+* Fix launch template error [#386](https://github.com/atlassian-labs/data-center-terraform/pull/386)
+
+## 2.7.8
+
+**Release date:** 2024-04-22
+
+* Fix Bamboo e2e tests [#383](https://github.com/atlassian-labs/data-center-terraform/pull/383)
+
 ## 2.7.7
 
 **Release date:** 2024-04-17
