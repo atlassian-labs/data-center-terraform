@@ -43,5 +43,5 @@ locals {
     crowdstrike_secret_name       = var.crowdstrike_secret_name
   })]
 
-  user_data = local.user_content != null ? base64encode(join("\n", concat(local.user_content, ["--==MYBOUNDARY==--"]))) : null
+  user_data = local.user_content != [] ? base64encode(join("\n", concat(local.user_content, ["--==MYBOUNDARY==--"]))) : null
 }
