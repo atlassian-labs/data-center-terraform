@@ -413,6 +413,12 @@ confluence_collaborative_editing_enabled = true
 # confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
 # confluence_opensearch_persistence_size = "<PERSISTENCE_SIZE>"
 
+# OpenSearch restore configuration
+# To restore OpenSearch dataset, you can provide EBS snapshot ID of the OpenSearch volume.
+# This volume will be used to pre-create OpenSearch PVC and PV.
+# Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
+# confluence_opensearch_snapshot_id = "<OPENSEARCH_SNAPSHOT_ID>"
+
 ################################################################################
 # Bitbucket Settings
 ################################################################################

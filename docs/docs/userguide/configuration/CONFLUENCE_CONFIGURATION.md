@@ -262,3 +262,20 @@ The following variables set number of CPU and amount of memory of OpenSearch ins
 confluence_opensearch_requests_cpu = "1"
 confluence_opensearch_requests_memory = "1Gi"
 ```
+
+### OpenSearch persistent volume size
+`confluence_opensearch_persistence_size` sets the size of OpenSearch's persistence volume. (Used default values as example.)
+
+```terraform
+confluence_opensearch_persistence_size = "10Gi"
+```
+
+### OpenSearch restore configuration
+To restore OpenSearch dataset, you can provide EBS snapshot ID of the OpenSearch volume. This volume will be used to pre-create OpenSearch PVC and PV.
+
+`confluence_opensearch_snapshot_id` sets the id of OpenSearch EBS snapshot.
+Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
+
+```terraform
+confluence_opensearch_snapshot_id = "<OPENSEARCH_SNAPSHOT_ID>"
+```
