@@ -127,8 +127,14 @@ func fetchSnapshotsJson() (*DCSnapshots, error) {
 	}
 
 	f, err := os.Create("../dcapt-snapshots.json")
+	if err != nil {
+		return nil, err
+	}
 	defer f.Close()
-	f.Write(body)
+	_, err = f.Write(body)
+	if err != nil {
+		return nil, err
+	}
 
 	var snapshots DCSnapshots
 	if err := json.Unmarshal(body, &snapshots); err != nil {
