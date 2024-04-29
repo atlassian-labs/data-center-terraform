@@ -31,12 +31,19 @@ resource "kubernetes_secret" "license_secret" {
 # Kubernetes secret to store OpenSearch initial password
 ################################################################################
 resource "kubernetes_secret" "opensearch_secret" {
+  count = var.opensearch_enabled ? 1 : 0
+
   metadata {
     name      = "opensearch-initial-password"
     namespace = var.namespace
   }
 
   data = {
-    OPENSEARCH_INITIAL_ADMIN_PASSWORD = "OpenSearchAtl123!"
+    OPENSEARCH_INITIAL_ADMIN_PASSWORD = var.opensearch_initial_admin_password != null ? var.opensearch_initial_admin_password : random_password.opensearch.result
   }
+}
+
+resource "random_password" "opensearch" {
+  length  = 16
+  special = true
 }

@@ -270,6 +270,14 @@ confluence_opensearch_requests_memory = "1Gi"
 confluence_opensearch_persistence_size = "10Gi"
 ```
 
+### OpenSearch initial admin password
+From OpenSearch Helm chart version 2.18.0 and App Version OpenSearch 2.12.0 onwards a custom strong password needs to be provided in order to setup demo admin user.
+If no password is specified, a random password will be generated.
+
+```terraform
+confluence_opensearch_initial_admin_password = "OpenSearchAtl123!"
+```
+
 ### OpenSearch restore configuration
 To restore OpenSearch dataset, you can provide EBS snapshot ID of the OpenSearch volume. This volume will be used to pre-create OpenSearch PVC and PV.
 

@@ -16,6 +16,8 @@ func TestConfluenceVariablesPopulatedWithValidValues(t *testing.T) {
 	tfOptions := GenerateTFOptions(ConfluenceCorrectVariables, t, confluenceModule)
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
+	terraform.RequirePlannedValuesMapKeyExists(t, plan, "random_password.opensearch")
+
 	confluenceKey := "helm_release.confluence"
 	terraform.RequirePlannedValuesMapKeyExists(t, plan, confluenceKey)
 	confluence := plan.ResourcePlannedValuesMap[confluenceKey]

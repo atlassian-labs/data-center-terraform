@@ -412,6 +412,7 @@ confluence_collaborative_editing_enabled = true
 # confluence_opensearch_requests_cpu = "<REQUESTS_CPU>"
 # confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
 # confluence_opensearch_persistence_size = "<PERSISTENCE_SIZE>"
+# confluence_opensearch_initial_admin_password = "<STRONG_PASSWORD>"
 
 # OpenSearch restore configuration
 # To restore OpenSearch dataset, you can provide EBS snapshot ID of the OpenSearch volume.

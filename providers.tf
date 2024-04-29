@@ -29,3 +29,7 @@ provider "helm" {
     }
   }
 }
+
+provider "random" {
+  # Configuration options
+}

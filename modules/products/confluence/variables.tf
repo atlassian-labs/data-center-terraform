@@ -201,6 +201,12 @@ variable "opensearch_persistence_size" {
   default     = "10Gi"
 }
 
+variable "opensearch_initial_admin_password" {
+  description = "OpenSearch initial admin password"
+  type        = string
+  default     = null
+}
+
 variable "opensearch_snapshot_id" {
   description = "EBS Snapshot ID with OpenSearch data."
   type        = string
