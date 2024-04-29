@@ -407,9 +407,18 @@ confluence_collaborative_editing_enabled = true
 #confluence_s3_attachments_storage = true
 
 # Enable OpenSearch as Confluence search engine and configure resource requests and limits
+# It is only supported from Confluence 8.9.0. See: https://confluence.atlassian.com/doc/configuring-opensearch-for-confluence-1387594125.html
 # confluence_opensearch_enabled = false
 # confluence_opensearch_requests_cpu = "<REQUESTS_CPU>"
 # confluence_opensearch_requests_memory = "<REQUESTS_MEMORY>"
+# confluence_opensearch_persistence_size = "<PERSISTENCE_SIZE>"
+# confluence_opensearch_initial_admin_password = "<STRONG_PASSWORD>"
+
+# OpenSearch restore configuration
+# To restore OpenSearch dataset, you can provide EBS snapshot ID of the OpenSearch volume.
+# This volume will be used to pre-create OpenSearch PVC and PV.
+# Make sure the snapshot is available in the region you are deploying to and follows all product requirements.
+# confluence_opensearch_snapshot_id = "<OPENSEARCH_SNAPSHOT_ID>"
 
 ################################################################################
 # Bitbucket Settings

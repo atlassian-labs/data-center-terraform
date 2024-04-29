@@ -752,6 +752,32 @@ variable "confluence_opensearch_requests_memory" {
   default     = "1Gi"
 }
 
+variable "confluence_opensearch_persistence_size" {
+  description = "OpenSearch persistent volume size"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "confluence_opensearch_initial_admin_password" {
+  description = "Initial admin password for the Confluence OpenSearch instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = can(regex("^([aA-zZ]|[0-9]|[!@#$% &*()-_=+[]{}<>:?]).{12,}$", var.confluence_opensearch_initial_admin_password)) || var.confluence_opensearch_initial_admin_password == null
+    error_message = "Confluence OpenSearch initial password must be at least 12 characters long and contain combination of numbers, letters, and special characters."
+  }
+}
+
+variable "confluence_opensearch_snapshot_id" {
+  description = "EBS Snapshot ID with OpenSearch data."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.confluence_opensearch_snapshot_id == null || can(regex("^snap-\\w{17}$", var.confluence_opensearch_snapshot_id))
+    error_message = "Provide correct EBS snapshot ID."
+  }
+}
+
 ################################################################################
 # Bitbucket Variables
 ################################################################################
