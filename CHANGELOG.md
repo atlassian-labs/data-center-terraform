@@ -1,5 +1,14 @@
 # Change Log
 
+
+## 2.8.0
+
+**Release date:** 2024-04-30
+
+* Added support to enable OpenSearch for Confluence [#381](https://github.com/atlassian-labs/data-center-terraform/pull/381)
+* Restore OpenSearch from snapshot [#384](https://github.com/atlassian-labs/data-center-terraform/pull/384)
+* Improve dcapt-snapshots tests [#387](https://github.com/atlassian-labs/data-center-terraform/pull/387)
+
 ## 2.7.9
 
 **Release date:** 2024-04-27
