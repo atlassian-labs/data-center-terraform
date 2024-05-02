@@ -237,3 +237,8 @@ variable "test_deployment_image_tag" {
   type        = string
   default     = "24.0.7-dind"
 }
+
+variable "resource_tags" {
+  description = "Additional tags for all resources to be created."
+  type = map(string)
+}
