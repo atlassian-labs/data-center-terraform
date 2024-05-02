@@ -21,7 +21,11 @@ func TestIngressIsCreatedWithDomain(t *testing.T) {
 		"enable_ssh_tcp":              true,
 		"load_balancer_access_ranges": []string{"0.0.0.0/0"},
 		"enable_https_ingress":        bool(false),
-	}, t, ingressModule)
+		"resource_tags": map[string]interface{}{
+			"environment": "development",
+			"project":     "deplops",
+			"owner":       "team-a",
+		}}, t, ingressModule)
 
 	plan := terraform.InitAndPlanAndShowWithStruct(t, tfOptions)
 
