@@ -343,6 +343,11 @@ var IngressInvalidVariablesValue = map[string]interface{}{
 	"vpc": map[string]interface{}{
 		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
 	},
+	"resource_tags": map[string]interface{}{
+		"environment": "development",
+		"project":     "deplops",
+		"owner":       "team-a",
+	},
 }
 
 var IngressValidVariablesValue = map[string]interface{}{
@@ -353,6 +358,11 @@ var IngressValidVariablesValue = map[string]interface{}{
 	"enable_https_ingress": bool(false),
 	"vpc": map[string]interface{}{
 		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
+	},
+	"resource_tags": map[string]interface{}{
+		"environment": "development",
+		"project":     "deplops",
+		"owner":       "team-a",
 	},
 }
 
@@ -404,8 +414,7 @@ var BitbucketInvalidVariables = map[string]interface{}{
 	"elasticsearch_storage":         10,
 	"elasticsearch_replicas":        9, // invalid, should be [2,8]
 	"termination_grace_period":      0,
-	"additional_jvm_args": 					 []string{},
-
+	"additional_jvm_args":           []string{},
 }
 
 var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci mauris, cursus sit amet tortor sit amet, aliquam dapibus magna. In sodales felis in ipsum euismod tempor. Phasellus mattis, justo id auctor lacinia, ipsum nulla sodales massa, ac porttitor arcu sem et quam."
@@ -463,7 +472,7 @@ var ConfluenceInvalidVariables = map[string]interface{}{
 	"db_snapshot_id":           "dummy-snapshot-id",
 	"db_snapshot_build_number": "invalid.build.number",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"additional_jvm_args":      []string{},
 }
 
 // Jira
@@ -512,7 +521,7 @@ var JiraCorrectVariables = map[string]interface{}{
 	},
 	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"additional_jvm_args":      []string{},
 }
 
 var JiraInvalidVariables = map[string]interface{}{
@@ -555,7 +564,7 @@ var JiraInvalidVariables = map[string]interface{}{
 	},
 	"db_snapshot_id":           "dummy-rds-snapshot-id",
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"additional_jvm_args":      []string{},
 }
 
 // Crowd
@@ -601,7 +610,7 @@ var CrowdCorrectVariables = map[string]interface{}{
 		"custom_values_file": "",
 	},
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"additional_jvm_args":      []string{},
 }
 
 var CrowdInvalidVariables = map[string]interface{}{
@@ -641,5 +650,5 @@ var CrowdInvalidVariables = map[string]interface{}{
 		"max_heap": "786m",
 	},
 	"termination_grace_period": 0,
-	"additional_jvm_args": 			[]string{},
+	"additional_jvm_args":      []string{},
 }
