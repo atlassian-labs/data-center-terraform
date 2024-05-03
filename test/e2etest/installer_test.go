@@ -29,6 +29,7 @@ func TestInstaller(t *testing.T) {
 	runInstallScript(testConfig.ConfigPath)
 
 	clusterHealthTests(t, testConfig)
+	checkLoadBalancerTags(t, testConfig)
 	checkAGSAndEC2Tags(t, testConfig)
 	checkEbsVolumes(t, testConfig)
 	checkLaunchTemplate(t, testConfig)

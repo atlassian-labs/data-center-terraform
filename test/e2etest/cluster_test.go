@@ -3,13 +3,14 @@ package e2etest
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/autoscaling"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/aws/aws-sdk-go/service/elbv2"
 	"strconv"
 	"testing"
 
 	aws_sdk "github.com/aws/aws-sdk-go/aws"
-
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
@@ -53,6 +54,43 @@ func checkAGSAndEC2Tags(t *testing.T, testConfig TestConfig) {
 	autoScalingGroups, err := asgClient.DescribeAutoScalingGroups(input)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(autoScalingGroups.AutoScalingGroups))
+}
+
+func checkLoadBalancerTags(t *testing.T, testConfig TestConfig) {
+	printTestBanner("Check Nginx LoadBalancer", "Tags")
+	sess := session.Must(session.NewSession(&aws_sdk.Config{
+		Region: aws_sdk.String(testConfig.AwsRegion),
+	}))
+
+	ec2Svc := ec2.New(sess)
+	describeTagsOutput, err := ec2Svc.DescribeTags(&ec2.DescribeTagsInput{
+		Filters: []*ec2.Filter{
+			{
+				Name:   aws_sdk.String("tag:" + "service_name"),
+				Values: []*string{aws_sdk.String(testConfig.EnvironmentName)},
+			},
+			{
+				Name:   aws_sdk.String("resource-type"),
+				Values: []*string{aws_sdk.String("load-balancer")},
+			},
+		},
+	})
+	assert.NoError(t, err)
+	resourceIDs := make([]*string, 0)
+	for _, tagDescription := range describeTagsOutput.Tags {
+		resourceIDs = append(resourceIDs, tagDescription.ResourceId)
+	}
+	assert.Greater(t, len(resourceIDs), 0)
+
+	elbClient := elbv2.New(sess)
+	describeLBsOutput, err := elbClient.DescribeLoadBalancers(&elbv2.DescribeLoadBalancersInput{
+		LoadBalancerArns: resourceIDs,
+	})
+
+	for _, lb := range describeLBsOutput.LoadBalancers {
+		fmt.Printf("LoadBalancer Name: %s, ARN: %s, Type: %s\n", *lb.LoadBalancerName, *lb.LoadBalancerArn, *lb.Type)
+	}
+	assert.Greater(t, len(describeLBsOutput.LoadBalancers), 0)
 }
 
 func checkLaunchTemplate(t *testing.T, testConfig TestConfig) {
