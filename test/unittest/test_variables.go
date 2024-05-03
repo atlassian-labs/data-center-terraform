@@ -343,7 +343,7 @@ var IngressInvalidVariablesValue = map[string]interface{}{
 	"vpc": map[string]interface{}{
 		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
 	},
-	"resource_tags": map[string]interface{}{
+	"tags": map[string]interface{}{
 		"environment": "development",
 		"project":     "deplops",
 		"owner":       "team-a",
@@ -359,7 +359,7 @@ var IngressValidVariablesValue = map[string]interface{}{
 	"vpc": map[string]interface{}{
 		"nat_public_ips": []string{"1.1.1.1", "2.2.2.2"},
 	},
-	"resource_tags": map[string]interface{}{
+	"tags": map[string]interface{}{
 		"environment": "development",
 		"project":     "deplops",
 		"owner":       "team-a",

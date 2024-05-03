@@ -36,7 +36,7 @@ variable "additional_namespaces" {
   default     = []
 }
 
-variable "resource_tags" {
+variable "tags" {
   description = "Additional tags for all resources to be created."
   type = map(string)
 }
