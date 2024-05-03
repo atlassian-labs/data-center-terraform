@@ -49,6 +49,7 @@ module "ingress" {
   enable_https_ingress        = var.enable_https_ingress
   vpc                         = module.vpc
   additional_namespaces       = var.additional_namespaces
+  tags                        = var.tags
 }
 
 module "external_dns" {

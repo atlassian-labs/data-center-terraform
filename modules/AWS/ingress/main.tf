@@ -91,6 +91,9 @@ resource "helm_release" "ingress" {
             # The protocol to use for backend traffic between the load balancer and the k8s pods.
             # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#backend-protocol
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
+
+            # LoadBalancer is created by AWS not Terraform, so we need to add resource tags to it
+            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags": local.resource_tags
           }
         }
       }

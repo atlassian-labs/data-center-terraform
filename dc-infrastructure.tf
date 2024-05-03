@@ -19,7 +19,6 @@ module "base-infrastructure" {
   enable_https_ingress      = var.enable_https_ingress
   create_external_dns       = var.create_external_dns
   additional_namespaces     = var.additional_namespaces
-
   enable_ssh_tcp        = local.install_bitbucket
   osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
   osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
