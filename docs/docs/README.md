@@ -9,7 +9,7 @@
     **This project is designed for Atlassian vendors to run [DC App Performance Toolkit](https://developer.atlassian.com/platform/marketplace/dc-apps-performance-and-scale-testing/){.external} and is not officially supported.**
 
     We don't recommend using the scripts to deploy production instances but they can be used for inspiration and to deploy testing stacks.
-    Beware that the project is tested only for DCAPT framework use case with the pre-defined configuration files only.
+    Beware that the project is tested only for DCAPT framework use cases with the pre-defined configuration files only.
 
 
 ## Products and Platforms
