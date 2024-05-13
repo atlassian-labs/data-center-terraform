@@ -73,7 +73,7 @@ resource "helm_release" "bitbucket" {
         }
       }
       opensearch = {
-        enabled = var.opensearch_endpoint == null ? true : false
+        install = var.opensearch_endpoint == null ? true : false
         baseUrl = local.opensearch_endpoint
         credentials = {
           secretName        = var.opensearch_secret_name
