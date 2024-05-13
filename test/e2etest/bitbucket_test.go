@@ -24,7 +24,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketStatusEndpoint(t, productUrl)
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
-	assertEsIndexes(t, testConfig)
+	assertOpenSearchIndexes(t, testConfig)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
@@ -171,10 +171,10 @@ func cloneRepo(t *testing.T, host string) {
 	assert.Equal(t, "remote repository is empty", err.Error())
 }
 
-func assertEsIndexes(t *testing.T, testConfig TestConfig) {
-	println("Asserting ElasticSearch indexes ...")
+func assertOpenSearchIndexes(t *testing.T, testConfig TestConfig) {
+	println("Asserting OpenSearch indexes ...")
 	// give Bitbucket enough time to create project and repo indexes
-	time.Sleep(15 * time.Second)
+	time.Sleep(25 * time.Second)
 	kubectlOptions := getKubectlOptions(t, testConfig)
 	expectedDocCount := "1"
 	openSearchPassword, err := getSecretDataByKey(t, kubectlOptions, "opensearch-initial-password", "OPENSEARCH_INITIAL_ADMIN_PASSWORD")
