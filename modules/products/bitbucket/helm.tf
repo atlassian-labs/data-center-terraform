@@ -76,19 +76,19 @@ resource "helm_release" "bitbucket" {
         enabled = var.opensearch_endpoint == null ? true : false
         baseUrl = local.opensearch_endpoint
         credentials = {
-          secretName = var.opensearch_secret_name
+          secretName        = var.opensearch_secret_name
           usernameSecretKey = var.opensearch_secret_username_key
           passwordSecretKey = var.opensearch_secret_password_key
         }
         singleNode = var.opensearch_replicas > 1 ? false : true
-        replicas = var.opensearch_replicas
+        replicas   = var.opensearch_replicas
         resources = {
           requests = {
-            cpu = var.opensearch_requests_cpu
+            cpu    = var.opensearch_requests_cpu
             memory = var.opensearch_requests_memory
           }
           limits = {
-            cpu = var.opensearch_limits_cpu
+            cpu    = var.opensearch_limits_cpu
             memory = var.opensearch_limits_memory
           }
         }

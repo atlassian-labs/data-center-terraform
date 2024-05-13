@@ -93,7 +93,7 @@ resource "helm_release" "ingress" {
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
 
             # LoadBalancer is created by AWS not Terraform, so we need to add resource tags to it
-            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags": local.resource_tags
+            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : local.resource_tags
           }
         }
       }

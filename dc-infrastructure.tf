@@ -19,11 +19,11 @@ module "base-infrastructure" {
   enable_https_ingress      = var.enable_https_ingress
   create_external_dns       = var.create_external_dns
   additional_namespaces     = var.additional_namespaces
-  enable_ssh_tcp        = local.install_bitbucket
-  osquery_secret_name   = var.osquery_fleet_enrollment_secret_name
-  osquery_secret_region = var.osquery_fleet_enrollment_secret_region_aws
-  osquery_env           = var.osquery_env
-  osquery_version       = var.osquery_version
+  enable_ssh_tcp            = local.install_bitbucket
+  osquery_secret_name       = var.osquery_fleet_enrollment_secret_name
+  osquery_secret_region     = var.osquery_fleet_enrollment_secret_region_aws
+  osquery_env               = var.osquery_env
+  osquery_version           = var.osquery_version
 
   kinesis_log_producers_role_arns = var.kinesis_log_producers_role_arns
   osquery_fleet_enrollment_host   = var.osquery_fleet_enrollment_host
@@ -242,11 +242,11 @@ module "confluence" {
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_confluence_chart_path = local.local_confluence_chart_path
 
-  opensearch_enabled = var.confluence_opensearch_enabled
-  opensearch_requests_cpu = var.confluence_opensearch_requests_cpu
-  opensearch_requests_memory = var.confluence_opensearch_requests_memory
-  opensearch_snapshot_id = var.confluence_opensearch_snapshot_id
-  opensearch_persistence_size = var.confluence_opensearch_persistence_size
+  opensearch_enabled                = var.confluence_opensearch_enabled
+  opensearch_requests_cpu           = var.confluence_opensearch_requests_cpu
+  opensearch_requests_memory        = var.confluence_opensearch_requests_memory
+  opensearch_snapshot_id            = var.confluence_opensearch_snapshot_id
+  opensearch_persistence_size       = var.confluence_opensearch_persistence_size
   opensearch_initial_admin_password = var.confluence_opensearch_initial_admin_password
 }
 
@@ -296,15 +296,15 @@ module "bitbucket" {
 
   additional_jvm_args = var.bitbucket_additional_jvm_args
 
-  opensearch_requests_cpu    = var.bitbucket_opensearch_requests_cpu
-  opensearch_requests_memory = var.bitbucket_opensearch_requests_memory
-  opensearch_limits_cpu      = var.bitbucket_opensearch_limits_cpu
-  opensearch_limits_memory   = var.bitbucket_opensearch_limits_memory
-  opensearch_storage         = var.bitbucket_opensearch_storage
-  opensearch_replicas        = var.bitbucket_opensearch_replicas
-  opensearch_java_opts       = var.bitbucket_opensearch_java_opts
-  deploy_opensearch          = var.bitbucket_deploy_opensearch
-  opensearch_secret_name     = var.bitbucket_opensearch_secret_name
+  opensearch_requests_cpu        = var.bitbucket_opensearch_requests_cpu
+  opensearch_requests_memory     = var.bitbucket_opensearch_requests_memory
+  opensearch_limits_cpu          = var.bitbucket_opensearch_limits_cpu
+  opensearch_limits_memory       = var.bitbucket_opensearch_limits_memory
+  opensearch_storage             = var.bitbucket_opensearch_storage
+  opensearch_replicas            = var.bitbucket_opensearch_replicas
+  opensearch_java_opts           = var.bitbucket_opensearch_java_opts
+  deploy_opensearch              = var.bitbucket_deploy_opensearch
+  opensearch_secret_name         = var.bitbucket_opensearch_secret_name
   opensearch_secret_username_key = var.bitbucket_opensearch_secret_username_key
   opensearch_secret_password_key = var.bitbucket_opensearch_secret_password_key
 
