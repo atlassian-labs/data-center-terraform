@@ -60,21 +60,8 @@ locals {
     }
   }) : yamlencode({})
 
-  # Elasticsearch
-  elasticsearch_name                  = "elasticsearch"
-  elasticsearch_helm_chart_repository = "https://helm.elastic.co"
-  elasticsearch_helm_chart_version    = "7.17.3"
-  elasticsearch_antiAffinity          = "soft"
+  opensearch_endpoint = var.opensearch_endpoint == null ? "http://opensearch-cluster-master:9200" : var.opensearch_endpoint
 
-  elasticsearch_endpoint = var.elasticsearch_endpoint == null ? "http://${local.elasticsearch_name}-master:9200" : var.elasticsearch_endpoint
-  minimumMasterNodes     = var.elasticsearch_replicas == 1 ? 1 : 2
-
-  single_mode_elasticsearch = var.elasticsearch_replicas > 1 ? yamlencode({}) : yamlencode({
-    extraEnvs = [
-      { name = "discovery.type", value = "single-node" },
-      { name = "cluster.initial_master_nodes", value = "" }
-    ]
-  })
 
   # Bitbucket display name
   display_name = var.display_name != null ? yamlencode({

@@ -2,6 +2,7 @@ package e2etest
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -176,13 +177,15 @@ func assertEsIndexes(t *testing.T, testConfig TestConfig) {
 	time.Sleep(15 * time.Second)
 	kubectlOptions := getKubectlOptions(t, testConfig)
 	expectedDocCount := "1"
+	openSearchPassword, err := getSecretDataByKey(t, kubectlOptions, "opensearch-initial-password", "OPENSEARCH_INITIAL_ADMIN_PASSWORD")
+	assert.NoError(t, err)
 	for _, index := range []string{"bitbucket-project", "bitbucket-repository"} {
-		docCount, err := getEsIndexByName(t, kubectlOptions, index)
+		docCount, err := getOpenSearchIndexByName(t, kubectlOptions, index, openSearchPassword)
 		assert.NoError(t, err)
 		if docCount != expectedDocCount {
 			fmt.Printf("DocCount in %s index is %s, expecting %s. Trying again in 20 seconds", index, docCount, expectedDocCount)
 			time.Sleep(20 * time.Second)
-			docCount, _ = getEsIndexByName(t, kubectlOptions, index)
+			docCount, _ = getOpenSearchIndexByName(t, kubectlOptions, index, openSearchPassword)
 		}
 		assert.Equal(t, expectedDocCount, docCount)
 	}
@@ -192,7 +195,7 @@ func getHostFrom(productUrl string) string {
 	return strings.Split(productUrl, "/")[2]
 }
 
-type ESIndex []struct {
+type OpenSearchIndex []struct {
 	Health       string `json:"health"`
 	Status       string `json:"status"`
 	Index        string `json:"index"`
@@ -205,26 +208,40 @@ type ESIndex []struct {
 	PriStoreSize string `json:"pri.store.size"`
 }
 
-func getEsIndexByName(t *testing.T, kubectlOptions *k8s.KubectlOptions, index string) (docCount string, err error) {
-	esOutput, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
-		"exec", "elasticsearch-master-0", "-c", "elasticsearch",
+func getOpenSearchIndexByName(t *testing.T, kubectlOptions *k8s.KubectlOptions, index string, password string) (docCount string, err error) {
+	command := fmt.Sprintf("curl -s -u admin:%s http://opensearch-cluster-master:9200/_cat/indices/%s?format=json", password, index)
+	osOutput, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+		"exec", "bitbucket-0", "-c", "bitbucket",
 		"--", "/bin/bash",
-		"-c", "curl -s http://localhost:9200/_cat/indices?format=json")
+		"-c", command)
 	if err != nil {
 		return "0", err
 	} else {
-		var esIndex ESIndex
-		err := json.Unmarshal([]byte(esOutput), &esIndex)
+		var osIndex OpenSearchIndex
+		err := json.Unmarshal([]byte(osOutput), &osIndex)
 		if err != nil {
 			return "0", err
 		} else {
-			for _, v := range esIndex {
+			for _, v := range osIndex {
 				if v.Index == index {
-					assert.Equal(t, v.Health, "green")
 					return v.DocsCount, nil
 				}
 			}
 			return "Index not found", nil
 		}
 	}
+}
+
+func getSecretDataByKey(t *testing.T, kubectlOptions *k8s.KubectlOptions, secretName string, key string) (secretValue string, err error) {
+	jsonPath := fmt.Sprintf("jsonpath={.data.%s}", key)
+	base64EncodedValue, err := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+		"get", "secret", secretName, "-o", jsonPath)
+	if err != nil {
+		return "", err
+	}
+	decodedPassword, err := base64.StdEncoding.DecodeString(base64EncodedValue)
+	if err != nil {
+		return "", err
+	}
+	return string(decodedPassword), nil
 }

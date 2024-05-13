@@ -296,12 +296,17 @@ module "bitbucket" {
 
   additional_jvm_args = var.bitbucket_additional_jvm_args
 
-  elasticsearch_requests_cpu    = var.bitbucket_elasticsearch_requests_cpu
-  elasticsearch_requests_memory = var.bitbucket_elasticsearch_requests_memory
-  elasticsearch_limits_cpu      = var.bitbucket_elasticsearch_limits_cpu
-  elasticsearch_limits_memory   = var.bitbucket_elasticsearch_limits_memory
-  elasticsearch_storage         = var.bitbucket_elasticsearch_storage
-  elasticsearch_replicas        = var.bitbucket_elasticsearch_replicas
+  opensearch_requests_cpu    = var.bitbucket_opensearch_requests_cpu
+  opensearch_requests_memory = var.bitbucket_opensearch_requests_memory
+  opensearch_limits_cpu      = var.bitbucket_opensearch_limits_cpu
+  opensearch_limits_memory   = var.bitbucket_opensearch_limits_memory
+  opensearch_storage         = var.bitbucket_opensearch_storage
+  opensearch_replicas        = var.bitbucket_opensearch_replicas
+  opensearch_java_opts       = var.bitbucket_opensearch_java_opts
+  deploy_opensearch          = var.bitbucket_deploy_opensearch
+  opensearch_secret_name     = var.bitbucket_opensearch_secret_name
+  opensearch_secret_username_key = var.bitbucket_opensearch_secret_username_key
+  opensearch_secret_password_key = var.bitbucket_opensearch_secret_password_key
 
   shared_home_snapshot_id = local.bitbucket_ebs_snapshot_id
 
