@@ -407,14 +407,17 @@ var BitbucketInvalidVariables = map[string]interface{}{
 		"license":      "dummy_license",
 		"invalid":      "bitbucket-configuration",
 	},
-	"elasticsearch_requests_cpu":    "1",
-	"elasticsearch_requests_memory": "1Gi",
-	"elasticsearch_limits_cpu":      "1",
-	"elasticsearch_limits_memory":   "1Gi",
-	"elasticsearch_storage":         10,
-	"elasticsearch_replicas":        9, // invalid, should be [2,8]
-	"termination_grace_period":      0,
-	"additional_jvm_args":           []string{},
+	"opensearch_requests_cpu":        "1",
+	"opensearch_requests_memory":     "1Gi",
+	"opensearch_limits_cpu":          "1",
+	"opensearch_limits_memory":       "1Gi",
+	"opensearch_storage":             10,
+	"opensearch_replicas":            9, // invalid, should be [2,8]
+	"opensearch_java_opts":           "JAVA_OPTS",
+	"opensearch_secret_username_key": nil,
+	"opensearch_secret_password_key": nil,
+	"termination_grace_period":       0,
+	"additional_jvm_args":            []string{},
 }
 
 var superLongStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci mauris, cursus sit amet tortor sit amet, aliquam dapibus magna. In sodales felis in ipsum euismod tempor. Phasellus mattis, justo id auctor lacinia, ipsum nulla sodales massa, ac porttitor arcu sem et quam."

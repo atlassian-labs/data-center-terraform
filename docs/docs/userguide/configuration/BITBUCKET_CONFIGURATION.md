@@ -153,7 +153,7 @@ If you restore the database, you need to provide the db name from the snapshot. 
 bitbucket_db_name = "bitbucket"
 ```
 
-## NFS and Elasticsearch Configuration
+## NFS and OpenSearch Configuration
 
 
 ### NFS resource configuration
@@ -168,18 +168,24 @@ bitbucket_nfs_limits_cpu      = "2"
 bitbucket_nfs_limits_memory   = "2Gi"
 ```
 
-### Elasticsearch Configuration
+### OpenSearch Configuration
 
-The following variables set the request for number of CPU, amount of memory, amount of storage, and the number of instances in elasticsearch cluster. (Used default values as example.)
+The following variables set the request for number of CPU, amount of memory, amount of storage, and the number of instances in elasticsearch cluster.
 
 ```terraform
 # Elasticsearch resource configuration for Bitbucket
-bitbucket_elasticsearch_requests_cpu    = "0.5"
-bitbucket_elasticsearch_requests_memory = "0.5Gi"
-bitbucket_elasticsearch_limits_cpu      = "1"
-bitbucket_elasticsearch_limits_memory   = "1Gi"
-bitbucket_elasticsearch_storage         = 10
-bitbucket_elasticsearch_replicas        = 2
+bitbucket_opensearch_requests_cpu    = "2"
+bitbucket_opensearch_requests_memory = "2Gi"
+bitbucket_opensearch_limits_cpu      = "4"
+bitbucket_opensearch_limits_memory   = "4Gi"
+bitbucket_opensearch_storage         = "20"
+bitbucket_opensearch_replicas        = "3"
+bitbucket_opensearch_java_opts       = "-Xmx=1024"
+#Configure access to external OpenSearch (created outside Terraform modules)
+bitbucket_opensearch_endpoint            = "https://myopensearch.com"
+bitbucket_opensearch_secret_name         = "os-creds"
+bitbucket_opensearch_secret_username_key = "user"
+bitbucket_opensearch_secret_password_key = "pass"
 ```
 
 

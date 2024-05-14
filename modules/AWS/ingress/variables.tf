@@ -38,5 +38,5 @@ variable "additional_namespaces" {
 
 variable "tags" {
   description = "Additional tags for all resources to be created."
-  type = map(string)
+  type        = map(string)
 }

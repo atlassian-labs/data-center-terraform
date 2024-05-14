@@ -115,44 +115,71 @@ variable "shared_home_size" {
   default     = "10Gi"
 }
 
-# If an external elasticsearch is not provided, Bitbucket will provision an elasticsearch cluster in k8s
-variable "elasticsearch_endpoint" {
-  description = "The external elasticsearch endpoint to be use by Bitbucket."
+variable "deploy_opensearch" {
+  description = "Install OpenSearch sub-chart with Bitbucket Helm chart"
+  type        = bool
+  default     = true
+}
+
+# If an external OpenSearch is not provided, Bitbucket will provision an OpenSearch cluster in k8s
+variable "opensearch_endpoint" {
+  description = "The external OpenSearch endpoint to be used by Bitbucket."
   type        = string
   default     = null
 }
 
-variable "elasticsearch_requests_cpu" {
-  description = "Number of CPUs requested for elasticsearch instance."
+variable "opensearch_secret_name" {
+  description = "Secret name with OpenSearch credentials."
+  type        = string
+  default     = null
+}
+
+variable "opensearch_secret_username_key" {
+  description = "Username key in the opensearch secret"
   type        = string
 }
 
-variable "elasticsearch_requests_memory" {
-  description = "Amount of memory requested for elasticsearch instance."
+variable "opensearch_secret_password_key" {
+  description = "Password key in the opensearch secret"
   type        = string
 }
 
-variable "elasticsearch_limits_cpu" {
-  description = "CPU limit for elasticsearch instance."
+variable "opensearch_requests_cpu" {
+  description = "Number of CPUs requested for opensearch instance."
   type        = string
 }
 
-variable "elasticsearch_limits_memory" {
-  description = "Memory limit for elasticsearch instance."
+variable "opensearch_requests_memory" {
+  description = "Amount of memory requested for opensearch instance."
   type        = string
 }
 
-variable "elasticsearch_storage" {
-  description = "Storage size for elasticsearch instance in Gib."
+variable "opensearch_limits_cpu" {
+  description = "CPU limit for opensearch instance."
+  type        = string
+}
+
+variable "opensearch_limits_memory" {
+  description = "Memory limit for opensearch instance."
+  type        = string
+}
+
+variable "opensearch_java_opts" {
+  description = "JAVA_OPTS passed to OpenSearch JVM."
+  type        = string
+}
+
+variable "opensearch_storage" {
+  description = "Storage size for opensearch instance in Gib."
   type        = number
 }
 
-variable "elasticsearch_replicas" {
-  description = "Number of nodes for elasticsearch instance."
+variable "opensearch_replicas" {
+  description = "Number of nodes for opensearch instance."
   type        = number
   validation {
-    condition     = can(regex("^[2-8]$", var.elasticsearch_replicas))
-    error_message = "Invalid elasticsearch replicas. Valid replicas is a positive integer in range of [2,8]."
+    condition     = can(regex("^[1-8]$", var.opensearch_replicas))
+    error_message = "Invalid opensearch replicas. Valid replicas is a positive integer in range of [2,8]."
   }
 }
 

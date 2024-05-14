@@ -970,38 +970,74 @@ variable "bitbucket_nfs_limits_memory" {
   default     = "2Gi"
 }
 
-variable "bitbucket_elasticsearch_requests_cpu" {
-  description = "Number of CPUs for Bitbucket elasticsearch instance."
-  type        = string
-  default     = "0.25"
+variable "bitbucket_deploy_opensearch" {
+  description = "Install OpenSearch sub-chart with Bitbucket Helm chart"
+  type        = bool
+  default     = true
 }
 
-variable "bitbucket_elasticsearch_requests_memory" {
-  description = "Amount of memory for Bitbucket elasticsearch instance."
+variable "bitbucket_opensearch_endpoint" {
+  description = "The external opensearch endpoint to be use by Bitbucket."
+  type        = string
+  default     = null
+}
+
+variable "bitbucket_opensearch_secret_name" {
+  description = "Secret name with credentials for the external OpenSearch instance."
+  type        = string
+  default     = null
+}
+
+variable "bitbucket_opensearch_secret_username_key" {
+  description = "Username key in the opensearch secret"
+  type        = string
+  default     = "username"
+}
+
+variable "bitbucket_opensearch_secret_password_key" {
+  description = "Password key in the opensearch secret"
+  type        = string
+  default     = "password"
+}
+
+variable "bitbucket_opensearch_requests_cpu" {
+  description = "Number of CPUs for Bitbucket opensearch instance."
+  type        = string
+  default     = "300m"
+}
+
+variable "bitbucket_opensearch_requests_memory" {
+  description = "Amount of memory for Bitbucket opensearch instance."
   type        = string
   default     = "1Gi"
 }
 
-variable "bitbucket_elasticsearch_limits_cpu" {
-  description = "CPUs limit for elasticsearch instance."
+variable "bitbucket_opensearch_limits_cpu" {
+  description = "CPUs limit for opensearch instance."
   type        = string
-  default     = "0.5"
+  default     = "500m"
 }
 
-variable "bitbucket_elasticsearch_limits_memory" {
-  description = "Memory limit for elasticsearch instance."
+variable "bitbucket_opensearch_limits_memory" {
+  description = "Memory limit for opensearch instance."
   type        = string
   default     = "2Gi"
 }
 
-variable "bitbucket_elasticsearch_storage" {
-  description = "Storage size for Bitbucket elasticsearch in GiB."
+variable "bitbucket_opensearch_java_opts" {
+  description = "JAVA_OPTS passed to OpenSearch JVM."
+  type        = string
+  default     = "-Xmx512M -Xms512M"
+}
+
+variable "bitbucket_opensearch_storage" {
+  description = "Storage size for Bitbucket opensearch in GiB."
   type        = number
   default     = 10
 }
 
-variable "bitbucket_elasticsearch_replicas" {
-  description = "Number of nodes in Elasticsearch cluster"
+variable "bitbucket_opensearch_replicas" {
+  description = "Number of nodes in opensearch cluster"
   type        = number
   default     = 2
 }

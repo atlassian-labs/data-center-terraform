@@ -102,9 +102,9 @@ output "synchrony_url" {
   value       = var.confluence_collaborative_editing_enabled && length(module.confluence) == 1 ? module.confluence[0].synchrony_url : null
 }
 
-output "elasticsearch_url" {
+output "opensearch_url" {
   description = "URL to access the Bitbucket elasticsearch"
-  value       = local.install_bitbucket && length(module.bitbucket) == 1 ? module.bitbucket[0].elasticsearch_endpoint : null
+  value       = local.install_bitbucket && length(module.bitbucket) == 1 ? module.bitbucket[0].opensearch_endpoint : null
 }
 
 output "confluence_s3_bucket" {

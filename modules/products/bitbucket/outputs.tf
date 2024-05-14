@@ -18,6 +18,6 @@ output "kubernetes_rds_secret_name" {
   value = kubernetes_secret.rds_secret.metadata[0].name
 }
 
-output "elasticsearch_endpoint" {
-  value = local.elasticsearch_endpoint
+output "opensearch_endpoint" {
+  value = local.opensearch_endpoint
 }

@@ -35,9 +35,6 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
-        elasticSearch = {
-          baseUrl = local.elasticsearch_endpoint
-        }
         additionalJvmArgs = concat(local.dcapt_analytics_property)
       }
       database = {
@@ -74,6 +71,32 @@ resource "helm_release" "bitbucket" {
         analytics = {
           enabled = false
         }
+      }
+      opensearch = {
+        install = var.opensearch_endpoint == null ? true : false
+        baseUrl = local.opensearch_endpoint
+        credentials = {
+          secretName        = var.opensearch_secret_name
+          usernameSecretKey = var.opensearch_secret_username_key
+          passwordSecretKey = var.opensearch_secret_password_key
+        }
+        singleNode = var.opensearch_replicas == 1 ? true : false
+        replicas   = var.opensearch_replicas
+        resources = {
+          requests = {
+            cpu    = var.opensearch_requests_cpu
+            memory = var.opensearch_requests_memory
+          }
+          limits = {
+            cpu    = var.opensearch_limits_cpu
+            memory = var.opensearch_limits_memory
+          }
+        }
+        opensearchJavaOpts = var.opensearch_java_opts
+        persistence = {
+          side = "${var.opensearch_storage}Gi"
+        }
+        terminationGracePeriod = "0"
       }
     }),
     local.ingress_settings,

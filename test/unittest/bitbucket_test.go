@@ -36,7 +36,7 @@ func TestBitbucketVariablesPopulatedWithInvalidValues(t *testing.T) {
 	assert.Contains(t, err.Error(), "Invalid environment name. Valid name is up to 25 characters starting with")
 	assert.Contains(t, err.Error(), "Bitbucket configuration is not valid.")
 	assert.Contains(t, err.Error(), "Bitbucket administrator configuration is not valid.")
-	assert.Contains(t, err.Error(), "Invalid elasticsearch replicas. Valid replicas is a positive integer in")
+	assert.Contains(t, err.Error(), "Invalid opensearch replicas. Valid replicas is a positive integer in")
 	assert.Contains(t, err.Error(), "Bitbucket display name must be a non-empty value less than 255 characters.")
 	assert.Contains(t, err.Error(), "Installation timeout needs to be a positive number.")
 }
@@ -57,12 +57,12 @@ func TestBitbucketVariablesNotProvided(t *testing.T) {
 	assert.Contains(t, err.Error(), "\"installation_timeout\" is not set")
 	assert.Contains(t, err.Error(), "\"bitbucket_configuration\" is not set")
 	assert.Contains(t, err.Error(), "\"admin_configuration\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_requests_cpu\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_requests_memory\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_limits_cpu\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_limits_memory\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_storage\" is not set")
-	assert.Contains(t, err.Error(), "\"elasticsearch_replicas\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_requests_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_requests_memory\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_limits_cpu\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_limits_memory\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_storage\" is not set")
+	assert.Contains(t, err.Error(), "\"opensearch_replicas\" is not set")
 	assert.NotContains(t, err.Error(), "display_name")
 }
 
@@ -115,13 +115,16 @@ var BitbucketCorrectVariables = map[string]interface{}{
 		"license":            "dummy_license",
 		"custom_values_file": "",
 	},
-	"shared_home_size":              "10Gi",
-	"elasticsearch_requests_cpu":    "1",
-	"elasticsearch_requests_memory": "1Gi",
-	"elasticsearch_limits_cpu":      "1",
-	"elasticsearch_limits_memory":   "1Gi",
-	"elasticsearch_storage":         10,
-	"elasticsearch_replicas":        2,
-	"termination_grace_period":      0,
-	"additional_jvm_args": 					 []string{},
+	"shared_home_size":               "10Gi",
+	"opensearch_requests_cpu":        "1",
+	"opensearch_requests_memory":     "1Gi",
+	"opensearch_limits_cpu":          "1",
+	"opensearch_limits_memory":       "1Gi",
+	"opensearch_storage":             10,
+	"opensearch_replicas":            2,
+	"opensearch_java_opts":           "JAVA_OPTS",
+	"opensearch_secret_username_key": nil,
+	"opensearch_secret_password_key": nil,
+	"termination_grace_period":       0,
+	"additional_jvm_args":            []string{},
 }

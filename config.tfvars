@@ -504,13 +504,21 @@ bitbucket_db_name = "bitbucket"
 #bitbucket_nfs_limits_cpu      = "<LIMITS_CPU>"
 #bitbucket_nfs_limits_memory   = "<LIMITS_MEMORY>"
 
-# Elasticsearch resource configuration for Bitbucket
-#bitbucket_elasticsearch_requests_cpu    = "<REQUESTS_CPU>"
-#bitbucket_elasticsearch_requests_memory = "<REQUESTS_MEMORY>"
-#bitbucket_elasticsearch_limits_cpu      = "<LIMITS_CPU>"
-#bitbucket_elasticsearch_limits_memory   = "<LIMITS_MEMORY>"
-#bitbucket_elasticsearch_storage         = "<REQUESTS_STORAGE>"
-#bitbucket_elasticsearch_replicas        = "<NUMBER_OF_NODES>"
+# OpenSearch resource configuration for Bitbucket
+#bitbucket_opensearch_requests_cpu    = "<REQUESTS_CPU>"
+#bitbucket_opensearch_requests_memory = "<REQUESTS_MEMORY>"
+#bitbucket_opensearch_limits_cpu      = "<LIMITS_CPU>"
+#bitbucket_opensearch_limits_memory   = "<LIMITS_MEMORY>"
+#bitbucket_opensearch_storage         = "<REQUESTS_STORAGE>"
+#bitbucket_opensearch_replicas        = "<NUMBER_OF_NODES>"
+#bitbucket_opensearch_java_opts       = "<CUSTOM_JAVA_OPTS>"
+
+# Configure access to external OpenSearch (created outside Terraform modules)
+#bitbucket_opensearch_endpoint            = "<OPENSEARCH_URL>"
+#bitbucket_opensearch_secret_name         = "<K8S_SECRET_NAME>"
+#bitbucket_opensearch_secret_username_key = "<USERNAME_KEY_IN_SECRET>"
+#bitbucket_opensearch_secret_password_key = "<PASSWORD_KEY_IN_SECRET>"
+
 
 # Dataset size. Used only when snapshots_json_file_path is defined. Defaults to large
 # bitbucket_dataset_size = "large"
