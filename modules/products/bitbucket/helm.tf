@@ -80,7 +80,7 @@ resource "helm_release" "bitbucket" {
           usernameSecretKey = var.opensearch_secret_username_key
           passwordSecretKey = var.opensearch_secret_password_key
         }
-        singleNode = var.opensearch_replicas > 1 ? false : true
+        singleNode = var.opensearch_replicas == 1 ? true : false
         replicas   = var.opensearch_replicas
         resources = {
           requests = {
