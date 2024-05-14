@@ -121,7 +121,7 @@ variable "deploy_opensearch" {
   default     = true
 }
 
-# If an external opensearch is not provided, Bitbucket will provision an opensearch cluster in k8s
+# If an external OpenSearch is not provided, Bitbucket will provision an OpenSearch cluster in k8s
 variable "opensearch_endpoint" {
   description = "The external OpenSearch endpoint to be used by Bitbucket."
   type        = string
