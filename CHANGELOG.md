@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.9.0
+
+**Release date:** 2024-05-15
+
+* Bitbucket: use OpenSearch sub-chart instead of Elasticsearch Helm module [#391](https://github.com/atlassian-labs/data-center-terraform/pull/391)
 
 ## 2.8.0
 
