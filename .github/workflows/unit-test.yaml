@@ -18,13 +18,6 @@ jobs:
       contents: read
 
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          aws-region: us-east-1
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          role-session-name: DCTerraformSession
-          role-duration-seconds: 7200
       - name: test
         env:
           aws-region: us-east-1
