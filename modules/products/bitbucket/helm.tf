@@ -35,7 +35,7 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args)
       }
       database = {
         url    = var.rds.rds_jdbc_connection
