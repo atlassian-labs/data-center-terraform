@@ -56,7 +56,27 @@ This guide contains general tips on how to investigate an application deployment
     
     Typically, if the pod is `Running` but not marked as `Ready`, it's the application that failed to start, i.e. it isn't an infrastructure issue.
 
+??? tip "How to troubleshoot instances that failed to join the Kubernetes cluster"
+    
+    ###### <a id="tip#fail-eks"></a>
+    **Symptom**
+    
+    When Terraform creates EKS infrastructure, EKS cluster (control plane) is created first. Once the cluster has been created, a NodeGroup (backed by an ASG) is created, and EC2 instances join the cluster as worker nodes.
+    
+    If a node fails to join its cluster, you will typically see the following error:
+    
+    ```
+    Error: waiting for EKS Node Group (atlas-dcapt-jira-small-cluster:appNode-t3_xlarge-20240521085758213900000012) to create: unexpected state 'CREATE_FAILED', wanted target 'ACTIVE'. last error: 1 error occurred:
+  	* i-0dd1a9dc64303a10b: NodeCreationFailure: Instances failed to join the kubernetes cluster
 
+    with module.base-infrastructure.module.eks.module.eks.module.eks_managed_node_group["appNodes"].aws_eks_node_group.this[0],
+    on .terraform/modules/base-infrastructure.eks.eks/modules/eks-managed-node-group/main.tf line 272, in resource "aws_eks_node_group" "this":
+    272: resource "aws_eks_node_group" "this" {
+    ```
+    There can be several reasons why nodes can't join the cluster. Permissions issues are the most common. Make sure [STS is enabled](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html){.external} for your account in the target region. With STS disabled, EKS control plane will deny join requests from the nodes.
+    
+    After enabling STS, destroy existing environment and re-run the installation.
+    
 
 ??? tip "How to fix 'exec plugin is configured to use API version' error?"
 
