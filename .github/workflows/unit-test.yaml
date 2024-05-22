@@ -7,6 +7,7 @@ on:
     paths:
       - 'modules/**'
       - 'test/**'
+  pull_request:
 jobs:
   test:
     name: Automated Testing
