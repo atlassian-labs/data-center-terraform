@@ -31,7 +31,7 @@ jobs:
           version: latest
           args: --timeout 3m0s
           working-directory: test/
-          # Optional: if set to true then the action will use pre-installed Go.
+          ## Optional: if set to true then the action will use pre-installed Go.
           skip-go-installation: true
 
       - name: Setup dependencies
