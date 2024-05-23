@@ -7,7 +7,6 @@ locals {
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.version13
   engine_version = lookup(
     {
-      "10" = "10.19",
       "11" = "11.14",
       "12" = "12.16",
       "13" = "13.13",
@@ -16,7 +15,6 @@ locals {
 
   family = lookup(
     {
-      "10" = "postgres10",
       "11" = "postgres11",
       "12" = "postgres12",
       "13" = "postgres13",
