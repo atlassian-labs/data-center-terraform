@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.9.1
+
+**Release date:** 2024-06-04
+
+* Fix additional JVM args for Bitbucket [#408](https://github.com/atlassian-labs/data-center-terraform/pull/408)
+* Remove deprecated RDS versions [#441](https://github.com/atlassian-labs/data-center-terraform/pull/411)
+* Update RDS minor versions [#412](https://github.com/atlassian-labs/data-center-terraform/pull/412)
+* Improve error message when environment name containers upper case characters [#413](https://github.com/atlassian-labs/data-center-terraform/pull/413)
+
 ## 2.9.0
 
 **Release date:** 2024-05-15
