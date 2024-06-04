@@ -19,8 +19,11 @@ if [ -z ${AWS_REGION} ]; then
 fi
 
 # update kubeconfig context to authenticate with the cluster
-echo "[INFO]: Updating kubeconfig context"
-aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${AWS_REGION}
+# if it's EKS cluster
+if [ -z ${NON_EKS} ]; then
+  echo "[INFO]: Updating kubeconfig context"
+  aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${AWS_REGION}
+fi
 
 if [ -z "${DEBUG_FOLDER}" ]; then
   DEBUG_FOLDER="../test/e2etest/artifacts/k8s-debug-$1-$2"
@@ -81,17 +84,19 @@ done
 echo "[INFO]: Describing nodes"
 kubectl describe nodes > "${DEBUG_FOLDER}"/nodes.log 2>&1
 
-echo "[INFO]: Getting AWS CPU resource quota"
+if [ -z ${NON_EKS} ]; then
+  echo "[INFO]: Getting AWS CPU resource quota"
 
-aws service-quotas get-service-quota --region "${AWS_REGION}" --service-code ec2 --quota-code L-1216C47A | jq .Quota.Value > "${DEBUG_FOLDER}"/aws_cpu_quotas.log 2>&1
+  aws service-quotas get-service-quota --region "${AWS_REGION}" --service-code ec2 --quota-code L-1216C47A | jq .Quota.Value > "${DEBUG_FOLDER}"/aws_cpu_quotas.log 2>&1
 
-echo "[INFO]: Getting EKS ASG activity events"
+  echo "[INFO]: Getting EKS ASG activity events"
 
-ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --filters "Name=tag:eks:cluster-name,Values=${CLUSTER_NAME}" --query "AutoScalingGroups[*].AutoScalingGroupName" --region "${AWS_REGION}" | jq -r .[])
-if [ -z "${ASG_NAME}" ]; then
-  echo "[WARNING]: Failed to get ASG name for ${CLUSTER_NAME} cluster"
-else
-  aws autoscaling describe-scaling-activities --auto-scaling-group-name "${ASG_NAME}" --region "${AWS_REGION}" --max-items 10 > "${DEBUG_FOLDER}"/asg_events.log 2>&1
+  ASG_NAME=$(aws autoscaling describe-auto-scaling-groups --filters "Name=tag:eks:cluster-name,Values=${CLUSTER_NAME}" --query "AutoScalingGroups[*].AutoScalingGroupName" --region "${AWS_REGION}" | jq -r .[])
+  if [ -z "${ASG_NAME}" ]; then
+    echo "[WARNING]: Failed to get ASG name for ${CLUSTER_NAME} cluster"
+  else
+    aws autoscaling describe-scaling-activities --auto-scaling-group-name "${ASG_NAME}" --region "${AWS_REGION}" --max-items 10 > "${DEBUG_FOLDER}"/asg_events.log 2>&1
+  fi
 fi
 
 echo "[INFO]: Logs and events saved to ${DEBUG_FOLDER}"
