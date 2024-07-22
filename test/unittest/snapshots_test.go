@@ -181,6 +181,10 @@ func TestSnapshotsFromJson(t *testing.T) {
 	exampleFolder := testStructure.CopyTerraformFolderToTemp(t, "../..", "")
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	planFilePath := filepath.Join(exampleFolder, "plan.out")
+	vars["jira_version_tag"] = dcSnapshots.Jira.Versions[0].Version
+	vars["confluence_version_tag"] = dcSnapshots.Confluence.Versions[0].Version
+	vars["bitbucket_version_tag"] = dcSnapshots.Bitbucket.Versions[0].Version
+	vars["crowd_version_tag"] = dcSnapshots.Crowd.Versions[0].Version
 	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: exampleFolder,
 		Vars:         vars,
