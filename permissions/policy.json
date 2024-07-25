@@ -43,6 +43,8 @@
       "Effect": "Allow",
       "Action": [
         "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:CreateLoadBalancerListeners",
+        "elasticloadbalancing:DeleteLoadBalancerListeners",
         "elasticloadbalancing:DescribeLoadBalancerAttributes",
         "elasticloadbalancing:DescribeTags",
         "elasticloadbalancing:AddTags",
@@ -109,6 +111,7 @@
         "s3:GetBucketLogging",
         "s3:GetBucketCORS",
         "s3:GetBucketAcl",
+        "s3:PutBucketAcl",
         "s3:GetAccelerateConfiguration",
         "s3:PutLifecycleConfiguration",
         "s3:PutEncryptionConfiguration",
@@ -118,6 +121,7 @@
         "s3:GetBucketTagging",
         "s3:PutBucketTagging",
         "s3:PutBucketLogging",
+        "s3:GetBucketOwnershipControls",
         "s3:PutBucketOwnershipControls",
         "s3:ListBucket",
         "s3:ListBucketVersions"
@@ -232,7 +236,8 @@
       "Action": [
         "autoscaling:CreateOrUpdateTags",
         "autoscaling:DeleteTags",
-        "autoscaling:DescribeTags"
+        "autoscaling:DescribeTags",
+        "autoscaling:DescribeAutoScalingGroups"
       ],
       "Resource": "*"
     },
