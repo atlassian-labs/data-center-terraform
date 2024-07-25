@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-# This script is used for updating a policy with a new version
-# It'll try creating a new version first, it failed due to the policy version limit, it'll delete the old versions and retry creating the new version
-# Update policy_arn and policy_document_path with the actual values
-policy_arn="arn:aws:iam::accountId:policy/policyName"
-policy_document_path="./policy.json"
+# This script is used for updating a policy with a new version. It'll try creating a new version first,
+# if failed due to the policy version limit, it'll delete the old versions and retry creating the new version.
+#
+# Pass in the policy_arn and policy_document_path as arguments to the script
+# Usage: ./update-policy.sh arn:aws:iam::accountId:policy/policyName ./policy.json
+
+# Check if two arguments are passed
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <policy_arn> <policy_document_path>"
+  exit 1
+fi
+
+policy_arn="$1"
+policy_document_path="$2"
 
 # Attempt to create a new policy version and capture the output and error
 output=$(aws iam create-policy-version \
@@ -38,8 +47,10 @@ else
       echo "Policy version created successfully after deletion"
     else
       echo "Failed to create policy version after deletion: $retry_output"
+      exit 1
     fi
   else
     echo "An unexpected error occurred: $output"
+    exit 1
   fi
 fi
