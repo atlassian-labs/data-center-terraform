@@ -47,8 +47,10 @@ else
       echo "Policy version created successfully after deletion"
     else
       echo "Failed to create policy version after deletion: $retry_output"
+      exit 1
     fi
   else
     echo "An unexpected error occurred: $output"
+    exit 1
   fi
 fi
