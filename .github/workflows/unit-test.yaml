@@ -8,6 +8,9 @@ on:
       - 'modules/**'
       - 'test/**'
   pull_request:
+    paths:
+      - 'modules/**'
+      - 'test/**'
 jobs:
   test:
     name: Automated Testing
