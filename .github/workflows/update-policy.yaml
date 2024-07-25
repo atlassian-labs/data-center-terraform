@@ -2,9 +2,8 @@ name: Update IAM Policy
 
 on:
   push:
-    paths:
-      - 'permissions/policy.json'
-  pull_request:
+    branches:
+      - main
     paths:
       - 'permissions/policy.json'
 
@@ -28,7 +27,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          role-session-name: TestSession
+          role-session-name: UpdateIAMPolicy
           # 15 mins is the minimum duration for a role session that we can set in this GitHub Action
           role-duration-seconds: 900
 
