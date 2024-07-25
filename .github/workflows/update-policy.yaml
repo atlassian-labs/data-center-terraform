@@ -1,0 +1,36 @@
+name: Update IAM Policy
+
+on:
+  push:
+    paths:
+      - 'permissions/policy.json'
+  pull_request:
+    paths:
+      - 'permissions/policy.json'
+
+jobs:
+  update-iam-policy:
+    runs-on: ubuntu-latest
+    permissions:
+      # We need write permissions to the id-token in order to use GitHub's OIDC provider to get short-lived AWS credentials
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Replace AWS Account ID
+        run: |
+          sed -i 's/123456789012/${{ secrets.AWS_ACCOUNT_ID }}/' permissions/policy.json
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          role-session-name: TestSession
+          # 15 mins is the minimum duration for a role session that we can set in this GitHub Action
+          role-duration-seconds: 900
+
+      - name: Update IAM Policy
+        run: ./permissions/update-policy.sh ${{ secrets.POLICY_ARN }} permissions/policy.json
