@@ -68,6 +68,12 @@ if [ ! -z "${CLEAN_UP_FLAG}" ]; then
   bash "${SCRIPT_PATH}/cleanup.sh" -s -t -x -r .
 fi
 
+# create log dir and file
+if ! test -d "${ROOT_PATH}/logs" ; then
+  mkdir "${ROOT_PATH}/logs"
+fi
+touch "${LOG_FILE}"
+
 # Check for prerequisite tooling
 # https://atlassian-labs.github.io/data-center-terraform/userguide/PREREQUISITES/
 check_for_prerequisites() {
@@ -88,14 +94,14 @@ process_arguments() {
     CONFIG_FILE="${ROOT_PATH}/config.tfvars"
   else
     if [[ ! -f "${CONFIG_FILE}" ]]; then
-      log "Terraform configuration file '${CONFIG_FILE}' not found!" "ERROR"
+      log "Terraform configuration file '${CONFIG_FILE}' not found!" "ERROR" | tee -a "${LOG_FILE}"
       show_help
     fi
   fi
   CONFIG_ABS_PATH="$(cd "$(dirname "${CONFIG_FILE}")"; pwd)/$(basename "${CONFIG_FILE}")"
   OVERRIDE_CONFIG_FILE="-var-file=${CONFIG_ABS_PATH}"
 
-  log "Terraform will use '${CONFIG_ABS_PATH}' to install the infrastructure."
+  log "Terraform will use '${CONFIG_ABS_PATH}' to install the infrastructure." | tee -a "${LOG_FILE}"
 
   if [ -n "${UNKNOWN_ARGS}" ]; then
     log "Unknown arguments:  ${UNKNOWN_ARGS}" "ERROR"
@@ -237,7 +243,7 @@ pre_flight_checks() {
 
 # Make sure the infrastructure config file is existed and contains the valid data
 verify_configuration_file() {
-  log "Verifying the config file."
+  log "Verifying the config file." | tee -a "${LOG_FILE}"
 
   HAS_VALIDATION_ERR=
   # Make sure the config values are defined
@@ -248,22 +254,22 @@ verify_configuration_file() {
   REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
 
   if [ "${#ENVIRONMENT_NAME}" -gt 24 ]; then
-    log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR"
-    log "Please make sure your environment name is less than 24 characters."
+    log "The environment name '${ENVIRONMENT_NAME}' is too long(${#ENVIRONMENT_NAME} characters)." "ERROR" | tee -a "${LOG_FILE}"
+    log "Please make sure your environment name is less than 24 characters." | tee -a "${LOG_FILE}"
     HAS_VALIDATION_ERR=1
   fi
 
   SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
   if [ "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
     if [ ! -e "${SNAPSHOTS_JSON_FILE_PATH}" ]; then
-      log "Snapshots json file not found at ${SNAPSHOTS_JSON_FILE_PATH}"
+      log "Snapshots json file not found at ${SNAPSHOTS_JSON_FILE_PATH}" | tee -a "${LOG_FILE}"
       log "Please make sure 'snapshots_json_file_path' in ${CONFIG_ABS_PATH} points to an existing valid json file"
       HAS_VALIDATION_ERR=1
     fi
   fi
 
   if [ -n "${INVALID_CONTENT}" ]; then
-    log "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid." "ERROR"
+    log "Configuration file '${CONFIG_ABS_PATH##*/}' is not valid." "ERROR" | tee -a "${LOG_FILE}"
     log "Terraform uses this file to generate customised infrastructure for '${ENVIRONMENT_NAME}' on your AWS account."
     log "Please modify '${CONFIG_ABS_PATH##*/}' using a text editor and complete the configuration. "
     log "Then re-run the install.sh to deploy the infrastructure."
@@ -277,17 +283,17 @@ verify_configuration_file() {
     export POPULATED_ADMIN_PWD=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep 'bamboo_admin_password')
 
     if [ -z "${POPULATED_LICENSE}" ] && [ -z "${TF_VAR_bamboo_license}" ]; then
-      log "License is missing. Please provide Bamboo license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR"
+      log "License is missing. Please provide Bamboo license in config file, or export it to the environment variable 'TF_VAR_bamboo_license'." "ERROR" | tee -a "${LOG_FILE}"
       HAS_VALIDATION_ERR=1
     fi
     if [ -z "${POPULATED_ADMIN_PWD}" ] && [ -z "${TF_VAR_bamboo_admin_password}" ]; then
-      log "Admin password is missing. Please provide Bamboo admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR"
+      log "Admin password is missing. Please provide Bamboo admin password in config file, or export it to the environment variable 'TF_VAR_bamboo_admin_password'." "ERROR" | tee -a "${LOG_FILE}"
       HAS_VALIDATION_ERR=1
     fi
   fi
 
   if [ -n "${HAS_VALIDATION_ERR}" ]; then
-    log "There was a problem with the configuration file. Execution is aborted." "ERROR"
+    log "There was a problem with the configuration file. Execution is aborted." "ERROR" | tee -a "${LOG_FILE}"
     exit 1
   fi
 }
@@ -306,11 +312,6 @@ generate_terraform_backend_variables() {
 create_tfstate_resources() {
   # Check if the S3 bucket is existed otherwise create the bucket to keep the terraform state
   log "Checking the terraform state."
-  if ! test -d "${ROOT_PATH}/logs" ; then
-    mkdir "${ROOT_PATH}/logs"
-  fi
-
-  touch "${LOG_FILE}"
   local STATE_FOLDER="${ROOT_PATH}/modules/tfstate"
   set +e
   aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
@@ -485,7 +486,7 @@ verify_configuration_file
 
 if [ "${SKIP_PRE_FLIGHT_FLAG}" == "" ]; then
   # verify snapshots if any
-  pre_flight_checks
+  pre_flight_checks | tee -a "${LOG_FILE}"
 fi
 
 # Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf
@@ -498,13 +499,13 @@ create_tfstate_resources
 create_update_infrastructure
 
 # Resume bamboo server if the credential is provided
-resume_bamboo_server
+resume_bamboo_server | tee -a "${LOG_FILE}"
 
 # Print information about manually adding the new k8s context
 set_current_context_k8s
 
 # To allow SSH connectivity for Bitbucket update the Load Balancer protocol for listener port 7999
-enable_ssh_tcp_protocol_on_lb_listener
+enable_ssh_tcp_protocol_on_lb_listener | tee -a "${LOG_FILE}"
 
 # Show the list of installed Helm charts
 helm list --namespace atlassian
