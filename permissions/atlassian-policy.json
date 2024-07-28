@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "awsclean",
+      "Effect": "Allow",
+      "Action": [
+        "eks:ListClusters",
+        "eks:ListNodegroups",
+        "acm:ListCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "iampolilcy",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicy",
+        "iam:AttachRolePolicy",
+        "iam:DeletePolicy",
+        "iam:DetachRolePolicy",
+        "iam:TagPolicy",
+        "iam:UntagPolicy",
+        "iam:CreatePolicy",
+        "iam:ListPolicyVersions",
+        "iam:GetPolicyVersion",
+        "iam:ListOpenIDConnectProviders",
+        "iam:ListOpenIDConnectProviderTags"
+      ],
+      "Resource": [
+        "arn:aws:iam::123456789012:policy/*_crowdstrike_s3",
+        "arn:aws:iam::123456789012:policy/*_crowdstrike_secret",
+        "arn:aws:iam::123456789012:policy/*_LaaS-policy",
+        "arn:aws:iam::123456789012:policy/*_Fleet-Enrollment",
+        "arn:aws:iam::123456789012:oidc-provider/*"
+      ]
+    },
+    {
+      "Sid": "smoketest",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
