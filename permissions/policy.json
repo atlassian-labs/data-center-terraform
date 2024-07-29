@@ -10,18 +10,6 @@
       "Resource": "*"
     },
     {
-      "Sid": "kms",
-      "Effect": "Allow",
-      "Action": [
-        "kms:Tag*",
-        "kms:List*",
-        "kms:Describe*",
-        "kms:Create*",
-        "kms:Delete*"
-      ],
-      "Resource": "*"
-    },
-    {
       "Sid": "route53",
       "Effect": "Allow",
       "Action": [

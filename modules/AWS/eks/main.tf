@@ -54,10 +54,18 @@ module "eks" {
   access_entries                           = local.iam_access_entries
 
   cluster_endpoint_public_access = true
+
   # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa              = true
   iam_role_use_name_prefix = false
+
+  # we won't use ksm key to entrypt secrets in etcd
+  # and may want to revisit this in future
+  # to and make it configurable (requires kms permissions)
+  create_kms_key            = false
+  cluster_encryption_config = {}
+
 
   # Networking
   vpc_id                    = var.vpc_id
