@@ -56,5 +56,5 @@ locals {
   # DC App Performance Toolkit analytics
   dcapt_analytics_property = ["-Dcom.atlassian.dcapt.deployment=terraform"]
 
-  storage_class = "gp2"
+  storage_class = "ebs-csi-default-sc"
 }

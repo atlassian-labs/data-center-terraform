@@ -14,7 +14,7 @@ variable "environment_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  type        = number
+  type        = string
 }
 
 variable "tags" {
@@ -83,7 +83,7 @@ variable "enable_ssh_tcp" {
 
 variable "eks_additional_roles" {
   description = "Additional roles that have access to the cluster."
-  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+  type = map(any)
 }
 
 variable "whitelist_cidr" {

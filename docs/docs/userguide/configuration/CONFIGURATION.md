@@ -207,21 +207,27 @@ When the EKS cluster is created, only the entity that created the cluster can ac
 resources inside the cluster. To enable access for additional roles, you can add them to the config file:
 
 ```terraform
-eks_additional_roles = [
-  {
-    rolearn  = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
-    username = "ROLE_NAME"
-    groups = [
-      "system:masters"
-    ]
+eks_additional_roles = {
+  user = {
+    kubernetes_group = []
+    principal_arn    = "arn:aws:iam::121212121212:role/test-policy-role"
+    policy_associations = {
+      admin = {
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        access_scope = {
+          namespaces = []
+          type       = "cluster"
+        }
+      }
+    }
   }
-]
+}
 ```
 
-!!! info "Permissions in AWS EKS"
+!!! info "Access Entries in AWS EKS"
 
-    For additional information regarding the authorisation in EKS cluster, follow the official
-    [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html){.external}.
+    For additional information regarding adding access entries in EKS cluster, follow the official
+    [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html#creating-access-entries){.external}.
 
 ### Logging S3 bucket name
 

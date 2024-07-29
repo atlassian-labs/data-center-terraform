@@ -44,23 +44,23 @@ func TestEksVariablesPopulatedWithValidValues(t *testing.T) {
 	maxClusterCapacity := plan.RawPlan.Variables["max_cluster_capacity"].Value
 	additionalRoles := plan.RawPlan.Variables["additional_roles"].Value
 	s3Role := "aws_iam_role.s3_confluence_storage_role[0]"
-    s3Policy := "aws_iam_policy.s3_confluence_storage[0]"
-    s3PolicyAttachment := "aws_iam_role_policy_attachment.confluence_s3_storage[0]"
-    s3Bucket := "aws_s3_bucket.confluence_storage_bucket[0]"
-    s3BucketAcl := "aws_s3_bucket_acl.confluence_storage_acl[0]"
+	s3Policy := "aws_iam_policy.s3_confluence_storage[0]"
+	s3PolicyAttachment := "aws_iam_role_policy_attachment.confluence_s3_storage[0]"
+	s3Bucket := "aws_s3_bucket.confluence_storage_bucket[0]"
+	s3BucketAcl := "aws_s3_bucket_acl.confluence_storage_acl[0]"
 
 	assert.Equal(t, "dummy-cluster-name", clusterName)
 	assert.Equal(t, "dummy_vpc_id", vpcId)
 	assert.Equal(t, []interface{}{"subnet1", "subnet2"}, subnets)
 	assert.Equal(t, []interface{}{"a", "b"}, instanceTypes)
-	assert.Equal(t, []interface{}{map[string]interface{}{"rolearn": "dcdarn", "username": "additional_role", "groups": []interface{}{"system:masters"}}}, additionalRoles)
+	assert.Equal(t, EksWithValidValues["additional_roles"], additionalRoles)
 	assert.Equal(t, "1", minClusterCapacity)
 	assert.Equal(t, "10", maxClusterCapacity)
 	assert.Contains(t, plan.ResourcePlannedValuesMap, s3Role)
-    assert.Contains(t, plan.ResourcePlannedValuesMap, s3Policy)
-    assert.Contains(t, plan.ResourcePlannedValuesMap, s3PolicyAttachment)
-    assert.Contains(t, plan.ResourcePlannedValuesMap, s3Bucket)
-    assert.Contains(t, plan.ResourcePlannedValuesMap, s3BucketAcl)
+	assert.Contains(t, plan.ResourcePlannedValuesMap, s3Policy)
+	assert.Contains(t, plan.ResourcePlannedValuesMap, s3PolicyAttachment)
+	assert.Contains(t, plan.ResourcePlannedValuesMap, s3Bucket)
+	assert.Contains(t, plan.ResourcePlannedValuesMap, s3BucketAcl)
 }
 
 func TestEksClusterNameInvalid(t *testing.T) {

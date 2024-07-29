@@ -5,7 +5,7 @@ locals {
   autoscaler_service_account_namespace = "kube-system"
   autoscaler_service_account_name      = "cluster-autoscaler-aws-cluster-autoscaler-chart"
 
-  autoscaler_version = "9.25.0"
+  autoscaler_version = "9.37.0"
 
   ami_type = "AL2_x86_64"
 
@@ -23,4 +23,6 @@ locals {
 
 
   use_downtime = var.cluster_downtime_start != null && var.cluster_downtime_stop != null ? true : false
+
+  iam_access_entries = var.additional_roles != null ? var.additional_roles : null
 }

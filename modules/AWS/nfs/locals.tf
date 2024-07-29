@@ -4,5 +4,5 @@ locals {
   nfs_name = "${var.product}-nfs"
 
   # The name of the NFS storage class.
-  storage_class = "gp2"
+  storage_class = "ebs-csi-default-sc"
 }

@@ -9,10 +9,10 @@ variable "cluster_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  type        = number
+  type        = string
   validation {
-    condition     = can(regex("^1\\.2[7-9]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.29."
+    condition     = can(regex("^1\\.3[0-9]", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.30 to 1.39."
   }
 }
 
@@ -86,7 +86,7 @@ variable "cluster_downtime_timezone" {
 
 variable "additional_roles" {
   description = "Additional roles that have access to the cluster."
-  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+  type = map(any)
 }
 
 variable "osquery_secret_name" {

@@ -3,7 +3,7 @@ resource "aws_ebs_volume" "shared_home" {
 
   snapshot_id = var.shared_home_snapshot_id != null ? var.shared_home_snapshot_id : null
   size        = tonumber(regex("\\d+", var.shared_home_size))
-  type        = local.storage_class
+  type        = "gp2"
 
   tags = {
     Name = "${var.product}-nfs-shared-home"

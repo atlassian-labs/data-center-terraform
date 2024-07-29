@@ -9,7 +9,7 @@ resource "aws_ebs_volume" "local_home" {
   availability_zone = var.eks.availability_zone
   snapshot_id       = var.local_home_snapshot_id
   size              = data.aws_ebs_snapshot.local_home_snapshot[count.index].volume_size
-  type              = local.storage_class
+  type              = "gp2"
   tags = {
     Name = "local-home-confluence-${count.index}"
   }

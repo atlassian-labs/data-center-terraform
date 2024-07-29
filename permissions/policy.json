@@ -10,6 +10,18 @@
       "Resource": "*"
     },
     {
+      "Sid": "kms",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Tag*",
+        "kms:List*",
+        "kms:Describe*",
+        "kms:Create*",
+        "kms:Delete*"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "route53",
       "Effect": "Allow",
       "Action": [
@@ -67,7 +79,15 @@
         "eks:CreateCluster",
         "eks:TagResource",
         "eks:UntagResource",
-        "eks:ListTagsForResource"
+        "eks:ListTagsForResource",
+        "eks:CreateAccessEntry",
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAddonVersions",
+        "eks:DescribeAccessEntry",
+        "eks:TagResource",
+        "eks:AssociateAccessPolicy",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies"
       ],
       "Resource": [
         "arn:aws:eks:*:123456789012:nodegroup/atlas-*",
@@ -95,6 +115,14 @@
       "Resource": [
         "arn:aws:dynamodb:*:123456789012:table/atl_dc_*_tf_lock"
       ]
+    },
+    {
+      "Sid": "s3list",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets"
+      ],
+      "Resource": "*"
     },
     {
       "Sid": "s3bucket",
@@ -207,7 +235,10 @@
         "ec2:DescribeSnapshots",
         "ec2:DescribeSecurityGroups",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:RevokeSecurityGroupIngress"
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:DescribeAddressesAttribute",
+        "ec2:CreateNetworkAclEntry",
+        "ec2:DeleteNetworkAclEntry"
       ],
       "Resource": "*"
     },
@@ -237,7 +268,8 @@
         "autoscaling:CreateOrUpdateTags",
         "autoscaling:DeleteTags",
         "autoscaling:DescribeTags",
-        "autoscaling:DescribeAutoScalingGroups"
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DeleteAutoScalingGroup"
       ],
       "Resource": "*"
     },
@@ -267,7 +299,18 @@
         "iam:TagOpenIDConnectProvider",
         "iam:UntagRole",
         "iam:UntagPolicy",
-        "iam:UntagOpenIDConnectProvider"
+        "iam:UntagOpenIDConnectProvider",
+        "iam:ListPolicies",
+        "iam:ListEntitiesForPolicy",
+        "iam:GetPolicyVersion",
+        "iam:CreatePolicy",
+        "iam:ListRoles",
+        "iam:TagPolicy",
+        "iam:TagRole",
+        "iam:GetPolicy",
+        "iam:GetRole",
+        "iam:GetPolicyVersion",
+        "iam:DeletePolicy"
       ],
       "Resource": [
         "arn:aws:iam::123456789012:role/*-autoscaler",
@@ -277,6 +320,7 @@
         "arn:aws:iam::123456789012:policy/cluster-autoscaler*",
         "arn:aws:iam::123456789012:policy/*-s3-confluence-storage-policy",
         "arn:aws:iam::123456789012:policy/*_ExternalDNS",
+        "arn:aws:iam::123456789012:policy/*-ClusterEncryption*",
         "arn:aws:iam::123456789012:oidc-provider/*",
         "arn:aws:iam::123456789012:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup"
       ]

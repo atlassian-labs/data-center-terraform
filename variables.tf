@@ -24,11 +24,11 @@ variable "environment_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  default     = 1.29
-  type        = number
+  default     = "1.30"
+  type        = string
   validation {
-    condition     = can(regex("^1\\.2[7-9]", var.eks_version))
-    error_message = "Invalid EKS K8S version. Valid versions are from 1.27 to 1.29."
+    condition     = can(regex("^1\\.3[0-9]$", var.eks_version))
+    error_message = "Invalid EKS K8S version. Valid versions are from 1.30 to 1.39."
   }
 }
 
@@ -131,8 +131,8 @@ variable "logging_bucket" {
 
 variable "eks_additional_roles" {
   description = "Additional roles that have access to the cluster."
-  default     = []
-  type        = list(object({ rolearn = string, username = string, groups = list(string) }))
+  default = {}
+  type = map(any)
 }
 
 variable "whitelist_cidr" {

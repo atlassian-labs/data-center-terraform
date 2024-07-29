@@ -1,6 +1,6 @@
 module "autoscaler_iam_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.13.2"
+  version = "5.41.0"
 
   create_role  = true
   role_name    = "${var.cluster_name}-autoscaler"
@@ -16,7 +16,7 @@ module "autoscaler_iam_role" {
 
 resource "aws_iam_policy" "cluster_autoscaler" {
   name_prefix = "cluster-autoscaler"
-  description = "EKS cluster-autoscaler policy for cluster ${module.eks.cluster_id}"
+  description = "EKS cluster-autoscaler policy for cluster ${module.eks.cluster_name}"
   policy      = data.aws_iam_policy_document.cluster_autoscaler.json
 }
 
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
 
     condition {
       test     = "StringEquals"
-      variable = "autoscaling:ResourceTag/kubernetes.io/cluster/${module.eks.cluster_id}"
+      variable = "autoscaling:ResourceTag/kubernetes.io/cluster/${module.eks.cluster_name}"
       values = [
         "owned"
       ]
