@@ -131,8 +131,8 @@ variable "logging_bucket" {
 
 variable "eks_additional_roles" {
   description = "Additional roles that have access to the cluster."
-  default = {}
-  type = map(any)
+  default     = {}
+  type        = map(any)
 }
 
 variable "whitelist_cidr" {

@@ -86,7 +86,7 @@ variable "cluster_downtime_timezone" {
 
 variable "additional_roles" {
   description = "Additional roles that have access to the cluster."
-  type = map(any)
+  type        = map(any)
 }
 
 variable "osquery_secret_name" {

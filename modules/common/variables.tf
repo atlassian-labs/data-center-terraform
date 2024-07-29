@@ -83,7 +83,7 @@ variable "enable_ssh_tcp" {
 
 variable "eks_additional_roles" {
   description = "Additional roles that have access to the cluster."
-  type = map(any)
+  type        = map(any)
 }
 
 variable "whitelist_cidr" {
