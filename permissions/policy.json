@@ -262,6 +262,15 @@
       "Resource": "*"
     },
     {
+      "Sid": "iamlist",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListPolicies",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "iam",
       "Effect": "Allow",
       "Action": [
@@ -287,18 +296,7 @@
         "iam:TagOpenIDConnectProvider",
         "iam:UntagRole",
         "iam:UntagPolicy",
-        "iam:UntagOpenIDConnectProvider",
-        "iam:ListPolicies",
-        "iam:ListEntitiesForPolicy",
-        "iam:GetPolicyVersion",
-        "iam:CreatePolicy",
-        "iam:ListRoles",
-        "iam:TagPolicy",
-        "iam:TagRole",
-        "iam:GetPolicy",
-        "iam:GetRole",
-        "iam:GetPolicyVersion",
-        "iam:DeletePolicy"
+        "iam:UntagOpenIDConnectProvider"
       ],
       "Resource": [
         "arn:aws:iam::123456789012:role/*-autoscaler",
@@ -308,7 +306,6 @@
         "arn:aws:iam::123456789012:policy/cluster-autoscaler*",
         "arn:aws:iam::123456789012:policy/*-s3-confluence-storage-policy",
         "arn:aws:iam::123456789012:policy/*_ExternalDNS",
-        "arn:aws:iam::123456789012:policy/*-ClusterEncryption*",
         "arn:aws:iam::123456789012:oidc-provider/*",
         "arn:aws:iam::123456789012:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup"
       ]
