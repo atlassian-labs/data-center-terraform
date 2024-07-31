@@ -60,7 +60,7 @@ module "eks" {
   enable_irsa              = true
   iam_role_use_name_prefix = false
 
-  # we won't use ksm key to entrypt secrets in etcd
+  # we won't use kms key to encrypt secrets in etcd
   # and may want to revisit this in future
   # to and make it configurable (requires kms permissions)
   create_kms_key            = false
