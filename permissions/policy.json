@@ -44,6 +44,7 @@
       "Action": [
         "elasticloadbalancing:DescribeLoadBalancers",
         "elasticloadbalancing:CreateLoadBalancerListeners",
+        "elasticloadbalancing:DeleteLoadBalancer",
         "elasticloadbalancing:DeleteLoadBalancerListeners",
         "elasticloadbalancing:DescribeLoadBalancerAttributes",
         "elasticloadbalancing:DescribeTags",
@@ -67,7 +68,14 @@
         "eks:CreateCluster",
         "eks:TagResource",
         "eks:UntagResource",
-        "eks:ListTagsForResource"
+        "eks:ListTagsForResource",
+        "eks:CreateAccessEntry",
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAddonVersions",
+        "eks:DescribeAccessEntry",
+        "eks:AssociateAccessPolicy",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies"
       ],
       "Resource": [
         "arn:aws:eks:*:123456789012:nodegroup/atlas-*",
@@ -95,6 +103,14 @@
       "Resource": [
         "arn:aws:dynamodb:*:123456789012:table/atl_dc_*_tf_lock"
       ]
+    },
+    {
+      "Sid": "s3list",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets"
+      ],
+      "Resource": "*"
     },
     {
       "Sid": "s3bucket",
@@ -207,7 +223,10 @@
         "ec2:DescribeSnapshots",
         "ec2:DescribeSecurityGroups",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:RevokeSecurityGroupIngress"
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:DescribeAddressesAttribute",
+        "ec2:CreateNetworkAclEntry",
+        "ec2:DeleteNetworkAclEntry"
       ],
       "Resource": "*"
     },
@@ -237,7 +256,17 @@
         "autoscaling:CreateOrUpdateTags",
         "autoscaling:DeleteTags",
         "autoscaling:DescribeTags",
-        "autoscaling:DescribeAutoScalingGroups"
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DeleteAutoScalingGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "iamlist",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListPolicies",
+        "iam:ListRoles"
       ],
       "Resource": "*"
     },

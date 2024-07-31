@@ -24,7 +24,7 @@ module "nodegroup_launch_template" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.30.2"
+  version = "~> 20.0"
 
   # Configure cluster
   cluster_version             = var.eks_version
@@ -36,21 +36,36 @@ module "eks" {
   cluster_addons = {
     kube-proxy = {}
     vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
     }
     aws-ebs-csi-driver = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
+      configuration_values = jsonencode({
+        defaultStorageClass = {
+          enabled = true
+        }
+      })
     }
   }
 
   # We're creating eks managed nodegroup, hence aws-auth is handled by EKS
-  manage_aws_auth_configmap = true
-  aws_auth_roles            = var.additional_roles
+  enable_cluster_creator_admin_permissions = true
+  authentication_mode                      = "API_AND_CONFIG_MAP"
+  access_entries                           = local.iam_access_entries
+
+  cluster_endpoint_public_access = true
 
   # Enables IAM roles for service accounts - required for autoscaler and potentially Atlassian apps
   # https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   enable_irsa              = true
   iam_role_use_name_prefix = false
+
+  # we won't use kms key to encrypt secrets in etcd
+  # and may want to revisit this in future
+  # to and make it configurable (requires kms permissions)
+  create_kms_key            = false
+  cluster_encryption_config = {}
+
 
   # Networking
   vpc_id                    = var.vpc_id
@@ -73,7 +88,7 @@ module "eks" {
       subnet_ids               = slice(var.subnets, 0, 1)
       capacity_type            = "ON_DEMAND"
       create_launch_template   = false
-      launch_template_name     = data.aws_launch_template.nodes.name
+      launch_template_id       = data.aws_launch_template.nodes.id
       launch_template_version  = module.nodegroup_launch_template.version
       create_iam_role          = false
       iam_role_arn             = aws_iam_role.node_group.arn

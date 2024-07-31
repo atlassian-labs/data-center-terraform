@@ -40,7 +40,7 @@ var EksWithValidValues = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -51,10 +51,21 @@ var EksWithValidValues = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
-	"additional_roles": []interface{}{map[string]interface{}{
-		"rolearn":  "dcdarn",
-		"username": "additional_role",
-		"groups":   []interface{}{"system:masters"}}},
+	"additional_roles": map[string]interface{}{
+		"user": map[string]interface{}{
+			"kubernetes_group": []interface{}{},
+			"principal_arn":    "arn:aws:iam::123456789012:role/test-terraform-policy-role",
+			"policy_associations": map[string]interface{}{
+				"admin": map[string]interface{}{
+					"policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+					"access_scope": map[string]interface{}{
+						"namespaces": []interface{}{},
+						"type":       "cluster",
+					},
+				},
+			},
+		},
+	},
 }
 
 var EksWithUnsupportedKinesisRegion = map[string]interface{}{
@@ -65,7 +76,7 @@ var EksWithUnsupportedKinesisRegion = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "eu-west-2",
@@ -76,7 +87,7 @@ var EksWithUnsupportedKinesisRegion = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithInvalidClusterName = map[string]interface{}{
@@ -87,7 +98,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "cluster name with invalid spaces",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -98,7 +109,7 @@ var EksWithInvalidClusterName = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithInvalidClusterVersion = map[string]interface{}{
@@ -120,7 +131,7 @@ var EksWithInvalidClusterVersion = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithMaxCapacityOverLimit = map[string]interface{}{
@@ -131,7 +142,7 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -142,7 +153,7 @@ var EksWithMaxCapacityOverLimit = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 21,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithMaxCapacityUnderLimit = map[string]interface{}{
@@ -153,7 +164,7 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -164,7 +175,7 @@ var EksWithMaxCapacityUnderLimit = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 1,
 	"max_cluster_capacity": 0,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithMinCapacityUnderLimit = map[string]interface{}{
@@ -175,7 +186,7 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -186,7 +197,7 @@ var EksWithMinCapacityUnderLimit = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 0,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksWithMinCapacityOverLimit = map[string]interface{}{
@@ -197,7 +208,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 	"osquery_fleet_enrollment_host":     "dummy-host",
 	"kinesis_log_producers_role_arns":   "{\"eu\": \"eu,\",\"non-eu\": \"non-eu\"}",
 	"cluster_name":                      "dummy-cluster-name",
-	"eks_version":                       1.28,
+	"eks_version":                       "1.30",
 	"vpc_id":                            "dummy_vpc_id",
 	"subnets":                           []string{"subnet1", "subnet2"},
 	"region":                            "us-east-1",
@@ -208,7 +219,7 @@ var EksWithMinCapacityOverLimit = map[string]interface{}{
 	"instance_types":       []string{"a", "b"},
 	"min_cluster_capacity": 21,
 	"max_cluster_capacity": 10,
-	"additional_roles":     []string{},
+	"additional_roles":     map[string]interface{}{},
 }
 
 var EksDefaultModuleVariable = map[string]interface{}{

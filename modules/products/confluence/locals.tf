@@ -144,6 +144,6 @@ locals {
     }
   }) : yamlencode({})
 
-  storage_class            = "gp2"
-  opensearch_storage_class = "gp2"
+  storage_class            = "ebs-csi-default-sc"
+  opensearch_storage_class = "ebs-csi-default-sc"
 }

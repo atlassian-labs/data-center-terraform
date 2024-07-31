@@ -141,22 +141,26 @@ bitbucket_termination_grace_period = 0
 
 {{if .additional_role }}
 # Enable access to additional role
-eks_additional_roles = [
-  {
-    rolearn  = "{{ .additional_role }}"
-    username = "additional_role"
-    groups = [
-      "system:masters"
-    ]
-  }
-]
+eks_additional_roles = {
+    user = {
+       kubernetes_group = []
+       principal_arn     = "{{ .additional_role }}"
+       policy_associations = {
+         admin = {
+           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+           access_scope = {
+             namespaces = []
+             type       = "cluster"
+           }
+         }
+       }
+     }
+}
 {{end}}
 
 ################################################################################
 # Crowd Settings
 ################################################################################
-# remove this once Crowd Helm chart is fixed
-crowd_version_tag = "5.1.2"
 crowd_cpu      = "1"
 crowd_mem      = "1Gi"
 crowd_min_heap = "512m"

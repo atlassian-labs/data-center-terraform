@@ -71,16 +71,22 @@ max_cluster_capacity = 5
 # create_external_dns = true
 
 # If you desire to access the cluster with additional roles other than the one used for cluster creation,
-# you can define them below.
-#eks_additional_roles = [
-#  {
-#    rolearn  = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
-#    username = "ROLE_NAME"
-#    groups = [
-#      "system:masters"
-#    ]
+# you can define them below. For more information visit https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html
+#eks_additional_roles = {
+#  user = {
+#    kubernetes_group = []
+#    principal_arn    = "arn:aws:iam::121212121212:role/test-policy-role"
+#    policy_associations = {
+#      admin = {
+#        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+#        access_scope = {
+#          namespaces = []
+#          type       = "cluster"
+#        }
+#      }
+#    }
 #  }
-#]
+#}
 
 # List of addtional namespaces to be created in the cluster
 #additional_namespaces = ["extra_namespace"]

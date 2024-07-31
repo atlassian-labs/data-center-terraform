@@ -11,7 +11,7 @@ resource "aws_ebs_volume" "opensearch" {
   availability_zone = var.eks.availability_zone
   snapshot_id       = var.opensearch_snapshot_id
   size              = data.aws_ebs_snapshot.opensearch_snapshot[0].volume_size
-  type              = local.opensearch_storage_class
+  type              = "gp2"
   tags = {
     Name = "confluence-opensearch"
   }
