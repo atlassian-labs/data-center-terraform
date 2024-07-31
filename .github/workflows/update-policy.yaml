@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'permissions/policy.json'
+      - 'permissions/policy1.json'
+      - 'permissions/policy2.json'
 
 jobs:
   update-iam-policy:
@@ -20,7 +21,8 @@ jobs:
 
       - name: Replace AWS Account ID
         run: |
-          sed -i 's/123456789012/${{ secrets.AWS_ACCOUNT_ID }}/' permissions/policy.json
+          sed -i 's/123456789012/${{ secrets.AWS_ACCOUNT_ID }}/' permissions/policy1.json
+          sed -i 's/123456789012/${{ secrets.AWS_ACCOUNT_ID }}/' permissions/policy2.json
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -32,4 +34,6 @@ jobs:
           role-duration-seconds: 900
 
       - name: Update IAM Policy
-        run: ./permissions/update-policy.sh ${{ secrets.POLICY_ARN }} permissions/policy.json
+        run:  |
+          ./permissions/update-policy.sh ${{ secrets.POLICY_ARN_1 }} permissions/policy1.json
+          ./permissions/update-policy.sh ${{ secrets.POLICY_ARN_2 }} permissions/policy2.json
