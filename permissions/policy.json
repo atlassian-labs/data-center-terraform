@@ -73,7 +73,6 @@
         "eks:DeleteAccessEntry",
         "eks:DescribeAddonVersions",
         "eks:DescribeAccessEntry",
-        "eks:TagResource",
         "eks:AssociateAccessPolicy",
         "eks:DisassociateAccessPolicy",
         "eks:ListAssociatedAccessPolicies"
