@@ -92,6 +92,7 @@
         "dynamodb:DescribeTable",
         "dynamodb:DescribeContinuousBackups",
         "dynamodb:CreateTable",
+        "dynamodb:ListTables",
         "dynamodb:TagResource",
         "dynamodb:UntagResource",
         "dynamodb:ListTagsOfResource",
@@ -101,7 +102,7 @@
         "dynamodb:UpdateItem"
       ],
       "Resource": [
-        "arn:aws:dynamodb:*:123456789012:table/atl_dc_*_tf_lock"
+        "arn:aws:dynamodb:*:123456789012:table/*"
       ]
     },
     {
