@@ -105,7 +105,7 @@
       ]
     },
     {
-      "Sid": "DynamoDB",
+      "Sid": "DynamoDBlistTables",
       "Effect": "Allow",
       "Action": [
         "dynamodb:ListTables"
