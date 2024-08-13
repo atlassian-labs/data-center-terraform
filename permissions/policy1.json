@@ -105,6 +105,16 @@
       ]
     },
     {
+      "Sid": "DynamoDBlistTables",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:ListTables"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:*:123456789012:table/*"
+      ]
+    },
+    {
       "Sid": "s3list",
       "Effect": "Allow",
       "Action": [
