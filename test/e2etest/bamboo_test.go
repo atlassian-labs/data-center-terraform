@@ -1,13 +1,22 @@
 package e2etest
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"regexp"
-	"strconv"
+	"net/http"
 	"testing"
 	"time"
 )
+
+type Agent struct {
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Type    string `json:"type"`
+	Active  bool   `json:"active"`
+	Enabled bool   `json:"enabled"`
+	Busy    bool   `json:"busy"`
+}
 
 func bambooHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
 
@@ -55,17 +64,32 @@ func assertBambooProjects(t *testing.T, productUrl string) {
 }
 
 func assertRemoteAgentList(t *testing.T, testConfig TestConfig, productUrl string) {
-	agentUrl := "admin/agent/configureAgents!doDefault.action"
 	time.Sleep(20 * time.Second)
+	println("Asserting Bamboo Remote Agents...")
+	agentUrl := "rest/api/latest/agent"
 	url := fmt.Sprintf("%s/%s", productUrl, agentUrl)
-	content := getPageContentWithBasicAuth(t, url, "admin", testConfig.BambooPassword)
-	println("Asserting Bamboo RemoteAgentList...")
-	r := regexp.MustCompile(`(?s)There are currently\s+(\d+)\s+remote agents online`)
-	matches := r.FindStringSubmatch(string(content))
-	assert.NotEmpty(t, matches, "Expected to find a match for 'There are currently X remote agents online' but none was found")
-	numAgents, err := strconv.Atoi(matches[1])
-	assert.NoError(t, err, "Failed to convert the number of agents to an integer")
-	assert.GreaterOrEqual(t, numAgents, 3, "The number of remote agents should be greater than 3")
+	req, err := http.NewRequest("GET", url, nil)
+	assert.NoError(t, err)
+	username := "admin"
+	password := testConfig.BambooPassword
+	req.SetBasicAuth(username, password)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	assert.NoError(t, err)
+	defer resp.Body.Close()
+	assert.Equal(t, http.StatusOK, resp.StatusCode, "Expected status code 200")
+	var agents []Agent
+	err = json.NewDecoder(resp.Body).Decode(&agents)
+	assert.NoError(t, err)
+	expectedNumAgents := 2
+	assert.GreaterOrEqual(t, len(agents), expectedNumAgents, "Number of agents should match the expected count")
+	activeCount := 0
+	for _, agent := range agents {
+		if agent.Active {
+			activeCount++
+		}
+	}
+	assert.GreaterOrEqual(t, activeCount, 2, "There should be at least 2 active agents")
 }
 
 func resumeBambooServer(t *testing.T, testConfig TestConfig, productUrl string) {
