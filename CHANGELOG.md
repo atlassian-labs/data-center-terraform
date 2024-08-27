@@ -2,7 +2,7 @@
 
 ## 2.9.2
 
-**Release date:** 2024-08-26
+**Release date:** 2024-08-27
 
 * Make log collection script usable for non EKS clusters [#415](https://github.com/atlassian-labs/data-center-terraform/pull/415)
 * Add role permission policies [#416](https://github.com/atlassian-labs/data-center-terraform/pull/416) [#418](https://github.com/atlassian-labs/data-center-terraform/pull/418) [#425](https://github.com/atlassian-labs/data-center-terraform/pull/425) [#426](https://github.com/atlassian-labs/data-center-terraform/pull/426)
