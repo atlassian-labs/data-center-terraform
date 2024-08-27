@@ -1,11 +1,20 @@
 # Change Log
 
+## 2.9.2
+
+**Release date:** 2024-08-27
+
+* Make log collection script usable for non EKS clusters [#415](https://github.com/atlassian-labs/data-center-terraform/pull/415)
+* Add role permission policies [#416](https://github.com/atlassian-labs/data-center-terraform/pull/416) [#418](https://github.com/atlassian-labs/data-center-terraform/pull/418) [#425](https://github.com/atlassian-labs/data-center-terraform/pull/425) [#426](https://github.com/atlassian-labs/data-center-terraform/pull/426)
+* Write more logs to log files [#420](https://github.com/atlassian-labs/data-center-terraform/pull/420)
+* Update versions of Terraform providers and modules and bump EKS version [#423](https://github.com/atlassian-labs/data-center-terraform/pull/423)
+
 ## 2.9.1
 
 **Release date:** 2024-06-04
 
 * Fix additional JVM args for Bitbucket [#408](https://github.com/atlassian-labs/data-center-terraform/pull/408)
-* Remove deprecated RDS versions [#441](https://github.com/atlassian-labs/data-center-terraform/pull/411)
+* Remove deprecated RDS versions [#411](https://github.com/atlassian-labs/data-center-terraform/pull/411)
 * Update RDS minor versions [#412](https://github.com/atlassian-labs/data-center-terraform/pull/412)
 * Improve error message when environment name containers upper case characters [#413](https://github.com/atlassian-labs/data-center-terraform/pull/413)
 
