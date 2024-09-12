@@ -141,7 +141,8 @@
         "arn:aws:iam::123456789012:policy/*-s3-confluence-storage-policy",
         "arn:aws:iam::123456789012:policy/*_ExternalDNS",
         "arn:aws:iam::123456789012:oidc-provider/*",
-        "arn:aws:iam::123456789012:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup"
+        "arn:aws:iam::123456789012:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup",
+        "arn:aws:iam::123456789012:policy/policy*",
       ]
     }
   ]
