@@ -176,6 +176,12 @@
         "arn:aws:s3:::atl-dc-*/*",
         "arn:aws:s3:::*-confluence-storage/*"
       ]
+    },
+    {
+      "Sid": "AllowGetServiceQuota",
+      "Effect": "Allow",
+      "Action": "servicequotas:GetServiceQuota",
+      "Resource": "*"
     }
   ]
 }
