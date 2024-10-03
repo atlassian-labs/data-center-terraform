@@ -25,7 +25,7 @@
         "iam:ListPolicyVersions",
         "iam:GetPolicyVersion",
         "iam:ListOpenIDConnectProviders",
-        "iam:ListOpenIDConnectProviderTags"
+        "iam:ListOpenIDConnectProviderTags",
         "iam:ListEntitiesForPolicy",
 	"iam:ListRoleTags"
       ],
