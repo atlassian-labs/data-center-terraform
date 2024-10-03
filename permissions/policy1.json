@@ -80,8 +80,18 @@
       "Resource": [
         "arn:aws:eks:*:123456789012:nodegroup/atlas-*",
         "arn:aws:eks:*:123456789012:cluster/atlas-*-cluster",
-        "arn:aws:eks:*:123456789012:addon/*"
+        "arn:aws:eks:*:123456789012:addon/*",
+        "arn:aws:eks:*:123456789012:access-entry/atlas-*-cluster",
+        "arn:aws:eks:*:123456789012:access-entry/atlas-*-cluster/*"
       ]
+    },
+    {
+      "Sid": "eksGlobal",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeAddonVersions"
+      ],
+      "Resource": "*"
     },
     {
       "Sid": "DynamoDB",
