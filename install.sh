@@ -393,6 +393,32 @@ set_current_context_k8s() {
   fi
 }
 
+scale_down() {
+    set +e
+    PRODUCTS=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep "products" | sed 's/ //g')
+    PRODUCTS="${PRODUCTS#*=}"
+    PRODUCTS_ARRAY=($(echo $PRODUCTS | sed 's/\[//g' | sed 's/\]//g' | sed 's/,/ /g' | sed 's/"//g'))
+    if echo "$PRODUCTS" | grep -qE 'jira|confluence'; then
+      SNAPSHOTS_JSON_FILE_PATH=$(get_variable 'snapshots_json_file_path' "${CONFIG_ABS_PATH}")
+      if [ "${PATH}" ]; then
+        local EKS_PREFIX="atlas-"
+        local EKS_SUFFIX="-cluster"
+        local EKS_CLUSTER_NAME=${EKS_PREFIX}${ENVIRONMENT_NAME}${EKS_SUFFIX}
+        local EKS_CLUSTER="${EKS_CLUSTER_NAME:0:38}"
+        aws eks update-kubeconfig --name "${EKS_CLUSTER}" --region "${REGION}" &> /dev/null
+        if [ $? -eq 0 ]; then
+          for PRODUCT in "${PRODUCTS_ARRAY[@]}"; do
+            REPLICAS_VAR=$PRODUCT'_replica_count'
+            DESIRED_REPLICAS=$(grep -E "^\s*${REPLICAS_VAR}\s*=" "${CONFIG_ABS_PATH}" | awk -F= '{gsub(/ /, "", $2); print $2}')
+            ./scripts/scale.sh "${PRODUCT}" "${DESIRED_REPLICAS}"
+          done
+        fi
+      fi
+    fi
+    set -e
+}
+
+
 resume_bamboo_server() {
   # Please note that if you import the dataset, make sure admin credential in config file (config.tfvars)
   # is matched with admin info stored in dataset you import.
@@ -497,6 +523,9 @@ generate_terraform_backend_variables
 
 # Create S3 bucket and dynamodb table to keep state
 create_tfstate_resources
+
+# check if it's a scale down event and scale down manually (Jira and Confluence only)
+scale_down | tee -a "${LOG_FILE}"
 
 # Deploy the infrastructure
 create_update_infrastructure
