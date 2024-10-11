@@ -9,7 +9,7 @@ PRODUCT=$1
 DESIRED_REPLICAS=$2
 
 # check if this is the initial release and exit
-STS=$(kubectl get sts -l=app.kubernetes.io/instance="${PRODUCT}" -n "${NAMESPACE}" -o jsonpath='{.items[*].metadata.name}')
+STS=$(kubectl get sts -l=app.kubernetes.io/name="${PRODUCT}" -n "${NAMESPACE}" -o jsonpath='{.items[*].metadata.name}')
 if [ -z "$STS" ]; then
   log "No StatefulSets found"
   exit 0
@@ -17,6 +17,10 @@ fi
 
 # get existing sts replicas
 STS_REPLICAS=$(kubectl get sts $STS -n "${NAMESPACE}" -ojsonpath='{.spec.replicas}')
+if [ -z "${STS_REPLICAS}" ]; then
+  log "Failed to get StatefulSets replicas"
+  exit 0
+fi
 # Check if DESIRED_REPLICAS is less than STS_REPLICAS and manually scale down
 # before Terraform attempts destroying local-home PVC, PV and EBS vol
 if [ "${DESIRED_REPLICAS}" -lt "${STS_REPLICAS}" ]; then
