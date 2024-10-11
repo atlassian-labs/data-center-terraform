@@ -75,7 +75,8 @@
         "eks:DescribeAccessEntry",
         "eks:AssociateAccessPolicy",
         "eks:DisassociateAccessPolicy",
-        "eks:ListAssociatedAccessPolicies"
+        "eks:ListAssociatedAccessPolicies",
+        "eks:ListNodegroups"
       ],
       "Resource": [
         "arn:aws:eks:*:123456789012:nodegroup/atlas-*",
