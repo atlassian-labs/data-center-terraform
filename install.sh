@@ -393,6 +393,9 @@ set_current_context_k8s() {
   fi
 }
 
+# this function will call an external script that will check if existing StatefulSet replicas > desired
+# StatefulSet replicas (as stated in tfvars) and scale down to desired StatefulSet replicas to prevent Terraform
+# from deleting PVCs attached to running pods
 scale_down() {
     set +e
     PRODUCTS=$(grep -o '^[^#]*' "${CONFIG_ABS_PATH}" | grep "products" | sed 's/ //g')
