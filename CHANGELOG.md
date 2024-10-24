@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.9.3
+
+**Release date:** 2024-10-24
+
+* Fix scale down of Confluence/Jira statefulsets [#435](https://github.com/atlassian-labs/data-center-terraform/pull/435)
+* Redirect error log to file [#431](https://github.com/atlassian-labs/data-center-terraform/pull/431)
+* Add missing IAM policies [#432](https://github.com/atlassian-labs/data-center-terraform/pull/432) [#433](https://github.com/atlassian-labs/data-center-terraform/pull/433) [#436](https://github.com/atlassian-labs/data-center-terraform/pull/436)
+
 ## 2.9.2
 
 **Release date:** 2024-08-27
