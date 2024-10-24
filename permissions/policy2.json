@@ -60,7 +60,8 @@
         "ec2:RevokeSecurityGroupIngress",
         "ec2:DescribeAddressesAttribute",
         "ec2:CreateNetworkAclEntry",
-        "ec2:DeleteNetworkAclEntry"
+        "ec2:DeleteNetworkAclEntry",
+        "ec2:DeleteNetworkInterface"
       ],
       "Resource": "*"
     },
