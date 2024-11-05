@@ -23,7 +23,7 @@ resource "kubernetes_persistent_volume" "local_home" {
   spec {
     access_modes = ["ReadWriteOnce"]
     capacity = {
-      storage = "${data.aws_ebs_snapshot.local_home_snapshot[count.index].volume_size}Gi"
+      storage = var.local_home_size
     }
     storage_class_name = local.storage_class
     persistent_volume_source {
@@ -48,7 +48,7 @@ resource "kubernetes_persistent_volume_claim" "local_home" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "${data.aws_ebs_snapshot.local_home_snapshot[count.index].volume_size}Gi"
+        storage = var.local_home_size
       }
     }
     storage_class_name = local.storage_class
