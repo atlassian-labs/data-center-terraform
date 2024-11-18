@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.9.4
+
+**Release date:** 2024-11-19
+
+* Fix local-home PVC issues in Jira and Confluence [438](https://github.com/atlassian-labs/data-center-terraform/pull/438)
+* Fix license validation [commit f719385](https://github.com/atlassian-labs/data-center-terraform/commit/f7193856b916edf62ae66f9ffd3d86c43a37e8b1)
+
 ## 2.9.3
 
 **Release date:** 2024-10-24
