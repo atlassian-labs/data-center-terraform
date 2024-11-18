@@ -151,7 +151,7 @@ pre_flight_checks() {
         done
         if [ $? -ne 0 ]; then
             log "License validation failed" "ERROR"
-            exit $?
+            exit 1
         fi
       fi
     done
