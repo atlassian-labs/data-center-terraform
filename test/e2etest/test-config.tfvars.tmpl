@@ -32,6 +32,8 @@ instance_types = ["m5.2xlarge"]
 {{if .domain}}domain = "{{.domain}}"{{end}}
 
 
+kinesis_log_producers_role_arns = {{.kinesis_log_producers_role_arns}}
+
 # Monitoring settings
 monitoring_enabled = true
 monitoring_grafana_expose_lb = true
