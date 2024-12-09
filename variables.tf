@@ -1096,6 +1096,12 @@ variable "bitbucket_additional_jvm_args" {
   type        = list(string)
 }
 
+variable "bitbucket_websudo_enabled" {
+  description = "Enable web sudo"
+  default     = true
+  type        = bool
+}
+
 ################################################################################
 # Bamboo Variables
 ################################################################################

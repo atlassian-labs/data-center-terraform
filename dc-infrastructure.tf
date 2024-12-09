@@ -312,6 +312,7 @@ module "bitbucket" {
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bitbucket_chart_path = local.local_bitbucket_chart_path
+  bitbucket_websudo_enabled = var.bitbucket_websudo_enabled
 }
 
 module "crowd" {

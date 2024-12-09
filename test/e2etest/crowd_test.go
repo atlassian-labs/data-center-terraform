@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"os"
 	"strings"
@@ -99,34 +100,44 @@ func addCrowdUserDirectory(t *testing.T, directoryName string, bitbucketURL stri
 	require.NoError(t, err)
 }
 
-func getBitbucketSessionID(bitbucketURL string, username string, password string) (sessionID string) {
+func getBitbucketSessionID(bitbucketURL string, username string, password string) (sessionID string, err error) {
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		return "", fmt.Errorf("error creating cookie jar: %v", err)
+	}
 	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
+		Jar: jar,
 	}
-	formData := url.Values{
-		"j_username":      []string{username},
-		"j_password":      []string{password},
-		"atl_remember_me": []string{"on"},
-		"submit":          []string{"Log in"},
+	payload := map[string]interface{}{
+		"username":   username,
+		"password":   password,
+		"rememberMe": true,
 	}
-	encodedData := formData.Encode()
-	request, _ := http.NewRequest(http.MethodPost, bitbucketURL+"/j_atl_security_check", strings.NewReader(encodedData))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return "", fmt.Errorf("error encoding JSON payload: %v", err)
+	}
+	request, err := http.NewRequest(http.MethodPost, bitbucketURL+"/rest/tsv/1.0/authenticate", bytes.NewReader(payloadBytes))
+	if err != nil {
+		return "", fmt.Errorf("error creating request: %v", err)
+	}
+	request.Header.Set("Content-Type", "application/json")
 	resp, err := client.Do(request)
 	if err != nil {
-		fmt.Println(err)
+		return "", fmt.Errorf("error making request: %v", err)
 	}
-	cookies := resp.Cookies()
-	var bitbucketSessionID *http.Cookie
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("authentication failed: status code %d", resp.StatusCode)
+	}
+	cookies := jar.Cookies(request.URL)
 	for _, cookie := range cookies {
 		if cookie.Name == "BITBUCKETSESSIONID" {
-			bitbucketSessionID = cookie
-			return bitbucketSessionID.Value
+			return cookie.Value, nil
 		}
 	}
-	return ""
+
+	return "", fmt.Errorf("BITBUCKETSESSIONID not found in response")
 }
 
 func generateCrowdCfgXml(t *testing.T, testConfig TestConfig, jdbcURL string, rdsPassword string) {
@@ -242,7 +253,7 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 
 	// get BITBUCKETSESSIONID to use in the header in subsequent calls
 	// even though basic auth works, atl_token is different each time
-	bitbucketSessionID := getBitbucketSessionID(bitbucketURL, "admin", testConfig.BitbucketPassword)
+	bitbucketSessionID, _ := getBitbucketSessionID(bitbucketURL, "admin", testConfig.BitbucketPassword)
 	assert.NotEmptyf(t, bitbucketSessionID, "BITBUCKETSESSIONID cannot be empty")
 
 	// now we need to extract atl_token from the hidden input in HTML response
