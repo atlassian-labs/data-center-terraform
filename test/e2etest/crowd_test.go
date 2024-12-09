@@ -118,6 +118,14 @@ func getBitbucketSessionID(bitbucketURL string, username string, password string
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+	}
+	log.Printf("Response body: %s", string(body))
+
 	cookies := resp.Cookies()
 	var bitbucketSessionID *http.Cookie
 	for _, cookie := range cookies {
