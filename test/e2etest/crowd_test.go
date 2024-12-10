@@ -128,7 +128,7 @@ func getBitbucketSessionID(bitbucketURL string, username string, password string
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("authentication failed: status code %d", resp.StatusCode)
+		return "", fmt.Errorf("authentication failed: status code %d, body: %s", resp.StatusCode, resp.Body)
 	}
 	cookies := jar.Cookies(request.URL)
 	for _, cookie := range cookies {
@@ -253,7 +253,8 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 
 	// get BITBUCKETSESSIONID to use in the header in subsequent calls
 	// even though basic auth works, atl_token is different each time
-	bitbucketSessionID, _ := getBitbucketSessionID(bitbucketURL, "admin", testConfig.BitbucketPassword)
+	bitbucketSessionID, err := getBitbucketSessionID(bitbucketURL, "admin", testConfig.BitbucketPassword)
+	assert.Nil(t, err)
 	assert.NotEmptyf(t, bitbucketSessionID, "BITBUCKETSESSIONID cannot be empty")
 
 	// now we need to extract atl_token from the hidden input in HTML response
@@ -282,7 +283,7 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	log.Printf("Checking if user %s is allowed to call Bitbucket project API\n", userName)
 	projects := getPageContentWithBasicAuth(t, bitbucketURL+"/rest/api/latest/projects", userName, "password")
 	var result map[string]interface{}
-	err := json.Unmarshal(projects, &result)
+	err = json.Unmarshal(projects, &result)
 	require.NoError(t, err)
 	// tests create 1 project, so we expect 1
 	// if auth fails, API returns json with size=0
