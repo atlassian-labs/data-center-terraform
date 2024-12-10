@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/cookiejar"
@@ -128,7 +129,12 @@ func getBitbucketSessionID(bitbucketURL string, username string, password string
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("authentication failed: status code %d, body: %s", resp.StatusCode, resp.Body)
+		if body, err := ioutil.ReadAll(resp.Body); err != nil {
+			log.Printf("Error reading response body: %v", err)
+		} else {
+			log.Printf("Login failed: %s", string(body))
+		}
+		return "", fmt.Errorf("authentication failed: status code %d", resp.StatusCode)
 	}
 	cookies := jar.Cookies(request.URL)
 	for _, cookie := range cookies {
