@@ -195,7 +195,6 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 		vars["domain"] = domain
 		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
 	}
-	vars["kinesis_log_producers_role_arns"] = os.Getenv("kinesis_log_producers_role_arns")
 
 	// parse the template
 	tmpl, _ := template.ParseFiles("test-config.tfvars.tmpl")
