@@ -31,9 +31,6 @@ instance_types = ["m5.2xlarge"]
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 {{if .domain}}domain = "{{.domain}}"{{end}}
 
-
-kinesis_log_producers_role_arns = {{.kinesis_log_producers_role_arns}}
-
 # Monitoring settings
 monitoring_enabled = true
 monitoring_grafana_expose_lb = true
