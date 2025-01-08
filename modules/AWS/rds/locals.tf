@@ -12,7 +12,7 @@ locals {
       "14" = "14.15",
       "15" = "15.7",
       "16" = "16.3",
-  }, var.major_engine_version, "14.12")
+  }, var.major_engine_version, "14.15")
 
   family = lookup(
     {
