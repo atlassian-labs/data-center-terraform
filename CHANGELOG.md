@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.6
+
+**Release date:** 2025-01-10
+
+* Bump Postgres RDS minor version [#444](https://github.com/atlassian-labs/data-center-terraform/pull/444)
+
 ## 2.9.4
 
 **Release date:** 2024-11-19
