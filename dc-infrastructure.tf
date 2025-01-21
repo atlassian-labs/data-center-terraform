@@ -358,3 +358,19 @@ module "crowd" {
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_crowd_chart_path = local.local_crowd_chart_path
 }
+
+module discovery {
+  source = "./modules/discovery"
+  vpc    = module.base-infrastructure.vpc
+  tags   = var.resource_tags
+  depends_on = [
+    module.base-infrastructure,
+    module.database,
+    module.nfs,
+    module.bamboo,
+    module.jira,
+    module.confluence,
+    module.bitbucket,
+    module.crowd
+  ]
+}
