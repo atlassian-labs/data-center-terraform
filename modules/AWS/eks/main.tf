@@ -112,7 +112,7 @@ resource "aws_autoscaling_group_tag" "this" {
 
 # we need to tag this security group because it's not created by Terraform
 resource "aws_ec2_tag" "cluster_primary_security_group" {
-  for_each    = var.tags
+  for_each    = { for k, v in var.tags : k => v if k != "Name" }
   key         = each.key
   value       = each.value
   resource_id = module.eks.cluster_primary_security_group_id

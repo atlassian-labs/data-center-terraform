@@ -159,3 +159,19 @@ output "crowd_ebs_snapshot" {
 output "crowd_db_snapshot_build_number" {
   value = local.crowd_db_snapshot_build_number
 }
+
+output "route_table_ids" {
+  value = tolist(module.discovery.route_table_ids)
+}
+
+output "network_interface_ids" {
+  value = tolist(module.discovery.network_interface_ids)
+}
+
+output "network_acl_ids" {
+  value = tolist(module.discovery.network_acl_ids)
+}
+
+output "tags" {
+  value = var.resource_tags
+}
