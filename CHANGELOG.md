@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.7
+
+**Release date:** 2025-01-29
+
+* Tag resources created by AWS behind the scenes [#445](https://github.com/atlassian-labs/data-center-terraform/pull/445)
+
 ## 2.9.6
 
 **Release date:** 2025-01-10
