@@ -24,7 +24,7 @@ variable "environment_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  default     = "1.30"
+  default     = "1.32"
   type        = string
   validation {
     condition     = can(regex("^1\\.3[0-9]$", var.eks_version))
