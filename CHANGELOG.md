@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.8
+
+**Release date:** 2025-04-01
+
+* Upgrade EKS to 1.32 [#446](https://github.com/atlassian-labs/data-center-terraform/pull/446)
+
 ## 2.9.7
 
 **Release date:** 2025-01-29
