@@ -22,7 +22,7 @@ locals {
       "14" = "postgres14",
       "15" = "postgres15",
       "16" = "postgres16",
-      "16" = "postgres17",
+      "17" = "postgres17",
   }, var.major_engine_version, "postgres14")
 
   db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.atlassian_db_snapshot[0].engine_version : null
