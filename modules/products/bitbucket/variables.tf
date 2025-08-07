@@ -216,3 +216,9 @@ variable "additional_jvm_args" {
   description = "List of additional JVM arguments to be passed to the server"
   type        = list(string)
 }
+
+variable "bitbucket_websudo_enabled" {
+  description = "Enable web sudo"
+  default     = true
+  type        = bool
+}

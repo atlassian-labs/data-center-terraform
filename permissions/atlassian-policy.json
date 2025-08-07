@@ -27,6 +27,7 @@
         "iam:ListOpenIDConnectProviders",
         "iam:ListOpenIDConnectProviderTags",
         "iam:ListEntitiesForPolicy",
+        "iam:ListPolicyTags",
 	"iam:ListRoleTags"
       ],
       "Resource": [
@@ -35,7 +36,8 @@
         "arn:aws:iam::123456789012:policy/*_LaaS-policy",
         "arn:aws:iam::123456789012:policy/*_Fleet-Enrollment",
         "arn:aws:iam::585036043680:role/atlas-*",
-        "arn:aws:iam::123456789012:oidc-provider/*"
+        "arn:aws:iam::123456789012:oidc-provider/*",
+        "arn:aws:iam::585036043680:policy/atlas-*"
       ]
     },
     {

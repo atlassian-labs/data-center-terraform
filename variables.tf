@@ -24,7 +24,7 @@ variable "environment_name" {
 
 variable "eks_version" {
   description = "EKS K8s version"
-  default     = "1.30"
+  default     = "1.32"
   type        = string
   validation {
     condition     = can(regex("^1\\.3[0-9]$", var.eks_version))
@@ -1094,6 +1094,12 @@ variable "bitbucket_additional_jvm_args" {
   description = "List of additional JVM arguments to be passed to the server"
   default     = []
   type        = list(string)
+}
+
+variable "bitbucket_websudo_enabled" {
+  description = "Enable web sudo"
+  default     = true
+  type        = bool
 }
 
 ################################################################################

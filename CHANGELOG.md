@@ -1,5 +1,38 @@
 # Change Log
 
+## 2.9.8
+
+**Release date:** 2025-04-01
+
+* Upgrade EKS to 1.32 [#446](https://github.com/atlassian-labs/data-center-terraform/pull/446)
+
+## 2.9.7
+
+**Release date:** 2025-01-29
+
+* Tag resources created by AWS behind the scenes [#445](https://github.com/atlassian-labs/data-center-terraform/pull/445)
+
+## 2.9.6
+
+**Release date:** 2025-01-10
+
+* Bump Postgres RDS minor version [#444](https://github.com/atlassian-labs/data-center-terraform/pull/444)
+
+## 2.9.4
+
+**Release date:** 2024-11-19
+
+* Fix local-home PVC issues in Jira and Confluence [438](https://github.com/atlassian-labs/data-center-terraform/pull/438)
+* Fix license validation [commit f719385](https://github.com/atlassian-labs/data-center-terraform/commit/f7193856b916edf62ae66f9ffd3d86c43a37e8b1)
+
+## 2.9.3
+
+**Release date:** 2024-10-24
+
+* Fix scale down of Confluence/Jira statefulsets [#435](https://github.com/atlassian-labs/data-center-terraform/pull/435)
+* Redirect error log to file [#431](https://github.com/atlassian-labs/data-center-terraform/pull/431)
+* Add missing IAM policies [#432](https://github.com/atlassian-labs/data-center-terraform/pull/432) [#433](https://github.com/atlassian-labs/data-center-terraform/pull/433) [#436](https://github.com/atlassian-labs/data-center-terraform/pull/436)
+
 ## 2.9.2
 
 **Release date:** 2024-08-27

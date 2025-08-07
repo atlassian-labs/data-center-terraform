@@ -31,7 +31,6 @@ instance_types = ["m5.2xlarge"]
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 {{if .domain}}domain = "{{.domain}}"{{end}}
 
-
 # Monitoring settings
 monitoring_enabled = true
 monitoring_grafana_expose_lb = true
@@ -138,6 +137,7 @@ bitbucket_nfs_limits_cpu      = "0.25"
 bitbucket_nfs_limits_memory   = "256Mi"
 
 bitbucket_termination_grace_period = 0
+bitbucket_websudo_enabled = false
 
 {{if .additional_role }}
 # Enable access to additional role

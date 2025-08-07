@@ -57,7 +57,7 @@ resource "helm_release" "jira" {
             create = true
             resources = {
               requests = {
-                storage = var.local_home_snapshot_id != null ? "${data.aws_ebs_snapshot.local_home_snapshot[0].volume_size}Gi" : var.local_home_size
+                storage = var.local_home_size
               }
             }
           }

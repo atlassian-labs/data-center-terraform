@@ -7,12 +7,13 @@ locals {
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.version13
   engine_version = lookup(
     {
-      "12" = "12.19",
-      "13" = "13.15",
-      "14" = "14.12",
-      "15" = "15.7",
-      "16" = "16.3",
-  }, var.major_engine_version, "14.12")
+      "12" = "12.22",
+      "13" = "13.20",
+      "14" = "14.17",
+      "15" = "15.12",
+      "16" = "16.8",
+      "17" = "17.4",
+  }, var.major_engine_version, "14.17")
 
   family = lookup(
     {
@@ -21,6 +22,7 @@ locals {
       "14" = "postgres14",
       "15" = "postgres15",
       "16" = "postgres16",
+      "17" = "postgres17",
   }, var.major_engine_version, "postgres14")
 
   db_snapshot_engine_version       = var.snapshot_identifier != null ? data.aws_db_snapshot.atlassian_db_snapshot[0].engine_version : null

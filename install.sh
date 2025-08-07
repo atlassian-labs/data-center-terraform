@@ -151,7 +151,7 @@ pre_flight_checks() {
         done
         if [ $? -ne 0 ]; then
             log "License validation failed" "ERROR"
-            exit $?
+            exit 1
         fi
       fi
     done
@@ -507,6 +507,25 @@ enable_ssh_tcp_protocol_on_lb_listener() {
   fi
 }
 
+# tag various EC2 resources that are implicitly created without custom tags
+#resource IDs are retrieved in discovery module and added to Terraform outputs
+tag_aws_resources() {
+  RESOURCE_IDS=(
+    $(terraform output -json route_table_ids | jq -r '.[]')
+    $(terraform output -json network_interface_ids | jq -r '.[]')
+    $(terraform output -json network_acl_ids | jq -r '.[]')
+  )
+
+  TAGS=$(terraform output -json tags | jq -c 'to_entries | map({Key: .key, Value: .value})')
+  REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+
+  # Apply tags to all resources in a single loop
+  for RESOURCE_ID in "${RESOURCE_IDS[@]}"; do
+    log "Tagging Resource: $RESOURCE_ID"
+    aws ec2 create-tags --resources "$RESOURCE_ID" --tags "$TAGS" --region="${REGION}"
+  done
+}
+
 # Check for prerequisite tooling
 check_for_prerequisites
 
@@ -532,6 +551,9 @@ scale_down | tee -a "${LOG_FILE}"
 
 # Deploy the infrastructure
 create_update_infrastructure
+
+# tag AWS resources that are missing custom tags
+tag_aws_resources 2>&1 | tee -a "${LOG_FILE}"
 
 # Resume bamboo server if the credential is provided
 resume_bamboo_server | tee -a "${LOG_FILE}"
