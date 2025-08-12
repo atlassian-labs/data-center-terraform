@@ -2,9 +2,14 @@
 
 ## 2.9.8
 
-**Release date:** 2025-04-01
+**Release date:** 2025-08-12
 
+* Upgrade local RDS engine versions [#450](https://github.com/atlassian-labs/data-center-terraform/pull/450)
+* Adding new code owners [#448](https://github.com/atlassian-labs/data-center-terraform/pull/448)
+* Bump RDS versions [#447](https://github.com/atlassian-labs/data-center-terraform/pull/447)
+* Downgrade Python because cgi is removed in Python 3.13 [commit 62320a2](https://github.com/atlassian-labs/data-center-terraform/commit/13f0d9d69e7442e56aa7f1b2efdbbf8c3f3c653a)
 * Upgrade EKS to 1.32 [#446](https://github.com/atlassian-labs/data-center-terraform/pull/446)
+
 
 ## 2.9.7
 
