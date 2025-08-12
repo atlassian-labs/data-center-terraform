@@ -44,11 +44,11 @@ variable "vpc" {
 
 variable "major_engine_version" {
   description = "RDS Major engine version for the product. If RDS snapshot is provided, this value is ignored."
-  default     = "11"
+  default     = "15"
   type        = string
   validation {
-    condition     = contains(["10", "11", "12", "13", "14"], var.major_engine_version)
-    error_message = "Invalid major engine version. Valid ranges are from 10 to 14 (integer)."
+    condition     = contains(["11", "12", "13", "14", "15", "16", "17"], var.major_engine_version)
+    error_message = "Invalid major engine version. Valid ranges are from 11 to 17 (integer)."
   }
 }
 
