@@ -1,5 +1,5 @@
 locals {
-  ingress_version      = "4.11.1"
+  ingress_version      = "4.11.8"
   ingress_name         = "ingress-nginx"
   ingress_namespace    = "ingress-nginx"
   domain_supplied      = var.ingress_domain != null ? true : false
