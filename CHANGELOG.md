@@ -1,6 +1,12 @@
 # Change Log
 
-## 2.9.9
+## 2.9.10
+
+**Release date:** 2025-08-21
+
+* Update ingress-nginx version [#453](https://github.com/atlassian-labs/data-center-terraform/pull/453)
+
+
 
 **Release date:** 2025-08-12
 
