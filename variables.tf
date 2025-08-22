@@ -136,13 +136,15 @@ variable "eks_additional_roles" {
 }
 
 variable "whitelist_cidr" {
-  description = "List of CIDRs allowed accessing the application(s)."
+  description = "List of CIDRs (IPv4 and IPv6) allowed accessing the application(s)."
   default     = ["0.0.0.0/0"]
   type        = list(string)
   validation {
     condition = alltrue([
-    for o in var.whitelist_cidr : can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/([0-9]|1[0-9]|2[0-9]|3[0-2])$", o))])
-    error_message = "Invalid whitelist CIDR. Valid format is a list of '<IPv4>/[0-32]' e.g: [\"10.0.0.0/18\"]."
+      for o in var.whitelist_cidr : can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/([0-9]|1[0-9]|2[0-9]|3[0-2])$", o)) || 
+      can(regex("^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$", o))
+    ])
+    error_message = "Invalid whitelist CIDR. Valid format is a list of IPv4 CIDR '<IPv4>/[0-32]' (e.g: [\"10.0.0.0/18\"]) or IPv6 CIDR '<IPv6>/[0-128]' (e.g: [\"2001:db8::/32\"])."
   }
 }
 

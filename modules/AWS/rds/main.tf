@@ -15,9 +15,20 @@ module "security_group" {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      description = "PostgreSQL access from within EKS cluster"
+      description = "PostgreSQL access from within EKS cluster (IPv4)"
       cidr_blocks = var.vpc.vpc_cidr_block
-    },
+    }
+  ]
+
+  # IPv6 ingress
+  ingress_with_ipv6_cidr_blocks = [
+    {
+      from_port        = 5432
+      to_port          = 5432
+      protocol         = "tcp"
+      description      = "PostgreSQL access from within EKS cluster (IPv6)"
+      ipv6_cidr_blocks = var.vpc.vpc_ipv6_cidr_block
+    }
   ]
 }
 

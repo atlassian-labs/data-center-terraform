@@ -24,7 +24,11 @@ products = ["<LIST_OF_PRODUCTS>"]
 
 # List of IP ranges that are allowed to access the running applications over the World Wide Web.
 # By default the deployed applications are publicly accessible (0.0.0.0/0). You can restrict this access by changing the
-# default value to your desired CIDR blocks. e.g. ["10.20.0.0/16" , "99.68.64.0/10"]
+# default value to your desired CIDR blocks. 
+# Examples:
+# IPv4: ["10.20.0.0/16", "99.68.64.0/10"]
+# IPv6: ["2001:db8::/32", "2001:db8:1234::/48"]
+# Mixed: ["10.20.0.0/16", "2001:db8::/32"]
 whitelist_cidr = ["0.0.0.0/0"]
 
 # By default, Ingress controller listens on 443 and 80. You can enable only http port 80 by
@@ -126,8 +130,8 @@ max_cluster_capacity = 5
 # If undefined, current AWS region will be used (the one set in `region` in this file). Defaults to undefined.
 # osquery_fleet_enrollment_secret_region_aws = ""
 
-# The value of OSQUERY_ENV that will be used to send logs to Splunk. It should not be something like “production”
-# or “prod-west2” but should instead relate to the product, platform, or team. Defaults to osquery_dc_e2e_tests
+# The value of OSQUERY_ENV that will be used to send logs to Splunk. It should not be something like "production"
+# or "prod-west2" but should instead relate to the product, platform, or team. Defaults to osquery_dc_e2e_tests
 # osquery_env = "osquery_dc_e2e_tests"
 
 # Osquery version. Defaults to 5.7.0. Osquery is installed as yum package, make sure you test the version before an update
