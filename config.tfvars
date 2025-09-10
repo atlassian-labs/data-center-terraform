@@ -130,8 +130,8 @@ max_cluster_capacity = 5
 # or “prod-west2” but should instead relate to the product, platform, or team. Defaults to osquery_dc_e2e_tests
 # osquery_env = "osquery_dc_e2e_tests"
 
-# Osquery version. Defaults to 5.7.0. Osquery is installed as yum package, make sure you test the version before an update
-# osquery_version = "5.7.0"
+# Osquery version. Defaults to 5.14.1. Osquery is installed as yum package, make sure you test the version before an update
+# osquery_version = "5.14.1"
 
 # ATLASSIAN only! Two Atlassian provided roles to push logs to kinesis. Can also be set as env var:
 # TF_VAR_kinesis_log_producers_role_arns='{"eu":"$EU_ROLE_ARN","non-eu":"$NON_EU_ROLE_ARN"}'
