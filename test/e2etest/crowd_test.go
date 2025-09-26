@@ -185,7 +185,7 @@ func restoreCrowdFromBackup(t *testing.T, testConfig TestConfig, jdbcURL string)
 	// create a pod with psql client from which the DB will be restored
 	log.Print("Creating postgres client pod")
 	_, kubectlError = k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
-		"run", "postgres-client", "--restart=Never", "--image", "docker.io/bitnami/postgresql:14.3.0-debian-10-r20",
+		"run", "postgres-client", "--restart=Never", "--image", "docker.io/bitnamilegacy/postgresql:14.3.0-debian-11-r5",
 		"--env", "PGPASSWORD="+string(decodedPassword)+"", "-n", "atlassian",
 		"--", "tail", "-f", "/dev/null")
 	assert.Nil(t, kubectlError)
