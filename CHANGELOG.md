@@ -4,7 +4,7 @@
 
 **Release date:** 2025-09-26
 
-* Bump default osquery version [#456]()
+* Bump default osquery version [#456](https://github.com/atlassian-labs/data-center-terraform/pull/456)
 * Enable basic auth for crowd [#455](https://github.com/atlassian-labs/data-center-terraform/pull/456)
 
 ## 2.9.10
