@@ -13,6 +13,22 @@ locals {
     }
   }) : yamlencode({})
 
+  load_balancer_annotations = var.enable_ssh_tcp ? {
+    # NLB annotations for proper TCP protocol support
+    "service.beta.kubernetes.io/aws-load-balancer-type" : "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
+    "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled" : "true"
+    "service.beta.kubernetes.io/aws-load-balancer-target-type" : "ip"
+    "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : local.resource_tags
+    # For NLB, we don't set backend-protocol as it handles TCP natively
+  } : {
+    # Classic ELB annotations for HTTP traffic
+    "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
+    "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
+    "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
+    "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : local.resource_tags
+  }
+
   # the ARN of one or more certificates managed by the AWS Certificate Manager.
   # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#ssl-cert
   aws_load_balancer_ssl_cert = local.domain_supplied ? yamlencode({

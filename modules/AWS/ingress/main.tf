@@ -78,23 +78,7 @@ resource "helm_release" "ingress" {
             # balancer is terminating TLS.
             https = "http"
           }
-          annotations = {
-            # Whether the LB will be internet-facing or internal.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#lb-internal
-            "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
-
-            # Specifies the IP address type, in this case "dualstack" will allow clients
-            # can access the load balancer using either IPv4 or IPv6.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/service/annotations/#ip-address-type
-            "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
-
-            # The protocol to use for backend traffic between the load balancer and the k8s pods.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#backend-protocol
-            "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
-
-            # LoadBalancer is created by AWS not Terraform, so we need to add resource tags to it
-            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : local.resource_tags
-          }
+          annotations = local.load_balancer_annotations
         }
       }
     }),
@@ -114,9 +98,9 @@ resource "helm_release" "ingress" {
     # These 3 steps are effectively what is documented here:
     # https://atlassian.github.io/data-center-helm-charts/examples/bitbucket/BITBUCKET_SSH/#nginx-ingress-controller-config-for-ssh-connections
     #
-    # Note: Although the port definition defined in step 3 is done so using the TCP protocol, this protocol is not
-    # reflected in the associated ELB Load Balancer. As such, the method "enable_ssh_tcp_protocol_on_lb_listener" (install.sh)
-    # is executed, post deployment, to update the protocol on the load balancer from HTTP to TCP.
+    # Note: When enable_ssh_tcp is true, this deployment uses NLB (Network Load Balancer) instead of Classic ELB.
+    # NLB natively supports TCP protocol for all ports, eliminating the need for post-deployment listener fixes.
+    # For Classic ELB (when enable_ssh_tcp is false), only HTTP/HTTPS protocols are used.
     #
     local.aws_load_balancer_ssl_cert,
     local.aws_load_balancer_ssl_ports,
@@ -132,7 +116,9 @@ data "kubernetes_service" "ingress_nginx" {
   }
 }
 
-data "aws_elb" "ingress_elb" {
+data "aws_lb" "ingress_lb" {
   depends_on = [helm_release.ingress]
   name       = regex("(^[^-]+)", data.kubernetes_service.ingress_nginx.status[0].load_balancer[0].ingress[0].hostname)[0]
 }
+
+data "aws_region" "current" {}
