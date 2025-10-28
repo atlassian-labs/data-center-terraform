@@ -67,6 +67,9 @@ resource "helm_release" "external_dns" {
   version    = local.external_dns_version
 
   values = [yamlencode({
+    image = {
+      repository = "bitnamilegacy/external-dns"
+    }
     provider      = "aws"
     domainFilters = [var.ingress_domain]
     policy        = "sync"
