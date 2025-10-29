@@ -133,8 +133,8 @@ variable "db_snapshot_build_number" {
   type        = string
   default     = null
   validation {
-    condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4}$", var.db_snapshot_build_number))
-    error_message = "Invalid build number. Valid build number will be a 4-digit string."
+    condition     = var.db_snapshot_build_number == null || can(regex("^[0-9]{4,5}$", var.db_snapshot_build_number))
+    error_message = "Invalid build number. Valid build number will be a 4- or 5-digit string."
   }
 }
 
