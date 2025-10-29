@@ -193,7 +193,7 @@ func restoreCrowdFromBackup(t *testing.T, testConfig TestConfig, jdbcURL string)
 	// wait for pod to be running to make sure we can exec and cp into it
 	log.Print("Waiting for postgres client pod to be ready")
 	_, kubectlError = k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
-		"wait", "pods", "postgres-client", "-n", "atlassian", "--for", "condition=Ready", "--timeout=120s")
+		"wait", "pods", "postgres-client", "-n", "atlassian", "--for", "condition=Ready", "--timeout=300s")
 	assert.Nil(t, kubectlError)
 
 	// copy sql dump file to postgres-client pod
@@ -281,7 +281,6 @@ func crowdTests(t *testing.T, testConfig TestConfig, bitbucketURL string, crowdU
 	// to sync user directory for the first time. Increase the sleep if tests are unstable
 	log.Printf("Waiting for Crowd User Directory %s to be synced\n", userName)
 	time.Sleep(150 * time.Second)
-
 	// we set ADMIN permissions so that the new user is allowed to call APIs
 	setUserGlobalPermissions(t, bitbucketURL, bitbucketSessionID, userName, "ADMIN")
 
