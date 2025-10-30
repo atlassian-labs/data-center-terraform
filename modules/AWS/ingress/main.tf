@@ -62,13 +62,15 @@ resource "helm_release" "ingress" {
       controller = {
         config = {
           # If true, NGINX passes the incoming "X-Forwarded-*" headers to upstreams.
-          # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-forwarded-headers
-          # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
-          "use-forwarded-headers" : "true"
+          "use-forwarded-headers" : "true",
+          # Enable IPv6 in nginx
+          "enable-ipv6" : "true",
+          # Configure IPv6 resolver
+          "enable-real-ip" : "true",
+          "proxy-real-ip-cidr" : "::/0"
         }
         service = {
           # The value "Local" preserves the client source IP.
-          # https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
           externalTrafficPolicy = "Local"
 
           enableHttps = local.enable_https_ingress
@@ -80,19 +82,20 @@ resource "helm_release" "ingress" {
           }
           annotations = {
             # Whether the LB will be internet-facing or internal.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#lb-internal
             "service.beta.kubernetes.io/aws-load-balancer-internal" : "false"
 
-            # Specifies the IP address type, in this case "dualstack" will allow clients
-            # can access the load balancer using either IPv4 or IPv6.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/service/annotations/#ip-address-type
+            # Enable dualstack mode for the load balancer
             "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" : "dualstack"
 
-            # The protocol to use for backend traffic between the load balancer and the k8s pods.
-            # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/service/annotations/#backend-protocol
+            # Configure IPv6 health checks
+            "service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol" : "HTTP"
+            "service.beta.kubernetes.io/aws-load-balancer-healthcheck-port" : "80"
+            "service.beta.kubernetes.io/aws-load-balancer-healthcheck-path" : "/healthz"
+
+            # The protocol to use for backend traffic
             "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" : "http"
 
-            # LoadBalancer is created by AWS not Terraform, so we need to add resource tags to it
+            # LoadBalancer tags
             "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags" : local.resource_tags
           }
         }

@@ -1,4 +1,3 @@
-
 locals {
 
   oicd_provider                        = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
@@ -9,7 +8,10 @@ locals {
 
   ami_type = "AL2_x86_64"
 
+  # IPv4 service CIDR (used for backward compatibility)
   cluster_service_ipv4_cidr = "172.20.0.0/16"
+  
+  # IPv6 service CIDR will be automatically assigned by AWS
 
   osquery_secret_region = var.osquery_secret_region != "" ? var.osquery_secret_region : var.region
 
