@@ -37,6 +37,14 @@ module "eks" {
     kube-proxy = {}
     vpc-cni = {
       resolve_conflicts_on_create = "OVERWRITE"
+      configuration_values = jsonencode({
+        env = {
+          # Enable IPv6 for pods
+          ENABLE_IPV6 = "true"
+          # Enable prefix delegation
+          ENABLE_PREFIX_DELEGATION = "true"
+        }
+      })
     }
     aws-ebs-csi-driver = {
       resolve_conflicts_on_create = "OVERWRITE"
@@ -66,11 +74,14 @@ module "eks" {
   create_kms_key            = false
   cluster_encryption_config = {}
 
-
   # Networking
   vpc_id                    = var.vpc_id
   subnet_ids                = var.subnets
   cluster_service_ipv4_cidr = local.cluster_service_ipv4_cidr
+  
+  # Enable IPv6 for cluster
+  cluster_ip_family         = "ipv6"
+  create_cni_ipv6_iam_policy = true
 
   # Managed node group defaults
   eks_managed_node_group_defaults = {
