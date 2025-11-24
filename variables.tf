@@ -1291,7 +1291,7 @@ variable "bamboo_install_local_chart" {
 variable "bamboo_db_major_engine_version" {
   description = "The database major version to use for Bamboo."
   type        = string
-  default     = "14"
+  default     = "17"
 }
 
 variable "bamboo_db_allocated_storage" {
