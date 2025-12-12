@@ -121,8 +121,13 @@ locals {
   }) : yamlencode({})
 
 
+
+  cmd_psql_update_old = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\""
+  cmd_psql_update_new = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"select substring(setting_value from '\\\"baseUrl\\\":\\\"([^\\\"]+)\\\"') from plugin_setting WHERE namespace='_GLOBAL' and setting_key='atlassian.confluence.settings';\"); PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"UPDATE plugin_setting SET setting_value = replace(setting_value, '\\\"baseUrl\\\":\\\"$BASE_URL_TO_REPLACE\\\"', '\\\"baseUrl\\\":\\\"${local.confluence_ingress_url}\\\"') WHERE namespace = '_GLOBAL' AND setting_key = 'atlassian.confluence.settings';\""
+
   # updates base url (in case we are restoring from snapshot)
-  cmd_psql_update = "BASE_URL_TO_REPLACE=$(PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -Atc \"select BANDANAVALUE from BANDANA where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\" | grep -i '<baseurl>'); PGPASSWORD=${var.rds.rds_master_password} psql postgresql://${var.rds.rds_endpoint}/${local.product_name} -U ${var.rds.rds_master_username} -c \"update BANDANA set BANDANAVALUE = replace(BANDANAVALUE, '$${BASE_URL_TO_REPLACE}', '<baseUrl>${local.confluence_ingress_url}</baseUrl>') where BANDANACONTEXT = '_GLOBAL' and BANDANAKEY = 'atlassian.confluence.settings';\""
+  # for Confluence < 10.1 it's in BANDANA, for 10.1+ it's in plugin_setting
+  cmd_psql_update = var.version_tag != null && tonumber(regex("^[0-9]+\\.[0-9]+", var.version_tag)) >= 10.1 ? local.cmd_psql_update_new : local.cmd_psql_update_old
 
   # updates license in shared home (in case we are restoring from snapshot)
   cmd_license_update = "sed -i 's|<property name=\"atlassian.license.message\">.*</property>|<property name=\"atlassian.license.message\">${var.confluence_configuration["license"]}</property>|g' /shared-home/confluence.cfg.xml"
@@ -147,3 +152,4 @@ locals {
   storage_class            = "ebs-csi-default-sc"
   opensearch_storage_class = "ebs-csi-default-sc"
 }
+
