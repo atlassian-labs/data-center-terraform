@@ -22,17 +22,19 @@
 # AWS_ACCESS_KEY_ID=123dsa321asd
 # AWS_SECRET_ACCESS_KEY=asd123asd123
 
-ARG BASE_IMAGE=ubuntu:24.04
+ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE
 
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y gnupg software-properties-common curl unzip openjdk-17-jdk python3 python3-pip python3-venv \
     && python3 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
     && /opt/venv/bin/pip install boto3 retry \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-    && apt-get update && apt-get install -y terraform jq
+    && apt-get update && apt-get install -y terraform jq \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/opt/venv/bin:$PATH"
 
