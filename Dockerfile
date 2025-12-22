@@ -26,12 +26,15 @@ ARG BASE_IMAGE=ubuntu:24.04
 FROM $BASE_IMAGE
 
 RUN apt-get update \
-    && apt-get install -y gnupg software-properties-common curl unzip openjdk-17-jdk python3 python3-pip \
-    && python3 -m pip install --upgrade pip \
-    && pip3 install boto3 retry \
+    && apt-get install -y gnupg software-properties-common curl unzip openjdk-17-jdk python3 python3-pip python3-venv \
+    && python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip \
+    && /opt/venv/bin/pip install boto3 retry \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-get update && apt-get install -y terraform jq
+
+ENV PATH="/opt/venv/bin:$PATH"
 
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
     && chmod 700 get_helm.sh \
