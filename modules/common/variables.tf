@@ -160,7 +160,7 @@ variable "crowdstrike_aws_account_id" {
 variable "falcon_sensor_version" {
   description = "Falcon sensor version"
   type        = string
-  default     = "7.10.0-16303"
+  default     = "7.32.0-18504"
 }
 
 variable "confluence_s3_attachments_storage" {
