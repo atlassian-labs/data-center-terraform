@@ -4,8 +4,8 @@
 
 **Release date:** 2026-01-29
 
-* Update default bamboo_db_major_engine_version to 17 [#461](https://github.com/atlassian-labs/data-center-terraform/pull/461))
-* Update baseurl in postgres depending on Confluence version [#463](https://github.com/atlassian-labs/data-center-terraform/pull/463))
+* Update default bamboo_db_major_engine_version to 17 [#461](https://github.com/atlassian-labs/data-center-terraform/pull/461)
+* Update baseurl in postgres depending on Confluence version [#463](https://github.com/atlassian-labs/data-center-terraform/pull/463)
 
 ## 2.9.12
 
