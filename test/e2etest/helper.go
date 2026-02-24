@@ -11,7 +11,6 @@ import (
 	"strings"
 	"testing"
 	"text/template"
-
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
@@ -125,9 +124,9 @@ func sendPostRequest(t *testing.T, url string, contentType string, username stri
 	request.SetBasicAuth(username, password)
 
 	resp, err := client.Do(request)
-	assert.Regexp(t, "20[01]", strconv.Itoa(resp.StatusCode))
-
 	require.NoError(t, err, "Error accessing url: %s", url)
+	require.NotNil(t, resp, "Expected a non-nil HTTP response for url: %s", url)
+	assert.Regexp(t, "20[01]", strconv.Itoa(resp.StatusCode))
 	defer resp.Body.Close()
 }
 

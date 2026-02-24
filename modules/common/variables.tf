@@ -96,6 +96,12 @@ variable "enable_https_ingress" {
   type        = bool
 }
 
+variable "use_gateway_api" {
+  description = "Use Gateway API (Envoy Gateway) instead of NGINX Ingress controller. Only one can be active per deployment."
+  type        = bool
+  default     = false
+}
+
 variable "create_external_dns" {
   description = "Should create external dns"
   default     = false

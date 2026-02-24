@@ -9,10 +9,6 @@ terraform {
     helm = {
       version = "~> 2.14"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.6.1"
-    }
     kubectl = {
       source  = "alekc/kubectl"
       version = "~> 2.0"

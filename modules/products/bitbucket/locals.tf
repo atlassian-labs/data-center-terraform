@@ -27,9 +27,18 @@ locals {
   product_domain_name = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : null
 
   # ingress settings for bitbucket service
-  ingress_settings = yamlencode({
+  ingress_settings = var.use_gateway_api ? yamlencode({
+    ingress = { create = false }
+    gateway = {
+      create      = true
+      gatewayName = var.ingress.outputs.gateway_name
+      hostnames   = local.domain_supplied ? ["${local.product_name}.${var.ingress.outputs.domain}"] : [var.ingress.outputs.lb_hostname]
+      https       = local.domain_supplied ? true : false
+      path        = local.domain_supplied ? "/" : "/${local.product_name}"
+    }
+  }) : yamlencode({
     ingress = {
-      create = "true"
+      create = true
       host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
       https  = local.domain_supplied ? true : false
       path   = local.domain_supplied ? null : "/${local.product_name}"
