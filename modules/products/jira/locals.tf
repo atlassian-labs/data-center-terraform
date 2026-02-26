@@ -28,7 +28,7 @@ locals {
       https       = local.domain_supplied ? true : false
       path        = local.domain_supplied ? "/" : "/${local.product_name}"
     }
-  }) : yamlencode({
+    }) : yamlencode({
     ingress = {
       create = true
       host   = local.domain_supplied ? "${local.product_name}.${var.ingress.outputs.domain}" : var.ingress.outputs.lb_hostname
