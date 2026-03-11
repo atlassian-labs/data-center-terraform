@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.15
+
+**Release date:** 2026-03-11
+
+* Disable cloudwatch logs creation [#471](https://github.com/atlassian-labs/data-center-terraform/pull/471)
+
 ## 2.9.14
 
 **Release date:** 2026-01-29
