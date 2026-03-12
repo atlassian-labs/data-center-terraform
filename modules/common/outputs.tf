@@ -20,8 +20,13 @@ output "eks" {
 }
 
 output "ingress" {
-  value       = module.ingress
-  description = "Ingress Module"
+  value       = var.use_gateway_api ? module.gateway[0] : module.ingress[0]
+  description = "Ingress/Gateway Module (provides consistent outputs.* interface)"
+}
+
+output "use_gateway_api" {
+  value       = var.use_gateway_api
+  description = "Whether Gateway API is being used instead of NGINX Ingress"
 }
 
 output "namespace" {

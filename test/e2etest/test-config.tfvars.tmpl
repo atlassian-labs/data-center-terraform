@@ -31,6 +31,9 @@ instance_types = ["m5.2xlarge"]
 # Domain name base for the ingress controller. The final domain is subdomain within this domain. (eg.: environment.domain.com)
 {{if .domain}}domain = "{{.domain}}"{{end}}
 
+# Gateway API: use Envoy Gateway instead of NGINX Ingress (only one active per deployment)
+{{if .use_gateway_api}}use_gateway_api = true{{end}}
+
 # Monitoring settings
 monitoring_enabled = true
 monitoring_grafana_expose_lb = true

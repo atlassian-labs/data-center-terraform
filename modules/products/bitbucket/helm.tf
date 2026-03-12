@@ -38,7 +38,7 @@ resource "helm_release" "bitbucket" {
         additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args)
         additionalEnvironmentVariables = [
           {
-            name = "FEATURE_WEBSUDO"
+            name  = "FEATURE_WEBSUDO"
             value = tostring(var.bitbucket_websudo_enabled)
           }
         ]
