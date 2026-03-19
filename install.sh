@@ -481,6 +481,7 @@ resume_bamboo_server() {
 enable_ssh_tcp_protocol_on_lb_listener() {
   readonly SSH_TCP_PORT="7999"
   local install_bitbucket
+  local use_gateway_api
   local region
   local load_balancer_dns
   local load_balancer_name
@@ -489,6 +490,12 @@ enable_ssh_tcp_protocol_on_lb_listener() {
   install_bitbucket=$(get_product "bitbucket" "${CONFIG_ABS_PATH}")
 
   if [ -n "${install_bitbucket}" ]; then
+    use_gateway_api=$(get_variable 'use_gateway_api' "${CONFIG_ABS_PATH}" 2>/dev/null || true)
+    if [ "${use_gateway_api}" = "true" ]; then
+      log "Skipping Bitbucket SSH ELB listener update (Gateway API enabled)."
+      return 0
+    fi
+
     region=$(get_variable 'region' "${CONFIG_ABS_PATH}")
     load_balancer_dns=$(terraform output | grep '"load_balancer_hostname" =' | sed -nE 's/^.*"(.*)".*$/\1/p')
     load_balancer_name=$(echo "${load_balancer_dns}" | cut -d '-' -f 1)

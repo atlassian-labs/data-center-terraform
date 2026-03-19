@@ -30,6 +30,17 @@ provider "helm" {
   }
 }
 
+provider "kubectl" {
+  host                   = module.base-infrastructure.eks.kubernetes_provider_config.host
+  cluster_ca_certificate = module.base-infrastructure.eks.kubernetes_provider_config.cluster_ca_certificate
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", local.cluster_name]
+    command     = "aws"
+  }
+  load_config_file = false
+}
+
 provider "random" {
   # Configuration options
 }

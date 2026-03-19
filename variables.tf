@@ -152,6 +152,12 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+variable "use_gateway_api" {
+  description = "Use Gateway API (Envoy Gateway) instead of NGINX Ingress controller. Only one can be active per deployment."
+  type        = bool
+  default     = false
+}
+
 variable "additional_namespaces" {
   description = "List of additional namespaces to create."
   type        = list(string)
