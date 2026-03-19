@@ -152,6 +152,11 @@ resource "kubectl_manifest" "gateway" {
         allowedRoutes:
           namespaces:
             from: Same
+      # protocol: HTTP (not HTTPS) is intentional — TLS is terminated at the AWS NLB layer
+      # using the ACM certificate attached via the aws-load-balancer-ssl-cert annotation.
+      # Traffic from the NLB to Envoy is plain HTTP within the VPC private network.
+      # To terminate TLS at Envoy instead, the ACM cert would need to be available as a
+      # Kubernetes TLS Secret (ACM does not export private keys), which is not the case here.
       - name: https
         protocol: HTTP
         port: 443

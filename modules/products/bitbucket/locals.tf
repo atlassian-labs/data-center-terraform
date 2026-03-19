@@ -30,11 +30,11 @@ locals {
   ingress_settings = var.use_gateway_api ? yamlencode({
     ingress = { create = false }
     gateway = {
-      create      = true
-      gatewayName = var.ingress.outputs.gateway_name
-      hostnames   = local.domain_supplied ? ["${local.product_name}.${var.ingress.outputs.domain}"] : [var.ingress.outputs.lb_hostname]
-      https       = local.domain_supplied ? true : false
-      path        = local.domain_supplied ? "/" : "/${local.product_name}"
+      create     = true
+      parentRefs = [{ name = var.ingress.outputs.gateway_name }]
+      hostnames  = local.domain_supplied ? ["${local.product_name}.${var.ingress.outputs.domain}"] : [var.ingress.outputs.lb_hostname]
+      https      = local.domain_supplied ? true : false
+      path       = local.domain_supplied ? "/" : "/${local.product_name}"
     }
     }) : yamlencode({
     ingress = {
