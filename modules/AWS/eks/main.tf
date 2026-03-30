@@ -42,11 +42,6 @@ module "eks" {
     }
     aws-ebs-csi-driver = {
       resolve_conflicts_on_create = "OVERWRITE"
-      configuration_values = jsonencode({
-        defaultStorageClass = {
-          enabled = true
-        }
-      })
     }
   }
 
