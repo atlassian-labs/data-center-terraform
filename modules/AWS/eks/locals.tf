@@ -7,7 +7,7 @@ locals {
 
   autoscaler_version = "9.37.0"
 
-  ami_type = "AL2_x86_64"
+  ami_type = var.eks_version >= "1.33" ? "AL2023_x86_64" : "AL2_x86_64"
 
   cluster_service_ipv4_cidr = "172.20.0.0/16"
 
