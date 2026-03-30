@@ -11,6 +11,7 @@ module "nodegroup_launch_template" {
   tags                            = var.tags
   instance_types                  = var.instance_types
   instance_disk_size              = var.instance_disk_size
+  ami_type                        = local.ami_type
   osquery_secret_name             = var.osquery_secret_name
   osquery_secret_region           = local.osquery_secret_region
   osquery_env                     = var.osquery_env

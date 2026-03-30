@@ -43,5 +43,23 @@ locals {
     crowdstrike_secret_name       = var.crowdstrike_secret_name
   })]
 
-  user_data = local.user_content != [] ? base64encode(join("\n", concat(local.user_content, ["--==MYBOUNDARY==--"]))) : null
+  # MIME document preamble shared by both AL2 and AL2023 paths.
+  mime_preamble = "MIME-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"==MYBOUNDARY==\""
+
+  # AL2: standard MIME multipart with shell script parts.
+  # AL2023: a nodeadm YAML config part is inserted before the shell script parts so that
+  #         the node bootstrap agent (nodeadm) can join the cluster. Shell scripts run
+  #         after the node has bootstrapped.
+  #
+  # AL2023 user data format reference:
+  # https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-user-data
+  nodeadm_part = "--==MYBOUNDARY==\nContent-Type: application/node.eks.aws\n\n---\napiVersion: node.eks.aws/v1alpha1\nkind: NodeConfig\nspec:\n  cluster:\n    name: ${var.cluster_name}"
+
+  is_al2023 = var.ami_type == "AL2023_x86_64_STANDARD"
+
+  user_data = length(local.templates_all) > 0 ? (
+    local.is_al2023
+    ? base64encode(join("\n\n", concat([local.mime_preamble, local.nodeadm_part], local.user_content, ["--==MYBOUNDARY==--"])))
+    : base64encode(join("\n\n", concat([local.mime_preamble], local.user_content, ["--==MYBOUNDARY==--"])))
+  ) : null
 }
