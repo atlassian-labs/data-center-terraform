@@ -35,7 +35,7 @@ resource "helm_release" "bitbucket" {
             }
           }
         }
-        additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args)
+        additionalJvmArgs = concat(local.dcapt_analytics_property, var.additional_jvm_args, ["-Dcom.atlassian.plugins.authentication.basic.auth.filter.force.allow=true"])
         additionalEnvironmentVariables = [
           {
             name = "FEATURE_WEBSUDO"
