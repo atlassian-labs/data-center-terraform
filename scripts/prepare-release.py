@@ -25,6 +25,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 CHANGELOG_FILE = REPO_ROOT / "CHANGELOG.md"
+INSTALLATION_FILE = REPO_ROOT / "docs" / "docs" / "userguide" / "INSTALLATION.md"
 
 
 def exit_error(message, exit_code=1):
@@ -85,6 +86,19 @@ def update_changelog(content: str, new_version: str, today: str, new_changelog_i
         return lines[0] + "\n\n" + new_section + lines[1].lstrip("\n")
     else:
         return content + "\n" + new_section
+
+
+def update_installation_doc(content: str, new_version: str) -> str:
+    """Update the git clone version tag in INSTALLATION.md."""
+    updated = re.sub(
+        r"(git clone -b )\d+\.\d+\.\d+( https://github\.com/atlassian-labs/data-center-terraform\.git)",
+        rf"\g<1>{new_version}\2",
+        content,
+    )
+    if updated == content:
+        raise exit_error("Could not find git clone command with version tag in INSTALLATION.md.")
+
+    return updated
 
 
 def create_release_branch_and_commit(new_version: str, changed_files: list[str]) -> None:
@@ -220,6 +234,20 @@ def prepare_release(
         print(f"  ✓ CHANGELOG.md updated")
     else:
         print(f"  [dry-run] would update CHANGELOG.md")
+
+    # -------------------------------------------------------------------------
+    # INSTALLATION.md
+    # -------------------------------------------------------------------------
+    print(f"INSTALLATION.md: updating git clone tag to {new_version}")
+    installation_content = INSTALLATION_FILE.read_text()
+    updated_installation = update_installation_doc(installation_content, new_version)
+
+    if not dry_run:
+        INSTALLATION_FILE.write_text(updated_installation)
+        changed_files.append(str(INSTALLATION_FILE))
+        print(f"  ✓ INSTALLATION.md updated")
+    else:
+        print(f"  [dry-run] would update INSTALLATION.md")
 
     # -------------------------------------------------------------------------
     # Git branch + commit
