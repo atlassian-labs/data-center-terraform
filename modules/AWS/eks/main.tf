@@ -31,6 +31,7 @@ module "eks" {
   cluster_name                = var.cluster_name
   create_iam_role             = true
   create_cloudwatch_log_group = false
+  cluster_enabled_log_types   = []
 
   # add-ons need to be explicitly declared: kube-proxy and vpc-cni are must-have ones
   cluster_addons = {

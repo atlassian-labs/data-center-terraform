@@ -866,7 +866,7 @@ variable "bitbucket_admin_email_address" {
 
 variable "bitbucket_db_major_engine_version" {
   description = "The database major version to use."
-  default     = "14"
+  default     = "17"
   type        = string
 }
 

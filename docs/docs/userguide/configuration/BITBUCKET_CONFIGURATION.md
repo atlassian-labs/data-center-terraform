@@ -101,7 +101,7 @@ bitbucket_max_heap = "512m"
 `bitbucket_db_major_engine_version` sets the PostgeSQL engine version that will be used.
 
 ```terraform
-bitbucket_db_major_engine_version = "14" 
+bitbucket_db_major_engine_version = "17" 
 ```
 
 !!! info "Supported DB versions"
