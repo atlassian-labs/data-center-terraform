@@ -52,6 +52,7 @@ type TestConfig struct {
 	BambooPassword    string
 	BitbucketPassword string
 	CrowdPassword     string
+	UseGatewayApi     bool
 }
 
 func EnvironmentName() string {
@@ -158,6 +159,8 @@ func getPassword(productList []string, product string) string {
 
 func createConfig(t *testing.T, productList []string, useDomain bool, additionalRole string) TestConfig {
 
+	useGatewayApi, _ := strconv.ParseBool(os.Getenv("TF_VAR_use_gateway_api"))
+
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
@@ -170,6 +173,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 		BambooPassword:    getPassword(productList, bamboo),
 		BitbucketPassword: getPassword(productList, bitbucket),
 		CrowdPassword:     getPassword(productList, crowd),
+		UseGatewayApi:     useGatewayApi,
 	}
 
 	// Product list
@@ -193,6 +197,9 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 	if useDomain {
 		vars["domain"] = domain
 		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
+	}
+	if testConfig.UseGatewayApi {
+		vars["use_gateway_api"] = true
 	}
 
 	// parse the template

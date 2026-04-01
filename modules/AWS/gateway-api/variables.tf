@@ -44,3 +44,9 @@ variable "region" {
   description = "AWS region of the EKS cluster."
   type        = string
 }
+
+variable "enable_ssh_tcp" {
+  description = "Expose TCP listener on port 7999 and create TCPRoute for Bitbucket SSH connectivity."
+  type        = bool
+  default     = false
+}

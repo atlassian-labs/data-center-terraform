@@ -11,7 +11,6 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -20,6 +19,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
@@ -254,26 +254,19 @@ func getSecretDataByKey(t *testing.T, kubectlOptions *k8s.KubectlOptions, secret
 func assertBitbucketSessionAffinityCookie(t *testing.T, testConfig TestConfig, productUrl string) {
 	println("Asserting Bitbucket session affinity cookie ...")
 
-	kubectlOptions := getKubectlOptions(t, testConfig)
-
-	// Skip if BackendTrafficPolicy CRD or resource isn't present (e.g., NGINX Ingress mode)
-	out, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
-		"get", "backendtrafficpolicy", "bitbucket-session-affinity",
-		"-n", "atlassian", "--ignore-not-found", "-o", "name")
-	if kubectlError != nil || strings.TrimSpace(out) == "" {
-		println("Skipping session-affinity cookie check (BackendTrafficPolicy not present)")
+	if !testConfig.UseGatewayApi {
+		println("Skipping session-affinity cookie check (Gateway API not active)")
 		return
 	}
 
-	// Cookie-based routing only matters with multiple backends
-	replicaOut, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
-		"get", "sts", "bitbucket", "-n", "atlassian", "-o", "jsonpath={.spec.replicas}")
-	if kubectlError == nil {
-		if replicas, convErr := strconv.Atoi(strings.TrimSpace(replicaOut)); convErr == nil && replicas < 2 {
-			println(fmt.Sprintf("Skipping session-affinity cookie check (replicas=%d)", replicas))
-			return
-		}
-	}
+	kubectlOptions := getKubectlOptions(t, testConfig)
+
+	// Gateway is active — BackendTrafficPolicy MUST exist
+	out, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+		"get", "backendtrafficpolicy", "bitbucket-session-affinity",
+		"-n", "atlassian", "-o", "name")
+	require.NoError(t, kubectlError, "BackendTrafficPolicy should exist when Gateway API is active")
+	require.NotEmpty(t, strings.TrimSpace(out), "BackendTrafficPolicy should exist when Gateway API is active")
 
 	parsed, err := url.Parse(productUrl)
 	assert.Nil(t, err)

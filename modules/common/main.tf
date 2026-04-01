@@ -41,8 +41,10 @@ module "ingress" {
   count      = var.use_gateway_api ? 0 : 1
   depends_on = [module.eks]
 
-  ingress_domain              = local.ingress_domain
-  enable_ssh_tcp              = var.enable_ssh_tcp
+  ingress_domain = local.ingress_domain
+  enable_ssh_tcp = var.enable_ssh_tcp
+  # The ingress module merges this with NAT gateway elastic IPs to ensure
+  # ingresses are accessible from within the cluster's pods and nodes.
   load_balancer_access_ranges = var.whitelist_cidr
   enable_https_ingress        = var.enable_https_ingress
   vpc                         = module.vpc
@@ -56,6 +58,7 @@ module "gateway" {
   depends_on = [module.eks]
 
   ingress_domain              = local.ingress_domain
+  enable_ssh_tcp              = var.enable_ssh_tcp
   namespace                   = var.namespace
   load_balancer_access_ranges = var.whitelist_cidr
   vpc                         = module.vpc

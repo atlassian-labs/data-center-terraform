@@ -38,7 +38,8 @@ module "gateway_certificate" {
 }
 
 ################################################################################
-# Gateway API CRDs (standard channel)
+# Gateway API CRDs (experimental channel — required for TCPRoute support,
+# used for Bitbucket SSH on port 7999)
 ################################################################################
 
 resource "null_resource" "gateway_api_crds" {
@@ -94,6 +95,7 @@ resource "kubectl_manifest" "envoy_proxy_config" {
         kubernetes:
           envoyService:
             type: LoadBalancer
+            loadBalancerSourceRanges: ${jsonencode(local.effective_load_balancer_source_ranges)}
             annotations:
               service.beta.kubernetes.io/aws-load-balancer-type: nlb
               service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
@@ -163,12 +165,14 @@ resource "kubectl_manifest" "gateway" {
         allowedRoutes:
           namespaces:
             from: Same
+%{if var.enable_ssh_tcp}
       - name: ssh
         protocol: TCP
         port: 7999
         allowedRoutes:
           namespaces:
             from: Same
+%{endif}
   YAML
 }
 
@@ -177,6 +181,7 @@ resource "kubectl_manifest" "gateway" {
 ################################################################################
 
 resource "kubectl_manifest" "bitbucket_ssh_tcproute" {
+  count      = var.enable_ssh_tcp ? 1 : 0
   depends_on = [kubectl_manifest.gateway]
 
   yaml_body = <<-YAML
