@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.16
+
+**Release date:** 2026-04-01
+
+* Updated Bitbucket default database engine version from 14 to 17 as PostgreSQL 14 is no longer supported [#475](https://github.com/atlassian-labs/data-center-terraform/pull/475)
+
 ## 2.9.15
 
 **Release date:** 2026-03-11
