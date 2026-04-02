@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.17
+
+**Release date:** 2026-04-02
+
+* Enabled basic auth for Bitbucket [#480](https://github.com/atlassian-labs/data-center-terraform/pull/480)
+
 ## 2.9.16
 
 **Release date:** 2026-04-01
