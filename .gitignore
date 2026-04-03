@@ -72,3 +72,6 @@ modules/AWS/asg_ec2_tagging
 
 # it's handy to have this file in the root of the repo to be able to use datasets
 dcapt-snapshots.json
+
+# temporary files created by prepare-release.py (in repo root so Rovo can access them)
+.tmp_changelog_draft_*
