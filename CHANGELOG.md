@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.18
+
+**Release date:** 2026-04-03
+
+* Add Gateway API integration support [#470](https://github.com/atlassian-labs/data-center-terraform/pull/470)
+
 ## 2.9.17
 
 **Release date:** 2026-04-02
