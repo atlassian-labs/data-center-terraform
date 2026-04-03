@@ -7,7 +7,7 @@ locals {
 
   autoscaler_version = "9.37.0"
 
-  ami_type = "AL2_x86_64"
+  ami_type = var.eks_version >= "1.33" ? "AL2023_x86_64_STANDARD" : "AL2_x86_64"
 
   cluster_service_ipv4_cidr = "172.20.0.0/16"
 
@@ -18,8 +18,7 @@ locals {
   eks_node_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-  "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"]
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
 
 
   use_downtime = var.cluster_downtime_start != null && var.cluster_downtime_stop != null ? true : false
