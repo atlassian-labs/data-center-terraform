@@ -32,6 +32,12 @@ variable "ingress" {
   type    = any
 }
 
+variable "use_gateway_api" {
+  description = "Use Gateway API instead of NGINX Ingress"
+  type        = bool
+  default     = false
+}
+
 variable "replica_count" {
   description = "Number of Jira application nodes"
   type        = number

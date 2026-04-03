@@ -11,7 +11,6 @@ import (
 	"strings"
 	"testing"
 	"text/template"
-
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/k8s"
@@ -53,6 +52,7 @@ type TestConfig struct {
 	BambooPassword    string
 	BitbucketPassword string
 	CrowdPassword     string
+	UseGatewayApi     bool
 }
 
 func EnvironmentName() string {
@@ -125,9 +125,9 @@ func sendPostRequest(t *testing.T, url string, contentType string, username stri
 	request.SetBasicAuth(username, password)
 
 	resp, err := client.Do(request)
-	assert.Regexp(t, "20[01]", strconv.Itoa(resp.StatusCode))
-
 	require.NoError(t, err, "Error accessing url: %s", url)
+	require.NotNil(t, resp, "Expected a non-nil HTTP response for url: %s", url)
+	assert.Regexp(t, "20[01]", strconv.Itoa(resp.StatusCode))
 	defer resp.Body.Close()
 }
 
@@ -159,6 +159,8 @@ func getPassword(productList []string, product string) string {
 
 func createConfig(t *testing.T, productList []string, useDomain bool, additionalRole string) TestConfig {
 
+	useGatewayApi, _ := strconv.ParseBool(os.Getenv("TF_VAR_use_gateway_api"))
+
 	testConfig := TestConfig{
 		AwsRegion:         GetAvailableRegion(t),
 		EnvironmentName:   EnvironmentName(),
@@ -171,6 +173,7 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 		BambooPassword:    getPassword(productList, bamboo),
 		BitbucketPassword: getPassword(productList, bitbucket),
 		CrowdPassword:     getPassword(productList, crowd),
+		UseGatewayApi:     useGatewayApi,
 	}
 
 	// Product list
@@ -194,6 +197,9 @@ func createConfig(t *testing.T, productList []string, useDomain bool, additional
 	if useDomain {
 		vars["domain"] = domain
 		vars["jsm"] = true // This is to cover jsw and jsm in the existing 2 tests to save time and cost.
+	}
+	if testConfig.UseGatewayApi {
+		vars["use_gateway_api"] = true
 	}
 
 	// parse the template

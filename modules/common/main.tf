@@ -38,13 +38,13 @@ module "eks" {
 
 module "ingress" {
   source     = "../AWS/ingress"
+  count      = var.use_gateway_api ? 0 : 1
   depends_on = [module.eks]
 
-  # inputs
   ingress_domain = local.ingress_domain
   enable_ssh_tcp = var.enable_ssh_tcp
-  # we need to merge the list of cidrs provided in config.tfvars with the list of nat elastic IPs
-  # to make sure ingresses are available when accessed from within pods and nodes of the cluster
+  # The ingress module merges this with NAT gateway elastic IPs to ensure
+  # ingresses are accessible from within the cluster's pods and nodes.
   load_balancer_access_ranges = var.whitelist_cidr
   enable_https_ingress        = var.enable_https_ingress
   vpc                         = module.vpc
@@ -52,12 +52,28 @@ module "ingress" {
   tags                        = var.tags
 }
 
+module "gateway" {
+  source     = "../AWS/gateway-api"
+  count      = var.use_gateway_api ? 1 : 0
+  depends_on = [module.eks]
+
+  ingress_domain              = local.ingress_domain
+  enable_ssh_tcp              = var.enable_ssh_tcp
+  namespace                   = var.namespace
+  load_balancer_access_ranges = var.whitelist_cidr
+  vpc                         = module.vpc
+  additional_namespaces       = var.additional_namespaces
+  tags                        = var.tags
+  cluster_name                = local.cluster_name
+  region                      = var.region_name
+}
+
 module "external_dns" {
   source                  = "../AWS/external-dns"
   cluster_name            = local.cluster_name
   create_external_dns     = var.create_external_dns
   cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
-  zone_id                 = module.ingress.outputs.r53_zone
+  zone_id                 = var.use_gateway_api ? module.gateway[0].outputs.r53_zone : module.ingress[0].outputs.r53_zone
   ingress_domain          = local.ingress_domain
 }
 

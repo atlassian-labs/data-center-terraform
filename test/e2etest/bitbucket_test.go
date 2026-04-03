@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/cookiejar"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
@@ -16,6 +19,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string) {
@@ -25,6 +29,7 @@ func bitbucketHealthTests(t *testing.T, testConfig TestConfig, productUrl string
 	assertBitbucketNfsConnectivity(t, testConfig)
 	assertBitbucketSshConnectivity(t, testConfig, productUrl)
 	assertOpenSearchIndexes(t, testConfig)
+	assertBitbucketSessionAffinityCookie(t, testConfig, productUrl)
 }
 
 func assertBitbucketStatusEndpoint(t *testing.T, productUrl string) {
@@ -244,4 +249,51 @@ func getSecretDataByKey(t *testing.T, kubectlOptions *k8s.KubectlOptions, secret
 		return "", err
 	}
 	return string(decodedPassword), nil
+}
+
+func assertBitbucketSessionAffinityCookie(t *testing.T, testConfig TestConfig, productUrl string) {
+	println("Asserting Bitbucket session affinity cookie ...")
+
+	if !testConfig.UseGatewayApi {
+		println("Skipping session-affinity cookie check (Gateway API not active)")
+		return
+	}
+
+	kubectlOptions := getKubectlOptions(t, testConfig)
+
+	// Gateway is active — BackendTrafficPolicy MUST exist
+	out, kubectlError := k8s.RunKubectlAndGetOutputE(t, kubectlOptions,
+		"get", "backendtrafficpolicy", "bitbucket-session-affinity",
+		"-n", "atlassian", "-o", "name")
+	require.NoError(t, kubectlError, "BackendTrafficPolicy should exist when Gateway API is active")
+	require.NotEmpty(t, strings.TrimSpace(out), "BackendTrafficPolicy should exist when Gateway API is active")
+
+	parsed, err := url.Parse(productUrl)
+	assert.Nil(t, err)
+
+	jar, err := cookiejar.New(nil)
+	assert.Nil(t, err)
+
+	client := &http.Client{Jar: jar, Timeout: 30 * time.Second}
+	request, err := http.NewRequest(http.MethodGet, productUrl, nil)
+	assert.Nil(t, err)
+
+	expectedCookie := "ATLROUTE_BITBUCKET"
+	for attempt := 1; attempt <= 3; attempt++ {
+		resp, err := client.Do(request)
+		assert.Nil(t, err)
+		if resp != nil {
+			_ = resp.Body.Close()
+		}
+
+		for _, c := range jar.Cookies(parsed) {
+			if c.Name == expectedCookie {
+				println(fmt.Sprintf("Session-affinity cookie %s found on attempt %d", expectedCookie, attempt))
+				return
+			}
+		}
+		time.Sleep(2 * time.Second)
+	}
+
+	assert.Fail(t, fmt.Sprintf("Expected session-affinity cookie %q not set after 3 attempts", expectedCookie))
 }

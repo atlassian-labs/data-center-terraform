@@ -17,6 +17,7 @@ module "base-infrastructure" {
   eks_additional_roles      = var.eks_additional_roles
   whitelist_cidr            = var.whitelist_cidr
   enable_https_ingress      = var.enable_https_ingress
+  use_gateway_api           = var.use_gateway_api
   create_external_dns       = var.create_external_dns
   additional_namespaces     = var.additional_namespaces
   enable_ssh_tcp            = local.install_bitbucket
@@ -96,6 +97,7 @@ module "bamboo" {
   eks              = module.base-infrastructure.eks
   rds              = module.database[index(var.products, "bamboo")]
   ingress          = module.base-infrastructure.ingress
+  use_gateway_api  = var.use_gateway_api
 
   dataset_url = var.bamboo_dataset_url
 
@@ -152,6 +154,7 @@ module "jira" {
   eks              = module.base-infrastructure.eks
   rds              = module.database[index(var.products, "jira")]
   ingress          = module.base-infrastructure.ingress
+  use_gateway_api  = var.use_gateway_api
 
   db_snapshot_id = local.jira_rds_snapshot_id
 
@@ -199,6 +202,7 @@ module "confluence" {
   eks              = module.base-infrastructure.eks
   rds              = module.database[index(var.products, "confluence")]
   ingress          = module.base-infrastructure.ingress
+  use_gateway_api  = var.use_gateway_api
 
   db_snapshot_id           = local.confluence_rds_snapshot_id
   db_snapshot_build_number = local.confluence_db_snapshot_build_number
@@ -261,6 +265,7 @@ module "bitbucket" {
   eks              = module.base-infrastructure.eks
   rds              = module.database[index(var.products, "bitbucket")]
   ingress          = module.base-infrastructure.ingress
+  use_gateway_api  = var.use_gateway_api
 
   db_snapshot_id = local.bitbucket_rds_snapshot_id
 
@@ -312,7 +317,7 @@ module "bitbucket" {
 
   # If local Helm charts path is provided, Terraform will then install using local charts and ignores remote registry
   local_bitbucket_chart_path = local.local_bitbucket_chart_path
-  bitbucket_websudo_enabled = var.bitbucket_websudo_enabled
+  bitbucket_websudo_enabled  = var.bitbucket_websudo_enabled
 }
 
 module "crowd" {
@@ -326,6 +331,7 @@ module "crowd" {
   eks              = module.base-infrastructure.eks
   rds              = module.database[index(var.products, "crowd")]
   ingress          = module.base-infrastructure.ingress
+  use_gateway_api  = var.use_gateway_api
 
   db_snapshot_id           = local.crowd_rds_snapshot_id
   db_snapshot_build_number = local.crowd_db_snapshot_build_number
@@ -359,7 +365,7 @@ module "crowd" {
   local_crowd_chart_path = local.local_crowd_chart_path
 }
 
-module discovery {
+module "discovery" {
   source = "./modules/discovery"
   vpc    = module.base-infrastructure.vpc
   tags   = var.resource_tags

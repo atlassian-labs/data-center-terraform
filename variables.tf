@@ -152,6 +152,16 @@ variable "enable_https_ingress" {
   default     = true
 }
 
+variable "use_gateway_api" {
+  description = <<-EOT
+    Use Gateway API (Envoy Gateway) instead of NGINX Ingress controller. Only one can be active per deployment.
+    Changing this value on a running deployment will cause downtime while the load balancer is reprovisioned
+    (the old LB is destroyed before the new one is created) and DNS records propagate.
+  EOT
+  type        = bool
+  default     = false
+}
+
 variable "additional_namespaces" {
   description = "List of additional namespaces to create."
   type        = list(string)
