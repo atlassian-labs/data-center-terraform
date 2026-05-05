@@ -1363,7 +1363,7 @@ variable "osquery_env" {
 variable "osquery_version" {
   description = "Osquery version"
   type        = string
-  default     = "5.14.1"
+  default     = "5.22.1"
 }
 
 variable "osquery_fleet_enrollment_host" {
