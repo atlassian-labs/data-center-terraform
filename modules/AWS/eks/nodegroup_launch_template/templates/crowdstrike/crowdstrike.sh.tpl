@@ -5,16 +5,24 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 ### CROWDSTRIKE INSTALLATION
 
-sudo yum install -y yum-utils unzip jq
+if command -v dnf &>/dev/null; then
+  PKG_MGR="dnf"
+  RPM_SUFFIX="amzn2023"
+else
+  PKG_MGR="yum"
+  RPM_SUFFIX="amzn2"
+fi
+
+sudo $PKG_MGR install -y yum-utils unzip jq
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 ./aws/install
 
 # fetch falcon sensor rpm
-aws s3 cp s3://trust-shared-agents/crowdstrike/amazon/falcon-sensor-${falcon_sensor_version}.amzn2.x86_64.rpm .
+aws s3 cp s3://trust-shared-agents/crowdstrike/amazon/falcon-sensor-${falcon_sensor_version}.$${RPM_SUFFIX}.x86_64.rpm .
 
 # install falcon sensor
-sudo yum install ./falcon-sensor-${falcon_sensor_version}.amzn2.x86_64.rpm -y
+sudo $PKG_MGR install ./falcon-sensor-${falcon_sensor_version}.$${RPM_SUFFIX}.x86_64.rpm -y
 
 # fetch a secret with cid and token
 crowdstrike_cid_and_token=$(aws secretsmanager get-secret-value \
@@ -35,7 +43,7 @@ sudo systemctl start falcon-sensor.service
 sudo systemctl enable falcon-sensor.service
 
 # verify crowdstrike is running 
-sudo yum list installed | grep falcon-sensor
+sudo $PKG_MGR list installed | grep falcon-sensor
 sudo systemctl is-active falcon-sensor
 sudo systemctl is-enabled falcon-sensor
 

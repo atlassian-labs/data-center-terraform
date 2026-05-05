@@ -1,6 +1,3 @@
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
 --==MYBOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 
@@ -8,15 +5,21 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 ### OSQUERY INSTALLATION
 
-sudo yum install -y yum-utils unzip jq
+if command -v dnf &>/dev/null; then
+  PKG_MGR="dnf"
+else
+  PKG_MGR="yum"
+fi
+
+sudo $PKG_MGR install -y yum-utils unzip jq
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 ./aws/install
 
 curl -L https://pkg.osquery.io/rpm/GPG | sudo tee /etc/pki/rpm-gpg/RPM-GPG-KEY-osquery
-sudo yum-config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.repo
-sudo yum-config-manager --enable osquery-s3-rpm
-sudo yum install -y osquery-${osquery_version}
+sudo $PKG_MGR config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.repo
+sudo $PKG_MGR config-manager --enable osquery-s3-rpm
+sudo $PKG_MGR install -y osquery-${osquery_version}
 
 cat <<'EOF' >> /etc/osquery/osquery.flags
 --force=true
@@ -47,9 +50,9 @@ EOF
 
 aws --region ${osquery_secret_region} secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:${osquery_secret_region}:${account_id}:secret:${osquery_secret_name} | jq -r '.SecretString' > /etc/osquery/fleet.enrollment_secret
 
-# osquery doesn't work with auditd service
-service auditd stop
-chkconfig auditd off
+# osquery doesn't work with auditd service; suppress errors if not present
+service auditd stop 2>/dev/null || true
+chkconfig auditd off 2>/dev/null || true
 
 # Need to make sure osqueryd is started, and that it will automatically start on instance rebooting.
 systemctl start osqueryd

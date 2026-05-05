@@ -1,3 +1,8 @@
+variable "ami_type" {
+  description = "AMI type for the EKS node group (e.g. AL2_x86_64 or AL2023_x86_64_STANDARD)."
+  type        = string
+}
+
 variable "cluster_name" {
   description = "Name of the EKS cluster."
   type        = string
