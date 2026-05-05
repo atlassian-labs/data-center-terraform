@@ -183,23 +183,27 @@ destroy_tfstate() {
       fi
 
       ERROR="false"
-      log "Deleting object versions in ${S3_BUCKET} S3 bucket..."
-      OBJECT_VERSIONS=$(aws s3api list-object-versions --bucket "${S3_BUCKET}")
-      if [ -z "${OBJECT_VERSIONS}" ]; then
-        log "No object versions found"
-      else
-        aws s3api delete-objects \
-          --bucket ${S3_BUCKET} \
-          --delete "$(aws s3api list-object-versions --bucket "${S3_BUCKET}" --output=json --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')" >/dev/null
-        if [ $? -ne 0 ]; then
+      # The bucket is versioned. Delete versions and delete-markers explicitly first.
+      log "Emptying ${S3_BUCKET} S3 bucket..."
+      for KIND in Versions DeleteMarkers ; do
+        ITEMS=$(aws s3api list-object-versions \
+                  --bucket "${S3_BUCKET}" --region "${AWS_REGION}" \
+                  --output json \
+                  --query="{Objects: ${KIND}[].{Key:Key,VersionId:VersionId}}")
+        if [ "$(echo "${ITEMS}" | jq '.Objects | length // 0')" -gt 0 ] ; then
+          aws s3api delete-objects \
+            --bucket "${S3_BUCKET}" --region "${AWS_REGION}" \
+            --delete "${ITEMS}" >/dev/null || ERROR="true"
+        fi
+      done
+
+      if [ "${ERROR}" = "false" ] ; then
+        log "Deleting ${S3_BUCKET} S3 bucket..."
+        if ! aws s3api delete-bucket \
+              --bucket "${S3_BUCKET}" \
+              --region "${AWS_REGION}" >/dev/null ; then
           ERROR="true"
         fi
-      fi
-
-      log "Deleting S3 bucket ${S3_BUCKET}..."
-      aws s3api delete-bucket --bucket "${S3_BUCKET}" >/dev/null
-      if [ $? -ne 0 ]; then
-        ERROR="true"
       fi
 
       # Best-effort cleanup of legacy DynamoDB lock table for environments

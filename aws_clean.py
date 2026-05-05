@@ -439,19 +439,28 @@ def delete_launch_templates(service_name, aws_region):
 
 
 def delete_s3_buckets(service_name):
+    # Match both prefixes the project uses:
+    #   atlas-<env>-...           workload buckets
+    #   atl-dc-<env>-...-tfstate  Terraform state bucket
+    prefixes = ("atlas-" + service_name, "atl-dc-" + service_name)
     client = boto3.client('s3')
-    response = client.list_buckets()
-    bucket_list = response['Buckets']
-    matching_buckets = [bucket['Name'] for bucket in bucket_list if bucket['Name'].startswith("atlas-" + service_name)]
-    for bucket in matching_buckets:
-        # Delete each object inside the bucket otherwise the bucket cannot be deleted
-        response = client.list_objects_v2(Bucket=bucket)
-        objects = response.get('Contents', [])
-        for obj in objects:
-            print(f"Deleting object: s3://{bucket}/{obj['Key']}")
-            client.delete_object(Bucket=bucket, Key=obj['Key'])
-        print(f"Deleting bucket: {bucket}")
-        client.delete_bucket(Bucket=bucket)
+    s3 = boto3.resource('s3')
+
+    bucket_list = client.list_buckets()['Buckets']
+    matching_buckets = [b['Name'] for b in bucket_list if b['Name'].startswith(prefixes)]
+
+    for bucket_name in matching_buckets:
+        # Use Bucket.object_versions.delete() so versioned buckets (which
+        # the tfstate bucket is, with S3 native locking generating delete
+        # markers for the .tflock object) are emptied of BOTH non-current
+        # versions and delete markers in batched 1000-per-call requests.
+        # `aws s3 rb --force` and list_objects_v2 only handle current keys,
+        # which leaves delete markers behind and causes BucketNotEmpty.
+        bucket = s3.Bucket(bucket_name)
+        print(f"Emptying bucket: {bucket_name}")
+        bucket.object_versions.delete()
+        print(f"Deleting bucket: {bucket_name}")
+        bucket.delete()
 
 
 def main():
