@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.9.19
+
+**Release date:** 2026-05-05
+
+* Replace deprecated DynamoDB lock with S3 native lockfile (DEVPROD-3979) [#485](https://github.com/atlassian-labs/data-center-terraform/pull/485)
+* Default EKS version updated to 1.35 [#474](https://github.com/atlassian-labs/data-center-terraform/pull/474)
+* Bump osquery to 5.22.1 [#484](https://github.com/atlassian-labs/data-center-terraform/pull/484)
+
 ## 2.9.18
 
 **Release date:** 2026-04-03
