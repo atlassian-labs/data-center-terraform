@@ -146,11 +146,15 @@ destroy_tfstate() {
   echo
   TF_STATE_FILE="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   if [ -f "${TF_STATE_FILE}" ]; then
-    # extract S3 bucket name, bucket key and dynamodb table name from tfstate-locals.tf
+    # extract S3 bucket name and bucket key from tfstate-locals.tf
     S3_BUCKET=$(get_variable "bucket_name" "${TF_STATE_FILE}")
     BUCKET_KEY=$(get_variable "bucket_key" "${TF_STATE_FILE}")
-    DYNAMODB_TABLE=$(get_variable 'dynamodb_name' ${TF_STATE_FILE})
     AWS_REGION=$(get_variable 'region' "${CONFIG_ABS_PATH}")
+    # Re-derive the legacy DynamoDB lock table name. State locking now uses
+    # S3 native lockfiles (use_lockfile=true), but environments installed
+    # before that change still have a DynamoDB lock table to clean up.
+    AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")
+    LEGACY_LOCK_TABLE="atl_dc_${ENVIRONMENT_NAME//-/_}_${AWS_REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
     local TFSTATE_FOLDER="${ROOT_PATH}/modules/tfstate"
     set +e
     aws s3api head-bucket --bucket "${S3_BUCKET}" 2>/dev/null
@@ -198,10 +202,17 @@ destroy_tfstate() {
         ERROR="true"
       fi
 
-      log "Deleting DynamoDB table ${DYNAMODB_TABLE}..."
-      aws dynamodb delete-table --table-name "${DYNAMODB_TABLE}" --region "${AWS_REGION}" >/dev/null
-      if [ $? -ne 0 ]; then
-        ERROR="true"
+      # Best-effort cleanup of legacy DynamoDB lock table for environments
+      if [ -n "${AWS_ACCOUNT_ID}" ] && [ -n "${ENVIRONMENT_NAME}" ] && [ -n "${AWS_REGION}" ] && \
+         aws dynamodb describe-table \
+            --table-name "${LEGACY_LOCK_TABLE}" \
+            --region "${AWS_REGION}" >/dev/null 2>&1 ; then
+        log "Deleting legacy DynamoDB lock table ${LEGACY_LOCK_TABLE}..."
+        if ! aws dynamodb delete-table \
+              --table-name "${LEGACY_LOCK_TABLE}" \
+              --region "${AWS_REGION}" >/dev/null ; then
+          log "Failed to delete legacy DynamoDB table '${LEGACY_LOCK_TABLE}'. You may need to remove it manually." "WARN"
+        fi
       fi
 
       if [ ${ERROR} == "false" ]; then
@@ -210,7 +221,7 @@ destroy_tfstate() {
         bash "${SCRIPT_PATH}/cleanup.sh" -t -s -x -r ${ROOT_PATH}
         log "Terraform state is removed successfully."
       else
-        log "Couldn't destroy S3 bucket '${S3_BUCKET}' and/or dynamodb table '${DYNAMODB_TABLE}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
+        log "Couldn't destroy S3 bucket '${S3_BUCKET}'. Terraform state '${BUCKET_KEY}' in S3 bucket '${S3_BUCKET}' cannot be removed." "ERROR"
         exit 1
       fi
     else
@@ -236,5 +247,5 @@ regenerate_environment_variables
 # Destroy the infrastructure for the given product
 destroy_infrastructure
 
-# Destroy tfstate (S3 bucket key and dynamodb table) of the product
+# Destroy tfstate (S3 bucket key and legacy DynamoDB lock table) of the product
 destroy_tfstate

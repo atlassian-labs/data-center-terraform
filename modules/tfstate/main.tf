@@ -11,9 +11,3 @@ module "tfstate-bucket" {
   bucket_name    = local.bucket_name
   logging_bucket = var.logging_bucket
 }
-
-module "tfstate-table" {
-  source        = "../AWS/dynamodb"
-  required_tags = var.resource_tags
-  dynamodb_name = local.dynamodb_name
-}

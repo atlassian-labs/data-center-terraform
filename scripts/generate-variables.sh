@@ -58,9 +58,6 @@ set_variables() {
   S3_BUCKET=${S3_BUCKET:0:MAX_LENGTH}
   BUCKET_KEY="${ENVIRONMENT_NAME}"
 
-  # Generates the unique dynamodb table names for the deployment lock ( convert all '-' to '_' )
-  DYNAMODB_TABLE="atl_dc_${ENVIRONMENT_NAME//-/_}_${REGION//-/_}_${AWS_ACCOUNT_ID}_tf_lock"
-
   BACKEND_TF="${ROOT_PATH}/terraform-backend.tf"
   TFSTATE_LOCALS="${ROOT_PATH}/modules/tfstate/tfstate-locals.tf"
   ASG_EC2_TAG_PATH="${ROOT_PATH}/modules/AWS/asg_ec2_tagging"
@@ -105,16 +102,14 @@ inject_variables_to_templates() {
   log "Generating the terraform backend definition file 'terraform.backend.tf'."
   sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/templates/terraform-backend.tf.tmpl" | \
   sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
-  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
-  sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
+  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g' \
     > "${BACKEND_TF}"
 
   # Generate the locals for terraform state
   log "Generating the terraform state local file 'modules/tfstate/tfstate-locals.tf'."
   sed 's/<REGION>/'"${REGION}"'/g'  "${ROOT_PATH}/templates/tfstate-locals.tf.tmpl" | \
   sed 's/<BUCKET_NAME>/'"${S3_BUCKET}"'/g' | \
-  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g'  | \
-  sed 's/<DYNAMODB_TABLE>/'"${DYNAMODB_TABLE}"'/g' \
+  sed 's/<BUCKET_KEY>/'"${BUCKET_KEY}"'/g' \
     > "${TFSTATE_LOCALS}"
 }
 

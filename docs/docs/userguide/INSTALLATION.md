@@ -42,7 +42,7 @@ Installation is fully automated and requires no user intervention. Terraform is 
 
 
 ??? info "Terraform deployment details"
-    To keep track of the current state of the resources and manage changes, Terraform creates an [AWS S3 bucket](https://aws.amazon.com/s3/){.external} to store the current state of the environment. An [AWS DynamoDB](https://aws.amazon.com/dynamodb/) table is created to handle the locking of remote state files during the installation, upgrade, and cleanup stages to prevent the environment from being modified by more than one process at a time. 
+    To keep track of the current state of the resources and manage changes, Terraform creates an [AWS S3 bucket](https://aws.amazon.com/s3/){.external} to store the current state of the environment. State locking during installation, upgrade, and cleanup uses the S3 backend's native lockfile (`use_lockfile = true`), which writes a sibling `.tflock` object next to the state file to prevent the environment from being modified by more than one process at a time.
 
     The installation script, `install.sh`, is located in the root folder of the project.
 

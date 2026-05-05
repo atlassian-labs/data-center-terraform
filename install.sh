@@ -308,7 +308,7 @@ generate_terraform_backend_variables() {
   S3_BUCKET=$(get_variable 'bucket' "${ROOT_PATH}/terraform-backend.tf")
 }
 
-# Create S3 bucket, bucket key, and dynamodb table to keep state and manage lock if they are not created yet
+# Create S3 bucket and bucket key to keep state. Locking is handled by the S3 backend's native lockfile (use_lockfile=true).
 create_tfstate_resources() {
   # Check if the S3 bucket is existed otherwise create the bucket to keep the terraform state
   log "Checking the terraform state."
@@ -550,7 +550,7 @@ fi
 # Generates ./terraform-backend.tf and ./modules/tfstate/tfstate-local.tf
 generate_terraform_backend_variables
 
-# Create S3 bucket and dynamodb table to keep state
+# Create S3 bucket to keep state (locking uses S3 native lockfiles)
 create_tfstate_resources
 
 # check if it's a scale down event and scale down manually (Jira and Confluence only)

@@ -218,31 +218,36 @@ This guide contains general tips on how to investigate an application deployment
     There are two Terraform locks; one for the infrastructure and another for Terraform state. If you are still experiencing lock issues, change the directory to `./modules/tfstate` and retry the same command.
 
 ??? tip "How do I deal with state data in S3 that does not have the expected content?"
-    
+
     ###### <a id="tip#8"></a>
-    If Terraform state is locked and users forcefully unlock it using `terraform force-unlock <id>`, it may not get a chance to update the Digest value in DynamoDB. This prevents Terraform from reading the state data.       
-    
+    State is stored as a single object (`<environment>/terraform.tfstate`) inside the state S3 bucket `atl-dc-<environment>-<region>-<aws_account_id>-tfstate`. If a Terraform operation is interrupted at the wrong moment, or if the file is edited or restored manually, subsequent runs may complain that the state content is unexpected or corrupted.
+
     **Symptom**
-    
-    The following error is thrown:
-    
+
+    Terraform fails to refresh state with an error similar to:
+
     ```shell
     Error refreshing state: state data in S3 does not have the expected content.
-
-    This may be caused by unusually long delays in S3 processing a previous state
-    update.  Please wait for a minute or two and try again. If this problem
-    persists, and neither S3 nor DynamoDB are experiencing an outage, you may need
-    to manually verify the remote state and update the Digest value stored in the
-    DynamoDB table to the following value: 531ca9bce76bbe0262f610cfc27bbf0b
     ```
-    
+
+    or fails to read the state because of a content/integrity mismatch.
+
     **Solution**
-    
-    1. Open DynamoDB page in AWS console and find the table named `atlassian_data_center_<region>_<aws_account_id>_tf_lock` in the same region as the cluster.
-    
-    2. Click on `Explore Table Items` and find the LockID named `<table_name>/<environment_name>/terraform.tfstate-md5`. 
-     
-    3. Click on the item and replace the `Digest` value with the given value in the error message.
+
+    The state bucket has versioning enabled, so any prior good revision of the state file can be restored from the AWS console.
+
+    1. Open the **S3** page of the AWS console and navigate to `atl-dc-<environment>-<region>-<aws_account_id>-tfstate`.
+    2. Open the `<environment>/` prefix and click on `terraform.tfstate`.
+    3. Switch to the **Versions** tab — you will see every revision Terraform has written.
+    4. Identify the most recent version that pre-dates the bad apply (timestamps and the **Latest** marker help here).
+    5. Either delete the newer (broken) versions, or download the good version and re-upload it as the new latest. Either restores the state object to a known-good content.
+    6. Re-run the failed `install.sh`/`uninstall.sh` against the same environment.
+
+    Because state locking now uses the S3 backend's native lockfile (`use_lockfile = true`) rather than a DynamoDB-stored digest, the historical "update the Digest value in the DynamoDB table" recovery is no longer applicable. There is no separate digest store to keep in sync.
+
+    **Note for legacy environments**
+
+    Environments installed before the migration to S3-native locking still have a DynamoDB lock table named `atl_dc_<environment>_<region>_<aws_account_id>_tf_lock`. After upgrading, that table is no longer used for new operations. `uninstall.sh` removes it on a best-effort basis; if it remains after uninstall, delete it directly from the AWS DynamoDB console.
 
 ??? tip "How do I deal with pre-existing state in multiple environment?"
     

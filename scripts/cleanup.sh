@@ -94,7 +94,6 @@ cleanup_terraform() {
       "${ROOT_PATH}/modules/AWS/eks"
       "${ROOT_PATH}/modules/AWS/s3"
       "${ROOT_PATH}/modules/AWS/nfs"
-      "${ROOT_PATH}/modules/AWS/dynamodb"
       "${ROOT_PATH}/modules/AWS/ingress"
       "${ROOT_PATH}/modules/AWS/rds"
       "${ROOT_PATH}/modules/AWS/vpc"

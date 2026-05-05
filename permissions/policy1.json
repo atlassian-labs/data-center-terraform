@@ -95,34 +95,14 @@
       "Resource": "*"
     },
     {
-      "Sid": "DynamoDB",
+      "Sid": "DynamoDBLegacyLockTableCleanup",
       "Effect": "Allow",
       "Action": [
-        "dynamodb:DeleteTable",
-        "dynamodb:DescribeTimeToLive",
         "dynamodb:DescribeTable",
-        "dynamodb:DescribeContinuousBackups",
-        "dynamodb:CreateTable",
-        "dynamodb:TagResource",
-        "dynamodb:UntagResource",
-        "dynamodb:ListTagsOfResource",
-        "dynamodb:PutItem",
-        "dynamodb:GetItem",
-        "dynamodb:DeleteItem",
-        "dynamodb:UpdateItem"
+        "dynamodb:DeleteTable"
       ],
       "Resource": [
         "arn:aws:dynamodb:*:123456789012:table/atl_dc_*_tf_lock"
-      ]
-    },
-    {
-      "Sid": "DynamoDBlistTables",
-      "Effect": "Allow",
-      "Action": [
-        "dynamodb:ListTables"
-      ],
-      "Resource": [
-        "arn:aws:dynamodb:*:123456789012:table/*"
       ]
     },
     {
