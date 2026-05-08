@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.20
+
+**Release date:** 2026-05-08
+
+* Disable Grafana load balancer exposure [#487](https://github.com/atlassian-labs/data-center-terraform/pull/487)
+
 ## 2.9.19
 
 **Release date:** 2026-05-05
