@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.21
+
+**Release date:** 2026-05-19
+
+* Pin alekc/kubectl provider to <2.3.0 in E2E Terraform to fix test [#489](https://github.com/atlassian-labs/data-center-terraform/pull/489)
+
 ## 2.9.20
 
 **Release date:** 2026-05-08
