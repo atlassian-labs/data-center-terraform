@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.22
+
+**Release date:** 2026-05-28
+
+* Fix gateway-api data source kubeconfig in stateless containers [#492](https://github.com/atlassian-labs/data-center-terraform/pull/492)
+
 ## 2.9.21
 
 **Release date:** 2026-05-19
