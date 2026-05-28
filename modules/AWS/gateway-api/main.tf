@@ -244,7 +244,7 @@ data "external" "gateway_address" {
   depends_on = [null_resource.wait_for_lb]
 
   program = ["bash", "-c",
-    "printf '{\"hostname\":\"%s\"}' $(kubectl get gateway ${local.gateway_name} -n ${var.namespace} -o jsonpath='{.status.addresses[0].value}')"
+    "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region} >/dev/null 2>&1; printf '{\"hostname\":\"%s\"}' $(kubectl get gateway ${local.gateway_name} -n ${var.namespace} -o jsonpath='{.status.addresses[0].value}')"
   ]
 }
 
