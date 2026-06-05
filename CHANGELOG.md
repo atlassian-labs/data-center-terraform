@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.23
+
+**Release date:** 2026-06-05
+
+* Bump falcon-sensor and pin terraform-aws-modules/security-group/aws version [#494](https://github.com/atlassian-labs/data-center-terraform/pull/494)
+
 ## 2.9.22
 
 **Release date:** 2026-05-28
