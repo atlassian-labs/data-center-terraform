@@ -1406,7 +1406,7 @@ variable "crowdstrike_aws_account_id" {
 variable "falcon_sensor_version" {
   description = "Falcon sensor version"
   type        = string
-  default     = "7.32.0-18504"
+  default     = "7.37.0-19004"
 }
 
 ################################################################################
