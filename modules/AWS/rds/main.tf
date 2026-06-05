@@ -3,7 +3,7 @@
 ################################################################################
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4, < 6.0.0"
 
   name        = "${var.product}_rds_sg"
   description = "Database security group"
