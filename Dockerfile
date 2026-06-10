@@ -30,11 +30,11 @@ RUN apt-get update \
     && apt-get install -y gnupg software-properties-common curl unzip openjdk-17-jdk python3 python3-venv \
     && python3 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install boto3 tenacity \
+    && /opt/venv/bin/pip install boto3 \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-get update && apt-get install -y terraform jq \
-    && apt-get remove -y python3-cryptography \
+    && apt-get remove -y python3-cryptography python3-pip-whl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/opt/venv/bin:$PATH"
