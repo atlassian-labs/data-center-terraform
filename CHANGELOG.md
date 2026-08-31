@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.9.24
+
+**Release date:** 2026-08-27
+
+* Bump PostgreSQL to version 13 [#497](https://github.com/atlassian-labs/data-center-terraform/pull/497)
+* Remove unused but vulnerable modules [#496](https://github.com/atlassian-labs/data-center-terraform/pull/496)
+
 ## 2.9.23
 
 **Release date:** 2026-06-05
