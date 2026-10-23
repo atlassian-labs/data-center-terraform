@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.9.25
+
+**Release date:** 2026-10-23
+
+* Bump github.com/klauspost/compress from 1.13.0 to 1.18.7 [#502](https://github.com/atlassian-labs/data-center-terraform/pull/502)
+
 ## 2.9.24
 
 **Release date:** 2026-08-27
