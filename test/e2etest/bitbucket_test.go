@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -88,7 +87,7 @@ func addServerToKnownHosts(t *testing.T, host string) {
 	println(fmt.Sprintf("Keyscan found this public key: %s", stdout))
 	assert.Contains(t, stdout, fmt.Sprintf("%s:7999", host))
 
-	err := ioutil.WriteFile(os.Getenv("HOME")+"/.ssh/known_hosts", []byte(stdout), 0644)
+	err := os.WriteFile(os.Getenv("HOME")+"/.ssh/known_hosts", []byte(stdout), 0644)
 	assert.Nil(t, err)
 }
 
@@ -104,7 +103,7 @@ func addPublicKeyToServer(t *testing.T, password string, productUrl string) {
 	   one using "ssh-keygen -t rsa -b 4096 -C "<email>"
 	*/
 	publicKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e.pub"
-	publicKey, err := ioutil.ReadFile(publicKeyPath)
+	publicKey, err := os.ReadFile(publicKeyPath)
 	assert.Nil(t, err)
 
 	restEndpoint := fmt.Sprintf("%s/rest/ssh/latest/keys", productUrl)
@@ -162,7 +161,7 @@ func cloneRepo(t *testing.T, host string) {
 	   one using "ssh-keygen -t rsa -b 4096 -C "<email>"
 	*/
 	sshKeyPath := os.Getenv("HOME") + "/.ssh/bitbucket-e2e"
-	sshKey, _ := ioutil.ReadFile(sshKeyPath)
+	sshKey, _ := os.ReadFile(sshKeyPath)
 	publicKey, keyError := ssh.NewPublicKeys("git", sshKey, "")
 	assert.Nil(t, keyError)
 	cloneUrl := fmt.Sprintf("git@%s:7999/bbssh/bitbucket-ssh-test-repo.git", host)

@@ -23,7 +23,7 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v3
         with:
-          go-version: '1.18'
+          go-version: '1.24'
 
       - name: Install the latest Terraform
         run: |
