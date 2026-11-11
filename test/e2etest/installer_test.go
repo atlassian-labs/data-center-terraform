@@ -1,6 +1,7 @@
 package e2etest
 
 import (
+	"fmt"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"os"
 	"os/exec"
@@ -111,18 +112,19 @@ func gatherK8sLogs(testConfig TestConfig) {
 func runCleanupScript(testConfig TestConfig) {
 	printTestBanner("Cleaning up AWS resources with tag service_name", testConfig.EnvironmentName)
 
-	cmd := &exec.Cmd{
-		Path:   "/usr/bin/python",
-		Args:   []string{"python", "aws_clean.py", "--service_name", testConfig.EnvironmentName, "--region", testConfig.AwsRegion},
-		Stdout: os.Stdout,
-		Stderr: os.Stdout,
-		Env:    []string{"PYTHONPATH=/opt/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages"},
-		Dir:    "../../",
-	}
+	// Resolve `python3` from PATH so the script runs under the interpreter that
+	// `actions/setup-python` installed boto3 into, and inherit the environment so
+	// PATH and the AWS credentials reach the child process.
+	cmd := exec.Command("python3", "aws_clean.py", "--service_name", testConfig.EnvironmentName, "--region", testConfig.AwsRegion)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stdout
+	cmd.Dir = "../../"
 
 	// run `cmd` in background
 	_ = cmd.Start()
 
 	// wait `cmd` until it finishes
-	_ = cmd.Wait()
+	if err := cmd.Wait(); err != nil {
+		println(fmt.Sprintf("AWS cleanup script failed: %s", err))
+	}
 }
