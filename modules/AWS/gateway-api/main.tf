@@ -177,6 +177,29 @@ resource "kubectl_manifest" "gateway" {
 }
 
 ################################################################################
+# ClientTrafficPolicy to forward request headers with underscores in their names
+################################################################################
+
+resource "kubectl_manifest" "gateway_client_traffic_policy" {
+  depends_on = [kubectl_manifest.gateway]
+
+  yaml_body = <<-YAML
+    apiVersion: gateway.envoyproxy.io/v1alpha1
+    kind: ClientTrafficPolicy
+    metadata:
+      name: allow-underscore-headers
+      namespace: ${var.namespace}
+    spec:
+      targetRefs:
+      - group: gateway.networking.k8s.io
+        kind: Gateway
+        name: ${local.gateway_name}
+      headers:
+        withUnderscoresAction: Allow
+  YAML
+}
+
+################################################################################
 # Bitbucket SSH: TCPRoute for port 7999
 ################################################################################
 
