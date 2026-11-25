@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.9.26
+
+**Release date:** 2026-11-25
+
+* Allow request headers with underscores through Envoy Gateway [#512](https://github.com/atlassian-labs/data-center-terraform/pull/512)
+* Bump RDS PostgreSQL minor versions [#511](https://github.com/atlassian-labs/data-center-terraform/pull/511)
+
 ## 2.9.25
 
 **Release date:** 2026-10-23
